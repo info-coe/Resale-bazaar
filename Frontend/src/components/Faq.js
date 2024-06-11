@@ -68,11 +68,11 @@ const FAQ = () => {
         <h1 className="text-center mb-4 fs-4">FREQUENTLY ASKED QUESTIONS</h1>
         <p className="fs-6">
           Keeping Identity of Sellers and Buyers Anonymous is our first
-          priority. For all products uploaded on our platforms for Sale, Bargain
+          priority. For all products uploaded on our platforms for Sale, The Resale Bazaar
           will be Sole BRAND , & in any case Sellers Cannot Contact / Share /
           Send their Personal / Professional (Business) details to Buyers. In
-          case Bargain comes to know that Sellers are reaching out / Sending
-          their Personal / Professional (Business) details to Buyers, Bargain
+          case Resale Bazaar comes to know that Sellers are reaching out / Sending
+          their Personal / Professional (Business) details to Buyers, Resale Bazaar
           holds the right to deduct & withhold 30% of Payment towards Breach of
           Terms.
         </p>

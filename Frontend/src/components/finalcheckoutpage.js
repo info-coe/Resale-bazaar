@@ -28,7 +28,7 @@ export default function Finalcheckoutpage() {
                 })
                 .then((res) => {
                   alert("Product Purchased Successfully");
-                  window.location.href = `${process.env.REACT_APP_HOST}3000/bargain_db`;
+                  window.location.href = `${process.env.REACT_APP_HOST}3000/Resale-bazaar`;
                 })
                 .catch((err) => console.log("Error updating payment status:", err));
             });

@@ -54,13 +54,13 @@ export default function Contactus() {
           <h1 style={{fontSize:"26px"}}>Contact Us</h1>
           <section>
             <p>
-              Thank you for visiting Closet Bargain. For any questions,
+              Thank you for visiting Closet The Resale Bazaar. For any questions,
               feedback, and/or grievances please email us at &nbsp;
               <Link
-                to="mailto:bargain@gmail.com"
+                to="mailto:resalebazaar@gmail.com"
                 className="text-decoration-none"
               >
-                bargain@gmail.com
+                resalebazaar@gmail.com
               </Link>
               with the necessary information.
             </p>
@@ -69,7 +69,7 @@ export default function Contactus() {
               best possible answers and solutions for your queries. To find
               answers at the quickest rate, you can also check our Frequently
               Asked Questions page.
-              <br />- Team Bargain
+              <br />- Team The Resale Bazaar
             </p>
           </section>
           <form className="m-3" onSubmit={handleSubmit}>

@@ -157,7 +157,7 @@ app.post("/sendotp", (req, res) => {
   var mailOptions = {
     from: process.env.REACT_APP_FROMMAIL,
     to: `${email}`,
-    subject: "Verification mail to register for Bargain fashion",
+    subject: "Verification mail to register for The Resale Bazaar fashion",
     generateTextFromHTML: true,
     html: `<b>Hello user, Please use this otp ${otp} for verification</b>`,
   };
@@ -998,7 +998,7 @@ app.get("/success", (req, res) => {
         res.status(500).send("Error executing payment");
       } else {
        
-        res.redirect(`${process.env.REACT_APP_HOST}3000/bargain_db/finalcheckoutpage`);
+        res.redirect(`${process.env.REACT_APP_HOST}3000/Resale-bazaar/finalcheckoutpage`);
       }
     }
   );
@@ -1006,7 +1006,7 @@ app.get("/success", (req, res) => {
 
 app.get("/cancel", (req, res) => {
  
-  res.redirect(`${process.env.REACT_APP_HOST}3000/bargain_db/`);
+  res.redirect(`${process.env.REACT_APP_HOST}3000/Resale-bazaar/`);
 });
 
 // app.post("/");

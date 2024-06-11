@@ -87,13 +87,13 @@ export default function Selleraccount() {
             <p>
               You are registering here as a Seller. Kindly go through the Seller
               Terms before registering, those terms of use are a contract
-              between you and Closet Bargain, and any violation of them will not
+              between you and Closet Resale Bazaar, and any violation of them will not
               be accepted. Once you register, it automatically means that you
               have given your consent to our terms and have agreed to follow
               those without any exceptions.
             </p>
             <p>
-              Please enter your details accurately. Bargain is not responsible
+              Please enter your details accurately. The Resale Bazaar is not responsible
               for any incorrect information provided by you. Note that there
               will be delays in remitting funds to you if you enter incorrect
               details.
@@ -103,7 +103,7 @@ export default function Selleraccount() {
               remitting funds to your account, and the payout is 85% of your
               product listing price.
             </p>
-            <p>- Team Bargain</p>
+            <p>- Team Resale Bazaar</p>
           </section>
           {sellers.length === 0 ? (
             <form className="m-3" onSubmit={handleSubmit}>
@@ -158,7 +158,7 @@ export default function Selleraccount() {
                     <option value="upiId">UPI ID</option>
                   </select>
                   <p>
-                    Bargain will pay you 85% of your selling price. This lower
+                    The Resale Bazaar will pay you 85% of your selling price. This lower
                     payout is to cover for the UPI charges to remit payment to
                     you
                   </p>

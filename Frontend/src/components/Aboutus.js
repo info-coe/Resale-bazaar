@@ -17,7 +17,7 @@ export default function Aboutus() {
         <section className="p-2 m-md-5">
           <p className="fs-6">
             <b>
-              <i>Closet Bargain,</i>
+              <i>Closet Resalse Bazaar,</i>
             </b>{" "}
             emerged from the desire to breathe new life into unused clothing,
             fostering sustainability in the process. Recognizing the immense
@@ -44,7 +44,7 @@ export default function Aboutus() {
             stories our clothes tell.
           </p>
           <p>
-            Bargain closet envisions a platform where customers not only have
+            The Resale Bazaar closet envisions a platform where customers not only have
             the power to make a positive impact on the environment but also
             access fantastic deals on the latest trends, fostering a sense of
             joy and satisfaction in their shopping experience. Happy Shopping!

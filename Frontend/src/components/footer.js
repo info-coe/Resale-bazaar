@@ -124,10 +124,10 @@ const Footer = () => {
           <p>
             Powered by{" "}
             <Link
-              to="https://bargain.com/"
+              to="https://resalebazaar.com/"
               className="text-decoration-none text-white"
             >
-              bargain.com
+              resalebazaar.com
             </Link>
           </p>
           <p>

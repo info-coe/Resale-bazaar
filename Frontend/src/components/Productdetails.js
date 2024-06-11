@@ -60,7 +60,7 @@ export default function Productdetails() {
         console.log(err);
       });
     alert("Product added to the store successfully");
-    window.location.href = "/bargain_db/acceptproduct";
+    window.location.href = "/Resale-bazaar/acceptproduct";
   };
 
   const { addToCart, addToWishlist, cartItems,wishItems } = useCart();
@@ -149,7 +149,7 @@ const handleProductReject=()=>{
       .catch((err) => {
         console.log(err);
       });
-    window.location.href = "/bargain_db/acceptproduct";
+    window.location.href = "/Resale-bazaar/acceptproduct";
     
   } else {
       console.log('User canceled the prompt.');
