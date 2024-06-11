@@ -1,0 +1,416 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  overflow-y: scroll;
+}
+
+.fullscreen{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.fullscreen main{
+  flex-grow: 1;
+}
+
+ .fullscreen2{
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.fullscreen2 main{
+  flex-grow: 1;
+}
+
+.selleraccordion{
+  background-color: rgb(233, 236, 229);
+  min-height: 90vh;
+}
+
+.gradientnav .navbar{
+  /* background: #304352;   */
+  background: linear-gradient(to right, #c5e0f1, #c0def4);  
+}
+.custom-item{
+  margin-left: auto;
+  margin-right: auto;
+}
+.custom-item img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.custom-item .m-3 {
+  transition: transform 0.2s;
+}
+.custom-item .m-3:hover {
+  transform: scale(1.1);
+}
+.homebanner {
+  width: 100%;
+}
+
+.custom-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 15px;
+  font-size: 4em;
+}
+
+.carousel-indicators [data-bs-target] {
+  border-radius: 100%;
+  width: 10px;
+  height: 10px;
+}
+.image-container {
+  height: 250px;
+  width: 100%;
+  overflow: hidden;
+}
+.banner {
+  height: 100%;
+  width: 100%;
+}
+.carouselslide {
+  height: 450px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin: 0;
+  padding: 0;
+}
+.carouselslide img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.footer1 a {
+  color: black;
+}
+.footer1 a:hover {
+  color: rgb(55, 8, 244);
+  cursor: pointer;
+}
+.paymentcards {
+  width: 50px;
+  height: 30px;
+}
+.bannerHead {
+  color: white;
+  text-shadow: 2px 3px 2px black;
+}
+
+
+.productcard {
+  width: 310px;
+  height: 500px;
+  margin-bottom: 20px;
+  box-shadow: 1px 2px 2px 2px rgb(217, 216, 216);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
+}
+.productcard .card-img-top {
+  max-width: 100%;
+  height: 300px;
+ 
+  object-fit: contain;
+  align-self: center; 
+
+}
+.productcard .card-body {
+  height: 120px;
+}
+.productimgback{
+  background-color: rgb(249, 244, 244)
+}
+
+
+.customermenu .list-group a {
+  color: black;
+}
+.customermenu .list-group a.active {
+  background-color: black;
+  color: white;
+}
+.customermenu .list-group a:hover {
+  background-color: rgb(139, 136, 136);
+  color: white;
+}
+
+.menumain .accordion {
+  --bs-accordion-btn-bg: rgb(233, 236, 229);
+  --bs-accordion-btn-color: #100f10;
+  --bs-accordion-active-bg: rgb(246, 250, 241);
+  --bs-accordion-active-color: #100f10;
+  --bs-accordion-btn-focus-box-shadow: none;
+}
+
+
+.womenallimgs {
+  width: 130px;
+  height: 130px;
+}
+.scroll-container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  overflow: auto;
+  white-space: nowrap;
+  padding: 2px;
+}
+.scroll-container img {
+  padding: 4px;
+}
+.productdetailsimgdiv{
+width: 550px;
+height: 600px;
+background-color: rgb(248, 243, 243);
+}
+.productdetailsimg {
+  max-width: 100%;
+  height: 600px;
+  object-fit: contain;
+  align-self: center; 
+}
+.productdetailscarousel{
+  width: 400px;
+}
+.productdetailscarousel .card{
+  width: 120px;
+  height: 120px;
+  background-color: rgb(248, 243, 243);
+ 
+}
+.hovermenus {
+  position: absolute;
+  top: 30;
+  left: 0;
+}
+#navbarDropdownWomen{
+  padding-top: 0px;
+}
+.navbarul .nav-link{
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  font-weight: 500;
+}
+.offcanvas-body{
+  overflow-y: auto;
+}
+.gradientnav .custom-navbar-toggler {
+  margin: 10px 5px;
+  padding: 0.5rem 0.5rem; 
+  font-size: 0.975rem; 
+}
+.authdiv{
+  width: 130px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.custom-carousel .rec.rec-arrow {
+  background-color: gray !important; 
+  color: white; 
+}
+
+.custom-carousel .rec.rec-arrow:active {
+  background-color: gray !important; 
+  color: white; 
+}
+.custom-carousel .rec.rec-arrow:disabled {
+  background-color: rgb(179, 175, 175) !important; 
+  color: white; 
+}
+
+
+@media all and (max-width: 767px) and (orientation: portrait) {
+  .homebanner {
+    height: 120px;
+  }
+  .womenallimgs {
+    width: 80px;
+    height: 80px;
+  }
+  .scroll-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+  .productdetailsimgdiv{
+    width: 290px;
+    height: 400px;
+    
+    }
+  .productdetailsimg {
+    max-width: 100%;
+    max-height: 400px;
+  }
+  .productdetailscarousel{
+    width: 290px;
+  }
+  .selleraccordion{
+    min-height: 22vh;
+  }
+  .hovermenus {
+    top: 30;
+    left: 30px;
+  }
+  .navbarul .nav-link{
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 30px;
+    padding-bottom: 0px;
+  }
+  .bargainlogodiv{
+    margin-top: 10px;
+  }
+  .custom-carousel{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .custom-carousel .rec.rec-arrow-left {
+    position: absolute;
+    bottom: 50%;
+    left: 8%;
+    z-index: 1;
+    background-color: rgba(128, 128, 128, 0.5) !important;
+    color: white;
+  }
+  .custom-carousel .rec.rec-arrow-right {
+    position: absolute;
+    bottom: 50%;
+    right: 8%; 
+    z-index: 1;
+    background-color: rgba(128, 128, 128, 0.5) !important;
+    color: white;
+  }
+  
+  .rec.rec-arrow:disabled {
+    visibility: hidden;
+}
+ 
+}
+
+@media all and (min-width: 768px) and (max-width: 991px) {
+  .productcard {
+    width: 230px;
+    height: 380px;
+  }
+  .productcard .card-img-top {
+    max-width: 100%;
+    height: 250px;
+    object-fit: contain;
+  align-self: center; 
+  }
+  .productcard .card-body {
+    height: 130px;
+  }
+  .womenallimgs {
+    width: 80px;
+    height: 80px;
+  }
+  .productdetailsimgdiv{
+    width: 550px;
+    height: 600px;
+    
+    }
+  .productdetailsimg {
+    max-width: 100%;
+    height: 600px;
+  }
+  .productdetailscarousel{
+    width: 500px;
+  }
+  
+}
+
+@media all and (min-width: 992px) and (max-width: 1280px) and (orientation: portrait) {
+  .productcard {
+    width: 250px;
+    height: 350px;
+  }
+  .productcard .card-img-top {
+    max-width: 100%;
+    height: 290px;
+  }
+  .productdetailsimgdiv{
+    width: 360px;
+    height: 450px;
+    
+    }
+  .productdetailsimg {
+    max-width: 100%;
+    height: 450px;
+  }
+  .productdetailscarousel{
+    width: 360px;
+  }
+  .detailsdiv{
+    margin-left: 50px;
+  }
+ 
+ 
+}
+@media all and (min-width: 992px) and (max-width: 1280px) and (orientation: landscape) {
+  .productcard {
+    width: 250px;
+    height: 350px;
+  }
+  .productcard .card-img-top {
+    max-width: 100%;
+    height: 290px;
+  }
+  .productdetailsimgdiv{
+    width: 400px;
+    height: 500px;
+    }
+  .productdetailsimg {
+    max-width: 400px;
+    height: 500px;
+  }
+  .detailsdiv{
+    margin-left: 50px;
+  }
+  .productdetailscarousel{
+    width: 400px;
+  }
+  
+  
+}
+@media all and (min-width: 1281px) and (max-width: 1600px) and (orientation: landscape) {
+  .productcard {
+    width: 300px;
+    height: 350px;
+  }
+  .productcard .card-img-top {
+    max-width: 100%;
+    height: 290px;
+  }
+  .productdetailsimgdiv{
+    width: 410px;
+    height: 500px;
+    
+    }
+  .productdetailsimg {
+    max-width: 410px;
+    height: 500px;
+  }
+  .productdetailscarousel{
+    width: 410px;
+  }
+ 
+}
