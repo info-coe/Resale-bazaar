@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import { useCart, useData } from "./CartContext";
 import axios from "axios";
 import Wishlistemptyimg from '../images/wishlistemptyimg.png'
+// import RBLogo from '../images/RB-logo.jpg'
+import RBLogo from '../images/RB-logo2.png'
+
 
 const MyNavbar = () => {
   const [products, setProducts] = useState([]);
@@ -157,10 +160,12 @@ const MyNavbar = () => {
         <div className="ms-lg-5 ms-1 bargainlogodiv">
           <Link to="/">
             <img
-              src="https://bargain-boutique.com/wp-content/uploads/2023/03/Bargain-Boutique-Logo-1.png"
+              // src="https://bargain-boutique.com/wp-content/uploads/2023/03/Bargain-Boutique-Logo-1.png"
+              src={RBLogo}
               alt="logo"
               height="50px"
               width="120px"
+              // style={{objectFit:"contain"}}
             />
           </Link>
         </div>
