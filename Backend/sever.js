@@ -253,7 +253,12 @@ app.post("/admin", (req, res) => {
       return res.json("Error");
     }
     if (data.length > 0) {
-      return res.json(data);
+      const accessToken = generateAccessToken({data})
+      // console.log(accessToken)
+      const refreshToken = jwt.sign({data}, process.env.REFRESH_TOKEN_SECRET)
+      refreshTokens.push(refreshToken)
+      // const token = jwt.sign({data}, secretKey, { expiresIn: '1h' });
+      return res.json({accessToken, data});
     } else {
       return res.json("Fail");
     }

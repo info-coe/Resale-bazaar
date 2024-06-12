@@ -39,10 +39,11 @@ const Login = () => {
     axios
       .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${url}`, values)
       .then((res) => {
+        // console.log(res)
         if (res.data !== "Fail" && res.data !== "Error") {
           sessionStorage.setItem("accessToken", res.data.accessToken)
           setAuthToken(res.data.accessToken);
-          const data = res.data[0];
+          const data = res.data.data[0];
           setUserData(data);
           var token;
           if (url === 'user') {
