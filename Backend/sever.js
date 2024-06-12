@@ -108,7 +108,7 @@ app.delete('/logout', (req, res) => {
 })
 
 function generateAccessToken({user}) {
-  return jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+  return jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' })
 }
 
 function authenticateToken(req, res, next) {
@@ -412,7 +412,7 @@ app.post("/adminrejection", (req, res) => {
 
 
 // all products
-app.get("/allproducts", (req, res) => {
+app.get("/allproducts", authenticateToken, (req, res) => {
   const sql = retrievingAllProductsQuery;
   const accepted = "true";
 
