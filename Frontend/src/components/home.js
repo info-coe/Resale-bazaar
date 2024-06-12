@@ -35,7 +35,11 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts`)
+    .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts`,{
+      headers:{
+        Authorization : `Bearer ${sessionStorage.getItem("accessToken")}` 
+      }
+    })
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           // console.log(res.data);
@@ -55,9 +59,9 @@ const Home = () => {
       <main>
       <CarouselComponent />
 
-      <h1 className="p-2" style={{fontSize:'28px'}}>Product Categories</h1>
+      <h1 className="container" style={{fontSize:'28px'}}>Product Categories</h1>
       <Curosel />
-      <h2 className="p-2" style={{fontSize:'28px'}}>Featured Products</h2>
+      <h2 className="container" style={{fontSize:'28px'}}>Featured Products</h2>
       <div className=" mt-4">
         {(allProducts.length>0) ? (
                 <Carousel 

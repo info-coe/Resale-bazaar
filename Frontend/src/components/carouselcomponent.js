@@ -20,7 +20,7 @@ function CarouselComponent() {
   const isMobile = windowWidth <= 767;
   const isTablet = windowWidth >= 768 && windowWidth <= 1024;
   return (
-    <div>
+    <div className="container mt-4 mb-4">
     <Carousel>
     <Carousel.Item>
       <div className='image-container'>

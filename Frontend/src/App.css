@@ -28,11 +28,11 @@ body {
   background-color: rgb(233, 236, 229);
   min-height: 90vh;
 }
-
-.gradientnav .navbar{
-  /* background: #304352;   */
-  background: linear-gradient(to right, #c5e0f1, #c0def4);  
-}
+ .gradientnav .navbar{
+  
+  border-bottom: 2px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} 
 .custom-item{
   margin-left: auto;
   margin-right: auto;

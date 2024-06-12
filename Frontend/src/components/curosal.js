@@ -17,7 +17,7 @@ const breakPoints = [
 function Curosel() {
   return (
     <>
-      <div className=" mt-4 mb-4 ">
+      <div className="container mt-4 mb-4 ">
         <Carousel breakPoints={breakPoints} className="custom-carousel ">
           <Link to="/kids" className="text-decoration-none d-flex justify-content-center">
             <div className="custom-item">
