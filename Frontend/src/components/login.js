@@ -42,7 +42,7 @@ const Login = () => {
         if (res.data !== "Fail" && res.data !== "Error") {
           sessionStorage.setItem("accessToken", res.data.accessToken)
           setAuthToken(res.data.accessToken);
-          const data = res.data.data[0];
+          const data = res.data[0];
           setUserData(data);
           var token;
           if (url === 'user') {

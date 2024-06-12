@@ -1,5 +1,8 @@
 const createDatabaseQuery = `CREATE DATABASE IF NOT EXISTS ${process.env.REACT_APP_DB_DATABASE}`;
 const useDatabaseQuery = `USE ${process.env.REACT_APP_DB_DATABASE}`;
+var CryptoJS = require("crypto-js");
+const adminPassword = CryptoJS.MD5("admin").toString();
+// console.log(adminPassword)
 
 const createAdminTableQuery = `
 CREATE TABLE IF NOT EXISTS admin (
@@ -18,7 +21,7 @@ const insertAdminTableQuery = `
 INSERT IGNORE INTO admin 
   (firstname, email, password) 
 VALUES 
-  ("admin", "admin@admin", "admin");
+  ("admin", "admin@admin", "${adminPassword}");
 `
 
 const createRegisterTableQuery = `
