@@ -9,7 +9,7 @@ const Product = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const { addToCart, addToWishlist, cartItems,wishItems } = useCart();
+  const { addToCart, addToWishlist, cartItems, wishItems } = useCart();
   props.product.userid = sessionStorage.getItem("user-token");
   // console.log(cartItems.length);
   useEffect(() => {
@@ -39,67 +39,48 @@ const Product = (props) => {
   //   }
   // };
   const handleAddToWishlist = () => {
-    const isProductInWishlist = wishItems.some(item => item.product_id === props.product.id);
+    const isProductInWishlist = wishItems.some(
+      (item) => item.product_id === props.product.id
+    );
     if (isProductInWishlist) {
-        alert("Product already exists in the wishlist");
-        return; // Exit the function early
-    }
-
-    else if (isLoggedIn) {
-        addToWishlist(props.product);
+      alert("Product already exists in the wishlist");
+      return; // Exit the function early
+    } else if (isLoggedIn) {
+      addToWishlist(props.product);
     } else {
-        navigate("/login");
+      navigate("/login");
     }
-};
+  };
 
-  // const handleAddToCart = () => {
-  //   if (cartItems.length > 0) {
-  //     var unique_item = true;
-  //     cartItems.map((item) => {
-  //       if (item.id === props.product.id) {
-  //         alert("Product already exists in the cart");
-  //         unique_item = false;
-  //         //eslint-disable-next-line array-callback-return
-  //         return;
-  //       }
-  //       return null;
-  //     });
-  //     unique_item && addToCart(props.product);
-  //   } else {
-  //     addToCart(props.product);
-  //   }
-  // };
   const handleAddToCart = () => {
-    const isProductInCart = cartItems.some(item => item.product_id === props.product.id);
+    const isProductInCart = cartItems.some(
+      (item) => item.product_id === props.product.id
+    );
     if (isProductInCart) {
       alert("Product already exists in the cart");
-    } 
-    else if (isLoggedIn) {
-      addToCart(props.product,"main");
-  } else {
+    } else if (isLoggedIn) {
+      addToCart(props.product, "main");
+    } else {
       navigate("/login");
-  }
-
-};
-  const datta = JSON.parse(props.product.image)
-  const firstImage = datta[0]
+    }
+  };
+  const datta = JSON.parse(props.product.image);
+  const firstImage = datta[0];
 
   return (
     <div className="d-flex justify-content-center">
       <div className="card productcard">
-
         <Link
           to={"/product/" + props.product.id}
           state={{ productdetails: props.product, admin: props.admin }}
         >
-          
-         <div className="text-center productimgback">
-         <img
-            src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`} 
-            className="card-img-top"
-            alt="product"
-          />
-         </div>
+          <div className="text-center productimgback">
+            <img
+              src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
+              className="card-img-top"
+              alt="product"
+            />
+          </div>
         </Link>
         <div className="card-body">
           <h6 className="card-text">{props.product.name}</h6>
@@ -108,25 +89,28 @@ const Product = (props) => {
           </p>
         </div>
         <div className="card-footer d-flex flex-wrap justify-content-center">
-          {props.product.quantity>0 ? (
+          {props.product.quantity > 0 ? (
             <>
-            <button
-            className="btn btn-secondary ms-1 me-1"
-            onClick={handleAddToCart}
-          >
-            Add to Cart
-          </button>
-          <button
-            className="btn btn-secondary ms-1 me-1"
-            onClick={handleAddToWishlist}
-          >
-            <i className="bi bi-heart-fill" />
-          </button>
-          </>
-          ):(
-            <><h6 className="text-danger" style={{fontWeight:'800'}}>Out of Stock</h6></>
+              <button
+                className="btn btn-secondary ms-1 me-1"
+                onClick={handleAddToCart}
+              >
+                Add to Cart
+              </button>
+              <button
+                className="btn btn-secondary ms-1 me-1"
+                onClick={handleAddToWishlist}
+              >
+                <i className="bi bi-heart-fill" />
+              </button>
+            </>
+          ) : (
+            <>
+              <h6 className="text-danger" style={{ fontWeight: "800" }}>
+                Out of Stock
+              </h6>
+            </>
           )}
-          
         </div>
       </div>
     </div>
