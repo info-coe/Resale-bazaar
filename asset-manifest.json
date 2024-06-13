@@ -1,9 +1,9 @@
 {
   "files": {
-    "main.css": "/Resale-bazaar/static/css/main.a4d0986e.css",
-    "main.js": "/Resale-bazaar/static/js/main.524becbe.js",
+    "main.css": "/Resale-bazaar/static/css/main.779b69cf.css",
+    "main.js": "/Resale-bazaar/static/js/main.3e21aca3.js",
     "static/media/fontawesome-webfont.svg?v=4.7.0": "/Resale-bazaar/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
-    "static/media/RB-logo4.png": "/Resale-bazaar/static/media/RB-logo4.c6fae829335b6d878805.png",
+    "static/media/RB-logo5.png": "/Resale-bazaar/static/media/RB-logo5.b82e1d8f1be252dd8307.png",
     "static/media/necklace.webp": "/Resale-bazaar/static/media/necklace.ac8ddad22f8564bbde61.webp",
     "static/media/jewellery-banner.jpg": "/Resale-bazaar/static/media/jewellery-banner.c30cdaf2472e3f6cf9a6.jpg",
     "static/media/women-banner.jpg": "/Resale-bazaar/static/media/women-banner.74f2c0ed9b9f77d8eb2c.jpg",
@@ -19,9 +19,11 @@
     "static/media/fiction.webp": "/Resale-bazaar/static/media/fiction.69e69f0a80782561b9da.webp",
     "static/media/highendcouture.webp": "/Resale-bazaar/static/media/highendcouture.2d125a4ac79748982086.webp",
     "static/media/jewelry.jpg": "/Resale-bazaar/static/media/jewelry.65baa32bbf6fb389b41e.jpg",
+    "static/media/RB-slide2.JPEG": "/Resale-bazaar/static/media/RB-slide2.15be8bc028f00d5c7654.JPEG",
     "static/media/womencarousel.jpg": "/Resale-bazaar/static/media/womencarousel.48a0f360a76adb6e7b04.jpg",
     "static/media/fontawesome-webfont.woff?v=4.7.0": "/Resale-bazaar/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
     "static/media/books.jpg": "/Resale-bazaar/static/media/books.0c13d03b861b0641dbce.jpg",
+    "static/media/RB-slide3.JPEG": "/Resale-bazaar/static/media/RB-slide3.11ea96abab42f8267e09.JPEG",
     "static/media/fontawesome-webfont.woff2?v=4.7.0": "/Resale-bazaar/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
     "static/media/drama.webp": "/Resale-bazaar/static/media/drama.eaa52f10b657ab04f6cf.webp",
     "static/media/ring.jpg": "/Resale-bazaar/static/media/ring.52472dcb03568c6afb91.jpg",
@@ -41,11 +43,11 @@
     "static/media/revicons.ttf": "/Resale-bazaar/static/media/revicons.57fd05d4ae650374c8de.ttf",
     "static/media/revicons.woff": "/Resale-bazaar/static/media/revicons.e8746a624ed098489406.woff",
     "index.html": "/Resale-bazaar/index.html",
-    "main.a4d0986e.css.map": "/Resale-bazaar/static/css/main.a4d0986e.css.map",
-    "main.524becbe.js.map": "/Resale-bazaar/static/js/main.524becbe.js.map"
+    "main.779b69cf.css.map": "/Resale-bazaar/static/css/main.779b69cf.css.map",
+    "main.3e21aca3.js.map": "/Resale-bazaar/static/js/main.3e21aca3.js.map"
   },
   "entrypoints": [
-    "static/css/main.a4d0986e.css",
-    "static/js/main.524becbe.js"
+    "static/css/main.779b69cf.css",
+    "static/js/main.3e21aca3.js"
   ]
 }
