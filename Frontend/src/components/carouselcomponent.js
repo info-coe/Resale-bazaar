@@ -2,8 +2,8 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Carousel from "react-bootstrap/Carousel";
 
-import womendesktop from "../images/women-banner.jpg"
-import kidsdesktop from "../images/kids-banner.jpg";
+import womendesktop from "../images/RB-slide3.JPEG"
+import kidsdesktop from "../images/RB-slide2.JPEG"
 import womenmobile from "../images/women-banner.jpg";
 import womentablet from "../images/women-banner.jpg";
 import kidsmobile from "../images/kids-banner.jpg";
@@ -20,7 +20,7 @@ function CarouselComponent() {
   const isMobile = windowWidth <= 767;
   const isTablet = windowWidth >= 768 && windowWidth <= 1024;
   return (
-    <div className="container mt-4 mb-4">
+    <div className=" ms-5 me-5 mb-4 mt-3">
     <Carousel>
     <Carousel.Item>
       <div className='image-container'>

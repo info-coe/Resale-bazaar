@@ -10,11 +10,10 @@ const Footer = () => {
     <>
       <div
         className="p-1"
-        style={{ background: "linear-gradient(to right, #141e30, #243b55)" }}
       ></div>
-      <footer className="footer1">
-        <div className="d-md-flex flex-wrap justify-content-around  p-3">
-          <div className="col-md-3">
+      <footer className="footer1" style={{backgroundColor:"#E5E7E9"}}>
+        <div className="d-md-flex flex-wrap justify-content-around p-3">
+          <div className="col-md-2">
             <h5 className="mb-4 mt-4">My Account</h5>
             <div className="d-md-flex">
               <div className="me-3">
@@ -48,6 +47,27 @@ const Footer = () => {
             </div>
           </div>
           <div className="col-md-3">
+            <h5 className="mb-4 mt-4 ">Sell</h5>
+            <div className="d-md-flex">
+              <div className="me-3">
+                <span>
+                  <Link
+                    to={
+                      sessionStorage.getItem("token") !== null
+                        ? "/selleraccount"
+                        : "/login"
+                    }
+                    className="text-decoration-none"
+                  >
+                    <i className="bi bi-chevron-double-right"></i> Apply For
+                    Seller Account
+                  </Link>
+                </span>{" "}
+               
+              </div>
+            </div>
+          </div>
+          <div className="col-md-2">
             <h5 className="mb-4 mt-4 ">Useful Links</h5>
             <div className="d-md-flex">
               <div className="me-3">
@@ -69,20 +89,7 @@ const Footer = () => {
                   </Link>
                 </span>{" "}
                 <hr style={{ margin: "5px 0" }} />
-                <span>
-                  <Link
-                    to={
-                      sessionStorage.getItem("token") !== null
-                        ? "/selleraccount"
-                        : "/login"
-                    }
-                    className="text-decoration-none"
-                  >
-                    <i className="bi bi-chevron-double-right"></i> Apply For
-                    Seller Account
-                  </Link>
-                </span>{" "}
-                <hr style={{ margin: "5px 0" }} />
+               
               </div>
             </div>
           </div>
@@ -118,14 +125,14 @@ const Footer = () => {
           </div>
         </div>
         <div
-          className="p-1 ps-2 text-white"
-          style={{ background: "linear-gradient(to right, #141e30, #243b55)" }}
+          className="p-1 ps-2 fw-bold fst-italic"
+          style={{ background: "#BFC9CA" }}
         >
           <p>
             Powered by{" "}
             <Link
               to="https://resalebazaar.com/"
-              className="text-decoration-none text-white"
+              className="text-decoration-none text-dark"
             >
               resalebazaar.com
             </Link>

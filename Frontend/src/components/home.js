@@ -37,7 +37,7 @@ const Home = () => {
     axios
     .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts`,{
       headers:{
-        Authorization : `Bearer ${sessionStorage.getItem("accessToken")}` 
+        Authorization : `Bearer ${sessionStorage.getItem("productAccessToken")}` 
       }
     })
       .then((res) => {

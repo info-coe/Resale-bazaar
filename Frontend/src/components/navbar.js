@@ -4,14 +4,15 @@ import { Link } from "react-router-dom";
 import { useCart, useData } from "./CartContext";
 import axios from "axios";
 import Wishlistemptyimg from '../images/wishlistemptyimg.png'
-// import RBLogo from '../images/RB-logo.jpg'
-import RBLogo from '../images/RB-logo4.png'
+import RBLogo from '../images/RB-logo5.png'
 import SearchBar from "./Searchbar";
+import SideOffcanvas from "./SideOffcanvas";
 
 
 const MyNavbar = () => {
   const [products, setProducts] = useState([]);
   const { user } = useData();
+  const [isRotated, setIsRotated] = useState(false);
   console.log(user)
   const {
     cartItems,
@@ -143,199 +144,55 @@ const MyNavbar = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+  const handleHover = () => {
+    setIsRotated(!isRotated);
+};
 
 
   return (
     <>
       <div className="gradientnav sticky-top">
-        <nav className="navbar navbar-expand-md navbar-light bg-white  d-md-flex justify-content-between">
+        <nav className="navbar navbar-expand-md navbar-light bg-white  d-md-flex  justify-content-evenly">
           <div className="d-flex">
             {/* <button
           className="navbar-toggler ms-2 custom-navbar-toggler"
-         
+          // type="button"
           data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasWithBothOptions"
-          aria-controls="offcanvasWithBothOptions"
+          data-bs-target="#offcanvasRight"
+          aria-controls="offcanvasRight"
         >
           <span className="navbar-toggler-icon"></span>
         </button> */}
-            <div className="ms-lg-5 ms-1 bargainlogodiv">
+         <span className='toggle ms-1 me-1' type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i className="bi bi-justify"></i></span>
+            <div className="ms-lg-5 ms-md-3 ms-2 bargainlogodiv">
               <Link to="/">
                 <img
-                  // src="https://bargain-boutique.com/wp-content/uploads/2023/03/Bargain-Boutique-Logo-1.png"
                   src={RBLogo}
                   alt="logo"
-                  // height="50px"
-                  width="130px"
+                  // width="112px"
+                  className="RBlogo"
                   style={{ objectFit: "contain" }}
                 />
               </Link>
             </div>
-          </div>
-
-
-          {/* <div className="offcanvas offcanvas-start w-75" data-bs-scroll="true" tabIndex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-          <div className="offcanvas-header">
-            <h5 className="offcanvas-title" id="offcanvasWithBothOptionsLabel">
-              <Link to="/">
-                <img
-                  src="https://bargain-boutique.com/wp-content/uploads/2023/03/Bargain-Boutique-Logo-1.png"
-                  alt="logo"
-                  height="50px"
-                  width="120px"
-                />
-              </Link>
-            </h5>
-            <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div className="offcanvas-body d-md-flex justify-content-around">
-           
-            <div
-              className=" d-md-flex ps-2 pe-2 mt-2"
-            
-            >
-              <ul className="list-unstyled d-md-flex  gap-md-3 position-relative navbarul">
-                <li
-                  className="nav-item dropdown"
-                  onMouseEnter={() => handleDropdownHover(womenDropdownRef)}
-                  onMouseLeave={() => handleDropdownLeave(womenDropdownRef)}
-                >
-                  <Link
-                    className="nav-link"
-                    to="/women"
-                    id="navbarDropdownWomen"
-                    role="button"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    WOMENS
-                  </Link>
-                  <div
-                    className="dropdown-menu hovermenus"
-                    aria-labelledby="navbarDropdownWomen"
-                    ref={womenDropdownRef}
-                  >
-                    <Link className="dropdown-item" to="/highendcouture">
-                      High end Couture
-                    </Link>
-                    <Link className="dropdown-item" to="/sarees">
-                      Sarees
-                    </Link>
-                    <Link className="dropdown-item" to="/lehenga">
-                      Lehenga
-                    </Link>
-                    <Link className="dropdown-item" to="/dresses">
-                      Dresses
-                    </Link>
-                    <Link className="dropdown-item" to="/twinningoutfits">
-                      Twinning Outfits
-                    </Link>
-                  </div>
-                </li>
-                <li
-                  className="nav-item dropdown"
-                  onMouseEnter={() => handleDropdownHover(kidsDropdownRef)}
-                  onMouseLeave={() => handleDropdownLeave(kidsDropdownRef)}
-                >
-                  <Link
-                    className="nav-link"
-                    to="/kids"
-                    id="navbarDropdownKids"
-                    role="button"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    KIDS
-                  </Link>
-                  <div
-                    className="dropdown-menu hovermenus"
-                    aria-labelledby="navbarDropdownKids"
-                    ref={kidsDropdownRef}
-                  >
-                    <Link className="dropdown-item" to="/girl">
-                      Girl
-                    </Link>
-                    <Link className="dropdown-item" to="/boy">
-                      Boy
-                    </Link>
-                  </div>
-                </li>
-                <li
-                  className="nav-item dropdown"
-                  onMouseEnter={() => handleDropdownHover(jewelryDropdownRef)}
-                  onMouseLeave={() => handleDropdownLeave(jewelryDropdownRef)}
-                >
-                  <Link
-                    className="nav-link"
-                    to="/jewellery"
-                    id="navbarDropdownKids"
-                    role="button"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    JEWELLERY
-                  </Link>
-                  <div
-                    className="dropdown-menu hovermenus"
-                    aria-labelledby="navbarDropdownKids"
-                    ref={jewelryDropdownRef}
-                  >
-                    <Link className="dropdown-item" to="/necklaces">
-                    Necklaces
-                    </Link>
-                    <Link className="dropdown-item" to="/bangles">
-                    Bangles
-                      </Link>
-                      <Link className="dropdown-item" to="/earrings">
-                      Earrings
-                      </Link>
-                      <Link className="dropdown-item" to="/rings">
-                       Rings
-                      </Link>
-                  </div>
-                </li>
-                <li
-                  className="nav-item dropdown"
-                  onMouseEnter={() => handleDropdownHover(booksDropdownRef)}
-                  onMouseLeave={() => handleDropdownLeave(booksDropdownRef)}
-                >
-                  <Link
-                    className="nav-link"
-                    to="/books"
-                    id="navbarDropdownKids"
-                    role="button"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    BOOKS
-                  </Link>
-                  <div
-                    className="dropdown-menu hovermenus"
-                    aria-labelledby="navbarDropdownKids"
-                    ref={booksDropdownRef}
-                  >
-                      <Link className="dropdown-item" to="/fiction">
-                    Fiction                    
-                    </Link>
-                    <Link className="dropdown-item" to="/drama">
-                     Drama
-                    </Link>
-                    <Link className="dropdown-item" to="/fantasy">
-                     Fantasy
-                    </Link>
-                    <Link className="dropdown-item" to="/horror">
-                      Horror
-                    </Link>
-                  </div>
-                </li>
-              </ul>
-            </div>
-           
-          </div>
-        </div> */}
+          
+         {/* <div className="searchIcon" style={{marginTop:"10px", marginLeft:"14px"}}>
+         <i className="bi bi-search fs-4" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"></i>
+         </div> */}
+      
+          
+          {/* <div className=" ms-md-3 Mobilesearchdiv" style={{marginTop:"10px"}}>
           <SearchBar />
-          <div className="d-flex me-1 me-lg-3 authdiv">
-            <div className="d-md-flex ps-2 pe-2">
+          </div> */}
+         
+          </div>
+          <div className=" ms-md-3 Mobilesearchdiv" style={{marginTop:"10px"}}>
+          <SearchBar />
+          </div>
+       
+          <div className="d-flex me-lg-2 pe-lg-2 authdiv">
+         
+            <div className="d-md-flex ">
 
               <div className="">
                 {isLoggedIn && user.email === "admin@admin" ? (
@@ -343,12 +200,15 @@ const MyNavbar = () => {
                 ) : (
                   <>
                     <div className="d-flex">
-                      <div className="mt-1" style={{ width: "110px" }}>
+                    <div className="searchIcon" style={{marginTop:"10px", marginRight:"14px"}}>
+                    <i className="bi bi-search fs-4" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"></i>
+                    </div>
+                      <div className="sellnowdiv" style={{ marginTop:"12px" }}>
                         <Link to={
                           sessionStorage.getItem("token") !== null
                             ? "/selleraccount"
                             : "/login"
-                        } className="text-decoration-none  btn btn-dark"
+                        } className="text-decoration-none text-dark me-lg-3"
                           style={{ fontWeight: '500' }}
                         >
                           SELL NOW
@@ -385,14 +245,7 @@ const MyNavbar = () => {
                           <i className="bi bi-heart-fill fs-4 position-relative">
                             {" "}
 
-                            {/* {wishItems.length > 0 && (
-                              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                                {wishItems.length}
-                                <span className="visually-hidden">
-                                  unread messages
-                                </span>
-                              </span>
-                            )} */}
+                           
                           </i>
                         </button>
 
@@ -483,14 +336,14 @@ const MyNavbar = () => {
                 <>
                   <div className="d-flex gap-2">
 
-                    <div className="mt-1" style={{ width: "80px" }}>
+                    <div className="mt-1 me-lg-2">
                       <Link to="/register" className="text-decoration-none text-dark"
                         style={{ fontWeight: '500' }}
                       >
                         SIGN UP
                       </Link>
                     </div>
-                    <div className="mt-1">
+                    <div className="mt-1 logindiv">
                       <Link to="/login" className="text-decoration-none text-dark"
                         style={{ fontWeight: '500' }}
                       >
@@ -503,7 +356,47 @@ const MyNavbar = () => {
             </div>
           </div>
         </nav>
+{/*Search Offcanvas start */}
+        <div className="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+      <div className="offcanvas-header">
+        <h5 id="offcanvasTopLabel">Search</h5>
+        <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div className="offcanvas-body pb-5">
+      <SearchBar />
+        
+      </div>
+    </div>
+{/*Search Offcanvas end */}    
 
+ {/* Offcanvas start */}
+ <div className="offcanvas slide offcanvas-end" tabIndex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                <div className="offcanvas-header d-flex justify-content-between">
+                <div className="">
+              <Link to="/">
+                <img
+                  src={RBLogo}
+                  alt="logo"
+                  width="100px"
+                  style={{ objectFit: "contain" }}
+                />
+              </Link>
+            </div>
+                    <i
+                        className={`bi bi-x-circle-fill fs-3 btnClose ${isRotated ? 'rotate' : ''}`}
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                        style={{ cursor: "pointer" }}
+                        onMouseEnter={handleHover}
+                        onMouseLeave={handleHover}
+                    ></i>
+                </div>
+                <hr/>
+                <div className="offcanvas-body">
+                    <SideOffcanvas/>
+                </div>
+            </div>
+            {/* Offcanvas end */}
 
 
       </div>

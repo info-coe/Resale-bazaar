@@ -17,13 +17,13 @@ const breakPoints = [
 function Curosel() {
   return (
     <>
-      <div className="container mt-4 mb-4 ">
-        <Carousel breakPoints={breakPoints} className="custom-carousel ">
-          <Link to="/kids" className="text-decoration-none d-flex justify-content-center">
-            <div className="custom-item">
-              <div className="m-3 position-relative text-center carouselslide">
+      <div className=" text-center d-flex flex-wrap justify-content-evenly mt-4 mb-4">
+        {/* <Carousel  className="custom-carousel "> */}
+          <Link to="/kids" className="text-decoration-none ">
+            <div className="custom-item m-3">
+              <div className="zoomAnimation position-relative text-center carouselslide">
                 <img src={kidsurl} alt="Kids pic" />
-                <h4
+                <h5
                   className="position-absolute fw-bold text-white"
                   style={{
                     bottom: "10%",
@@ -36,17 +36,17 @@ function Curosel() {
                   }}
                 >
                   KIDS
-                </h4>
+                </h5>
               </div>
             </div>
           </Link>
-          <Link to="/women" className="text-decoration-none d-flex justify-content-center">
-            <div className="custom-item">
-              <div className="m-3 position-relative text-center carouselslide">
+          <Link to="/women" className="text-decoration-none ">
+            <div className="custom-item m-3">
+              <div className="zoomAnimation position-relative text-center carouselslide">
                 <img 
                 src={womenurl} 
                 alt="Women pic" />
-                <h4
+                <h5
                   className="position-absolute fw-bold text-white"
                   style={{
                     bottom: "10%",
@@ -59,16 +59,16 @@ function Curosel() {
                   }}
                 >
                   WOMEN
-                </h4>
+                </h5>
               </div>
             </div>
           </Link>
-          <Link to="/jewellery" className="text-decoration-none d-flex justify-content-center">
-            <div className="custom-item">
-              <div className="m-3 position-relative text-center carouselslide">
+          <Link to="/jewellery" className="text-decoration-none ">
+            <div className="custom-item m-3">
+              <div className="zoomAnimation position-relative text-center carouselslide">
                 <img src={jeweleryurl} alt="Jewellery pic" />
 
-                <h4
+                <h5
                   className="position-absolute fw-bold text-white"
                   style={{
                     bottom: "10%",
@@ -80,17 +80,17 @@ function Curosel() {
                   }}
                 >
                   JEWELLERY
-                </h4>
+                </h5>
               </div>
             </div>
           </Link>
-          <Link to="/books" className="text-decoration-none d-flex justify-content-center">
-            <div className="custom-item">
-              <div className="m-3 position-relative text-center carouselslide">
+          <Link to="/books" className="text-decoration-none ">
+            <div className="custom-item m-3">
+              <div className="zoomAnimation position-relative text-center carouselslide">
                 <img 
                 src={booksurl} 
                 alt="Books pic" />
-                <h4
+                <h5
                   className="position-absolute fw-bold text-white"
                   style={{
                     bottom: "10%",
@@ -102,11 +102,11 @@ function Curosel() {
                   }}
                 >
                   BOOKS
-                </h4>
+                </h5>
               </div>
             </div>
           </Link>
-        </Carousel>
+        {/* </Carousel> */}
       </div>
     </>
   );

@@ -5,6 +5,29 @@
 body {
   overflow-y: scroll;
 }
+.RBlogo{
+  width: 112px;
+}
+.toggle{
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
+  font-size: 28px;
+  padding: 5px;
+  background-color: #f5f0f0;
+  /* color: #FE0000; */
+  cursor: pointer;
+  text-align: center;
+  
+}
+#offcanvasRight{
+  width: 290px;
+  background: #f9f7f7;
+  /* color: white; */
+}
+.offcanvas.slide {
+  transition-duration: 0.4s; 
+}
 
 .fullscreen{
   min-height: 100vh;
@@ -42,26 +65,26 @@ body {
   object-fit: cover;
   border-radius: 10px;
 }
-.custom-item .m-3 {
+.custom-item .zoomAnimation {
   transition: transform 0.2s;
 }
-.custom-item .m-3:hover {
+.custom-item .zoomAnimation:hover {
   transform: scale(1.1);
 }
 .homebanner {
   width: 100%;
 }
 
-.custom-item {
+/* .custom-item {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 400px;
+  height: 300px;
   width: 100%;
   padding: 10px;
   margin: 10px 15px;
   font-size: 4em;
-}
+} */
 
 .carousel-indicators [data-bs-target] {
   border-radius: 100%;
@@ -78,12 +101,12 @@ body {
   width: 100%;
 }
 .carouselslide {
-  height: 450px;
-  width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-  margin: 0;
-  padding: 0;
+  height: 250px;
+  width: 250px;
+  /* margin-left: auto;
+  margin-right: auto; */
+  /* margin: 0;
+  padding: 0; */
 }
 .carouselslide img {
   height: 100%;
@@ -215,15 +238,15 @@ background-color: rgb(248, 243, 243);
   padding: 0.5rem 0.5rem; 
   font-size: 0.975rem; 
 }
-.authdiv{
-  width: 130px;
+/* .authdiv{
   display: flex;
   justify-content: flex-end;
-}
+} */
 
 .custom-carousel .rec.rec-arrow {
   background-color: gray !important; 
   color: white; 
+  display: none;
 }
 
 .custom-carousel .rec.rec-arrow:active {
@@ -234,7 +257,17 @@ background-color: rgb(248, 243, 243);
   background-color: rgb(179, 175, 175) !important; 
   color: white; 
 }
-
+/* .sellnowdiv{
+  width:100px;
+} */
+.Mobilesearchdiv{
+  display: block;
+  /* margin-left: 250px; */
+  /* margin-right: 170px; */
+}
+.searchIcon{
+  display: none;
+}
 
 @media all and (max-width: 767px) and (orientation: portrait) {
   .homebanner {
@@ -302,7 +335,34 @@ background-color: rgb(248, 243, 243);
   .rec.rec-arrow:disabled {
     visibility: hidden;
 }
- 
+.sellnowdiv,.logindiv{
+  display: none;
+}
+.RBlogo{
+  width: 85px;
+  object-fit: cover;
+}
+.Mobilesearchdiv{
+  display: none;
+}
+.searchIcon{
+  display: block;
+}
+}
+@media all and (max-width: 767px) {
+  .sellnowdiv,.logindiv{
+    display: none;
+  }
+  .RBlogo{
+    width: 85px;
+    object-fit: cover;
+  }
+  .Mobilesearchdiv{
+    display: none;
+  }
+  .searchIcon{
+    display: block;
+  }
 }
 
 @media all and (min-width: 768px) and (max-width: 991px) {
@@ -335,6 +395,13 @@ background-color: rgb(248, 243, 243);
   .productdetailscarousel{
     width: 500px;
   }
+  .toggle{
+    display: none;
+  }
+  .sellnowdiv{
+   padding-left: 20px;
+   width: 100px;
+  }
   
 }
 
@@ -362,7 +429,9 @@ background-color: rgb(248, 243, 243);
   .detailsdiv{
     margin-left: 50px;
   }
- 
+  .toggle{
+    display: none;
+  }
  
 }
 @media all and (min-width: 992px) and (max-width: 1280px) and (orientation: landscape) {
@@ -388,7 +457,9 @@ background-color: rgb(248, 243, 243);
   .productdetailscarousel{
     width: 400px;
   }
-  
+  .toggle{
+    display: none;
+  }
   
 }
 @media all and (min-width: 1281px) and (max-width: 1600px) and (orientation: landscape) {
@@ -411,6 +482,9 @@ background-color: rgb(248, 243, 243);
   }
   .productdetailscarousel{
     width: 410px;
+  }
+  .toggle{
+    display: none;
   }
  
 }

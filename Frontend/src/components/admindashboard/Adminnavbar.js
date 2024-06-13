@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import RBLogo from '../../images/RB-logo5.png'
 // import {  useData } from "../CartContext";
 
 export default function Adminnavbar() {
@@ -13,17 +14,17 @@ export default function Adminnavbar() {
   return (
     <div>
       <nav className="navbar navbar-expand-md bg-dark sticky-top d-md-flex justify-content-between">
-        <div className="ms-3">
-          <Link to="/" className=''>
-            <img
-              src="https://bargain-boutique.com/wp-content/uploads/2023/03/Bargain-Boutique-Logo-1.png"
-              alt="logo"
-              height="45px"
-              width="120px"
-              className='bg-light p-1'
-            />
-          </Link>
-        </div>
+      <div className="ms-lg-5 ms-md-3 ms-2 bargainlogodiv bg-light">
+              <Link to="/">
+                <img
+                  src={RBLogo}
+                  alt="logo"
+                  // width="112px"
+                  className="RBlogo"
+                  style={{ objectFit: "contain" }}
+                />
+              </Link>
+            </div>
         <button
           className="navbar-toggler bg-light"
           type="button"
