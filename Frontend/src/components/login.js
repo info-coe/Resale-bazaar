@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MyNavbar from "./navbar";
 import Footer from "./footer";
@@ -8,6 +8,16 @@ import CryptoJS from "crypto-js";
 
 const Login = () => {
   sessionStorage.clear();
+  useEffect(()=>{
+    axios
+    .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/`)
+    .then(res=>{
+      // console.log(res)
+      sessionStorage.setItem("productAccessToken", res.data.accessToken);
+    }).catch((error) => {
+      console.log("Error fetching data:", error);
+    });
+  },[]);
   const { setUserData, setAuthToken } = useData();
   // eslint-disable-next-line no-unused-vars
   const [values, setValues] = useState({

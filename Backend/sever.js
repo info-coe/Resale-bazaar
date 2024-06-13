@@ -227,6 +227,15 @@ db.query(createDatabaseQuery, (err) => {
   });
 });
 
+app.post("/",(req,res)=>{
+      const accessToken = generateAccessToken({home:"home"})
+      // console.log(accessToken)
+      const refreshToken = jwt.sign({home:"home"}, process.env.REFRESH_TOKEN_SECRET)
+      refreshTokens.push(refreshToken)
+      // const token = jwt.sign({data}, secretKey, { expiresIn: '1h' });
+      return res.json({accessToken});
+});
+
 app.post("/user", (req, res) => {
   const sql = loginCheckQuery;
   db.query(sql, [req.body.username, req.body.password], (err, data) => {
@@ -264,6 +273,7 @@ app.post("/admin", (req, res) => {
     }
   });
 });
+
 app.get("/admin", authenticateToken, (req, res) => {
   const sql = retrievingAdminQuery;
   db.query(sql, (err, data) => {
@@ -335,7 +345,7 @@ app.post("/updateadmin", (req, res) => {
   });
 });
 
-app.get("/selleraccount", (req, res) => {
+app.get("/selleraccount",authenticateToken, (req, res) => {
   const sql = retrievingSellersQuery;
   db.query(sql, (err, data) => {
     if (err) {
@@ -363,7 +373,7 @@ app.post("/selleraccount", (req, res) => {
 });
 
 // admin to be accepted products
-app.get("/adminproducts", (req, res) => {
+app.get("/adminproducts",authenticateToken, (req, res) => {
   const sql = adminAcceptedProductsQuery;
   const accepted = ["false"];
 
@@ -428,7 +438,7 @@ app.get("/allproducts", authenticateToken, (req, res) => {
   });
 });
 
-app.get("/sellerproducts", (req, res) => {
+app.get("/sellerproducts",authenticateToken, (req, res) => {
   const sql = retrievingSellerProductsQuery;
 
 
@@ -444,7 +454,7 @@ app.get("/sellerproducts", (req, res) => {
   });
 });
 // women
-app.get("/women", (req, res) => {
+app.get("/women",authenticateToken, (req, res) => {
   const sql = retrievingWomenProductsQuery;
 
   const type = "women";
@@ -463,7 +473,7 @@ app.get("/women", (req, res) => {
 });
 
 //kids
-app.get("/kids", (req, res) => {
+app.get("/kids",authenticateToken, (req, res) => {
   const sql = retrievingKidsProductsQuery;
 
   const type = "kids";
@@ -481,7 +491,7 @@ app.get("/kids", (req, res) => {
   });
 });
 //jewellery
-app.get("/jewellery", (req, res) => {
+app.get("/jewellery",authenticateToken, (req, res) => {
   const sql = retrievingJewelleryProductsQuery;
 
   const type = "jewellery";
@@ -500,7 +510,7 @@ app.get("/jewellery", (req, res) => {
 });
 
 ///books
-app.get("/books", (req, res) => {
+app.get("/books",authenticateToken, (req, res) => {
   const sql = retrievingBooksProductsQuery;
 
   const type = "books";
@@ -635,7 +645,7 @@ app.post("/addcart", (req, res) => {
   });
 });
 
-app.get("/addcart", (req, res) => {
+app.get("/addcart",authenticateToken, (req, res) => {
   const sql = retrievingCartItemsQuery
   db.query(sql, (err, data) => {
     if (err) {
@@ -715,7 +725,7 @@ app.delete("/updateorders/:id", (req, res) => {
   });
 });
 
-app.get("/wishlist", (req, res) => {
+app.get("/wishlist",authenticateToken, (req, res) => {
   const sql = retrievingWishlistItemsQuery;
   db.query(sql, (err, data) => {
     if (err) {
@@ -778,7 +788,7 @@ app.delete("/wishlist/:id", (req, res) => {
   });
 });
 
-app.get("/contact", (req, res) => {
+app.get("/contact",authenticateToken, (req, res) => {
   const sql = retrieveContactusQuery;
 
   db.query(sql, (err, data) => {
@@ -823,7 +833,7 @@ app.post("/saveBillingAddress", (req, res) => {
   });
 });
 
-app.get("/saveBillingAddress", (req, res) => {
+app.get("/saveBillingAddress",authenticateToken, (req, res) => {
   const sql = getbillingAddress;
   
   
@@ -863,7 +873,7 @@ app.post("/saveShippingAddress", (req, res) => {
 
 
 
-app.get("/saveShippingAddress", (req, res) => {
+app.get("/saveShippingAddress",authenticateToken, (req, res) => {
   const sql = getshippingAddress;
 
   db.query(sql, (err, data) => {
@@ -906,7 +916,7 @@ app.post("/updatepayment", (req, res) => {
   });
 });
 
-app.get("/updatepayment", (req, res) => {
+app.get("/updatepayment",authenticateToken, (req, res) => {
   const sql = "Select * from orders";
 
   db.query(sql, (err, data) => {
@@ -1014,7 +1024,6 @@ app.get("/cancel", (req, res) => {
   res.redirect(`${process.env.REACT_APP_HOST}3000/Resale-bazaar/`);
 });
 
-// app.post("/");
 app.listen(process.env.REACT_APP_PORT, () => {
   console.log("listening");
 });
