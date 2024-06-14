@@ -19,8 +19,8 @@ export default function Addnewproduct() {
     measurements: "",
     material: "",
     condition: "",
-    source:"",
-    age:"",
+    source: "",
+    age: "",
     language: "",
     quantity: "",
     price: "",
@@ -31,15 +31,20 @@ export default function Addnewproduct() {
   const [customAttributes, setCustomAttributes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState({});
-  const [images, setImages] = useState({
-    cover: null,
-    front: null,
-    back: null,
-    side: null,
-    label: null,
-    detail: null,
-    flaw: null,
-  });
+ 
+  const placeholders = [
+    "Cover",
+    "Back",
+    "Detail",
+    "Forward",
+    "Label",
+    "Side",
+    "Flaw",
+  ];
+  const totalPlaceholders = placeholders.length;
+
+  const [images, setImages] = useState(Array(totalPlaceholders).fill(null));
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -58,28 +63,27 @@ export default function Addnewproduct() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if there are no errors
   };
-  const handleFile = (event) => {
-    const files = Array.from(event.target.files);
-    setImages((prevImages) => {
-      const newImages = { ...prevImages };
-      files.forEach((file) => {
-        const nextSection = sectionOrder.find((section) => !newImages[section]);
-        if (nextSection) {
-          newImages[nextSection] = file;
-        }
-      });
-      return newImages;
+  const handleFile = (e) => {
+    const files = Array.from(e.target.files);
+    const newImages = [...images];
+
+    files.forEach((file, idx) => {
+      const nextAvailableIndex = newImages.findIndex((image) => image === null);
+      if (nextAvailableIndex !== -1) {
+        newImages[nextAvailableIndex] = file;
+      }
     });
+
+    setImages(newImages);
   };
-  const sectionOrder = [
-    "cover",
-    "front",
-    "back",
-    "side",
-    "label",
-    "detail",
-    "flaw",
-  ];
+  const removeImage = (index) => {
+    const newImages = [...images];
+    newImages.splice(index, 1); // Remove the image at the specified index
+    newImages.push(null); // Add a null placeholder to maintain the length of the array
+
+    setImages(newImages);
+  };
+  
 
   const handleKeyup = (e) => {
     const newErrors = { ...errors };
@@ -206,11 +210,11 @@ export default function Addnewproduct() {
       updatedValues.worn = "NA";
     }
 
+    
     const formData = new FormData();
-
-    Object.entries(images).forEach(([key, value]) => {
-      if (value) {
-        formData.append(key, value);
+    images.forEach((image, index) => {
+      if (image) {
+        formData.append(`image-${index + 1}`, image);
       }
     });
     // Append other form data
@@ -273,28 +277,93 @@ export default function Addnewproduct() {
     Length: "Enter Length",
     // Add more placeholder values here for additional attributes
   };
-  const renderPhotoSection = (label, type) => {
-    return (
-      <div className="col-6 col-md-3 mb-3">
-        <div
-          className="border p-3 text-center text-muted d-flex align-items-center justify-content-center"
-          style={{ height: "150px" }}
-        >
-          {images[type] ? (
+  
+
+  const allDivs = placeholders.map((placeholder, index) => (
+    <div className="col-6 col-md-3 mb-3" key={index}>
+      <div className="card position-relative" style={{ height: "150px" }}>
+        {images[index] ? (
+          <>
             <img
-              src={URL.createObjectURL(images[type])}
-              alt={`${label} photo`}
-              className="img-fluid"
-              style={{ width: "100%", height: "100%" }}
+              src={URL.createObjectURL(images[index])}
+              alt={`upload-${index}`}
+              className="card-img-top"
+              style={{ height: "100%" }}
             />
-          ) : (
-            <span>{label}</span>
-          )}
+          <button
+  type="button"
+  className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+  aria-label="Close"
+  onClick={() => removeImage(index)}
+  style={{
+     
+    padding: '5px', 
+    fontSize: '10px' 
+  }}
+></button>
+
+
+            <div
+              className="placeholder-caption text-center"
+              style={{
+                position: "absolute",
+                bottom: "0",
+                width: "100%",
+                background: "rgba(255, 255, 255, 0.7)",
+                padding: "5px 0",
+                fontSize: "14px",
+                color: "#888",
+              }}
+            >
+              {placeholder}
+            </div>
+          </>
+        ) : (
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{
+              height: "100%",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+            }}
+          >
+            <div className="text-center">
+              <p>{placeholder}</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  ));
+
+  // Add the addPhoto div if there's space available
+  const nextAvailableIndex = images.findIndex((image) => image === null);
+  if (nextAvailableIndex !== -1) {
+    allDivs.splice(
+      nextAvailableIndex,
+      0,
+      <div className="col-6 col-md-3 mb-3" key="addPhoto" style={{cursor:'pointer' }}>
+      <label className="w-100 text-center" htmlFor="addPhotoInput" >
+        <div
+          className="card d-flex justify-content-center align-items-center"
+          style={{ height: "150px"}}
+        >
+          <i class="bi bi-camera" style={{cursor:'pointer', fontSize:'1rem'}}>
+            <p>Add a photo</p>
+            </i>
+          <input
+            id="addPhotoInput"
+            type="file"
+            accept="image/jpeg, image/png"
+            multiple
+            onChange={handleFile}
+            style={{ display: "none" }}
+          />
         </div>
+        </label>
+
       </div>
     );
-  };
-
+  }
   return (
     <div className="fullscreen">
       <Sellernavbar />
@@ -311,7 +380,6 @@ export default function Addnewproduct() {
                 <div className="row justify-content-center">
                   <div className="col-xs-12 col-sm-8 col-md-9z col-lg-6">
                     <form className="mb-4" onSubmit={handleSubmit}>
-                     
                       <div className="mb-3">
                         <label
                           htmlFor="producttype"
@@ -395,43 +463,22 @@ export default function Addnewproduct() {
                         )}
                       </div>
                       <div className="mb-4">
-                        <fieldset>
-                          <div className="mb-3">
-                            <label
-                              htmlFor="productimageurl"
-                              className="form-label fw-bolder"
-                            >
-                              Upload Images
-                            </label>
-                          </div>
-                          <div className="row g-2">
-                          {renderPhotoSection("Cover photo", "cover")}
-                            {renderPhotoSection("Front", "front")}
-                            {renderPhotoSection("Back", "back")}
-                            {renderPhotoSection("Side", "side")}
-                            {renderPhotoSection("Label", "label")}
-                            {renderPhotoSection("Detail", "detail")}
-                            {renderPhotoSection("Flaw", "flaw")}
-                            <label className="col-6 col-md-3 mb-3">
-                              <div
-                                className="border p-3 text-center text-muted d-flex align-items-center justify-content-center"
-                                style={{ height: "150px", cursor: "pointer" }}
-                              >
-                                <i class="bi bi-camera">
-                                  <span className="ms-2">Add a photo</span>
-                                </i>
-                              </div>
-                              <input
-                                type="file"
-                                accept="image/jpeg, image/png"
-                                className="d-none"
-                                multiple
-                                onChange={handleFile}
-                              />
-                            </label>
-                           
-                          </div>
-                        </fieldset>
+                       
+                        <div className="container">
+                          <label
+                            htmlFor="productimageurl"
+                            className="form-label fw-bolder"
+                          >
+                            Upload Images
+                          </label>
+                          <div className="row">{allDivs}</div>
+                          {/* SVG icons */}
+                          <svg style={{ display: "none" }}>
+                            <symbol id="photo" viewBox="0 0 24 24">
+                              <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
+                            </symbol>
+                          </svg>
+                        </div>
                       </div>
                       <div className="mb-3">
                         <label
@@ -670,97 +717,77 @@ export default function Addnewproduct() {
                         )}
                       {values.producttype !== "books" && (
                         <>
-                        <div className="mb-3">
-                          <label
-                            htmlFor="condition"
-                            className="form-label fw-bolder"
-                          >
-                            Condition
-                          </label>
-                          <div className="d-flex">
-                            <select
-                              className="form-select"
-                              id="condition"
-                              name="condition"
-                              value={values.condition}
-                              onChange={handleInput}
-                              required
+                          <div className="mb-3">
+                            <label
+                              htmlFor="condition"
+                              className="form-label fw-bolder"
                             >
-                              <option value="">Select Condition</option>
-                              <option value="Brandnew">
-                                Brand new - Unused with original packaging or
-                                tags
-                              </option>
-                              <option value="Likenew">
-                                Like new - Mint condition pre-owned or with new
-                                tags
-                              </option>
-                              <option value="Excellent">
-                                Used - Excellent - Lightly used but no
-                                noticeable flaws
-                              </option>
-                              <option value="Good">
-                                Used - Good - Minor flaws or sign of wear
-                              </option>
-                              <option value="Fair">
-                                Used - Fair - Obvious flaws or sign of wear
-                              </option>
-                            </select>
-                            <span className="text-danger fs-4"> &nbsp;*</span>
+                              Condition
+                            </label>
+                            <div className="d-flex">
+                              <select
+                                className="form-select"
+                                id="condition"
+                                name="condition"
+                                value={values.condition}
+                                onChange={handleInput}
+                                required
+                              >
+                                <option value="">Select Condition</option>
+                                <option value="Brandnew">
+                                  Brand new
+                                </option>
+                                <option value="Likenew">
+                                  Like new
+                                </option>
+                                <option value="Excellent">
+                                  Used - Excellent 
+                                </option>
+                                <option value="Good">
+                                  Used - Good
+                                </option>
+                                <option value="Fair">
+                                  Used - Fair
+                                </option>
+                              </select>
+                              <span className="text-danger fs-4"> &nbsp;*</span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="mb-3">
-                        <label
-                          htmlFor="source"
-                          className="form-label fw-bolder"
-                        >
-                          Source
-                        </label>
-                        <div className="d-flex">
-                          <select
-                            className="form-select"
-                            id="source"
-                            name="source"
-                            value={values.source}
-                            onChange={handleInput}
-                            required
-                          >
-                            <option value="">Select source</option>
-                            <option value="Vintage">
-                              Vintage
-                            </option>
-                            <option value="Preloved">
-                              Preloved
-                            </option>
-                            <option value="Reworked/upcycled">
-                              Reworked / Upcycled
-                            </option>
-                            <option value="Custom">
-                              Custom
-                            </option>
-                            <option value="Homemade">
-                              Homemade
-                            </option>
-                            <option value="Deadstock">
-                              Deadstock
-                            </option>
-                            <option value="Designer">
-                              Designer
-                            </option>
-                            <option value="Repaired">
-                              Repaired
-                            </option>
-                          </select>
-                          <span className="text-danger fs-4"> &nbsp;*</span>
-                        </div>
-                      </div>
-                      </>
+                          <div className="mb-3">
+                            <label
+                              htmlFor="source"
+                              className="form-label fw-bolder"
+                            >
+                              Source
+                            </label>
+                            <div className="d-flex">
+                              <select
+                                className="form-select"
+                                id="source"
+                                name="source"
+                                value={values.source}
+                                onChange={handleInput}
+                                required
+                              >
+                                <option value="">Select source</option>
+                                <option value="Vintage">Vintage</option>
+                                <option value="Preloved">Preloved</option>
+                                <option value="Reworked/upcycled">
+                                  Reworked / Upcycled
+                                </option>
+                                <option value="Custom">Custom</option>
+                                <option value="Homemade">Homemade</option>
+                                <option value="Deadstock">Deadstock</option>
+                                <option value="Designer">Designer</option>
+                                <option value="Repaired">Repaired</option>
+                              </select>
+                              <span className="text-danger fs-4"> &nbsp;*</span>
+                            </div>
+                          </div>
+                        </>
                       )}
                       <div className="mb-3">
-                        <label
-                          htmlFor="age"
-                          className="form-label fw-bolder"
-                        >
+                        <label htmlFor="age" className="form-label fw-bolder">
                           Age
                         </label>
                         <div className="d-flex">
@@ -772,25 +799,16 @@ export default function Addnewproduct() {
                             onChange={handleInput}
                             required
                           >
-                        <option value="">Select Age</option>
-                            <option value="Modern">
-                              Modern
-                            </option>
-                            <option value="00s">
-                              00s
-                            </option>
-                            <option value="90s">
-                              90s
-                            </option>
-                            <option value="80s">
-                              80s
-                            </option>
-                            <option value="80s">
-                              80s
-                            </option>
-                            <option value="60s">
-                              60s
-                            </option>
+                            <option value="">Select Age</option>
+                            <option value="Modern">Modern</option>
+                            <option value="00s">00s</option>
+                            <option value="90s">90s</option>
+                            <option value="80s">80s</option>
+                            <option value="80s">80s</option>
+                            <option value="60s">60s</option>
+                            <option value="50s">50s</option>
+                            <option value="Antique">Antique</option>
+
                           </select>
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
