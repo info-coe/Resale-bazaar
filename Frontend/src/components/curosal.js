@@ -1,7 +1,7 @@
 import React from "react";
 import Carousel from "react-elastic-carousel";
 import kidsurl from "../images/kids22.jpeg";
-import womenurl from "../images/womencarousel.jpg";
+import womenurl from "../images/RB-women.jfif";
 import jeweleryurl from "../images/jewelry.jpg";
 import booksurl from "../images/books.jpg";
 import { Link } from "react-router-dom";

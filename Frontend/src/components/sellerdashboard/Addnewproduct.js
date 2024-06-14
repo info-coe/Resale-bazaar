@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import Sellernavbar from "./Sellernavbar";
-import Sellermenu from "./Sellermenu";
-import Sellerfooter from "./Sellerfooter";
+// import Sellernavbar from "./Sellernavbar";
+// import Sellermenu from "./Sellermenu";
+// import Sellerfooter from "./Sellerfooter";
 import axios from "axios";
+import MyNavbar from "../navbar";
+import Footer from "../footer";
 export default function Addnewproduct() {
   const [categories, setCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
@@ -366,19 +368,22 @@ export default function Addnewproduct() {
   }
   return (
     <div className="fullscreen">
-      <Sellernavbar />
+      {/* <Sellernavbar /> */}
+      <MyNavbar/>
       <div className="d-md-flex">
-        <div className="col-md-2 selleraccordion">
+        {/* <div className="col-md-2 selleraccordion">
           <Sellermenu />
-        </div>
-        <div className="col-md-10">
+        </div> */}
+        <div className="col-12">
           <div className="fullscreen2">
             <main>
               <div className="container">
-                <h1 className="mt-2 ms-2 fs-3">Add Product</h1>
-                <hr className="ms-4 me-4" />
+                {/* <h1 className="mt-2 ms-2 fs-3">List an item</h1> */}
+                {/* <hr className="ms-4 me-4" /> */}
                 <div className="row justify-content-center">
                   <div className="col-xs-12 col-sm-8 col-md-9z col-lg-6">
+                  <h1 className="mt-4 fs-3">List an item</h1>
+                  <hr className="mb-4" />
                     <form className="mb-4" onSubmit={handleSubmit}>
                       <div className="mb-3">
                         <label
@@ -969,7 +974,8 @@ export default function Addnewproduct() {
                 </div>
               </div>
             </main>
-            <Sellerfooter />
+            {/* <Sellerfooter /> */}
+            <Footer/>
           </div>
         </div>
       </div>

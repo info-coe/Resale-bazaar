@@ -8,10 +8,10 @@ import womenmobile from "../images/women-banner.jpg";
 import womentablet from "../images/women-banner.jpg";
 import kidsmobile from "../images/kids-banner.jpg";
 import kidstablet from "../images/kids-banner.jpg";
-import jewellerydesktop from "../images/jewellery-banner.jpg";
+import jewellerydesktop from "../images/RB-Jewellery-banner.jpg";
 import jewellerymobile from "../images/jewellery-banner.jpg";
 import jewellerytablet from "../images/jewellery-banner.jpg";
-import booksdesktop from "../images/books-banner.jpg";
+import booksdesktop from "../images/RB-Books-banner.jpg";
 import booksmobile from "../images/books-banner.jpg";
 import bookstablet from "../images/books-banner.jpg";
 

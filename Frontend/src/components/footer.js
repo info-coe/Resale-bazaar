@@ -52,15 +52,15 @@ const Footer = () => {
               <div className="me-3">
                 <span>
                   <Link
-                    to={
-                      sessionStorage.getItem("token") !== null
-                        ? "/selleraccount"
-                        : "/login"
-                    }
+                  to="/addnewproduct"
+                    // to={
+                    //   sessionStorage.getItem("token") !== null
+                    //     ? "/selleraccount"
+                    //     : "/login"
+                    // }
                     className="text-decoration-none"
                   >
-                    <i className="bi bi-chevron-double-right"></i> Apply For
-                    Seller Account
+                    <i className="bi bi-chevron-double-right"></i> Sell on The Resale Bazaar
                   </Link>
                 </span>{" "}
                

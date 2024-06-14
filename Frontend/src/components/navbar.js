@@ -13,7 +13,7 @@ const MyNavbar = () => {
   const [products, setProducts] = useState([]);
   const { user } = useData();
   const [isRotated, setIsRotated] = useState(false);
-  console.log(user)
+  // console.log(user)
   const {
     cartItems,
     calculateTotalPrice,
@@ -152,7 +152,7 @@ const MyNavbar = () => {
   return (
     <>
       <div className="gradientnav sticky-top">
-        <nav className="navbar navbar-expand-md navbar-light bg-white  d-md-flex  justify-content-evenly">
+        <nav className="navbar navbar-expand-md navbar-light bg-white  d-md-flex  justify-content-around">
           <div className="d-flex">
             {/* <button
           className="navbar-toggler ms-2 custom-navbar-toggler"
@@ -204,11 +204,14 @@ const MyNavbar = () => {
                     <i className="bi bi-search fs-4" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"></i>
                     </div>
                       <div className="sellnowdiv" style={{ marginTop:"12px" }}>
-                        <Link to={
-                          sessionStorage.getItem("token") !== null
-                            ? "/selleraccount"
-                            : "/login"
-                        } className="text-decoration-none text-dark me-lg-3"
+                        <Link 
+                        to="/addnewproduct"
+                        // to={
+                        //   sessionStorage.getItem("token") !== null
+                        //     ? "/selleraccount"
+                        //     : "/login"
+                        // } 
+                        className="text-decoration-none text-dark me-lg-3"
                           style={{ fontWeight: '500' }}
                         >
                           SELL NOW
@@ -357,7 +360,7 @@ const MyNavbar = () => {
           </div>
         </nav>
 {/*Search Offcanvas start */}
-        <div className="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+        <div className="offcanvas offcanvas-top" tabIndex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
       <div className="offcanvas-header">
         <h5 id="offcanvasTopLabel">Search</h5>
         <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>

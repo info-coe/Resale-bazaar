@@ -83,12 +83,15 @@ const Product = (props) => {
           </div>
         </Link>
         <div className="card-body">
-          <h6 className="card-text">{props.product.name}</h6>
+          {/* <h6 className="card-text">{props.product.name}</h6> */}
           <p className="card-text text-success">
             <b>&#8377; {props.product.price}.00</b>
           </p>
+          <h6 className="card-text" style={{lineHeight:"8px"}}>{props.product.size}</h6>
+
+         
         </div>
-        <div className="card-footer d-flex flex-wrap justify-content-center">
+        {/* <div className="card-footer d-flex flex-wrap justify-content-center">
           {props.product.quantity > 0 ? (
             <>
               <button
@@ -111,7 +114,7 @@ const Product = (props) => {
               </h6>
             </>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
