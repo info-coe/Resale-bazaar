@@ -35,11 +35,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-    .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts`,{
-      headers:{
-        Authorization : `Bearer ${sessionStorage.getItem("productAccessToken")}` 
-      }
-    })
+    .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts`)
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           // console.log(res.data);

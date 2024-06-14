@@ -7,7 +7,7 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
   // localStorage.clear();
-  const [authToken, setAuthToken] = useState("");
+  // const [authToken, setAuthToken] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [wishItems, setWishItems] = useState([]);
   const [selectedWishlistItems, setSelectedWishlistItems] = useState([]);
@@ -160,8 +160,8 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider
       value={{
-        authToken,
-        setAuthToken,
+        // authToken,
+        // setAuthToken,
         user,
         setUserData,
         cartItems,

@@ -227,14 +227,14 @@ db.query(createDatabaseQuery, (err) => {
   });
 });
 
-app.post("/",(req,res)=>{
-      const accessToken = generateAccessToken({home:"home"})
-      // console.log(accessToken)
-      const refreshToken = jwt.sign({home:"home"}, process.env.REFRESH_TOKEN_SECRET)
-      refreshTokens.push(refreshToken)
-      // const token = jwt.sign({data}, secretKey, { expiresIn: '1h' });
-      return res.json({accessToken});
-});
+// app.post("/",(req,res)=>{
+//       const accessToken = generateAccessToken({home:"home"})
+//       // console.log(accessToken)
+//       const refreshToken = jwt.sign({home:"home"}, process.env.REFRESH_TOKEN_SECRET)
+//       refreshTokens.push(refreshToken)
+//       // const token = jwt.sign({data}, secretKey, { expiresIn: '1h' });
+//       return res.json({accessToken});
+// });
 
 app.post("/user", (req, res) => {
   const sql = loginCheckQuery;
@@ -243,12 +243,13 @@ app.post("/user", (req, res) => {
       return res.json("Error");
     }
     if (data.length > 0) {
-      const accessToken = generateAccessToken({data})
-      // console.log(accessToken)
-      const refreshToken = jwt.sign({data}, process.env.REFRESH_TOKEN_SECRET)
-      refreshTokens.push(refreshToken)
-      // const token = jwt.sign({data}, secretKey, { expiresIn: '1h' });
-      return res.json({accessToken, data});
+      // const accessToken = generateAccessToken({data})
+      // // console.log(accessToken)
+      // const refreshToken = jwt.sign({data}, process.env.REFRESH_TOKEN_SECRET)
+      // refreshTokens.push(refreshToken)
+      // // const token = jwt.sign({data}, secretKey, { expiresIn: '1h' });
+      // return res.json({accessToken, data});
+      return res.json(data);
     } else {
       return res.json("Fail");
     }
@@ -262,19 +263,20 @@ app.post("/admin", (req, res) => {
       return res.json("Error");
     }
     if (data.length > 0) {
-      const accessToken = generateAccessToken({data})
-      // console.log(accessToken)
-      const refreshToken = jwt.sign({data}, process.env.REFRESH_TOKEN_SECRET)
-      refreshTokens.push(refreshToken)
-      // const token = jwt.sign({data}, secretKey, { expiresIn: '1h' });
-      return res.json({accessToken, data});
+      // const accessToken = generateAccessToken({data})
+      // // console.log(accessToken)
+      // const refreshToken = jwt.sign({data}, process.env.REFRESH_TOKEN_SECRET)
+      // refreshTokens.push(refreshToken)
+      // // const token = jwt.sign({data}, secretKey, { expiresIn: '1h' });
+      // return res.json({accessToken, data});
+      return res.json(data);
     } else {
       return res.json("Fail");
     }
   });
 });
 
-app.get("/admin", authenticateToken, (req, res) => {
+app.get("/admin", (req, res) => {
   const sql = retrievingAdminQuery;
   db.query(sql, (err, data) => {
     if (err) {
@@ -288,7 +290,7 @@ app.get("/admin", authenticateToken, (req, res) => {
   });
 });
 
-app.get("/user", authenticateToken, (req, res) => {
+app.get("/user", (req, res) => {
   const sql = retrievingUsersQuery;
   db.query(sql, (err, data) => {
     if (err) {
@@ -345,7 +347,7 @@ app.post("/updateadmin", (req, res) => {
   });
 });
 
-app.get("/selleraccount",authenticateToken, (req, res) => {
+app.get("/selleraccount", (req, res) => {
   const sql = retrievingSellersQuery;
   db.query(sql, (err, data) => {
     if (err) {
@@ -373,7 +375,7 @@ app.post("/selleraccount", (req, res) => {
 });
 
 // admin to be accepted products
-app.get("/adminproducts",authenticateToken, (req, res) => {
+app.get("/adminproducts", (req, res) => {
   const sql = adminAcceptedProductsQuery;
   const accepted = ["false"];
 
@@ -422,7 +424,7 @@ app.post("/adminrejection", (req, res) => {
 
 
 // all products
-app.get("/allproducts", authenticateToken, (req, res) => {
+app.get("/allproducts", (req, res) => {
   const sql = retrievingAllProductsQuery;
   const accepted = "true";
 
@@ -438,7 +440,7 @@ app.get("/allproducts", authenticateToken, (req, res) => {
   });
 });
 
-app.get("/sellerproducts",authenticateToken, (req, res) => {
+app.get("/sellerproducts", (req, res) => {
   const sql = retrievingSellerProductsQuery;
 
 
@@ -454,7 +456,7 @@ app.get("/sellerproducts",authenticateToken, (req, res) => {
   });
 });
 // women
-app.get("/women",authenticateToken, (req, res) => {
+app.get("/women", (req, res) => {
   const sql = retrievingWomenProductsQuery;
 
   const type = "women";
@@ -473,7 +475,7 @@ app.get("/women",authenticateToken, (req, res) => {
 });
 
 //kids
-app.get("/kids",authenticateToken, (req, res) => {
+app.get("/kids", (req, res) => {
   const sql = retrievingKidsProductsQuery;
 
   const type = "kids";
@@ -491,7 +493,7 @@ app.get("/kids",authenticateToken, (req, res) => {
   });
 });
 //jewellery
-app.get("/jewellery",authenticateToken, (req, res) => {
+app.get("/jewellery", (req, res) => {
   const sql = retrievingJewelleryProductsQuery;
 
   const type = "jewellery";
@@ -510,7 +512,7 @@ app.get("/jewellery",authenticateToken, (req, res) => {
 });
 
 ///books
-app.get("/books",authenticateToken, (req, res) => {
+app.get("/books", (req, res) => {
   const sql = retrievingBooksProductsQuery;
 
   const type = "books";
@@ -645,7 +647,7 @@ app.post("/addcart", (req, res) => {
   });
 });
 
-app.get("/addcart",authenticateToken, (req, res) => {
+app.get("/addcart", (req, res) => {
   const sql = retrievingCartItemsQuery
   db.query(sql, (err, data) => {
     if (err) {
@@ -725,7 +727,7 @@ app.delete("/updateorders/:id", (req, res) => {
   });
 });
 
-app.get("/wishlist",authenticateToken, (req, res) => {
+app.get("/wishlist", (req, res) => {
   const sql = retrievingWishlistItemsQuery;
   db.query(sql, (err, data) => {
     if (err) {
@@ -788,7 +790,7 @@ app.delete("/wishlist/:id", (req, res) => {
   });
 });
 
-app.get("/contact",authenticateToken, (req, res) => {
+app.get("/contact", (req, res) => {
   const sql = retrieveContactusQuery;
 
   db.query(sql, (err, data) => {
@@ -833,7 +835,7 @@ app.post("/saveBillingAddress", (req, res) => {
   });
 });
 
-app.get("/saveBillingAddress",authenticateToken, (req, res) => {
+app.get("/saveBillingAddress", (req, res) => {
   const sql = getbillingAddress;
   
   
@@ -873,7 +875,7 @@ app.post("/saveShippingAddress", (req, res) => {
 
 
 
-app.get("/saveShippingAddress",authenticateToken, (req, res) => {
+app.get("/saveShippingAddress", (req, res) => {
   const sql = getshippingAddress;
 
   db.query(sql, (err, data) => {
@@ -916,7 +918,7 @@ app.post("/updatepayment", (req, res) => {
   });
 });
 
-app.get("/updatepayment",authenticateToken, (req, res) => {
+app.get("/updatepayment", (req, res) => {
   const sql = "Select * from orders";
 
   db.query(sql, (err, data) => {

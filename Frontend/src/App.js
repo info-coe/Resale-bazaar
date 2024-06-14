@@ -53,7 +53,7 @@ import Rings from "./components/jewelry/Rings";
 import Drama from "./components/books/Drama";
 import Fantasy from "./components/books/Fantasy";
 import Horror from "./components/books/Horror";
-import axios from "axios";
+// import axios from "axios";
 
 
 function App() {
@@ -71,16 +71,16 @@ function App() {
     checkUserToken();
   }, [isUserLoggedIn]);
 
-  useEffect(()=>{
-    axios
-    .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/`)
-    .then(res=>{
-      // console.log(res)
-      sessionStorage.setItem("productsAccessToken", res.data.accessToken);
-    }).catch((error) => {
-      console.log("Error fetching data:", error);
-    });
-  },[]);
+  // useEffect(()=>{
+  //   axios
+  //   .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/`)
+  //   .then(res=>{
+  //     // console.log(res)
+  //     sessionStorage.setItem("accessToken", res.data.accessToken);
+  //   }).catch((error) => {
+  //     console.log("Error fetching data:", error);
+  //   });
+  // },[]);
 
   return (
     <>
