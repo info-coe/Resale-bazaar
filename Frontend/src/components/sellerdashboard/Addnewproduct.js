@@ -186,75 +186,63 @@ export default function Addnewproduct() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Validation logic
     const isValid = validateForm();
-
+  
     if (!isValid) {
-      // If form is not valid, stop submission
       return;
     }
-
-    // Create a copy of the values object
+  
     const updatedValues = { ...values };
-
-    // Check if the product type is 'jewellery' or 'books'
+  
     if (values.producttype === "jewellery") {
-      // Set size to 'NA' for jewellery
       updatedValues.size = "NA";
       updatedValues.material = "NA";
     } else if (values.producttype === "books") {
-      // Set all fields to 'NA' for books
       updatedValues.color = "NA";
       updatedValues.alteration = "NA";
       updatedValues.size = "NA";
       updatedValues.measurements = "NA";
       updatedValues.material = "NA";
-      updatedValues.worn = "NA";
+      updatedValues.condition = "NA";
     }
-
-    
+  
     const formData = new FormData();
     images.forEach((image, index) => {
       if (image) {
-        formData.append(`image-${index + 1}`, image);
+        formData.append('images', image);
       }
     });
-    // Append other form data
+  
     for (const key in updatedValues) {
       formData.append(key, updatedValues[key]);
     }
-
-    // Append custom attributes
-    customAttributes.forEach((attribute, index) => {
+  
+    customAttributes.forEach((attribute) => {
       formData.append(attribute.name, attribute.value);
     });
-
+  
     try {
-      console.log(formData);
       const response = await axios.post(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-          },
+          }
         }
       );
-
+  
       if (response.data === "Error") {
-        alert(
-          "Error while adding product. Please try again filling all the fields"
-        );
+        alert("Error while adding product. Please try again filling all the fields");
       } else {
         alert("Product added successfully");
-
         window.location.reload(false);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
+  
   const attributeOptions = [
     // "Material",
     "Occasion",

@@ -545,10 +545,56 @@ app.post("/updateproducts", (req, res) => {
 });
 
 // add products
-app.post("/addproducts",upload.array('images', 10), (req, res) => {
-  const images = req.files.map(file => file.filename);
+// app.post("/addproducts",upload.array('images', 10), (req, res) => {
+//   console.log(req)
+//   const images = req.files.map(file => file.filename);
+//   const sql = addProductsQuery;
 
+//   const values = [
+//     req.body.producttype,
+//     req.body.category,
+//     req.body.productname,
+//     req.body.productdescription,
+//     JSON.stringify(images),
+//     req.body.location,
+//     req.body.color,
+//     req.body.alteration,
+//     req.body.size,
+//     req.body.measurements,
+//     req.body.condition,
+//     req.body.source,
+//     req.body.age,
+//     req.body.language,
+//     req.body.quantity,
+//     req.body.price,
+//     req.body.material,
+//     req.body.Occasion,
+//     req.body.Type,
+//     req.body.Brand,
+//     req.body.Product_Condition,
+//     req.body.Style,
+//     req.body.Season,
+//     req.body.Fit,
+//     req.body.Length,
+//     req.body.accepted_by_admin,
+//     req.body.seller_id,
+//   ];
+
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Error while inserting product:", err);
+//       return res.status(500).json({ message: "Error while inserting product" });
+//     }
+//     console.log("Product inserted successfully");
+//     return res.status(200).json({ message: "Product inserted successfully" });
+//   });
+// });
+
+app.post("/addproducts", upload.array('images', 10), (req, res) => {
+  
+  const images = req.files.map(file => file.filename);
   const sql = addProductsQuery;
+
   const values = [
     req.body.producttype,
     req.body.category,
@@ -560,19 +606,21 @@ app.post("/addproducts",upload.array('images', 10), (req, res) => {
     req.body.alteration,
     req.body.size,
     req.body.measurements,
-    req.body.worn,
+    req.body.condition,
+    req.body.source,
+    req.body.age,
     req.body.language,
     req.body.quantity,
     req.body.price,
     req.body.material,
-    req.body.Occasion,
-    req.body.Type,
-    req.body.Brand,
-    req.body.Product_Condition,
-    req.body.Style,
-    req.body.Season,
-    req.body.Fit,
-    req.body.Length,
+    req.body.occasion,
+    req.body.type,
+    req.body.brand,
+    req.body.product_condition,
+    req.body.style,
+    req.body.season,
+    req.body.fit,
+    req.body.length,
     req.body.accepted_by_admin,
     req.body.seller_id,
   ];

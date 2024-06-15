@@ -44,14 +44,14 @@ CREATE TABLE IF NOT EXISTS products (
     product_type VARCHAR(60) NOT NULL,
     category VARCHAR(90) NOT NULL,
     name VARCHAR(90) NOT NULL,
-    image json,
+    image JSON,
     description MEDIUMTEXT NOT NULL,
     location VARCHAR(45) NOT NULL,
     color VARCHAR(60) NOT NULL,
     alteration VARCHAR(45) NOT NULL,
     size VARCHAR(45) NOT NULL,
     measurements TINYTEXT NOT NULL,
-    worn VARCHAR(255) NOT NULL,
+    \`condition\` VARCHAR(255) NOT NULL,
     language VARCHAR(45) NULL,
     quantity INT NOT NULL,
     price INT NOT NULL,
@@ -64,12 +64,16 @@ CREATE TABLE IF NOT EXISTS products (
     season VARCHAR(90) NULL,
     fit VARCHAR(90) NULL,
     length VARCHAR(90) NULL,
+    source VARCHAR(45) NOT NULL,
+    age VARCHAR(45) NOT NULL,
     accepted_by_admin VARCHAR(60) NOT NULL,
     rejection_reason TINYTEXT NULL,
     seller_id INT NOT NULL,
     UNIQUE INDEX id_UNIQUE (id ASC),
-    FOREIGN KEY (seller_id) REFERENCES register(user_id));
+    FOREIGN KEY (seller_id) REFERENCES register(user_id)
+);
 `;
+
 
 const cartproducts = `
 CREATE TABLE IF NOT EXISTS cart (
@@ -198,7 +202,7 @@ const retrievingWomenProductsQuery = "select * from products WHERE `product_type
 const retrievingKidsProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingJewelleryProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingBooksProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
-const addProductsQuery = "INSERT INTO products (`product_type`,`category`,`name`,`description`,`image`,`location`,`color`,`alteration`,`size`,`measurements`,`worn`,`language`,`quantity`,`price`,`material`,`occasion`,`type`,`brand`,`product_condition`,`style`,`season`,`fit`,`length`,`accepted_by_admin`,`seller_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?,?)";
+const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, language, quantity, price, material, occasion, type, brand, product_condition, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
 const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, `worn`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
 const retrievingCartItemsQuery = "select * from cart";
 const updateCartItemsQuery = "UPDATE cart SET userid = ? WHERE id = ?";
