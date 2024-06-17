@@ -53,7 +53,8 @@ const {
   udpateAdminQuery,
   deleteOrderItemsQuery,
   retrievingSellerProductsQuery,
-  offeredProductsQuery
+  offeredProductsQuery,
+  retrievingOfferedProductsQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -311,14 +312,28 @@ app.get("/user", (req, res) => {
 
 app.post("/offeredproducts", (req, res) => {
   const sql = offeredProductsQuery;
-  const { product_id, offered_buyer_id, offered_price } = req.body;
-  db.query(sql, [product_id, offered_buyer_id, offered_price ], (err, data) => {
+  const { product_id, offered_buyer_id, offered_price ,product_status} = req.body;
+  db.query(sql, [product_id, offered_buyer_id, offered_price,product_status ], (err, data) => {
     if (err) {
       console.log(err);
       return res.json("Error");
     }
     console.log("data added successfully");
     return res.json(data);
+  });
+});
+
+app.get("/offeredproducts", (req, res) => {
+  const sql = retrievingOfferedProductsQuery;
+  db.query(sql, (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+    } else {
+      return res.json("Fail");
+    }
   });
 });
 

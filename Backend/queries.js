@@ -135,6 +135,7 @@ CREATE TABLE IF NOT EXISTS offered_products (
   product_id INT NOT NULL,
   offered_buyer_id INT NOT NULL,
   offered_price INT NOT NULL,
+  product_status VARCHAR(45) NOT NULL,
   PRIMARY KEY (id));
 `
 
@@ -232,7 +233,8 @@ const getshippingAddress= "Select * from shipping_address"
 const retrievingAdminQuery = "SELECT * FROM admin";
 const udpateAdminQuery = "UPDATE admin SET ? WHERE email = ?";
 const retrievingSellerProductsQuery = "select * from products";
-const offeredProductsQuery = "INSERT INTO offered_products (`product_id`,`offered_buyer_id`,`offered_price`) VALUES(?,?,?)";
+const offeredProductsQuery = "INSERT INTO offered_products (`product_id`,`offered_buyer_id`,`offered_price`,`product_status`) VALUES(?,?,?,?)";
+const retrievingOfferedProductsQuery = "select * from offered_products";
 
 // const cartpaymentupdateQuery = "UPDATE cart SET payment_status = ?, buyer_id = ? WHERE id = ?";
 
@@ -287,5 +289,6 @@ module.exports = {
   retrievingAdminQuery,
   deleteOrderItemsQuery,
   retrievingSellerProductsQuery,
-  offeredProductsQuery
+  offeredProductsQuery,
+  retrievingOfferedProductsQuery
 };

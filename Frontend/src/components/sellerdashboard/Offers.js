@@ -4,20 +4,15 @@ import MyNavbar from '../navbar';
 import Footer from '../footer';
 
 const Offers = () => {
-  const [offers, setOffers] = useState([
-    { id: 1, productName: 'Product A', customerName: 'John Doe', amount: 100, status: 'Pending' },
-    { id: 2, productName: 'Product B', customerName: 'Jane Smith', amount: 150, status: 'Accepted' },
-    { id: 3, productName: 'Product C', customerName: 'Mike Johnson', amount: 120, status: 'Rejected' },
-    { id: 4, productName: 'Product D', customerName: 'Emily Brown', amount: 200, status: 'Pending' },
-  ]);
+  const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('Pending'); // Default active tab
+  const [activeTab, setActiveTab] = useState('Pending'); 
 
   useEffect(() => {
     // Fetch offers from the backend or set static data
     const fetchOffers = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offers`);
+        const response = await axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`);
         setOffers(response.data);
         setLoading(false);
       } catch (error) {
@@ -28,7 +23,29 @@ const Offers = () => {
 
     fetchOffers();
   }, []);
+ const[seller,setSeller]=useState([])
+  useEffect (()=>{
+    axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`).then((res) => {
+      setSeller(res.data);
+  })
 
+  })
+  const filtered = offers.map(offer => {
+  const sellerInfo = seller.find(s => s.id === offer.product_id);
+
+  if (sellerInfo) {
+    return {
+      productName: sellerInfo.name,
+      offeredPrice: offer.offered_price,
+      product_status: offer.product_status 
+    };
+  } else {
+    return null; // or handle the case where no matching seller is found
+  }
+}).filter(item => item !== null);
+
+
+  
   const handleAccept = async (offerId) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offers/${offerId}/accept`);
@@ -49,8 +66,7 @@ const Offers = () => {
     }
   };
 
-  const filteredOffers = offers.filter(offer => offer.status === activeTab);
-
+  const filteredOffers = filtered.filter(offer => offer.product_status === activeTab);
   if (loading) {
     return <div className="container mt-4">Loading...</div>;
   }
@@ -94,7 +110,6 @@ const Offers = () => {
           <thead>
             <tr>
               <th>Product</th>
-              <th>Customer</th>
               <th>Offer Amount</th>
               <th>Status</th>
               {activeTab === 'Pending' && <th>Actions</th>}
@@ -111,9 +126,8 @@ const Offers = () => {
               filteredOffers.map(offer => (
                 <tr key={offer.id}>
                   <td>{offer.productName}</td>
-                  <td>{offer.customerName}</td>
-                  <td>&#8377; {offer.amount}</td>
-                  <td>{offer.status}</td>
+                  <td>&#8377; {offer.offeredPrice}</td>
+                  <td>{offer.product_status}</td>
                   {activeTab === 'Pending' && (
                     <td>
                       <button

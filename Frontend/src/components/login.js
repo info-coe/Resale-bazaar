@@ -70,7 +70,7 @@ const Login = () => {
           sessionStorage.removeItem("user-token");
           sessionStorage.setItem("user-token", token);
           navigate("/");
-          window.location.reload(false);
+          // window.location.reload(false);
         } else {
           alert("Invalid Username or Password");
           window.location.reload(false);
