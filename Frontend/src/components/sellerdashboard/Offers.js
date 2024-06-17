@@ -87,7 +87,10 @@ const Offers = () => {
         </li>
       </ul>
       <div className="table-responsive mt-4">
-        <table className="table table-striped table-bordered table-hover">
+        <table  id="dynamic-table"
+                    className="table table-striped table-hover dataTable no-footer"
+                    role="grid"
+                    aria-describedby="dynamic-table_info">
           <thead>
             <tr>
               <th>Product</th>
