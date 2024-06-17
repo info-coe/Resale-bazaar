@@ -54,6 +54,8 @@ import Drama from "./components/books/Drama";
 import Fantasy from "./components/books/Fantasy";
 import Horror from "./components/books/Horror";
 import Offers from "./components/sellerdashboard/Offers";
+import Search from "./components/Search";
+
 // import axios from "axios";
 
 
@@ -154,7 +156,7 @@ function App() {
           <Route path="faq" element={<FAQ />}></Route>
 
           {/* Women components routes */}
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/" element={<Home/>}></Route>
           <Route path="women" element={<Womenallproducts />}></Route>
           <Route path="product/:id" element={<Productdetails />}></Route>
           <Route path="highendcouture" element={<Highendcouture />}></Route>
@@ -224,6 +226,7 @@ function App() {
           ></Route>
           <Route path="forgotpassword" element={<Forgotpassword />}></Route>
           <Route path="*" element={<Notfound />}></Route>
+          <Route path="/search" element={<Search/>} />
         </Routes>
       </BrowserRouter>
     </>

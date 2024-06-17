@@ -156,6 +156,7 @@ export const CartProvider = ({ children }) => {
       setSelectedWishlistItems([...selectedWishlistItems, productId]);
     }
   };
+  
 
   return (
     <CartContext.Provider

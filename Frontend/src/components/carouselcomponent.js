@@ -4,23 +4,23 @@ import Carousel from "react-bootstrap/Carousel";
 
 import womendesktop from "../images/RB-slide3.JPEG"
 import kidsdesktop from "../images/RB-slide2.JPEG"
-import womenmobile from "../images/women-banner.jpg";
-import womentablet from "../images/women-banner.jpg";
-import kidsmobile from "../images/kids-banner.jpg";
-import kidstablet from "../images/kids-banner.jpg";
-import jewellerydesktop from "../images/RB-Jewellery-banner.jpg";
-import jewellerymobile from "../images/jewellery-banner.jpg";
-import jewellerytablet from "../images/jewellery-banner.jpg";
+import womenmobile from "../images/RB-slide3.JPEG";
+import womentablet from "../images/RB-slide3.JPEG";
+import kidsmobile from "../images/RB-slide2.JPEG";
+import kidstablet from "../images/RB-slide2.JPEG";
+import jewellerydesktop from "../images/RB-slide4.jpg";
+import jewellerymobile from "../images/RB-slide4.jpg";
+import jewellerytablet from "../images/RB-slide4.jpg";
 import booksdesktop from "../images/RB-Books-banner.jpg";
-import booksmobile from "../images/books-banner.jpg";
-import bookstablet from "../images/books-banner.jpg";
+import booksmobile from "../images/RB-Books-banner.jpg";
+import bookstablet from "../images/RB-Books-banner.jpg";
 
 function CarouselComponent() {
   const windowWidth = window.innerWidth;
   const isMobile = windowWidth <= 767;
   const isTablet = windowWidth >= 768 && windowWidth <= 1024;
   return (
-    <div className=" ms-5 me-5 mb-4 mt-3">
+    <div className=" ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
     <Carousel>
     <Carousel.Item>
       <div className='image-container'>

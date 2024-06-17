@@ -48,7 +48,7 @@ const Register = () => {
     const { email, phone, password } = values;
    
      if (userdetails.some(user => user.email === email)) {
-      setError('Email already exists');
+      setError('This Email already Registered');
     } else if (userdetails.some(user => user.phone.toString() === phone)) {
       setError('Phone number already exists');
     } else if (password !== confirmpassword) {

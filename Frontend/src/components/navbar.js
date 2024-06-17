@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart, useData } from "./CartContext";
 import axios from "axios";
 import Wishlistemptyimg from '../images/wishlistemptyimg.png'
@@ -13,42 +13,26 @@ const MyNavbar = () => {
   const [products, setProducts] = useState([]);
   const { user } = useData();
   const [isRotated, setIsRotated] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const navigate = useNavigate();
+
+  const handleSearch = (searchTerm) => {
+    setSearchTerm(searchTerm);
+    navigate('/search',{state:{termToSearch :searchTerm}});
+  };
   // console.log(user)
   const {
     cartItems,
     calculateTotalPrice,
-    // removeFromCart,
     setCartItems,
-    // incrementQuantity,
-    // decrementQuantity,
     wishItems,
     removeFromWishlist,
     moveFromWishlistToCart,
     selectedWishlistItems,
     handleCheckboxChange,
   } = useCart();
-  // console.log(wishItems)
-  // const totalPrice = calculateTotalPrice();
-
-  // Create refs for dropdown menus
-  // const womenDropdownRef = useRef(null);
-  // const kidsDropdownRef = useRef(null);
-  // const jewelryDropdownRef = useRef(null);
-  // const booksDropdownRef = useRef(null);
-
-  // Function to handle hover event for dropdowns
-  // const handleDropdownHover = (ref) => {
-  //   if (ref.current) {
-  //     ref.current.classList.add("show");
-  //   }
-  // };
-
-  // Function to handle mouse leave event for dropdowns
-  // const handleDropdownLeave = (ref) => {
-  //   if (ref.current) {
-  //     ref.current.classList.remove("show");
-  //   }
-  // };
+ 
   const handleMoveSelectedToCart = () => {
     moveFromWishlistToCart();
   };
@@ -118,9 +102,7 @@ const MyNavbar = () => {
                 )
               );
           }
-          // else {
-          //   setCartItems(response.data.filter((item) => item.userid === null));
-          // }
+          
         }
       })
       .catch((error) => {
@@ -145,6 +127,19 @@ const MyNavbar = () => {
   const handleHover = () => {
     setIsRotated(!isRotated);
 };
+const handleInputChange = (event) => {
+  setSearchTerm(event.target.value);
+};
+
+const handleKeyPress = (event) => {
+  if (event.key === 'Enter') {
+    handleSearch(searchTerm); // Call onSearch function with current searchTerm
+  }
+};
+
+// const handleChange = (event) => {
+//   setSearchTerm(event.target.value);
+// };
 
 
   return (
@@ -152,40 +147,23 @@ const MyNavbar = () => {
       <div className="gradientnav sticky-top">
         <nav className="navbar navbar-expand-md navbar-light bg-white  d-md-flex  justify-content-around">
           <div className="d-flex">
-            {/* <button
-          className="navbar-toggler ms-2 custom-navbar-toggler"
-          // type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasRight"
-          aria-controls="offcanvasRight"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button> */}
+           
          <span className='toggle ms-1 me-1' type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i className="bi bi-justify"></i></span>
             <div className="ms-lg-5 ms-md-3 ms-2 bargainlogodiv">
               <Link to="/">
                 <img
                   src={RBLogo}
                   alt="logo"
-                  // width="112px"
                   className="RBlogo"
                   style={{ objectFit: "contain" }}
                 />
               </Link>
             </div>
-          
-         {/* <div className="searchIcon" style={{marginTop:"10px", marginLeft:"14px"}}>
-         <i className="bi bi-search fs-4" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop"></i>
-         </div> */}
-      
-          
-          {/* <div className=" ms-md-3 Mobilesearchdiv" style={{marginTop:"10px"}}>
-          <SearchBar />
-          </div> */}
-         
+        
           </div>
           <div className=" ms-md-3 Mobilesearchdiv" style={{marginTop:"10px"}}>
-          <SearchBar />
+          <SearchBar onSearch={handleSearch} handleChange={handleInputChange} handleKeyPress={handleKeyPress}/>
+         
           </div>
        
           <div className="d-flex me-lg-2 pe-lg-2 authdiv">
@@ -204,11 +182,7 @@ const MyNavbar = () => {
                       <div className="sellnowdiv" style={{ marginTop:"12px" }}>
                         <Link 
                         to="/addnewproduct"
-                        // to={
-                        //   sessionStorage.getItem("token") !== null
-                        //     ? "/selleraccount"
-                        //     : "/login"
-                        // } 
+                       
                         className="text-decoration-none text-dark me-lg-3"
                           style={{ fontWeight: '500' }}
                         >
@@ -377,7 +351,7 @@ const MyNavbar = () => {
         <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div className="offcanvas-body pb-5">
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} handleChange={handleInputChange} handleKeyPress={handleKeyPress}/>
         
       </div>
     </div>
@@ -411,7 +385,7 @@ const MyNavbar = () => {
                 </div>
             </div>
             {/* Offcanvas end */}
-
+           
 
       </div>
       {/* wishmodal */}
