@@ -53,6 +53,7 @@ import Rings from "./components/jewelry/Rings";
 import Drama from "./components/books/Drama";
 import Fantasy from "./components/books/Fantasy";
 import Horror from "./components/books/Horror";
+import Offers from "./components/sellerdashboard/Offers";
 // import axios from "axios";
 
 
@@ -139,6 +140,7 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
+          <Route path="offers" element={<Offers/>}></Route>
           <Route path="aboutus" element={<Aboutus />}></Route>
           <Route path="contactus" element={<Contactus />}></Route>
           <Route

@@ -32,7 +32,7 @@ const responsive = {
 };
 
 export default function Productdetails() {
-  const [add, setAdd] = useState("34.00");
+  const [add, setAdd] = useState("0.00");
   const [success, setSuccess] = useState(false);
 
   const { id } = useParams();
@@ -173,6 +173,20 @@ export default function Productdetails() {
   };
   const datta = JSON.parse(productdetails.image);
   const firstImage = datta[0];
+
+  const handleOffer = () => {
+    setSuccess(true);
+    axios
+    .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`,{
+      product_id : id,
+      offered_buyer_id : sessionStorage.getItem("user-token"),
+      offered_price : add
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => console.log(err));
+  }
 
   return (
     <div className="fullscreen">
@@ -541,7 +555,7 @@ export default function Productdetails() {
 
                                 <div className="row">
                                   <div
-                                    onClick={() => AmountChange("32.00")}
+                                    onClick={() => AmountChange(productdetails.price-(productdetails.price*0.2).toFixed(2))}
                                     className="col-4 mb-2 position-relative "
                                     onChange={AmountChange}
                                   >
@@ -567,14 +581,14 @@ export default function Productdetails() {
                                       }}
                                     >
                                       <b style={{ fontSize: ".95rem" }}>
-                                      &#8377; 32.00
+                                        &#8377;{productdetails.price-(productdetails.price*0.2).toFixed(2)}
                                       </b>
                                     </button>
                                   </div>
 
                                   <div
                                     className="col-4 mb-2 position-relative"
-                                    onClick={() => AmountChange("34.00")}
+                                    onClick={() => AmountChange(productdetails.price-(productdetails.price*0.15).toFixed(2))}
                                   >
                                     <span
                                       className="position-absolute top-0 start-50 translate-middle-x text-center small"
@@ -583,7 +597,7 @@ export default function Productdetails() {
                                         padding: "3px",
                                       }}
                                     >
-                                      10% Off
+                                      15% Off
                                     </span>
                                     <button
                                       type="button"
@@ -597,13 +611,13 @@ export default function Productdetails() {
                                       }}
                                     >
                                       <b style={{ fontSize: ".95rem" }}>
-                                      &#8377; 34.00
+                                      &#8377;{productdetails.price-(productdetails.price*0.15).toFixed(2)}
                                       </b>
                                     </button>
                                   </div>
                                   <div
                                     className="col-4 mb-2 position-relative"
-                                    onClick={() => AmountChange("36.00")}
+                                    onClick={() => AmountChange(productdetails.price-(productdetails.price*0.1).toFixed(2))}
                                   >
                                     <span
                                       className="position-absolute top-0 start-50 translate-middle-x text-center small"
@@ -626,7 +640,7 @@ export default function Productdetails() {
                                       }}
                                     >
                                       <b style={{ fontSize: ".95rem" }}>
-                                      &#8377; 36.00
+                                      &#8377;{productdetails.price-(productdetails.price*0.1).toFixed(2)}
                                       </b>
                                     </button>
                                   </div>
@@ -641,9 +655,7 @@ export default function Productdetails() {
                               </div>
                               <div className="modal-footer">
                                 <button
-                                  onClick={() => {
-                                    setSuccess(true);
-                                  }}
+                                  onClick={handleOffer}
                                   style={{ display: success ? "none" : "" }}
                                   type="button"
                                   className="btn btn-secondary w-100"

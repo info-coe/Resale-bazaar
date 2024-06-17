@@ -68,9 +68,7 @@ const MyNavbar = () => {
     axios
       .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/logout`, {
         headers: {
-          'Content-Type': 'application/json',
-          token: `${sessionStorage.getItem("accessToken")}`
-        },
+          'Content-Type': 'application/json'        },
       })
       .then((response) => {
         sessionStorage.removeItem("accessToken");
@@ -247,7 +245,12 @@ const MyNavbar = () => {
                           {" "}
                           <i className="bi bi-heart-fill fs-4 position-relative">
                             {" "}
-
+                            {wishItems.length > 0 && (
+                              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style={{ fontSize: "12px" }}>
+                                {wishItems.length}
+                                <span className="visually-hidden">unread messages</span>
+                              </span>
+                            )}
                            
                           </i>
                         </button>
@@ -322,6 +325,14 @@ const MyNavbar = () => {
                         className="text-decoration-none text-dark ps-3"
                       >
                         <i className="bi bi-person-fill-gear"></i> My Account
+                      </Link>
+                    </li>
+                    <li className="p-1">
+                      <Link
+                        to="/offers"
+                        className="text-decoration-none text-dark ps-3"
+                      >
+                        <i className="bi bi-person-fill-gear"></i> Your Offers
                       </Link>
                     </li>
                     <li className="p-1">

@@ -9,6 +9,7 @@ const {
   createRegisterTableQuery,
   useDatabaseQuery,
   productsList,
+  offeredProducts,
   createSellerAccount,
   cartproducts,
   wishproducts,
@@ -51,7 +52,8 @@ const {
   retrievingAdminQuery,
   udpateAdminQuery,
   deleteOrderItemsQuery,
-  retrievingSellerProductsQuery
+  retrievingSellerProductsQuery,
+  offeredProductsQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -212,7 +214,10 @@ db.query(createDatabaseQuery, (err) => {
                         if (err) throw err;
                       db.query(ordersproducts, (err) => {
                         if (err) throw err;
-                        console.log("Database and tables created successfully");
+                        db.query(offeredProducts, (err) => {
+                          if (err) throw err;
+                          console.log("Database and tables created successfully");
+                        });
                       });
                     });
                     });
@@ -301,6 +306,19 @@ app.get("/user", (req, res) => {
     } else {
       return res.json("Fail");
     }
+  });
+});
+
+app.post("/offeredproducts", (req, res) => {
+  const sql = offeredProductsQuery;
+  const { product_id, offered_buyer_id, offered_price } = req.body;
+  db.query(sql, [product_id, offered_buyer_id, offered_price ], (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.json("Error");
+    }
+    console.log("data added successfully");
+    return res.json(data);
   });
 });
 
@@ -533,7 +551,7 @@ app.get("/books", (req, res) => {
 app.post("/updateproducts", (req, res) => {
   const { product_id, quantity } = req.body;
  
-  // Perform the update operation in the database
+  // Perform the update operation in the database 
   const sql = "UPDATE products SET quantity = ? WHERE id = ?";
   db.query(sql, [quantity, product_id], (err, result) => {
     if (err) {

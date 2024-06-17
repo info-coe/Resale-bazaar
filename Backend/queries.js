@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS cart (
     alteration VARCHAR(45) NOT NULL,
     size VARCHAR(45) NOT NULL,
     measurements TINYTEXT NOT NULL,
-    worn VARCHAR(45) NOT NULL,
+    worn VARCHAR(45) NULL,
     price INT NOT NULL,
     accepted_by_admin VARCHAR(60) NOT NULL,
     seller_id INT NULL,
@@ -121,13 +121,22 @@ CREATE TABLE IF NOT EXISTS wish (
   alteration VARCHAR(45) NOT NULL,
   size VARCHAR(45) NOT NULL,
   measurements TINYTEXT NOT NULL,
-  worn VARCHAR(45) NOT NULL,
+  worn VARCHAR(45) NULL,
   price INT NOT NULL,
   accepted_by_admin VARCHAR(60) NOT NULL,
   seller_id INT NULL,
   userid  INT NULL, 
   UNIQUE INDEX id_UNIQUE (id ASC));
 `;
+
+const offeredProducts = `
+CREATE TABLE IF NOT EXISTS offered_products (
+  id INT NOT NULL AUTO_INCREMENT,
+  product_id INT NOT NULL,
+  offered_buyer_id INT NOT NULL,
+  offered_price INT NOT NULL,
+  PRIMARY KEY (id));
+`
 
 const createSellerAccount = `
 CREATE TABLE IF NOT EXISTS selleraccount (
@@ -223,7 +232,7 @@ const getshippingAddress= "Select * from shipping_address"
 const retrievingAdminQuery = "SELECT * FROM admin";
 const udpateAdminQuery = "UPDATE admin SET ? WHERE email = ?";
 const retrievingSellerProductsQuery = "select * from products";
-
+const offeredProductsQuery = "INSERT INTO offered_products (`product_id`,`offered_buyer_id`,`offered_price`) VALUES(?,?,?)";
 
 // const cartpaymentupdateQuery = "UPDATE cart SET payment_status = ?, buyer_id = ? WHERE id = ?";
 
@@ -237,6 +246,7 @@ module.exports = {
   createSellerAccount,
   cartproducts,
   wishproducts,
+  offeredProducts,
   contactinfo,
   addressinfo1,
   addressinfo2,
@@ -276,5 +286,6 @@ module.exports = {
   udpateAdminQuery,
   retrievingAdminQuery,
   deleteOrderItemsQuery,
-  retrievingSellerProductsQuery
+  retrievingSellerProductsQuery,
+  offeredProductsQuery
 };
