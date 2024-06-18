@@ -3,7 +3,6 @@ import Sellernavbar from "./Sellernavbar";
 import Sellermenu from "./Sellermenu";
 import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Sellerproducts() {
@@ -107,13 +106,14 @@ export default function Sellerproducts() {
         <div className="col-md-10 ">
           <div className="fullscreen2">
             <main>
-              <div className="d-flex justify-content-between m-2">
+              {/* <div className="d-flex justify-content-between m-2"> */}
+              <div className="m-2">
                 <h1 style={{fontSize:"28px"}}>Products</h1>
-                <Link to="/addnewproduct">
+                {/* <Link to="/addnewproduct">
                   <button className="btn btn-primary">
                     <i className="bi bi-plus-square-fill"></i> Add new product
                   </button>
-                </Link>
+                </Link> */}
               </div>
 
               <div className="border m-3 rounded">

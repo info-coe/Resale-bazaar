@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS cart (
     alteration VARCHAR(45) NOT NULL,
     size VARCHAR(45) NOT NULL,
     measurements TINYTEXT NOT NULL,
-    worn VARCHAR(45) NULL,
+  \`condition\` VARCHAR(255) NULL,     
     price INT NOT NULL,
     accepted_by_admin VARCHAR(60) NOT NULL,
     seller_id INT NULL,
@@ -103,6 +103,11 @@ const ordersproducts = `
     product_id INT NOT NULL,
     payment_status TINYINT(4) NULL,
     buyer_id INT NULL, 
+    shipment_id VARCHAR(45) NULL,
+    order_id VARCHAR(45) NULL,
+    ordered_date DATE NULL,
+    shipped_date DATE NULL,
+    delivered_date DATE NULL,
     UNIQUE INDEX id_UNIQUE (id ASC));
 `
 
@@ -121,7 +126,7 @@ CREATE TABLE IF NOT EXISTS wish (
   alteration VARCHAR(45) NOT NULL,
   size VARCHAR(45) NOT NULL,
   measurements TINYTEXT NOT NULL,
-  worn VARCHAR(45) NULL,
+  \`condition\` VARCHAR(255) NULL,
   price INT NOT NULL,
   accepted_by_admin VARCHAR(60) NOT NULL,
   seller_id INT NULL,
@@ -213,19 +218,21 @@ const retrievingKidsProductsQuery = "select * from products WHERE `product_type`
 const retrievingJewelleryProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingBooksProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, language, quantity, price, material, occasion, type, brand, product_condition, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
-const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, `worn`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
+const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, \`condition\`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
 const retrievingCartItemsQuery = "select * from cart";
 const updateCartItemsQuery = "UPDATE cart SET userid = ? WHERE id = ?";
 const deleteCartItemsQuery = "DELETE FROM cart WHERE id = ?";
 const deleteOrderItemsQuery = "DELETE FROM orders WHERE product_id = ? and buyer_id = ?";
-const addToWishlistQuery = "INSERT INTO wish (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, `worn`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
+const addToWishlistQuery = "INSERT INTO wish (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, \`condition\`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
 const retrievingWishlistItemsQuery = "select * from wish";
 const deleteWishlistItemsQuery = "DELETE FROM wish WHERE id = ?";
 const retrieveContactusQuery = "Select * from contact";
 const addContactusQuery = "INSERT INTO contact (`name`,`email`,`enquiry`) VALUES(?)";
 const addBillingAddress = `INSERT INTO billing_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 const addShippingAddress = `INSERT INTO shipping_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buyer_id) VALUES (?, ?, ?)";
+const updateShippingAddress = `UPDATE shipping_address SET firstname = ?, lastname = ?, email = ?, country = ?, state = ?, city = ?, address1 = ?, address2 = ?, pincode = ?, phone = ? WHERE id = ?`;
+const deleteShippingAddress = "DELETE FROM shipping_address WHERE id = ?"
+const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buyer_id, shipment_id, order_id, ordered_date, shipped_date, delivered_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 const deleteProductsQuery = "DELETE FROM  products WHERE id=?";
 const deletecartitemQuery = "DELETE FROM cart WHERE userid = ? AND EXISTS (SELECT 1 FROM orders WHERE buyer_id = ?)"
 const getbillingAddress= "Select * from billing_address"
@@ -235,6 +242,8 @@ const udpateAdminQuery = "UPDATE admin SET ? WHERE email = ?";
 const retrievingSellerProductsQuery = "select * from products";
 const offeredProductsQuery = "INSERT INTO offered_products (`product_id`,`offered_buyer_id`,`offered_price`,`product_status`) VALUES(?,?,?,?)";
 const retrievingOfferedProductsQuery = "select * from offered_products";
+const updatedOfferProductAcceptedQuery = "UPDATE offered_products SET product_status = 'Accepted' WHERE id = ?";
+const updatedOfferProductRejectQuery  = "UPDATE offered_products SET product_status = 'Rejected' WHERE id = ?"
 
 // const cartpaymentupdateQuery = "UPDATE cart SET payment_status = ?, buyer_id = ? WHERE id = ?";
 
@@ -290,5 +299,9 @@ module.exports = {
   deleteOrderItemsQuery,
   retrievingSellerProductsQuery,
   offeredProductsQuery,
-  retrievingOfferedProductsQuery
+  retrievingOfferedProductsQuery,
+  updateShippingAddress,
+  deleteShippingAddress,
+  updatedOfferProductAcceptedQuery,
+  updatedOfferProductRejectQuery
 };

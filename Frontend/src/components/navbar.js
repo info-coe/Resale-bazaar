@@ -68,6 +68,7 @@ const MyNavbar = () => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars 
   const [sellers, setSellers] = useState([]);
 
   useEffect(() => {
@@ -280,6 +281,7 @@ const handleKeyPress = (event) => {
                         </Link>
                       </li>
                     ) : null}
+                    {user.email !== "admin@admin" ? (
                       <li className="p-1">
                         <Link
                           to="/sellerproducts"
@@ -289,6 +291,7 @@ const handleKeyPress = (event) => {
                           Administration
                         </Link>
                       </li>
+                    ) : null}
 
 
                     <li className="p-1">
@@ -299,14 +302,17 @@ const handleKeyPress = (event) => {
                         <i className="bi bi-person-fill-gear"></i> My Account
                       </Link>
                     </li>
+                    {user.email !== "admin@admin" ? (
                     <li className="p-1">
                       <Link
                         to="/offers"
                         className="text-decoration-none text-dark ps-3"
                       >
-                        <i className="bi bi-person-fill-gear"></i> Your Offers
+                        <i className="bi bi-cash-stack"></i> Your Offers
                       </Link>
                     </li>
+                  ) : null}
+
                     <li className="p-1">
                       <Link
                         to="/login"

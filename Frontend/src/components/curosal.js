@@ -1,18 +1,17 @@
 import React from "react";
-import Carousel from "react-elastic-carousel";
 import kidsurl from "../images/kids22.jpeg";
 import womenurl from "../images/RB-women.jfif";
 import jeweleryurl from "../images/jewelry.jpg";
 import booksurl from "../images/books.jpg";
 import { Link } from "react-router-dom";
 
-const breakPoints = [
-  { width: 1, itemsToShow: 1 },
-  { width: 550, itemsToShow: 2 },
-  { width: 768, itemsToShow: 2 },
-  { width: 992, itemsToShow: 3 },
-  { width: 1200, itemsToShow: 4 },
-];
+// const breakPoints = [
+//   { width: 1, itemsToShow: 1 },
+//   { width: 550, itemsToShow: 2 },
+//   { width: 768, itemsToShow: 2 },
+//   { width: 992, itemsToShow: 3 },
+//   { width: 1200, itemsToShow: 4 },
+// ];
 
 function Curosel() {
   return (

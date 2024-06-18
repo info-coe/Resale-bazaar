@@ -24,7 +24,12 @@ export default function Finalcheckoutpage() {
                   payment_status: true,
                   token,
                   product_id: item.product_id,
-                  main_id: item.id
+                  main_id: item.id,
+                  shipment_id: `TRBSID${token}${item.product_id}`,
+                  order_id : `TRBOID${token}${item.product_id}`,
+                  ordered_date :  new Date().toLocaleDateString("fr-CA"),
+                  shipped_date : null,
+                  delivered_date : null
                 })
                 .then((res) => {
                   alert("Product Purchased Successfully");

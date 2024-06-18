@@ -38,14 +38,14 @@ export default function Sellernavbar() {
         </button>
         <div className="collapse d-md-flex ps-2 pe-2 mt-2 text-white" id="navbarTogglerDemo03">
                 <ul className="list-unstyled d-flex  gap-5">
-                  <li className='ms-3 '>
+                  {/* <li className='ms-3 '>
                     <Link
                       to="/addnewproduct"
                       className="text-decoration-none text-white"
                     >
                       Add New Product
                     </Link>
-                  </li>
+                  </li> */}
                   <li className=''>
                       {user.firstname} {user.lastname}
                   </li>

@@ -54,7 +54,11 @@ const {
   deleteOrderItemsQuery,
   retrievingSellerProductsQuery,
   offeredProductsQuery,
-  retrievingOfferedProductsQuery
+  retrievingOfferedProductsQuery,
+  updateShippingAddress,
+  deleteShippingAddress,
+  updatedOfferProductAcceptedQuery,
+  updatedOfferProductRejectQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -307,6 +311,31 @@ app.get("/user", (req, res) => {
     } else {
       return res.json("Fail");
     }
+  });
+});
+
+app.post("/offers/:offerId/accept", (req, res) => {
+  const { offerId } = req.params;
+  const sql = updatedOfferProductAcceptedQuery;
+  db.query(sql, [offerId], (err, data) => {
+    if (err) {
+      console.error("Error accepting offer:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    console.log("Offer accepted successfully");
+    return res.json({ message: "Offer accepted successfully" });
+  });
+});
+app.post("/offers/:offerId/reject", (req, res) => {
+  const { offerId } = req.params;
+  const sql = updatedOfferProductRejectQuery;
+  db.query(sql, [offerId], (err, data) => {
+    if (err) {
+      console.error("Error rejecting offer:", err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    console.log("Offer rejected successfully");
+    return res.json({ message: "Offer rejected successfully" });
   });
 });
 
@@ -971,15 +1000,45 @@ app.get("/saveShippingAddress", (req, res) => {
   });
 });
 
+app.put('/saveShippingAddress/:id', (req, res) => {
+  const id = req.params.id;
+  const { firstname, lastname, email, country, state, city, address1, address2, pincode, phone } = req.body;
 
+  const sql = updateShippingAddress;
+  const values = [firstname, lastname, email, country, state, city, address1, address2, pincode, phone, id];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('Error updating shipping address:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    console.log('Shipping address updated successfully');
+    return res.status(200).json({ message: 'Shipping address updated successfully' });
+  });
+});
+
+app.delete('/saveShippingAddress/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = deleteShippingAddress;
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error('Error deleting shipping address:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    console.log('Shipping address deleted successfully');
+    return res.status(200).json({ message: 'Shipping address deleted successfully' });
+  });
+});
 
 app.post("/updatepayment", (req, res) => {
   const payment_status = req.body.payment_status;
   const token = parseInt(req.body.token); // Ensure that token is parsed as an integer
+  const {shipment_id,order_id,ordered_date,shipped_date,delivered_date} = req.body;
 
   // Insert into orders table
   const insertOrderSql = paymentStatusQuery;
-  db.query(insertOrderSql, [req.body.product_id, payment_status, token], (err, result) => {
+  db.query(insertOrderSql, [req.body.product_id, payment_status, token, shipment_id,order_id,ordered_date,shipped_date,delivered_date], (err, result) => {
     if (err) {
       console.error("Error inserting into orders table:", err);
       return res.status(500).json({ error: "Error updating payment status" });

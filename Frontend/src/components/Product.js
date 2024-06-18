@@ -6,6 +6,7 @@ import axios from "axios";
 const Product = (props) => {
   //eslint-disable-next-line no-unused-vars
   const [existingProducts, setExistingProducts] = useState([]);
+    // eslint-disable-next-line no-unused-vars 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const navigate = useNavigate();
 

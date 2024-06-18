@@ -147,6 +147,7 @@ const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [typingText, setTypingText] = useState('');
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+    // eslint-disable-next-line no-unused-vars 
   const [phCount, setPhCount] = useState(0);
   const [placeholders] = useState([
     'Pink Pattu Saree',
@@ -188,6 +189,7 @@ const SearchBar = ({ onSearch }) => {
     setTypingText('');
     setPhCount(0);
     printLetter(currentPlaceholder, 0);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [placeholderIndex]);
 
   const handleInputChange = (event) => {

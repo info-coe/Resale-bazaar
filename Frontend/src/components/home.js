@@ -14,8 +14,6 @@ const Home = () => {
   // eslint-disable-next-line no-unused-vars     
   const [allProducts, setAllProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
-  
-  const productsPerPage = 10;
 
   useEffect(() => {
     axios
