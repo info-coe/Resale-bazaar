@@ -58,7 +58,7 @@ export default function Addnewproduct() {
     // Validate number of selected images
     if (images.length < 3) {
       newErrors.files = "Please select at least 3 images";
-    } else if (images.length > 10) {
+    } else if (images.length > 7) {
       newErrors.images = "Please select a maximum of 10 images";
     }
 
@@ -332,7 +332,7 @@ export default function Addnewproduct() {
       nextAvailableIndex,
       0,
       <div className="col-6 col-md-3 mb-3" key="addPhoto" style={{cursor:'pointer' }}>
-      <label className="w-100 text-center" htmlFor="addPhotoInput" >
+      <label className="w-100 text-center" htmlFor="productimageurl" >
         <div
           className="card d-flex justify-content-center align-items-center"
           style={{ height: "150px"}}
@@ -341,13 +341,33 @@ export default function Addnewproduct() {
             <p>Add a photo</p>
             </i>
           <input
-            id="addPhotoInput"
+            id="productimageurl"
             type="file"
             accept="image/jpeg, image/png"
             multiple
-            onChange={handleFile}
+            onChange={(e) => {
+              handleFile(e);
+              handleKeyup(e); // Trigger validation when files are selected
+            }}
+            name="productimageurl"
+            title="Upload minimum 3 to max 7 images"
+            required
             style={{ display: "none" }}
           />
+          
+          {/* <input
+                            type="file"
+                            className="form-control"
+                            multiple
+                            onChange={(e) => {
+                              handleFile(e);
+                              handleKeyup(e); // Trigger validation when files are selected
+                            }}
+                            name="productimageurl"
+                            id="productimageurl"
+                            title="Upload minimum 4 to max 10 images"
+                            required
+                          /> */}
         </div>
         </label>
 
@@ -464,13 +484,18 @@ export default function Addnewproduct() {
                           >
                             Upload Images
                           </label>
+                        
                           <div className="row">{allDivs}</div>
+                          
                           {/* SVG icons */}
                           <svg style={{ display: "none" }}>
                             <symbol id="photo" viewBox="0 0 24 24">
                               <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
                             </symbol>
                           </svg>
+                          {errors.files && (
+                          <span className="text-danger">{errors.files}</span>
+                        )}
                         </div>
                       </div>
                       <div className="mb-3">
@@ -500,7 +525,7 @@ export default function Addnewproduct() {
                         >
                           Upload Images
                         </label> */}
-                        <div className="d-flex">
+                        {/* <div className="d-flex"> */}
                           {/* <input
                             type="file"
                             className="form-control"
@@ -515,10 +540,10 @@ export default function Addnewproduct() {
                             required
                           /> */}
                           {/* <span className="text-danger fs-4"> &nbsp;*</span> */}
-                        </div>
-                        {errors.files && (
+                        {/* </div> */}
+                        {/* {errors.files && (
                           <span className="text-danger">{errors.files}</span>
-                        )}
+                        )} */}
                       </div>
                       {values.producttype !== "books" && (
                         <div className="mb-3">
