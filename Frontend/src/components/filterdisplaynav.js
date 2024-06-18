@@ -29,8 +29,8 @@ const Filterdisplaynav = (props) => {
           >
             <option value="3">3</option>
             <option value="6">6</option>
-            <option value="9">9</option>
-            <option value="15">15</option>
+            <option value="8">8</option>
+            <option value="16">16</option>
           </select>
         </div>
       </nav>

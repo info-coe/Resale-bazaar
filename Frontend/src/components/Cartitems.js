@@ -22,15 +22,15 @@ export default function Cartitems() {
     <div className="fullscreen">
       <MyNavbar />
       <main>
-        <div>
+        <div className="container p-md-5 pt-4">
          
           <div className="table-responsive">
           <table className="table table-hover">
             <thead>
               <tr className="">
                 <th className="bg-secondary text-white">#</th>
-                <th className="bg-secondary text-white">Product Name</th>
                 <th className="bg-secondary text-white">Product Image</th>
+                <th className="bg-secondary text-white">Product Name</th>
                 <th className="bg-secondary text-white">Price</th>
               </tr>
             </thead>
@@ -71,7 +71,7 @@ export default function Cartitems() {
           </table>
           </div>
         </div>
-        <div className="mt-2">
+        <div className="container mt-2">
           <div className="d-flex flex-wrap gap-3 float-end me-2">
             <p className="mt-1"><b>Total Price: &#8377; {totalPrice}</b></p>
             <button
