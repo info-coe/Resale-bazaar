@@ -280,7 +280,6 @@ const handleKeyPress = (event) => {
                         </Link>
                       </li>
                     ) : null}
-                    {sellers.length !== 0 ? (
                       <li className="p-1">
                         <Link
                           to="/sellerproducts"
@@ -290,7 +289,6 @@ const handleKeyPress = (event) => {
                           Administration
                         </Link>
                       </li>
-                    ) : null}
 
 
                     <li className="p-1">

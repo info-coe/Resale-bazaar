@@ -111,14 +111,14 @@ const Home = () => {
         {/* Womens Fashion */}
        <div className="d-flex justify-content-between">
        <h4 className="ms-2 ms-md-5">Womens Fashion</h4>
-        <div className="d-flex justify-content-end" style={{padding:"5px 70px 10px 10px"}}>
+        <div className="d-flex justify-content-end" style={{padding:"5px 50px 10px 10px"}}>
             <Link to="/women" className="text-decoration-none">
               See more
             </Link>
           </div>
        </div>
-        <div className="d-flex justify-content-center">
-          <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 justify-content-center">
+        <div className="d-flex flex-wrap">
+          <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 ">
             {displayedProducts.length > 0 ? (
               <>
                 {displayedProducts.filter((item)=>item.product_type==="women").map((product, index) => (
@@ -128,7 +128,7 @@ const Home = () => {
                 ))}
               </>
             ) : (
-              <h3 className="text-center mb-4" style={{ fontSize: "28px" }}>No products to display</h3>
+              <h3 className="text-center mb-4" style={{ fontSize: "18px" }}>No products to display</h3>
             )}
           </div>
         </div>
@@ -141,14 +141,14 @@ const Home = () => {
         
          <div className="d-flex justify-content-between">
          <h4 className="ms-2 ms-md-5">Kids Fashion</h4>
-        <div className="d-flex justify-content-end" style={{padding:"5px 70px 10px 10px"}}>
+        <div className="d-flex justify-content-end" style={{padding:"5px 50px 10px 10px"}}>
             <Link to="/kids" className="text-decoration-none">
               See more
             </Link>
           </div>
        </div>
-        <div className="d-flex justify-content-center">
-          <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 justify-content-center">
+        <div className="d-flex flex-wrap">
+          <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 ">
             {displayedProducts.length > 0 ? (
               <>
                 {displayedProducts.filter((item)=>item.product_type==="kids").map((product, index) => (
@@ -158,7 +158,7 @@ const Home = () => {
                 ))}
               </>
             ) : (
-              <h3 className="text-center mb-4" style={{ fontSize: "28px" }}>No products to display</h3>
+              <h3 className="text-center mb-4" style={{ fontSize: "18px" }}>No products to display</h3>
             )}
           </div>
         </div>
@@ -167,14 +167,14 @@ const Home = () => {
          
          <div className="d-flex justify-content-between">
          <h4 className="ms-2 ms-md-5">Jewellery</h4>
-        <div className="d-flex justify-content-end" style={{padding:"5px 70px 10px 10px"}}>
+        <div className="d-flex justify-content-end" style={{padding:"5px 50px 10px 10px"}}>
             <Link to="/jewellery" className="text-decoration-none">
               See more
             </Link>
           </div>
        </div>
-        <div className="d-flex justify-content-center">
-          <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 justify-content-center">
+        <div className="d-flex flex-wrap">
+          <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 ">
             {displayedProducts.length > 0 ? (
               <>
                 {displayedProducts.filter((item)=>item.product_type==="jewellery").map((product, index) => (
@@ -184,7 +184,7 @@ const Home = () => {
                 ))}
               </>
             ) : (
-              <h3 className="text-center mb-4" style={{ fontSize: "28px" }}>No products to display</h3>
+              <h3 className="text-center mb-4" style={{ fontSize: "18px" }}>No products to display</h3>
             )}
           </div>
         </div>
@@ -193,14 +193,14 @@ const Home = () => {
         
          <div className="d-flex justify-content-between">
          <h4 className="ms-2 ms-md-5">Books</h4>
-        <div className="d-flex justify-content-end" style={{padding:"5px 70px 10px 10px"}}>
+        <div className="d-flex justify-content-end" style={{padding:"5px 50px 10px 10px"}}>
             <Link to="/books" className="text-decoration-none">
               See more
             </Link>
           </div>
        </div>
-        <div className="d-flex justify-content-center">
-          <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 justify-content-center">
+        <div className="d-flex flex-wrap">
+          <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 ">
             {displayedProducts.length > 0 ? (
               <>
                 {displayedProducts.filter((item)=>item.product_type==="books").map((product, index) => (
@@ -210,7 +210,7 @@ const Home = () => {
                 ))}
               </>
             ) : (
-              <h3 className="text-center mb-4" style={{ fontSize: "28px" }}>No products to display</h3>
+              <h3 className="text-center mb-4" style={{ fontSize: "18px" }}>No products to display</h3>
             )}
           </div>
         </div>

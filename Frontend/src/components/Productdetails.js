@@ -389,9 +389,9 @@ export default function Productdetails() {
             )}
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
-                <b>Times Worn</b>
+                <b>Condition</b>
               </p>
-              <p className=" col-md-8  col-lg-10">: {productdetails.worn}</p>
+              <p className=" col-md-8  col-lg-10">: {productdetails.condition}</p>
             </div>
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
