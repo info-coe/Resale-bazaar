@@ -15,7 +15,7 @@ import Ringsimg from "../../images/ring.jpg";
 
 const Jewelryallcollection = () => {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(6);
+  const [pageSize, setPageSize] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -117,8 +117,9 @@ const Jewelryallcollection = () => {
 
         <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
           <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Jewellery Collection"/>
-
-          <div className="d-flex flex-wrap  justify-content-around gap-3 mt-5">
+          
+        <div className="d-flex flex-wrap justify-content-center">
+          <div className="d-md-flex flex-wrap ms-md-2 mt-5">
             {tableData.length > 0 ? (
               tableData.map((product, index) => (
                 <Product
@@ -129,9 +130,10 @@ const Jewelryallcollection = () => {
                 />
               ))
             ) : (
-              <h1 style={{fontSize:"28px"}}>No products to display</h1>
+              <h1 style={{fontSize:"18px"}}>No products to display</h1>
             )}
           </div>
+        </div>
           <Pagination
             stateData={filteredProducts}
             pageSize={pageSize}

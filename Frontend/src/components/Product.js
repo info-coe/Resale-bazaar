@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useCart } from "./CartContext";
-import { Link, useNavigate } from "react-router-dom";
+// import { useCart } from "./CartContext";
+import { Link} from "react-router-dom";
 import axios from "axios";
 
 const Product = (props) => {
   //eslint-disable-next-line no-unused-vars
   const [existingProducts, setExistingProducts] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const { addToCart, addToWishlist, cartItems, wishItems } = useCart();
+  // const { addToCart, addToWishlist, cartItems, wishItems } = useCart();
   props.product.userid = sessionStorage.getItem("user-token");
   // console.log(cartItems.length);
   useEffect(() => {
@@ -38,32 +38,32 @@ const Product = (props) => {
   //     navigate("/login");
   //   }
   // };
-  const handleAddToWishlist = () => {
-    const isProductInWishlist = wishItems.some(
-      (item) => item.product_id === props.product.id
-    );
-    if (isProductInWishlist) {
-      alert("Product already exists in the wishlist");
-      return; // Exit the function early
-    } else if (isLoggedIn) {
-      addToWishlist(props.product);
-    } else {
-      navigate("/login");
-    }
-  };
+  // const handleAddToWishlist = () => {
+  //   const isProductInWishlist = wishItems.some(
+  //     (item) => item.product_id === props.product.id
+  //   );
+  //   if (isProductInWishlist) {
+  //     alert("Product already exists in the wishlist");
+  //     return; // Exit the function early
+  //   } else if (isLoggedIn) {
+  //     addToWishlist(props.product);
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // };
 
-  const handleAddToCart = () => {
-    const isProductInCart = cartItems.some(
-      (item) => item.product_id === props.product.id
-    );
-    if (isProductInCart) {
-      alert("Product already exists in the cart");
-    } else if (isLoggedIn) {
-      addToCart(props.product, "main");
-    } else {
-      navigate("/login");
-    }
-  };
+  // const handleAddToCart = () => {
+  //   const isProductInCart = cartItems.some(
+  //     (item) => item.product_id === props.product.id
+  //   );
+  //   if (isProductInCart) {
+  //     alert("Product already exists in the cart");
+  //   } else if (isLoggedIn) {
+  //     addToCart(props.product, "main");
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // };
   const datta = JSON.parse(props.product.image);
   const firstImage = datta[0];
 
@@ -83,38 +83,11 @@ const Product = (props) => {
           </div>
         </Link>
         <div className="card-body">
-          {/* <h6 className="card-text">{props.product.name}</h6> */}
           <p className="card-text text-success">
             <b>&#8377; {props.product.price}.00</b>
           </p>
-          <h6 className="card-text" style={{lineHeight:"8px"}}>{props.product.size}</h6>
-
-         
+          <h6 className="card-text" style={{lineHeight:"8px"}}>{props.product.size}</h6>         
         </div>
-        {/* <div className="card-footer d-flex flex-wrap justify-content-center">
-          {props.product.quantity > 0 ? (
-            <>
-              <button
-                className="btn btn-secondary ms-1 me-1"
-                onClick={handleAddToCart}
-              >
-                Add to Cart
-              </button>
-              <button
-                className="btn btn-secondary ms-1 me-1"
-                onClick={handleAddToWishlist}
-              >
-                <i className="bi bi-heart-fill" />
-              </button>
-            </>
-          ) : (
-            <>
-              <h6 className="text-danger" style={{ fontWeight: "800" }}>
-                Out of Stock
-              </h6>
-            </>
-          )}
-        </div> */}
       </div>
     </div>
   );

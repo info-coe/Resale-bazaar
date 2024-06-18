@@ -13,7 +13,7 @@ import Filter from "./filter";
 
 const Horror= () => {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(6);
+  const [pageSize, setPageSize] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts,setFilteredProducts]= useState([])
 
@@ -68,8 +68,8 @@ const Horror= () => {
 
           <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
             <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Horror Books"/>
-
-            <div className="d-flex flex-wrap  justify-content-around gap-3 mt-5">
+            <div className="d-flex flex-wrap justify-content-center">
+            <div className="d-md-flex flex-wrap ms-md-2 mt-5">
               {tableData.length > 0 ? (
                 tableData.map((product, index) => (
                   <Product
@@ -80,8 +80,9 @@ const Horror= () => {
                   />
                 ))
               ) : (
-                <h1 style={{fontSize:"28px"}}>No products to display</h1>
+                <h1 style={{fontSize:"18px"}}>No products to display</h1>
               )}
+            </div>
             </div>
             <Pagination
               stateData={filteredProducts}
