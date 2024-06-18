@@ -473,4 +473,3 @@ const handleKeyPress = (event) => {
 };
 
 export default MyNavbar;
-

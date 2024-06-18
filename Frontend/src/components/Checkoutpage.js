@@ -8,6 +8,7 @@ const Checkout = () => {
   const { user, cartItems, calculateTotalPrice } = useCart();
   const [skipShippingAddress, setSkipShippingAddress] = useState(false);
   const totalPrice = calculateTotalPrice();
+  const [disabled, setDisabled] = useState(false);
 
   const [step, setStep] = useState(1);
   const [fields, setFields] = useState({
@@ -230,6 +231,7 @@ const Checkout = () => {
   // };
 
   const createPayment = async () => {
+    setDisabled(true)
     try {
       let shippingAddressData = {};
       let billingAddressData = {};
@@ -253,7 +255,7 @@ const Checkout = () => {
             billingAddressData = fields;
           }
         }
-  
+
         // Send shipping address to backend if it's not null
         if (shippingAddressData !== null) {
           const token = sessionStorage.getItem("user-token");
@@ -366,7 +368,7 @@ const Checkout = () => {
           <div className="col-md-6">
             <div className="d-md-flex flex-column">
               <h2 style={{fontSize:"18px"}}>Shipping Addresses</h2>
-              {shippingaddress.map((address, index) => (
+              {shippingaddress.slice(0,3).map((address, index) => (
                 <div key={`shipping_${index}`} className={`shipping-address border rounded p-3 ${selectedShippingAddress === address ? 'selected' : ''}`} style={{ maxHeight: "150px", overflowY: "auto" }} onClick={() => handleDivClick('shipping', index)}>
                   <h6><input type="radio" name="shippingAddress" className="me-2" checked={selectedShippingAddress === address} onChange={() => {}} />Shipping Address {index + 1}</h6>
                   <p>{address.firstname} {address.lastname}</p>
@@ -383,7 +385,7 @@ const Checkout = () => {
           <div className="col-md-6">
             <div className="d-flex flex-column">
               <h2 style={{fontSize:"18px"}}>Billing Addresses</h2>
-              {billingaddress.map((address, index) => (
+              {billingaddress.slice(0,3).map((address, index) => (
                 <div key={`billing_${index}`} className={`billing-address border rounded p-3 ${selectedBillingAddress === address ? 'selected' : ''}`} style={{ maxHeight: "150px", overflowY: "auto" }} onClick={() => handleDivClick('billing', index)}>
                   <h6><input type="radio" name="billingAddress" className="me-2" checked={selectedBillingAddress === address} onChange={() => {}} />Billing Address {index + 1}</h6>
                   {/* Display address details */}
@@ -993,12 +995,13 @@ const Checkout = () => {
                     <i className="bi bi-arrow-left-square"></i> Back
                   </button>
                   <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={createPayment}
-                  >
-                    <i class="bi bi-bag-check-fill me-1"></i>Checkout
-                  </button>
+      type="button"
+      className="btn btn-primary"
+      onClick={createPayment}
+      disabled={disabled}  // Disable the button if disabled state is true
+    >
+      <i className="bi bi-bag-check-fill me-1"></i>Checkout
+    </button>
                 </div>
               </>
             )}

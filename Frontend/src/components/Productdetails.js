@@ -34,7 +34,7 @@ const responsive = {
 export default function Productdetails() {
   const [add, setAdd] = useState("0.00");
   const [success, setSuccess] = useState(false);
-  
+
   const { id } = useParams();
   const location = useLocation();
   const { productdetails, admin } = location.state || {};
@@ -174,24 +174,20 @@ export default function Productdetails() {
   const datta = JSON.parse(productdetails.image);
   const firstImage = datta[0];
 
-  const userProduct=productdetails.seller_id.toString()===sessionStorage.getItem('user-token')
   const handleOffer = () => {
-    if(userProduct){
-      alert('You are the seller of this product')
-    }else {
     setSuccess(true);
     axios
     .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`,{
       product_id : id,
       offered_buyer_id : sessionStorage.getItem("user-token"),
-      offered_price : add
+      offered_price : add,
+      product_status:"Pending"
     })
     .then((res) => {
       console.log(res);
     })
     .catch((err) => console.log(err));
   }
-}
 
   return (
     <div className="fullscreen">
@@ -460,7 +456,7 @@ export default function Productdetails() {
                       </div> */}
 
                       {/*Button trigger modal*/}
-                        { !isLoggedIn || userProduct ? null :  
+
                       <div className="col-12 col-md-7 mb-2">
                         {success ? (
                           <div className="text-center">
@@ -672,7 +668,6 @@ export default function Productdetails() {
                           </div>
                         </div>
                       </div>
-                      }
                     </div>
                   </div>
                 </div>
