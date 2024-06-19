@@ -703,7 +703,7 @@ const handleViewProfile = (sellerId) => {
                           </div>
                         </div>
                       </div>
-                      {!isLoggedIn || userProduct ? null : (
+                    
 
 <div className="col-12 col-md-7">
 <div className="user-details border shadow-sm p-3 bg-body rounded">
@@ -714,7 +714,6 @@ const handleViewProfile = (sellerId) => {
 ))}
 </div>
 </div>
-)}
                     </div>
                   </div>
                 </div>
