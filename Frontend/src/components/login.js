@@ -92,7 +92,7 @@ const Login = () => {
       <MyNavbar />
       <main>
         <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">
-          <div className="col-md-5">
+          {/* <div className="col-md-5">
             <div className="card bg-white shadow mb-3 ">
               <div className="card-body">
                 <h1 className="fs-4">NEW CUSTOMER</h1>
@@ -136,8 +136,8 @@ const Login = () => {
                 )}
               </div>
             </div>
-          </div>
-          <div className="col-md-5">
+          </div> */}
+          <div className="col-md-4">
             <div className="card bg-white shadow mb-3">
               <div className="card-body">
                 <form action="" method="post" onSubmit={handleSubmit}>
@@ -170,7 +170,7 @@ const Login = () => {
                  
                   </div>
                   <hr /> */}
-                  <h3>Login In</h3>
+                  <h3 className="text-center">Login</h3>
                   <div className="form-group p-2">
                     <label htmlFor="username">Email</label>
                     <input
