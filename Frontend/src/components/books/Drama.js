@@ -26,7 +26,7 @@ const Drama = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filterProducts = res.data.filter(
-            (item) => item.category === "drama"
+            (item) => item.category === "Drama"
           );
           setProducts(filterProducts);
           setFilteredProducts(filterProducts);

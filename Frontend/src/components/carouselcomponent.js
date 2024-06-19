@@ -11,9 +11,9 @@ import kidstablet from "../images/RB-slide2.JPEG";
 import jewellerydesktop from "../images/RB-slide4.jpg";
 import jewellerymobile from "../images/RB-slide4.jpg";
 import jewellerytablet from "../images/RB-slide4.jpg";
-import booksdesktop from "../images/RB-Books-banner.jpg";
-import booksmobile from "../images/RB-Books-banner.jpg";
-import bookstablet from "../images/RB-Books-banner.jpg";
+// import booksdesktop from "../images/RB-Books-banner.jpg";
+// import booksmobile from "../images/RB-Books-banner.jpg";
+// import bookstablet from "../images/RB-Books-banner.jpg";
 
 function CarouselComponent() {
   const windowWidth = window.innerWidth;
@@ -66,7 +66,7 @@ function CarouselComponent() {
        
       </Carousel.Caption>
     </Carousel.Item>
-    <Carousel.Item>
+    {/* <Carousel.Item>
     <div className='image-container'>
 
             <img
@@ -78,10 +78,10 @@ function CarouselComponent() {
       </div>
 
       <Carousel.Caption>
-        {/* <h5 className='bannerHead' >Books Collection</h5> */}
+        <h5 className='bannerHead' >Books Collection</h5>
        
       </Carousel.Caption>
-    </Carousel.Item>
+    </Carousel.Item> */}
   </Carousel>
   </div>
   )

@@ -23,7 +23,7 @@ const Highendcouture = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filteredProducts = res.data.filter(
-            (item) => item.category === "highendcouture"
+            (item) => item.category === "Highendcouture"
           );
           setProducts(filteredProducts);
           setFilteredProducts(filteredProducts);

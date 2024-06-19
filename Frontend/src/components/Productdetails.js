@@ -65,6 +65,7 @@ export default function Productdetails() {
   //   id: id,
   // });
 
+
   const handleProductlist = () => {
     axios
       .post(
@@ -188,6 +189,40 @@ export default function Productdetails() {
     })
     .catch((err) => console.log(err));
   }
+
+  const userProduct=Productdetails.seller_id ===sessionStorage.getItem('user-token')
+
+  const [userdetails, setUserDetails] = useState([]);
+
+useEffect(() => {
+  axios
+    .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+    .then((res) => {
+      if (res.data !== "Fail" && res.data !== "Error") {
+        // Filter user details where user_id === productdetails.seller_id
+        const filteredUserDetails = res.data.filter(item => item.user_id === productdetails.seller_id);
+        // Map filtered details to desired structure
+        const userDetails = filteredUserDetails.map(item => ({
+          userId: item.user_id,
+          email: item.email,
+          phone: item.phone,
+          name:item.firstname +" "+ item.lastname
+          // Add more fields as needed
+        }));
+        // Set filtered user details to state
+        setUserDetails(userDetails);
+      }
+    })
+    .catch((err) => console.log(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [productdetails.seller_id]);
+const navigates = useNavigate()
+const handleViewProfile = (sellerId) => {
+  console.log(sellerId)
+  // Navigate to seller profile page with sellerId as a parameter
+  navigates(`/sellerprofile/${sellerId}`);
+};
+
 
   return (
     <div className="fullscreen">
@@ -397,7 +432,7 @@ export default function Productdetails() {
             </div>
 
             <p className="text-success fs-4">
-              <b>&#8377;{productdetails.price}.00</b>
+              <b>&#36;{productdetails.price}.00</b>
             </p>
             {productdetails.quantity > 0 ? (
               admin !== "admin" ? (
@@ -668,6 +703,18 @@ export default function Productdetails() {
                           </div>
                         </div>
                       </div>
+                      {!isLoggedIn || userProduct ? null : (
+
+<div className="col-12 col-md-7">
+<div className="user-details border shadow-sm p-3 bg-body rounded">
+{userdetails.map((user) => (
+<div>
+<p><i className="bi bi-person-circle fs-5"></i>&nbsp;{user.name}</p>
+</div>
+))}
+</div>
+</div>
+)}
                     </div>
                   </div>
                 </div>
@@ -698,7 +745,10 @@ export default function Productdetails() {
               </>
             )}
           </div>
+          
         </div>
+
+       
       </main>
       <Footer />
     </div>

@@ -22,7 +22,7 @@ const Earrings = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filterProducts = res.data.filter(
-            (item) => item.category === "earrings"
+            (item) => item.category === "Earrings"
           );
           setProducts(filterProducts);
           setFilteredProducts(filterProducts);

@@ -781,12 +781,12 @@ const Checkout = () => {
                 <div className="col-md-4 bg-white shadow float-md-end">
                   <div className="p-3 ">
                     <p className="mb-0 d-flex justify-content-between">
-                      Sub-Total: <span>&#8377;{totalPrice}.00</span>
+                      Sub-Total: <span>&#36;{totalPrice}.00</span>
                     </p>
                     <hr />
                     <p className="mb-0 fw-bold d-flex justify-content-between">
                       Total Price:{" "}
-                      <span className="fw-light">&#8377;{totalPrice}.00</span>
+                      <span className="fw-light">&#36;{totalPrice}.00</span>
                     </p>
                   </div>
                 </div>
@@ -977,12 +977,12 @@ const Checkout = () => {
                 <div className="col-md-4 bg-white shadow float-md-end">
                   <div className="p-3 ">
                     <p className="mb-0 d-flex justify-content-between">
-                      Sub-Total: <span>&#8377;{totalPrice}.00</span>
+                      Sub-Total: <span>&#36;{totalPrice}.00</span>
                     </p>
                     <hr />
                     <p className="mb-0 fw-bold d-flex justify-content-between">
                       Total Price:{" "}
-                      <span className="fw-light">&#8377;{totalPrice}.00</span>
+                      <span className="fw-light">&#36;{totalPrice}.00</span>
                     </p>
                   </div>
                 </div>

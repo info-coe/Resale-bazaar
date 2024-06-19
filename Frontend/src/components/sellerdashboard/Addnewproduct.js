@@ -41,7 +41,7 @@ export default function Addnewproduct() {
     "Forward",
     "Label",
     "Side",
-    "Flaw",
+    "Video",
   ];
   const totalPlaceholders = placeholders.length;
 
@@ -56,11 +56,18 @@ export default function Addnewproduct() {
     }
 
     // Validate number of selected images
-    if (images.length < 3) {
-      newErrors.files = "Please select at least 3 images";
-    } else if (images.length > 7) {
-      newErrors.images = "Please select a maximum of 10 images";
-    }
+    // if (images.length < 1) {
+    //   newErrors.files = "Please select at least 1 images";
+    // } else if (images.length > 7) {
+    //   newErrors.images = "Please select less than 7 images";
+    // }
+     // Validate number of selected images
+     const nonNullImages = images.filter((image) => image !== null);
+     if (nonNullImages.length < 2) {
+       newErrors.files = "Please select at least 3 images";
+     } else if (nonNullImages.length > 7) {
+       newErrors.images = "Please select less than 7 images";
+     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if there are no errors
@@ -78,31 +85,62 @@ export default function Addnewproduct() {
 
     setImages(newImages);
   };
+  // const removeImage = (index) => {
+  //   const newImages = [...images];
+  //   newImages.splice(index, 1); // Remove the image at the specified index
+  //   newImages.push(null); // Add a null placeholder to maintain the length of the array
+
+  //   setImages(newImages);
+  // };
+  
   const removeImage = (index) => {
     const newImages = [...images];
-    newImages.splice(index, 1); // Remove the image at the specified index
-    newImages.push(null); // Add a null placeholder to maintain the length of the array
+    newImages[index] = null;
 
     setImages(newImages);
+    handleValidation(newImages);
   };
-  
-
   const handleKeyup = (e) => {
+    // if (!e || !e.currentTarget) return;
+    const { name, value } = e.target;
     const newErrors = { ...errors };
+
+     // Capitalize the first letter of each word
+    //  if (name === "productname") {
+    //   const capitalizedWords = value.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1));
+    //   const capitalizedValue = capitalizedWords.join(' ');
+
+    //   // Update the input value with the capitalized version
+    //   setValues((prev) => ({
+    //     ...prev,
+    //     [name]: capitalizedValue,
+    //   }));
+    // }
+
 
     // Validate product name length onBlur
     if (
-      e.currentTarget.name === "productname" &&
-      e.currentTarget.value.length > 90
+      name === "productname" &&
+      value.length > 90
     ) {
       newErrors.productname = "Product name must be less than 90 characters";
     } else {
       delete newErrors.productname;
     }
 
-    if (e.currentTarget.name === "productimageurl") {
-      console.log(e.currentTarget.files);
-      if (e.currentTarget.files.length < 3) {
+   
+
+    // if (name === "productimageurl") {
+    //   // console.log(e.currentTarget.files);
+    //   if (e.currentTarget.files.length < 1) {
+    //     newErrors.files = "Please select at least 1 images";
+    //   } else {
+    //     delete newErrors.files; // Remove the error if number of images is valid
+    //   }
+    // }
+    if (name === "productimageurl") {
+      const nonNullImages = images.filter((image) => image !== null);
+      if (nonNullImages.length < 2) {
         newErrors.files = "Please select at least 3 images";
       } else {
         delete newErrors.files; // Remove the error if number of images is valid
@@ -112,14 +150,52 @@ export default function Addnewproduct() {
     setErrors(newErrors);
   };
 
+  // const handleInput = (event) => {
+  //   // console.log(event.target.name)
+  //   setValues((prev) => ({
+  //     ...prev,
+  //     [event.target.name]: event.target.value,
+  //   }));
+  // };
+
   const handleInput = (event) => {
-    // console.log(event.target.name)
-    setValues((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
+    const { name, value } = event.target;
+
+    // Capitalize the first letter of the entire input string
+    const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: capitalizedValue,
     }));
+
+    handleKeyup(event, capitalizedValue);
   };
   // const formData = new FormData();
+  const handleValidation = (newImages) => {
+    const nonNullImages = newImages.filter((image) => image !== null);
+    const newErrors = { ...errors };
+
+    if (nonNullImages.length < 2) {
+      newErrors.files = "Please select at least 2 images";
+    } else if (nonNullImages.length > 7) {
+      newErrors.files = "Please select less than 7 images";
+    } else {
+      delete newErrors.files;
+    }
+
+    setErrors(newErrors);
+  };
+
+  const handleInputChange = (event, attribute) => {
+    const value = event.target.value;
+    const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+    setCustomAttributes(
+      customAttributes.map((item) =>
+        item.name === attribute ? { ...item, value: capitalizedValue } : item
+      )
+    );
+  };
 
   const handleProducttype = (event) => {
     setValues((prev) => ({
@@ -130,16 +206,17 @@ export default function Addnewproduct() {
     if (event.target.name === "producttype") {
       if (event.target.value === "women") {
         setCategories([
-          "highendcouture",
-          "sarees",
-          "lehenga",
-          "dresses",
-          "twinning-outfits",
+          "Highendcouture",
+          "Sarees",
+          "Lehenga",
+          "Dresses",
+          "Twinning-outfits",
         ]);
-        setSizes(["XS", "S", "M", "L", "XL"]);
+        setSizes(["NA","XS", "S", "M", "L", "XL"]);
       } else if (event.target.value === "kids") {
-        setCategories(["girl", "boy"]);
+        setCategories(["Girl", "Boy"]);
         setSizes([
+          "NA",
           "0-2 Years",
           "2-4 Years",
           "4-6 Years",
@@ -148,10 +225,11 @@ export default function Addnewproduct() {
           "10-15 Years",
         ]);
       } else if (event.target.value === "jewellery") {
-        setCategories(["necklaces", "bangles", "earrings", "rings"]);
-      } else if (event.target.value === "books") {
-        setCategories(["fantasy", "horror", "fiction", "drama"]);
-      }
+        setCategories(["Necklaces", "Bangles", "Earrings", "Rings"]);
+      } 
+      // else if (event.target.value === "books") {
+      //   setCategories(["Fantasy", "Horror", "Fiction", "Drama"]);
+      // }
     }
   };
 
@@ -197,19 +275,20 @@ export default function Addnewproduct() {
     if (values.producttype === "jewellery") {
       updatedValues.size = "NA";
       updatedValues.material = "NA";
-    } else if (values.producttype === "books") {
-      updatedValues.color = "NA";
-      updatedValues.alteration = "NA";
-      updatedValues.size = "NA";
-      updatedValues.measurements = "NA";
-      updatedValues.material = "NA";
-      updatedValues.condition = "NA";
-    }
+    } 
+    // else if (values.producttype === "books") {
+    //   updatedValues.color = "NA";
+    //   updatedValues.alteration = "NA";
+    //   updatedValues.size = "NA";
+    //   updatedValues.measurements = "NA";
+    //   updatedValues.material = "NA";
+    //   updatedValues.condition = "NA";
+    // }
   
     const formData = new FormData();
-    images.forEach((image, index) => {
+    images.forEach((image) => {
       if (image) {
-        formData.append('images', image);
+        formData.append("images", image);
       }
     });
   
@@ -248,7 +327,6 @@ export default function Addnewproduct() {
     "Occasion",
     "Type",
     "Brand",
-    "Product_Condition",
     "Style",
     "Season",
     "Fit",
@@ -260,7 +338,6 @@ export default function Addnewproduct() {
     Occasion: "Enter Occasion (eg. Function,Party)",
     Type: "Enter Type",
     Brand: "Enter Brand Name",
-    Product_Condition: "Enter Product Condition",
     Style: "Enter Style",
     Season: "Enter Season (eg. Summer,Winter)",
     Fit: "Enter Fit",
@@ -269,77 +346,115 @@ export default function Addnewproduct() {
   };
   
 
-  const allDivs = placeholders.map((placeholder, index) => (
-    <div className="col-6 col-md-3 mb-3" key={index}>
-      <div className="card position-relative" style={{ height: "150px" }}>
-        {images[index] ? (
-          <>
-            <img
-              src={URL.createObjectURL(images[index])}
-              alt={`upload-${index}`}
-              className="card-img-top"
-              style={{ height: "100%" }}
-            />
-          <button
-  type="button"
-  className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
-  aria-label="Close"
-  onClick={() => removeImage(index)}
-  style={{
+//   const allDivs = placeholders.map((placeholder, index) => (
+//     <div className="col-6 col-md-3 mb-3" key={index}>
+//       <div className="card position-relative" style={{ height: "150px" }}>
+//         {images[index] ? (
+//           <>
+//             <img
+//               src={URL.createObjectURL(images[index])}
+//               alt={`upload-${index}`}
+//               className="card-img-top"
+//               style={{ height: "100%" }}
+//             />
+//           <button
+//   type="button"
+//   className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+//   aria-label="Close"
+//   onClick={() => removeImage(index)}
+//   style={{
      
-    padding: '5px', 
-    fontSize: '10px' 
-  }}
-></button>
+//     padding: '5px', 
+//     fontSize: '10px' 
+//   }}
+// ></button>
 
 
-            <div
-              className="placeholder-caption text-center"
-              style={{
-                position: "absolute",
-                bottom: "0",
-                width: "100%",
-                background: "rgba(255, 255, 255, 0.7)",
-                padding: "5px 0",
-                fontSize: "14px",
-                color: "#888",
-              }}
-            >
-              {placeholder}
-            </div>
-          </>
-        ) : (
-          <div
-            className="d-flex justify-content-center align-items-center"
+//             <div
+//               className="placeholder-caption text-center"
+//               style={{
+//                 position: "absolute",
+//                 bottom: "0",
+//                 width: "100%",
+//                 background: "rgba(255, 255, 255, 0.7)",
+//                 padding: "5px 0",
+//                 fontSize: "14px",
+//                 color: "#888",
+//               }}
+//             >
+//               {placeholder}
+//             </div>
+//           </>
+//         ) : (
+//           <div
+//             className="d-flex justify-content-center align-items-center"
+//             style={{
+//               height: "100%",
+//               backgroundColor: "rgba(255, 255, 255, 0.7)",
+//             }}
+//           >
+//             <div className="text-center">
+//               <p>{placeholder}</p>
+//             </div>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   ));
+const allDivs = images.map((image, index) => (
+  <div className="col-6 col-md-3 mb-3" key={index}>
+    <div className="card position-relative" style={{ height: "150px" }}>
+      {image ? (
+        <>
+          <img
+            src={URL.createObjectURL(image)}
+            alt={`upload-${index}`}
+            className="card-img-top"
+            style={{ height: "100%" }}
+          />
+          <button
+            type="button"
+            className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+            aria-label="Close"
+            onClick={() => removeImage(index)}
             style={{
-              height: "100%",
-              backgroundColor: "rgba(255, 255, 255, 0.7)",
+              padding: '5px',
+              fontSize: '10px'
             }}
-          >
-            <div className="text-center">
-              <p>{placeholder}</p>
-            </div>
+          ></button>
+        </>
+      ) : (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{
+            height: "100%",
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
+          }}
+        >
+          <div className="text-center">
+            <p>{placeholders[index]}</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
-  ));
+  </div>
+));
 
-  // Add the addPhoto div if there's space available
-  const nextAvailableIndex = images.findIndex((image) => image === null);
-  if (nextAvailableIndex !== -1) {
-    allDivs.splice(
-      nextAvailableIndex,
-      0,
-      <div className="col-6 col-md-3 mb-3" key="addPhoto" style={{cursor:'pointer' }}>
-      <label className="w-100 text-center" htmlFor="productimageurl" >
+// Add the addPhoto div if there's space available
+const nextAvailableIndex = images.findIndex((image) => image === null);
+if (nextAvailableIndex !== -1) {
+  allDivs.splice(
+    nextAvailableIndex,
+    0,
+    <div className="col-6 col-md-3 mb-3" key="addPhoto" style={{ cursor: 'pointer' }}>
+      <label className="w-100 text-center" htmlFor="productimageurl">
         <div
           className="card d-flex justify-content-center align-items-center"
-          style={{ height: "150px"}}
+          style={{ height: "150px" }}
         >
-          <i class="bi bi-camera" style={{cursor:'pointer', fontSize:'1rem'}}>
+          <i className="bi bi-camera" style={{ cursor: 'pointer', fontSize: '1rem' }}>
             <p>Add a photo</p>
-            </i>
+          </i>
           <input
             id="productimageurl"
             type="file"
@@ -347,33 +462,17 @@ export default function Addnewproduct() {
             multiple
             onChange={(e) => {
               handleFile(e);
-              handleKeyup(e); // Trigger validation when files are selected
             }}
             name="productimageurl"
-            title="Upload minimum 3 to max 7 images"
+            title="Upload minimum 2 to max 7 images"
             required
             style={{ display: "none" }}
           />
-          
-          {/* <input
-                            type="file"
-                            className="form-control"
-                            multiple
-                            onChange={(e) => {
-                              handleFile(e);
-                              handleKeyup(e); // Trigger validation when files are selected
-                            }}
-                            name="productimageurl"
-                            id="productimageurl"
-                            title="Upload minimum 4 to max 10 images"
-                            required
-                          /> */}
         </div>
-        </label>
-
-      </div>
-    );
-  }
+      </label>
+    </div>
+  );
+}
   return (
     <div className="fullscreen">
       {/* <Sellernavbar /> */}
@@ -412,7 +511,7 @@ export default function Addnewproduct() {
                             <option value="women">Women</option>
                             <option value="kids">Kids</option>
                             <option value="jewellery">Jewellery</option>
-                            <option value="books">Books</option>
+                            {/* <option value="books">Books</option> */}
                           </select>
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
@@ -489,13 +588,11 @@ export default function Addnewproduct() {
                           
                           {/* SVG icons */}
                           <svg style={{ display: "none" }}>
-                            <symbol id="photo" viewBox="0 0 24 24">
-                              <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
-                            </symbol>
-                          </svg>
-                          {errors.files && (
-                          <span className="text-danger">{errors.files}</span>
-                        )}
+            <symbol id="photo" viewBox="0 0 24 24">
+              <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
+            </symbol>
+          </svg>
+          {errors.files && <span className="text-danger">{errors.files}</span>}
                         </div>
                       </div>
                       <div className="mb-3">
@@ -545,7 +642,7 @@ export default function Addnewproduct() {
                           <span className="text-danger">{errors.files}</span>
                         )} */}
                       </div>
-                      {values.producttype !== "books" && (
+                      {/* {values.producttype !== "books" && ( */}
                         <div className="mb-3">
                           <label
                             htmlFor="color"
@@ -567,7 +664,7 @@ export default function Addnewproduct() {
                             <span className="text-danger fs-4"> &nbsp;*</span>
                           </div>
                         </div>
-                      )}
+                      {/* )} */}
                       <div className="mb-3">
                         <label
                           htmlFor="location"
@@ -589,7 +686,7 @@ export default function Addnewproduct() {
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-                      {values.producttype === "books" && (
+                      {/* {values.producttype === "books" && (
                         <div className="mb-3">
                           <label
                             htmlFor="location"
@@ -611,8 +708,8 @@ export default function Addnewproduct() {
                             <span className="text-danger fs-4"> &nbsp;*</span>
                           </div>
                         </div>
-                      )}
-                      {values.producttype !== "books" && (
+                      )} */}
+                      {/* {values.producttype !== "books" && ( */}
                         <div className="mb-3">
                           <label
                             htmlFor="alteration"
@@ -629,6 +726,7 @@ export default function Addnewproduct() {
                               required
                             >
                               <option value="">Select Alteration</option>
+                              <option value="NA">NA</option>
                               <option value="Yes">Yes</option>
                               <option value="No">No</option>
                             </select>
@@ -636,9 +734,9 @@ export default function Addnewproduct() {
                             <span className="text-danger fs-4"> &nbsp;*</span>
                           </div>
                         </div>
-                      )}
+                      {/* )} */}
                       {values.producttype !== "jewellery" &&
-                        values.producttype !== "books" && (
+                         (
                           <div className="mb-3">
                             <label
                               htmlFor="size"
@@ -668,7 +766,7 @@ export default function Addnewproduct() {
                             </div>
                           </div>
                         )}
-                      {values.producttype !== "books" && (
+                      {/* {values.producttype !== "books" && ( */}
                         <div className="mb-3">
                           <label
                             htmlFor="measurements"
@@ -690,9 +788,9 @@ export default function Addnewproduct() {
                             <span className="text-danger fs-4"> &nbsp;*</span>
                           </div>
                         </div>
-                      )}
+                      {/* )} */}
                       {values.producttype !== "jewellery" &&
-                        values.producttype !== "books" && (
+                         (
                           <div className="mb-3">
                             <label
                               htmlFor="material"
@@ -712,6 +810,7 @@ export default function Addnewproduct() {
                                 required
                               >
                                 <option value="">Select Material</option>
+                                <option value="NA">NA</option>
                                 <option value="Silk">Silk</option>
                                 <option value="Cotton">Cotton</option>
                                 <option value="Crepe">Crepe</option>
@@ -733,8 +832,8 @@ export default function Addnewproduct() {
                             </div>
                           </div>
                         )}
-                      {values.producttype !== "books" && (
-                        <>
+                       {/* {values.producttype !== "books" && (
+                        <> */}
                           <div className="mb-3">
                             <label
                               htmlFor="condition"
@@ -752,10 +851,11 @@ export default function Addnewproduct() {
                                 required
                               >
                                 <option value="">Select Condition</option>
-                                <option value="Brandnew">
+                                <option value="NA">NA</option>
+                                <option value="Brand new">
                                   Brand new
                                 </option>
-                                <option value="Likenew">
+                                <option value="Like new">
                                   Like new
                                 </option>
                                 <option value="Excellent">
@@ -788,6 +888,7 @@ export default function Addnewproduct() {
                                 required
                               >
                                 <option value="">Select source</option>
+                                <option value="NA">NA</option>
                                 <option value="Vintage">Vintage</option>
                                 <option value="Preloved">Preloved</option>
                                 <option value="Reworked/upcycled">
@@ -802,8 +903,8 @@ export default function Addnewproduct() {
                               <span className="text-danger fs-4"> &nbsp;*</span>
                             </div>
                           </div>
-                        </>
-                      )}
+                        {/* </>
+                      )}  */}
                       <div className="mb-3">
                         <label htmlFor="age" className="form-label fw-bolder">
                           Age
@@ -818,6 +919,7 @@ export default function Addnewproduct() {
                             required
                           >
                             <option value="">Select Age</option>
+                            <option value="NA">NA</option>
                             <option value="Modern">Modern</option>
                             <option value="00s">00s</option>
                             <option value="90s">90s</option>
@@ -875,7 +977,7 @@ export default function Addnewproduct() {
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-                      {customAttributes.map((attr, index) => (
+                      {/* {customAttributes.map((attr, index) => (
                         <div key={index} className="mb-3">
                           <label
                             htmlFor={attr.name}
@@ -898,9 +1000,23 @@ export default function Addnewproduct() {
                             //  required
                           />
                         </div>
-                      ))}
-                      {values.producttype !== "books" && (
-                        <div className="mb-3">
+                      ))} */}
+                       {customAttributes.map((attribute) => (
+          <div key={attribute.name} className="mb-3">
+            <label htmlFor={attribute.name} className="form-label">
+              {attribute.name}
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={attribute.name}
+              placeholder={placeholderValues[attribute.name]}
+              value={attribute.value}
+              onChange={(event) => handleInputChange(event, attribute.name)}
+            />
+          </div>
+        ))}
+                        {/* <div className="mb-3">
                           <button
                             type="button"
                             className="btn btn-primary mb-3"
@@ -967,8 +1083,68 @@ export default function Addnewproduct() {
                               </div>
                             </div>
                           </div>
-                        </div>
-                      )}
+                        </div> */}
+                        <div className="mb-3">
+        <button
+          type="button"
+          className="btn btn-primary mb-3"
+          onClick={handleAddAttribute}
+        >
+          Add Custom Attribute
+        </button>
+        <div
+          className="modal"
+          style={{ display: showModal ? "block" : "none" }}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Select Custom Attributes</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setShowModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                {attributeOptions.map((option) => (
+                  <div key={option} className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={option}
+                      checked={selectedAttributes.includes(option)}
+                      onChange={() => handleCheckboxChange(option)}
+                    />
+                    <label className="form-check-label" htmlFor={option}>
+                      {option}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setShowModal(false)}
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleModalSubmit}
+                  disabled={selectedAttributes.length === 0}
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     
                       <div className="text-center">
                         <button
                           type="submit"

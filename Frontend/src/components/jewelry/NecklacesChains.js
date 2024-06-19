@@ -24,7 +24,7 @@ const NecklacesChains = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filterProducts = res.data.filter(
-            (item) => item.category === 'necklaces'
+            (item) => item.category === 'Necklaces'
           );
           setProducts(filterProducts);
           setFilteredProducts(filterProducts);

@@ -36,7 +36,7 @@ const Home = () => {
   const womenProducts = filterAndSliceProducts("women");
   const kidsProducts = filterAndSliceProducts("kids");
   const jewelleryProducts = filterAndSliceProducts("jewellery");
-  const booksProducts = filterAndSliceProducts("books");
+  // const booksProducts = filterAndSliceProducts("books");
 
   return (
     <div className="fullscreen">
@@ -51,7 +51,7 @@ const Home = () => {
         {/* Womens Fashion */}
         {womenProducts.length > 0 && (
           <>
-            <div className="d-flex justify-content-between mt-5 bg-light p-2">
+            <div className="d-flex justify-content-between mt-5 bg-light p-2 ms-md-5 me-md-5 ms-2 me-2">
               <h4 className="ms-2 ms-md-5">Womens Fashion</h4>
               <div className="d-flex justify-content-end" style={{ padding: "5px 50px 10px 10px" }}>
                 <Link to="/women" className="text-decoration-none">
@@ -74,7 +74,7 @@ const Home = () => {
         {/* Kids Fashion */}
         {kidsProducts.length > 0 && (
           <>
-            <div className="d-flex justify-content-between mt-5 bg-light p-2">
+            <div className="d-flex justify-content-between mt-5 bg-light p-2 ms-md-5 me-md-5 ms-2 me-2">
               <h4 className="ms-2 ms-md-5">Kids Fashion</h4>
               <div className="d-flex justify-content-end" style={{ padding: "5px 50px 10px 10px" }}>
                 <Link to="/kids" className="text-decoration-none">
@@ -97,7 +97,7 @@ const Home = () => {
         {/* Jewellery Collection */}
         {jewelleryProducts.length > 0 && (
           <>
-            <div className="d-flex justify-content-between mt-5 bg-light p-2">
+            <div className="d-flex justify-content-between mt-5 bg-light p-2 ms-md-5 me-md-5 ms-2 me-2">
               <h4 className="ms-2 ms-md-5">Jewellery</h4>
               <div className="d-flex justify-content-end" style={{ padding: "5px 50px 10px 10px" }}>
                 <Link to="/jewellery" className="text-decoration-none">
@@ -118,7 +118,7 @@ const Home = () => {
         )}
 
         {/* Books Collection */}
-        {booksProducts.length > 0 && (
+        {/* {booksProducts.length > 0 && (
           <>
             <div className="d-flex justify-content-between mt-5 bg-light p-2">
               <h4 className="ms-2 ms-md-5">Books</h4>
@@ -138,7 +138,7 @@ const Home = () => {
               </div>
             </div>
           </>
-        )}
+        )} */}
       </main>
       <Footer />
     </div>

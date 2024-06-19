@@ -23,7 +23,7 @@ const Twinningoutfits = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filteredProducts = res.data.filter(
-            (item) => item.category === "twinning-outfits"
+            (item) => item.category === "Twinning-outfits"
           );
           setProducts(filteredProducts);
           setFilteredProducts(filteredProducts);

@@ -23,7 +23,7 @@ const Boy = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filterProducts = res.data.filter(
-            (item) => item.category === "boy"
+            (item) => item.category === "Boy"
           );
           setProducts(filterProducts);
           setFilteredProducts(filterProducts);

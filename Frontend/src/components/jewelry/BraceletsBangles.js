@@ -23,7 +23,7 @@ const BraceletsBangles = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filterProducts = res.data.filter(
-            (item) => item.category === "bangles"
+            (item) => item.category === "Bangles"
           );
           setProducts(filterProducts);
           setFilteredProducts(filterProducts);

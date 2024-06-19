@@ -2,7 +2,7 @@ import React from "react";
 import kidsurl from "../images/kids22.jpeg";
 import womenurl from "../images/RB-women.jfif";
 import jeweleryurl from "../images/jewelry.jpg";
-import booksurl from "../images/books.jpg";
+// import booksurl from "../images/books.jpg";
 import { Link } from "react-router-dom";
 
 // const breakPoints = [
@@ -83,7 +83,7 @@ function Curosel() {
               </div>
             </div>
           </Link>
-          <Link to="/books" className="text-decoration-none ">
+          {/* <Link to="/books" className="text-decoration-none ">
             <div className="custom-item m-3">
               <div className="zoomAnimation position-relative text-center carouselslide">
                 <img 
@@ -104,7 +104,7 @@ function Curosel() {
                 </h5>
               </div>
             </div>
-          </Link>
+          </Link> */}
         {/* </Carousel> */}
       </div>
     </>

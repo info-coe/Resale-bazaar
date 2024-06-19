@@ -56,7 +56,7 @@ export default function Cartitems() {
                    </div>
                   </td>
                   <td className="text-secondary">{product.name}</td>
-                  <td>&#8377; {product.price}</td>
+                  <td>&#36; {product.price}</td>
                 </tr>
               ))
             ): (
@@ -73,7 +73,7 @@ export default function Cartitems() {
         </div>
         <div className="container mt-2">
           <div className="d-flex flex-wrap gap-3 float-end me-2">
-            <p className="mt-1"><b>Total Price: &#8377; {totalPrice}</b></p>
+            <p className="mt-1"><b>Total Price: &#36; {totalPrice}</b></p>
             <button
               type="button"
               className="btn btn-primary mb-5"

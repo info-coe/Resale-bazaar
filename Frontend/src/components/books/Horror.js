@@ -27,7 +27,7 @@ const Horror= () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filterProducts = res.data.filter(
-            (item) => item.category === "horror"
+            (item) => item.category === "Horror"
           );
           setProducts(filterProducts);
           setFilteredProducts(filterProducts);

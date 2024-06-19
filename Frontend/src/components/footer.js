@@ -131,10 +131,10 @@ const Footer = () => {
           <p>
             Powered by{" "}
             <Link
-              to="https://resalebazaar.com/"
+              to="mailto:theresalebazaar@gmail.com"
               className="text-decoration-none text-dark"
             >
-              resalebazaar.com
+              theresalebazaar@gmail.com
             </Link>
           </p>
           <p>

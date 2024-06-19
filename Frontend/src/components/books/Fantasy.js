@@ -26,7 +26,7 @@ const Fantasy = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filterProducts = res.data.filter(
-            (item) => item.category === "fantasy"
+            (item) => item.category === "Fantasy"
           );
           setProducts(filterProducts);
           setFilteredProducts(filterProducts);

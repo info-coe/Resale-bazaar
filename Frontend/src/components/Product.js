@@ -85,7 +85,7 @@ const Product = (props) => {
         </Link>
         <div className="card-body">
           <p className="card-text text-success">
-            <b>&#8377; {props.product.price}.00</b>
+            <b>&#36; {props.product.price}.00</b>
           </p>
           <h6 className="card-text" style={{lineHeight:"8px"}}>{props.product.size}</h6>         
         </div>

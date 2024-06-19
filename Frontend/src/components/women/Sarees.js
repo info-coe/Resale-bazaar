@@ -23,7 +23,7 @@ const Sarees = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filteredProducts = res.data.filter(
-            (item) => item.category === "sarees"
+            (item) => item.category === "Sarees"
           );
           setProducts(filteredProducts);
           setFilteredProducts(filteredProducts);
