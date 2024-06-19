@@ -4,6 +4,7 @@ import Customermenu from "./Customermenu";
 import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Orders() {
   const [allProducts, setAllProducts] = useState([]);
@@ -45,8 +46,7 @@ export default function Orders() {
       (order) => order.buyer_id === userId && order.product_id === product.id
     )
   );
-  console.log(filteredProducts);
-  // console.log(filteredProducts)
+  // console.log(filteredProducts);
 
   const cancelClick = (id, updatedQuantity) => {
     const confirmation = window.confirm(
@@ -107,26 +107,37 @@ export default function Orders() {
                     <th>Action</th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {filteredProducts.map((product, index) => (
                     <tr key={index}>
                       <td>
-                        <img
-                          src={`${process.env.REACT_APP_HOST}${
-                            process.env.REACT_APP_PORT
-                          }/images/${JSON.parse(product.image)[0]}`}
-                          alt={product.name}
-                          style={{ maxWidth: "60px", maxHeight: "100px" }}
-                        />
+                        <Link
+                        to="/orderpage"
+                        state={{ productdetails: orders,filteredProducts:product}}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                        >
+                          <img
+                            src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
+                            alt={product.name}
+                            style={{ maxWidth: "60px", maxHeight: "100px" }}
+                          />
+                        </Link>
                       </td>
-                      <td className="text-secondary">{product.name}</td>
-                      <td>{product.price}</td>
+                      <td className="text-secondary">
+                          {product.name}
+                      </td>
+                      <td>
+                          {product.price}
+                      </td>
                       <td>
                         <button
                           className="btn btn-danger"
-                          onClick={() =>
-                            cancelClick(product.id, product.quantity + 1)
-                          }
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation(); // Prevent Link click event
+                            cancelClick(product.id, product.quantity + 1);
+                          }}
                         >
                           Cancel
                         </button>

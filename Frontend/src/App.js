@@ -55,6 +55,7 @@ import Fantasy from "./components/books/Fantasy";
 import Horror from "./components/books/Horror";
 import Offers from "./components/sellerdashboard/Offers";
 import Search from "./components/Search";
+import OrderPage from "./components/customerdetails/OrderPage";
 
 // import axios from "axios";
 
@@ -227,6 +228,8 @@ function App() {
           <Route path="forgotpassword" element={<Forgotpassword />}></Route>
           <Route path="*" element={<Notfound />}></Route>
           <Route path="/search" element={<Search/>} />
+          <Route path="/orderpage" element={<OrderPage/>} />
+
         </Routes>
       </BrowserRouter>
     </>
