@@ -37,49 +37,46 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-  
+    e.preventDefault();
     var url = "";
     if (values.username === "admin@admin") {
-      url = "admin"; // Set URL to "admin" if username is "admin@admin"
-    } else {
-      url = "user"; // Otherwise, set URL to "user" for other usernames
+      url = "admin";
+    } else{
+      url = "user";
     }
-  
-    values.password = CryptoJS.MD5(values.password).toString(); // Hash the password using MD5
-  
+    values.password = CryptoJS.MD5(values.password).toString();
     axios
       .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${url}`, values)
       .then((res) => {
-        if (res.data !== "Fail" && res.data !== "Error") { // Check if response indicates success
-          const data = res.data[0]; // Assuming data is an array and taking the first element
-          setUserData(data); // Set user data (assuming this updates state with user info)
-  
+        // console.log(res)
+        if (res.data !== "Fail" && res.data !== "Error") {
+          // sessionStorage.setItem("accessToken", res.data.accessToken)
+          // setAuthToken(res.data.accessToken);
+          const data = res.data[0];
+          setUserData(data);
           var token;
-          if (url === "user") { // If URL is set to "user"
-            token = data.user_id; // Set token to user_id
-            sessionStorage.setItem("token", "user"); // Set session storage token as 'user'
-          } else if (url === "admin") { // If URL is set to "admin"
-            token = data.admin_id; // Set token to admin_id
-            sessionStorage.setItem("token", "admin"); // Set session storage token as 'admin'
+          if (url === 'user') {
+            token = data.user_id;
+            sessionStorage.setItem("token", "user");
+          } else if (url === 'admin') {
+            token = data.admin_id;
+            sessionStorage.setItem("token", "admin");
           }
-  
-          if (!token) { // If token is not set (should not happen based on logic)
+          if (!token) {
             alert("Unable to login. Please try after some time.");
             return;
           }
-  
-          sessionStorage.removeItem("user-token"); // Remove any existing user-token
-          sessionStorage.setItem("user-token", token); // Set user-token with the obtained token
-          navigate("/"); // Navigate to home page
-        } else { // If response indicates failure
+          sessionStorage.removeItem("user-token");
+          sessionStorage.setItem("user-token", token);
+          navigate("/");
+          // window.location.reload(false);
+        } else {
           alert("Invalid Username or Password");
-          window.location.reload(false); // Reload the window to reset the form
+          window.location.reload(false);
         }
       })
-      .catch((err) => console.log(err)); // Catch any errors during API call
+      .catch((err) => console.log(err));
   };
-  
 
   const toggleAdditionalContent = () => {
     if (showAdditionalContent) {
