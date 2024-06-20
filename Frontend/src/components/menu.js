@@ -158,7 +158,7 @@ export default function Menu() {
             </div>
           </div>
 
-          <div className="accordion-item">
+          {/* <div className="accordion-item">
             <h2 className="accordion-header" id="flush-headingFive">
               <button
                 className="accordion-button collapsed p-2"
@@ -211,7 +211,7 @@ export default function Menu() {
                 </ul>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

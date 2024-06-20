@@ -61,10 +61,10 @@ useEffect(() => {
     
     const matchPriceRange =
       !selectedPriceRange ||
-      (selectedPriceRange === "below500" && product.price < 500) ||
-      (selectedPriceRange === "500to1000" && product.price >= 500 && product.price < 1000) ||
-      (selectedPriceRange === "1000to2000" && product.price >= 1000 && product.price < 2000) ||
-      (selectedPriceRange === "above2000" && product.price >= 2000);
+        (selectedPriceRange === "below25" && product.price < 25) ||
+        (selectedPriceRange === "25to50" && product.price >= 25 && product.price < 50) ||
+        (selectedPriceRange === "50to100" && product.price >= 50 && product.price < 100) ||
+        (selectedPriceRange === "above100" && product.price >= 100);
       const matchColor =
       !selectedColor ||
       product.color.toLowerCase().includes(selectedColor.toLowerCase());
@@ -87,44 +87,44 @@ useEffect(() => {
           <h1 style={{fontSize:'20px'}}>Price</h1>
           <div className="d-flex  flex-wrap align-items-start">
             <button
-              className={`btn border m-1 ${selectedPriceRange === "below500" ? "active" : ""}`}
+              className={`btn border m-1 ${selectedPriceRange === "below25" ? "active" : ""}`}
               style={{
-                border: selectedPriceRange === "below500" ? "1px solid black" : "",
-                backgroundColor: selectedPriceRange === "below500" ? "lightGrey" : ""
+                border: selectedPriceRange === "below25" ? "1px solid black" : "",
+                backgroundColor: selectedPriceRange === "below25" ? "lightGrey" : ""
               }}
-              onClick={() => handlePriceRangeSelect("below500")}
+              onClick={() => handlePriceRangeSelect("below25")}
             >
-              Below &#8377;500
+              Below &#36;25
             </button>
             <button
-              className={`btn border m-1 ${selectedPriceRange === "500to1000" ? "active" : ""}`}
+              className={`btn border m-1 ${selectedPriceRange === "25to50" ? "active" : ""}`}
               style={{
-                border: selectedPriceRange === "500to1000" ? "1px solid black" : "",
-                backgroundColor: selectedPriceRange === "500to1000" ? "lightGrey" : ""
+                border: selectedPriceRange === "25to50" ? "1px solid black" : "",
+                backgroundColor: selectedPriceRange === "25to50" ? "lightGrey" : ""
               }}
-              onClick={() => handlePriceRangeSelect("500to1000")}
+              onClick={() => handlePriceRangeSelect("25to50")}
             >
-              &#8377;500 - &#8377;1000
+              &#36;25 - &#36;50
             </button>
             <button
-              className={`btn border m-1 ${selectedPriceRange === "1000to2000" ? "active" : ""}`}
+              className={`btn border m-1 ${selectedPriceRange === "50to100" ? "active" : ""}`}
               style={{
-                border: selectedPriceRange === "1000to2000" ? "1px solid black" : "",
-                backgroundColor: selectedPriceRange === "1000to2000" ? "lightGrey" : ""
+                border: selectedPriceRange === "50to100" ? "1px solid black" : "",
+                backgroundColor: selectedPriceRange === "50to100" ? "lightGrey" : ""
               }}
-              onClick={() => handlePriceRangeSelect("1000to2000")}
+              onClick={() => handlePriceRangeSelect("50to100")}
             >
-              &#8377;1000 - &#8377;2000
+              &#36;50 - &#36;100
             </button>
             <button
-              className={`btn border m-1 ${selectedPriceRange === "above2000" ? "active" : ""}`}
+              className={`btn border m-1 ${selectedPriceRange === "above100" ? "active" : ""}`}
               style={{
-                border: selectedPriceRange === "above2000" ? "1px solid black" : "",
-                backgroundColor: selectedPriceRange === "above2000" ? "lightGrey" : ""
+                border: selectedPriceRange === "above100" ? "1px solid black" : "",
+                backgroundColor: selectedPriceRange === "above100" ? "lightGrey" : ""
               }}
-              onClick={() => handlePriceRangeSelect("above2000")}
+              onClick={() => handlePriceRangeSelect("above100")}
             >
-              Above &#8377;2000
+              Above &#36;100
             </button>
           </div>
         </div>
