@@ -59,7 +59,7 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            <div className="d-flex flex-wrap justify-content-center">
+            <div className="">
               <div className="d-md-flex flex-wrap ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
                 {womenProducts.map((product, index) => (
                   <div key={index}>
@@ -82,8 +82,8 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            <div className="d-flex flex-wrap justify-content-center">
-              <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
+            <div className="">
+              <div className="d-md-flex flex-wrap ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
                 {kidsProducts.map((product, index) => (
                   <div key={index}>
                     <Product product={product} admin="home" />
