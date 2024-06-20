@@ -41,12 +41,26 @@ export default function Orders() {
   }, []);
   const userId = parseInt(sessionStorage.getItem("user-token"));
 
-  const filteredProducts = allProducts.filter((product) =>
+  const filteredProducts = allProducts
+  .filter((product) =>
     orders.some(
       (order) => order.buyer_id === userId && order.product_id === product.id
     )
-  );
-  // console.log(filteredProducts);
+  )
+  .map((product) => {
+    const relatedOrder = orders.find(
+      (order) => order.buyer_id === userId && order.product_id === product.id
+    );
+    return {
+      ...product,
+      order_id: relatedOrder.order_id,
+      shipment_id: relatedOrder.shipment_id,
+      ordered_date: relatedOrder.ordered_date,
+      shipped_date: relatedOrder.shipped_date,
+      delivered_date: relatedOrder.delivered_date,
+    };
+  });
+
 
   const cancelClick = (id, updatedQuantity) => {
     const confirmation = window.confirm(
@@ -114,7 +128,7 @@ export default function Orders() {
                       <td>
                         <Link
                         to="/orderpage"
-                        state={{ productdetails: orders,filteredProducts:product}}
+                        state={{filteredProducts:product}}
                         style={{ textDecoration: 'none', color: 'inherit' }}
                         >
                           <img

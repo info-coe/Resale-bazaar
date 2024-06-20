@@ -463,6 +463,7 @@ export default function Productdetails() {
                     <i className="bi bi-heart-fill" /> ADD TO WISHLIST
                   </button> */}
                   <div className="container">
+                    {sessionStorage.getItem('token') === "admin" ? null :(
                     <div className="row ">
                       <div className="col-12 col-md-7 mb-2 mt-2 ">
                         <button
@@ -750,7 +751,10 @@ export default function Productdetails() {
                         </div>
                       </div>
 
-                      <div className="col-12 col-md-7">
+                     
+                    </div>
+                    )}
+                     <div className="col-12 col-md-7 mt-3">
                         <div className="user-details border shadow-sm p-3 bg-body rounded">
                           {userdetails.map((user) => (
                             <div className="d-flex justify-content-between m-2">
@@ -768,7 +772,6 @@ export default function Productdetails() {
                           ))}
                         </div>
                       </div>
-                    </div>
                   </div>
                 </div>
               ) : (

@@ -3,21 +3,20 @@ import { useLocation } from 'react-router-dom';
 
 const OrderPage = () => {
   const location = useLocation();
-  const { productdetails ,filteredProducts} = location.state || {};
-  const orderData = productdetails || {}; // Ensure orderData is defined
+  const { filteredProducts} = location.state || {};
   const productData = filteredProducts || {}
   const [orderStages, setOrderStages] = useState([]);
   useEffect(() => {
     // Example logic to determine order stages based on order data
     const stages = [
-      { title: 'Order Placed', isCompleted: orderData.order_id !== null },
-      { title: 'Shipped', isCompleted: orderData.shipment_id !== null },
-      { title: 'Arrived', isCompleted: false }, // Example: Add logic based on actual data
-      { title: 'Delivered', isCompleted: orderData.delivered_date !== null }
+      { title: 'Order Placed', isCompleted: productData.order_id !== null },
+      { title: 'Shipped', isCompleted: productData.shipment_id !== null },
+      { title: 'Arrived', isCompleted:  productData.shipped_date !== null  }, 
+      { title: 'Delivered', isCompleted: productData.delivered_date !== null }
     ];
 
     setOrderStages(stages);
-  }, [orderData]);
+  }, [productData]);
   const styles = `
     .progress-dot-bar {
       display: flex;
@@ -72,12 +71,12 @@ const OrderPage = () => {
         <div className="card-body">
           <div className="row align-items-center">
             <div className="col">
-              <h5 className="mb-0">ORDER <span className="text-primary"></span></h5>
+              <h5 className="mb-0">ORDER <span className="text-primary">{productData.order_id}</span></h5>
               <h1>{productData.name}</h1>
             </div>
             <div className="col text-end">
-              <p className="mb-0">Expected Arrival <span className="fw-bold">{orderData.expected_arrival_date}</span></p>
-              <p>USPS <span className="fw-bold">{orderData.usps_tracking_number}</span></p>
+              <p className="mb-0">Expected Arrival <span className="fw-bold">{productData.expected_arrival_date}</span></p>
+              <p>USPS <span className="fw-bold">{productData.usps_tracking_number}</span></p>
             </div>
           </div>
 
