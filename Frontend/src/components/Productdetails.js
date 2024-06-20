@@ -65,7 +65,6 @@ export default function Productdetails() {
   //   id: id,
   // });
 
-
   const handleProductlist = () => {
     axios
       .post(
@@ -178,51 +177,53 @@ export default function Productdetails() {
   const handleOffer = () => {
     setSuccess(true);
     axios
-    .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`,{
-      product_id : id,
-      offered_buyer_id : sessionStorage.getItem("user-token"),
-      offered_price : add,
-      product_status:"Pending"
-    })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => console.log(err));
-  }
-
-  const userProduct=Productdetails.seller_id ===sessionStorage.getItem('user-token')
+      .post(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`,
+        {
+          product_id: id,
+          offered_buyer_id: sessionStorage.getItem("user-token"),
+          offered_price: add,
+          product_status: "Pending",
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const [userdetails, setUserDetails] = useState([]);
 
-useEffect(() => {
-  axios
-    .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
-    .then((res) => {
-      if (res.data !== "Fail" && res.data !== "Error") {
-        // Filter user details where user_id === productdetails.seller_id
-        const filteredUserDetails = res.data.filter(item => item.user_id === productdetails.seller_id);
-        // Map filtered details to desired structure
-        const userDetails = filteredUserDetails.map(item => ({
-          userId: item.user_id,
-          email: item.email,
-          phone: item.phone,
-          name:item.firstname +" "+ item.lastname
-          // Add more fields as needed
-        }));
-        // Set filtered user details to state
-        setUserDetails(userDetails);
-      }
-    })
-    .catch((err) => console.log(err));
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+      .then((res) => {
+        if (res.data !== "Fail" && res.data !== "Error") {
+          // Filter user details where user_id === productdetails.seller_id
+          const filteredUserDetails = res.data.filter(
+            (item) => item.user_id === productdetails.seller_id
+          );
+          // Map filtered details to desired structure
+          const userDetails = filteredUserDetails.map((item) => ({
+            userId: item.user_id,
+            email: item.email,
+            phone: item.phone,
+            name: item.firstname + " " + item.lastname,
+            // Add more fields as needed
+          }));
+          // Set filtered user details to state
+          setUserDetails(userDetails);
+        }
+      })
+      .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [productdetails.seller_id]);
-const navigates = useNavigate()
-const handleViewProfile = (sellerId) => {
-  console.log(sellerId)
-  // Navigate to seller profile page with sellerId as a parameter
-  navigates(`/sellerprofile/${sellerId}`);
-};
-
+  }, [productdetails.seller_id]);
+  const navigates = useNavigate();
+  const handleViewProfile = (sellerId) => {
+    console.log(sellerId);
+    // Navigate to seller profile page with sellerId as a parameter
+    navigates(`/sellerprofile/${sellerId}`);
+  };
 
   return (
     <div className="fullscreen">
@@ -422,7 +423,9 @@ const handleViewProfile = (sellerId) => {
               <p className=" col-md-4 col-lg-5">
                 <b>Condition</b>
               </p>
-              <p className=" col-md-8  col-lg-10">: {productdetails.condition}</p>
+              <p className=" col-md-8  col-lg-10">
+                : {productdetails.condition}
+              </p>
             </div>
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
@@ -567,7 +570,7 @@ const handleViewProfile = (sellerId) => {
                                 <div class="border p-2 position-relative mb-3">
                                   <div className="row g-0 align-items-center">
                                     <div className="col-auto">
-                                      <b className="p-2 fs-5">&#8377;</b>
+                                      <b className="p-2 fs-5">&#36;</b>
                                     </div>
                                     <div className="col">
                                       <input
@@ -583,7 +586,7 @@ const handleViewProfile = (sellerId) => {
                                     </div>
                                     <div className="col-auto">
                                       <i style={{ fontSize: "0.75rem" }}>
-                                      &#8377; 6.29 shipping
+                                        &#36; 6.29 shipping
                                       </i>
                                     </div>
                                   </div>
@@ -591,7 +594,14 @@ const handleViewProfile = (sellerId) => {
 
                                 <div className="row">
                                   <div
-                                    onClick={() => AmountChange(productdetails.price-(productdetails.price*0.2).toFixed(2))}
+                                    onClick={() =>
+                                      AmountChange(
+                                        productdetails.price -
+                                          (productdetails.price * 0.2).toFixed(
+                                            2
+                                          )
+                                      )
+                                    }
                                     className="col-4 mb-2 position-relative "
                                     onChange={AmountChange}
                                   >
@@ -617,14 +627,25 @@ const handleViewProfile = (sellerId) => {
                                       }}
                                     >
                                       <b style={{ fontSize: ".95rem" }}>
-                                        &#8377;{productdetails.price-(productdetails.price*0.2).toFixed(2)}
+                                        &#36;
+                                        {productdetails.price -
+                                          (productdetails.price * 0.2).toFixed(
+                                            2
+                                          )}
                                       </b>
                                     </button>
                                   </div>
 
                                   <div
                                     className="col-4 mb-2 position-relative"
-                                    onClick={() => AmountChange(productdetails.price-(productdetails.price*0.15).toFixed(2))}
+                                    onClick={() =>
+                                      AmountChange(
+                                        productdetails.price -
+                                          (productdetails.price * 0.15).toFixed(
+                                            2
+                                          )
+                                      )
+                                    }
                                   >
                                     <span
                                       className="position-absolute top-0 start-50 translate-middle-x text-center small"
@@ -647,13 +668,24 @@ const handleViewProfile = (sellerId) => {
                                       }}
                                     >
                                       <b style={{ fontSize: ".95rem" }}>
-                                      &#8377;{productdetails.price-(productdetails.price*0.15).toFixed(2)}
+                                        &#36;
+                                        {productdetails.price -
+                                          (productdetails.price * 0.15).toFixed(
+                                            2
+                                          )}
                                       </b>
                                     </button>
                                   </div>
                                   <div
                                     className="col-4 mb-2 position-relative"
-                                    onClick={() => AmountChange(productdetails.price-(productdetails.price*0.1).toFixed(2))}
+                                    onClick={() =>
+                                      AmountChange(
+                                        productdetails.price -
+                                          (productdetails.price * 0.1).toFixed(
+                                            2
+                                          )
+                                      )
+                                    }
                                   >
                                     <span
                                       className="position-absolute top-0 start-50 translate-middle-x text-center small"
@@ -676,7 +708,11 @@ const handleViewProfile = (sellerId) => {
                                       }}
                                     >
                                       <b style={{ fontSize: ".95rem" }}>
-                                      &#8377;{productdetails.price-(productdetails.price*0.1).toFixed(2)}
+                                        &#36;
+                                        {productdetails.price -
+                                          (productdetails.price * 0.1).toFixed(
+                                            2
+                                          )}
                                       </b>
                                     </button>
                                   </div>
@@ -690,30 +726,48 @@ const handleViewProfile = (sellerId) => {
                                 <i class="bi bi-check2-circle text-success fs-1"></i>
                               </div>
                               <div className="modal-footer">
-                                <button
-                                  onClick={handleOffer}
-                                  style={{ display: success ? "none" : "" }}
-                                  type="button"
-                                  className="btn btn-secondary w-100"
-                                >
-                                  Send Offer
-                                </button>
+                                {isLoggedIn ? (
+                                  <button
+                                    onClick={handleOffer}
+                                    style={{ display: success ? "none" : "" }}
+                                    type="button"
+                                    className="btn btn-secondary w-100"
+                                  >
+                                    Send Offer
+                                  </button>
+                                ) : (
+                                  <button
+                                    disabled
+                                    type="button"
+                                    className="btn btn-secondary w-100"
+                                  >
+                                    Send Offer
+                                  </button>
+                                )}
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    
 
-<div className="col-12 col-md-7">
-<div className="user-details border shadow-sm p-3 bg-body rounded">
-{userdetails.map((user) => (
-<div>
-<p><i className="bi bi-person-circle fs-5"></i>&nbsp;{user.name}</p>
-</div>
-))}
-</div>
-</div>
+                      <div className="col-12 col-md-7">
+                        <div className="user-details border shadow-sm p-3 bg-body rounded">
+                          {userdetails.map((user) => (
+                            <div className="d-flex justify-content-between m-2">
+                              <p>
+                                <i className="bi bi-person-circle fs-5"></i>
+                                &nbsp;{user.name}
+                              </p>
+                              <button
+                                className="btn btn-outline-primary"
+                                onClick={() => handleViewProfile(user.userId)}
+                              >
+                                View
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -744,10 +798,7 @@ const handleViewProfile = (sellerId) => {
               </>
             )}
           </div>
-          
         </div>
-
-       
       </main>
       <Footer />
     </div>
