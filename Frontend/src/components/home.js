@@ -105,8 +105,8 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            <div className="d-flex  justify-content-center">
-              <div className="d-md-flex  ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
+            <div className="">
+              <div className="d-md-flex flex-wrap   ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
                 {jewelleryProducts.map((product, index) => (
                   <div key={index}>
                     <Product product={product} admin="home" />
