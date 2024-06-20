@@ -56,6 +56,8 @@ import Rings from "./components/jewelry/Rings";
 import Offers from "./components/sellerdashboard/Offers";
 import Search from "./components/Search";
 import OrderPage from "./components/customerdetails/OrderPage";
+import SellerProfilePage from "./components/sellerdashboard/SellerProfilePage";
+import SellerProfile from "./components/sellerdashboard/SellerProfilePage";
 
 // import axios from "axios";
 import Scrolltotop from "./components/Scrolltotop";
@@ -230,6 +232,7 @@ function App() {
           <Route path="*" element={<Notfound />}></Route>
           <Route path="/search" element={<Search/>} />
           <Route path="/orderpage" element={<OrderPage/>} />
+          <Route path="/sellerprofile/:sellerId" element={<SellerProfile/>} />
 
         </Routes>
       </BrowserRouter>
