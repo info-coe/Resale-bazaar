@@ -64,7 +64,7 @@ export default function Addnewproduct() {
      // Validate number of selected images
      const nonNullImages = images.filter((image) => image !== null);
      if (nonNullImages.length < 2) {
-       newErrors.files = "Please select at least 3 images";
+       newErrors.files = "Please select at least 2 images";
      } else if (nonNullImages.length > 7) {
        newErrors.images = "Please select less than 7 images";
      }
@@ -141,7 +141,7 @@ export default function Addnewproduct() {
     if (name === "productimageurl") {
       const nonNullImages = images.filter((image) => image !== null);
       if (nonNullImages.length < 2) {
-        newErrors.files = "Please select at least 3 images";
+        newErrors.files = "Please select at least 2 images";
       } else {
         delete newErrors.files; // Remove the error if number of images is valid
       }

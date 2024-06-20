@@ -70,7 +70,7 @@ const NecklacesChains = () => {
 
         <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
           <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Necklaces"/>
-          <div className="d-flex flex-wrap justify-content-center">
+          <div className="">
           <div className="d-md-flex flex-wrap ms-md-2 mt-5">
             {tableData.length > 0 ? (
               tableData.map((product, index) => (

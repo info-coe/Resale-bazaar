@@ -28,7 +28,7 @@ import Addaddress from "./components/customerdetails/Addaddress";
 import Orders from "./components/customerdetails/Orders";
 import Changepassword from "./components/customerdetails/Changepassword";
 import Productdetails from "./components/Productdetails";
-import Scrolltotop from "./components/Scrolltotop";
+
 import Aboutus from "./components/Aboutus";
 import Contactus from "./components/Contactus";
 import Selleraccount from "./components/Selleraccount";
@@ -58,6 +58,7 @@ import Search from "./components/Search";
 import OrderPage from "./components/customerdetails/OrderPage";
 
 // import axios from "axios";
+import Scrolltotop from "./components/Scrolltotop";
 
 
 function App() {
