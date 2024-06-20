@@ -151,6 +151,24 @@ body {
   /* outline: none !important; */
   /* background-color: bisque; */
 }
+/* .productcard1{
+  width: 165px;
+ 
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0 !important;
+  margin: 1rem;
+}
+.productcard1 .card-img-top1 {
+  max-width: 100%;
+  height: 162px;
+ 
+  object-fit: contain;
+  align-self: center; 
+
+} */
 .productcard .card-img-top {
   max-width: 100%;
   height: 160px;
@@ -171,7 +189,9 @@ body {
 .productimgback{
   background-color: rgb(249, 244, 244)
 }
-
+.bodydiv{
+  height: 10px !important;
+}
 
 .customermenu .list-group a {
   color: black;

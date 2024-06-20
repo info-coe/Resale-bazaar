@@ -810,7 +810,7 @@ export default function Productdetails() {
                       className="btn btn-outline-primary"
                       onClick={() => handleViewProfile(user.userId)}
                     >
-                      View
+                      Visit Shop
                     </button>
                   </div>
                 ))}

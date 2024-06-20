@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import MyNavbar from '../navbar';
+import Footer from '../footer';
 
 
 const SellerProfile = () => {
@@ -55,6 +57,7 @@ const SellerProfile = () => {
 
   return (
     <>
+    <MyNavbar/>
     <div className="container mt-3">
       <div  className="row">
         <div className="col-lg-12">
@@ -72,27 +75,27 @@ const SellerProfile = () => {
         </div>
         <div className="container mt-5">
         <div className="row">
-          <div className="col-lg-8">
+          <div className="">
             <h3 className="mb-4">Products by {sellerDetails.name}</h3>
             {loading ? (
               <p>Loading...</p>
             ) : sellerProducts.length === 0 ? (
               <p>No products available.</p>
             ) : (
-              <div className="row">
+              <div className="d-md-flex  flex-wrap ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
                 {sellerProducts.map(product => (
-                  <div key={product.product_id} className="col-lg-4 col-md-6 mb-4">
-                    <div className="card product-card h-100 border rounded shadow-sm">
-                      <div className="product-img-back">
+                  <div key={product.product_id} className=" mb-4">
+                    <div className="card productcard h-100 border rounded shadow-sm">
+                      <div className="productimgback">
                         <img
                           src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
                           alt={product.name}
                           className="card-img-top"
-                          style={{ maxHeight: "200px", objectFit: "cover" }}
+                          style={{ objectFit: "cover" }}
                         />
                       </div>
-                      <div className="card-body text-center">
-                        <h5 className="card-title">{product.name}</h5>
+                      <div className="card-body bodydiv">
+                        {/* <h6 className="card-title" style={{fontSize:"14px"}}>{product.name}</h6> */}
                         <p className="card-text text-success"><b>&#36; {product.price}</b></p>
                       </div>
                     </div>
@@ -103,7 +106,7 @@ const SellerProfile = () => {
           </div>
         </div>
       </div>
-
+<Footer/>
     </>
   );
 };
