@@ -250,7 +250,7 @@ export default function Productdetails() {
           / {productdetails.name}
         </nav>
         <div className="p-2 ps-lg-5 pe-lg-5 d-lg-flex">
-          <div className="p-2 ps-lg-4 pe-lg-4 d-flex flex-column justify-content-between col-lg-5">
+          <div className="p-2 ps-lg-4 pe-lg-4 d-flex flex-column  col-lg-5">
             <div className="ms-auto me-auto text-center productdetailsimgdiv">
               <img
                 src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
@@ -295,12 +295,14 @@ export default function Productdetails() {
             <h1 className="text-secondary fs-2">{productdetails.name}</h1>
             <p>{productdetails.description}</p>
             <br />
+            {productdetails.location !== "NA" &&
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
                 <b>Location</b>
               </p>
               <p className=" col-md-8 col-lg-10">: {productdetails.location}</p>
             </div>
+            }
             {productdetails.language !== null &&
               productdetails.language !== "" && (
                 <div className="d-flex col-md-9">
@@ -312,36 +314,43 @@ export default function Productdetails() {
                   </p>
                 </div>
               )}
+            {productdetails.color !== "NA" &&
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
                 <b>Color</b>
               </p>
               <p className=" col-md-8 col-lg-10">: {productdetails.color}</p>
             </div>
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>Can it be altered</b>
-              </p>
-              <p className=" col-md-8 col-lg-7">
-                : {productdetails.alteration}
-              </p>
-            </div>
+              }
+            {productdetails.alteration !== "NA" &&
+              <div className="d-flex col-md-9">
+                <p className=" col-md-4 col-lg-5">
+                  <b>Can it be altered</b>
+                </p>
+                <p className=" col-md-8 col-lg-7">
+                  : {productdetails.alteration}
+                </p>
+              </div>
+            }
+            {productdetails.size !== "NA" &&
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
                 <b>Size</b>
               </p>
               <p className=" col-md-8 col-lg-10">: {productdetails.size}</p>
             </div>
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>Measurements</b>
-              </p>
-              <p className=" col-md-8 col-lg-10">
-                : {productdetails.measurements}
-              </p>
-            </div>
-
-            {productdetails.material !== null && (
+             }
+            {productdetails.measurements !== "NA" &&
+                        <div className="d-flex col-md-9">
+                          <p className=" col-md-4 col-lg-5">
+                            <b>Measurements</b>
+                          </p>
+                          <p className=" col-md-8 col-lg-10">
+                            : {productdetails.measurements}
+                          </p>
+                        </div>
+            }
+            {productdetails.material !== null && productdetails.material !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Material</b>
@@ -351,7 +360,7 @@ export default function Productdetails() {
                 </p>
               </div>
             )}
-            {productdetails.occasion !== null && (
+            {productdetails.occasion !== null && productdetails.occasion !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Occasion</b>
@@ -361,7 +370,7 @@ export default function Productdetails() {
                 </p>
               </div>
             )}
-            {productdetails.type !== null && (
+            {productdetails.type !== null && productdetails.type !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>type</b>
@@ -369,7 +378,7 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.type}</p>
               </div>
             )}
-            {productdetails.brand !== null && (
+            {productdetails.brand !== null && productdetails.brand !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Brand</b>
@@ -377,7 +386,7 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.brand}</p>
               </div>
             )}
-            {productdetails.product_condition !== null && (
+            {productdetails.product_condition !== null && productdetails.product_condition !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Product_Condition</b>
@@ -387,7 +396,7 @@ export default function Productdetails() {
                 </p>
               </div>
             )}
-            {productdetails.style !== null && (
+            {productdetails.style !== null && productdetails.style !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Style</b>
@@ -395,7 +404,7 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.style}</p>
               </div>
             )}
-            {productdetails.season !== null && (
+            {productdetails.season !== null && productdetails.season !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Season</b>
@@ -403,7 +412,7 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.season}</p>
               </div>
             )}
-            {productdetails.fit !== null && (
+            {productdetails.fit !== null && productdetails.fit !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Fit</b>
@@ -411,7 +420,7 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.fit}</p>
               </div>
             )}
-            {productdetails.length !== null && (
+            {productdetails.length !== null && productdetails.length !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Length</b>
@@ -419,6 +428,7 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.length}</p>
               </div>
             )}
+            {productdetails.measurements !== "NA" &&
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
                 <b>Condition</b>
@@ -427,6 +437,7 @@ export default function Productdetails() {
                 : {productdetails.condition}
               </p>
             </div>
+            }
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
                 <b>Product ID</b>
@@ -439,14 +450,15 @@ export default function Productdetails() {
             </p>
             {productdetails.quantity > 0 ? (
               admin !== "admin" ? (
-                <div className="">
-                  <div className="d-flex">
-                    <> QTY </>: &nbsp;
-                    <select className="form-select" style={{ width: "90px" }}>
-                      <option value={1}>1</option>
-                    </select>
-                  </div>
-                  {/* <div className="p-lg-2">
+                <>
+                  <div className="">
+                    <div className="d-flex">
+                      <> QTY </>: &nbsp;
+                      <select className="form-select" style={{ width: "90px" }}>
+                        <option value={1}>1</option>
+                      </select>
+                    </div>
+                    {/* <div className="p-lg-2">
                    <button
                       type="submit"
                       className="btn btn-secondary ms-3 ps-lg-5 pe-lg-5"
@@ -462,29 +474,30 @@ export default function Productdetails() {
                   >
                     <i className="bi bi-heart-fill" /> ADD TO WISHLIST
                   </button> */}
-                  <div className="container">
-                    {sessionStorage.getItem('token') === "admin" ? null :(
-                    <div className="row ">
-                      <div className="col-12 col-md-7 mb-2 mt-2 ">
-                        <button
-                          type="submit"
-                          className="btn btn-secondary w-100"
-                          onClick={handleAddToCart}
-                        >
-                          <b>ADD TO CART</b>
-                        </button>
-                      </div>
-                      <div className="col-12 col-md-7 mb-2">
-                        <button
-                          type="button"
-                          className="btn btn-outline-secondary w-100"
-                          onClick={handleAddToWishlist}
-                        >
-                          {/* <i className="bi bi-heart-fill" />  */}
-                          <b> ADD TO WISHLIST</b>
-                        </button>
-                      </div>
-                      {/* <div className="col-12 col-md-7 mb-2">
+
+                    <div className="container">
+                      {sessionStorage.getItem('token') === "admin" ? null : (
+                        <div className="row ">
+                          <div className="col-12 col-md-7 mb-2 mt-2 ">
+                            <button
+                              type="submit"
+                              className="btn btn-secondary w-100"
+                              onClick={handleAddToCart}
+                            >
+                              <b>ADD TO CART</b>
+                            </button>
+                          </div>
+                          <div className="col-12 col-md-7 mb-2">
+                            <button
+                              type="button"
+                              className="btn btn-outline-secondary w-100"
+                              onClick={handleAddToWishlist}
+                            >
+                              {/* <i className="bi bi-heart-fill" />  */}
+                              <b> ADD TO WISHLIST</b>
+                            </button>
+                          </div>
+                          {/* <div className="col-12 col-md-7 mb-2">
                         <button
                           type="button"
                           className="btn btn-outline-secondary w-100"
@@ -494,286 +507,271 @@ export default function Productdetails() {
                         </button>
                       </div> */}
 
-                      {/*Button trigger modal*/}
+                          {/*Button trigger modal*/}
 
-                      <div className="col-12 col-md-7 mb-2">
-                        {success ? (
-                          <div className="text-center">
-                            <i
-                              className="bi bi-check-lg fs-3"
-                              style={{ width: "2em" }}
-                            ></i>
-                            <button type="button" className="btn mb-2  w-10">
-                              <b>MAKE OFFER</b>
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            type="button"
-                            className="btn mb-2 btn-outline-secondary w-100"
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
-                          >
-                            <b>MAKE OFFER</b>{" "}
-                          </button>
-                        )}
-
-                        <div
-                          className="modal fade"
-                          id="exampleModal"
-                          tabIndex="-1"
-                          aria-labelledby="exampleModalLabel"
-                          aria-hidden="true"
-                        >
-                          <div className="modal-dialog modal-dialog-centered">
-                            <div className="modal-content">
-                              <div className="modal-header">
-                                <p className="modal-title fs-5 text-center col-11">
-                                  <b> Make an offer</b>
-                                </p>
-                                <div className="col-1">
-                                  <button
-                                    type="button"
-                                    className="btn-close d-lg-hidden col-1 justify-center"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                  ></button>
-                                </div>
+                          <div className="col-12 col-md-7 mb-2">
+                            {success ? (
+                              <div className="text-center">
+                                <i
+                                  className="bi bi-check-lg fs-3"
+                                  style={{ width: "2em" }}
+                                ></i>
+                                <button type="button" className="btn mb-2  w-10">
+                                  <b>MAKE OFFER</b>
+                                </button>
                               </div>
-                              {/*modal box */}
-                              <div
-                                className="modal-body"
-                                style={{ display: success ? "none" : "" }}
+                            ) : (
+                              <button
+                                type="button"
+                                className="btn mb-2 btn-outline-secondary w-100"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
                               >
-                                {/* <img
+                                <b>MAKE OFFER</b>{" "}
+                              </button>
+                            )}
+
+                            <div
+                              className="modal fade"
+                              id="exampleModal"
+                              tabIndex="-1"
+                              aria-labelledby="exampleModalLabel"
+                              aria-hidden="true"
+                            >
+                              <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <p className="modal-title fs-5 text-center col-11">
+                                      <b> Make an offer</b>
+                                    </p>
+                                    <div className="col-1">
+                                      <button
+                                        type="button"
+                                        className="btn-close d-lg-hidden col-1 justify-center"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                      ></button>
+                                    </div>
+                                  </div>
+                                  {/*modal box */}
+                                  <div
+                                    className="modal-body"
+                                    style={{ display: success ? "none" : "" }}
+                                  >
+                                    {/* <img
                                   src=""
                                   alt="Small Image"
                                   className="img-fluid mb-3 mx-auto d-block"
                                 /> */}
 
-                                {/* <input
+                                    {/* <input
                                   type="text"
                                   className="form-control mb-3"
                                   placeholder="Enter your offer"
                                 /> */}
-                                <img
-                                  src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
-                                  alt="Small"
-                                  className="img-fluid mb-3 mx-auto d-block"
-                                  style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "150px",
-                                  }} // Adjust the maxHeight as needed
-                                />
-                                <span style={{ fontSize: "0.75rem" }}>
-                                  Enter Your Offer
-                                </span>
-                                <div class="border p-2 position-relative mb-3">
-                                  <div className="row g-0 align-items-center">
-                                    <div className="col-auto">
-                                      <b className="p-2 fs-5">&#36;</b>
+                                    <img
+                                      src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
+                                      alt="Small"
+                                      className="img-fluid mb-3 mx-auto d-block"
+                                      style={{
+                                        maxWidth: "100%",
+                                        maxHeight: "150px",
+                                      }} // Adjust the maxHeight as needed
+                                    />
+                                    <span style={{ fontSize: "0.75rem" }}>
+                                      Enter Your Offer
+                                    </span>
+                                    <div class="border p-2 position-relative mb-3">
+                                      <div className="row g-0 align-items-center">
+                                        <div className="col-auto">
+                                          <b className="p-2 fs-5">&#36;</b>
+                                        </div>
+                                        <div className="col">
+                                          <input
+                                            type="text"
+                                            placeholder="40.00"
+                                            value={add}
+                                            onChange={handleChange}
+                                            style={{
+                                              outline: "none",
+                                              border: "none",
+                                            }}
+                                          />
+                                        </div>
+                                        <div className="col-auto">
+                                          <i style={{ fontSize: "0.75rem" }}>
+                                            &#36; 6.29 shipping
+                                          </i>
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="col">
-                                      <input
-                                        type="text"
-                                        placeholder="40.00"
-                                        value={add}
-                                        onChange={handleChange}
-                                        style={{
-                                          outline: "none",
-                                          border: "none",
-                                        }}
-                                      />
+
+                                    <div className="row">
+                                      <div
+                                        onClick={() =>
+                                          AmountChange(
+                                            productdetails.price -
+                                            (productdetails.price * 0.2).toFixed(
+                                              2
+                                            )
+                                          )
+                                        }
+                                        className="col-4 mb-2 position-relative "
+                                        onChange={AmountChange}
+                                      >
+                                        <span
+                                          className="position-absolute start-50 translate-middle-x text-center small"
+                                          style={{
+                                            fontSize: "0.75rem",
+                                            padding: "3px",
+                                          }}
+                                        >
+                                          20% Off
+                                        </span>
+                                        <button
+                                          type="button"
+                                          value="34.00"
+                                          className="btn border-secondary p-3 w-100"
+                                          style={{
+                                            paddingTop: "2rem",
+                                            backgroundColor:
+                                              add === "32.00"
+                                                ? "rgba(38, 109, 28, 0.19)"
+                                                : null,
+                                          }}
+                                        >
+                                          <b style={{ fontSize: ".95rem" }}>
+                                            &#36;
+                                            {productdetails.price -
+                                              (productdetails.price * 0.2).toFixed(
+                                                2
+                                              )}
+                                          </b>
+                                        </button>
+                                      </div>
+
+                                      <div
+                                        className="col-4 mb-2 position-relative"
+                                        onClick={() =>
+                                          AmountChange(
+                                            productdetails.price -
+                                            (productdetails.price * 0.15).toFixed(
+                                              2
+                                            )
+                                          )
+                                        }
+                                      >
+                                        <span
+                                          className="position-absolute top-0 start-50 translate-middle-x text-center small"
+                                          style={{
+                                            fontSize: "0.75rem",
+                                            padding: "3px",
+                                          }}
+                                        >
+                                          15% Off
+                                        </span>
+                                        <button
+                                          type="button"
+                                          className="btn border-secondary p-3 w-100"
+                                          style={{
+                                            paddingTop: "2rem",
+                                            backgroundColor:
+                                              add === "34.00"
+                                                ? "rgba(38, 109, 28, 0.19)"
+                                                : null,
+                                          }}
+                                        >
+                                          <b style={{ fontSize: ".95rem" }}>
+                                            &#36;
+                                            {productdetails.price -
+                                              (productdetails.price * 0.15).toFixed(
+                                                2
+                                              )}
+                                          </b>
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="col-4 mb-2 position-relative"
+                                        onClick={() =>
+                                          AmountChange(
+                                            productdetails.price -
+                                            (productdetails.price * 0.1).toFixed(
+                                              2
+                                            )
+                                          )
+                                        }
+                                      >
+                                        <span
+                                          className="position-absolute top-0 start-50 translate-middle-x text-center small"
+                                          style={{
+                                            fontSize: "0.75rem",
+                                            padding: "3px",
+                                          }}
+                                        >
+                                          10% Off
+                                        </span>
+                                        <button
+                                          type="button"
+                                          className="btn border-secondary p-3 w-100"
+                                          style={{
+                                            paddingTop: "2rem",
+                                            backgroundColor:
+                                              add === "36.00"
+                                                ? "rgba(38, 109, 28, 0.19)"
+                                                : null,
+                                          }}
+                                        >
+                                          <b style={{ fontSize: ".95rem" }}>
+                                            &#36;
+                                            {productdetails.price -
+                                              (productdetails.price * 0.1).toFixed(
+                                                2
+                                              )}
+                                          </b>
+                                        </button>
+                                      </div>
                                     </div>
-                                    <div className="col-auto">
-                                      <i style={{ fontSize: "0.75rem" }}>
-                                        &#36; 6.29 shipping
-                                      </i>
-                                    </div>
+                                  </div>
+                                  {/*success */}
+                                  <div
+                                    className="text-center"
+                                    style={{ display: success ? "" : "none" }}
+                                  >
+                                    <i class="bi bi-check2-circle text-success fs-1"></i>
+                                  </div>
+                                  <div className="modal-footer">
+                                    {isLoggedIn ? (
+                                      <button
+                                        onClick={handleOffer}
+                                        style={{ display: success ? "none" : "" }}
+                                        type="button"
+                                        className="btn btn-secondary w-100"
+                                      >
+                                        Send Offer
+                                      </button>
+                                    ) : (
+                                      <button
+                                        disabled
+                                        type="button"
+                                        className="btn btn-secondary w-100"
+                                      >
+                                        Send Offer
+                                      </button>
+                                    )}
                                   </div>
                                 </div>
-
-                                <div className="row">
-                                  <div
-                                    onClick={() =>
-                                      AmountChange(
-                                        productdetails.price -
-                                          (productdetails.price * 0.2).toFixed(
-                                            2
-                                          )
-                                      )
-                                    }
-                                    className="col-4 mb-2 position-relative "
-                                    onChange={AmountChange}
-                                  >
-                                    <span
-                                      className="position-absolute start-50 translate-middle-x text-center small"
-                                      style={{
-                                        fontSize: "0.75rem",
-                                        padding: "3px",
-                                      }}
-                                    >
-                                      20% Off
-                                    </span>
-                                    <button
-                                      type="button"
-                                      value="34.00"
-                                      className="btn border-secondary p-3 w-100"
-                                      style={{
-                                        paddingTop: "2rem",
-                                        backgroundColor:
-                                          add === "32.00"
-                                            ? "rgba(38, 109, 28, 0.19)"
-                                            : null,
-                                      }}
-                                    >
-                                      <b style={{ fontSize: ".95rem" }}>
-                                        &#36;
-                                        {productdetails.price -
-                                          (productdetails.price * 0.2).toFixed(
-                                            2
-                                          )}
-                                      </b>
-                                    </button>
-                                  </div>
-
-                                  <div
-                                    className="col-4 mb-2 position-relative"
-                                    onClick={() =>
-                                      AmountChange(
-                                        productdetails.price -
-                                          (productdetails.price * 0.15).toFixed(
-                                            2
-                                          )
-                                      )
-                                    }
-                                  >
-                                    <span
-                                      className="position-absolute top-0 start-50 translate-middle-x text-center small"
-                                      style={{
-                                        fontSize: "0.75rem",
-                                        padding: "3px",
-                                      }}
-                                    >
-                                      15% Off
-                                    </span>
-                                    <button
-                                      type="button"
-                                      className="btn border-secondary p-3 w-100"
-                                      style={{
-                                        paddingTop: "2rem",
-                                        backgroundColor:
-                                          add === "34.00"
-                                            ? "rgba(38, 109, 28, 0.19)"
-                                            : null,
-                                      }}
-                                    >
-                                      <b style={{ fontSize: ".95rem" }}>
-                                        &#36;
-                                        {productdetails.price -
-                                          (productdetails.price * 0.15).toFixed(
-                                            2
-                                          )}
-                                      </b>
-                                    </button>
-                                  </div>
-                                  <div
-                                    className="col-4 mb-2 position-relative"
-                                    onClick={() =>
-                                      AmountChange(
-                                        productdetails.price -
-                                          (productdetails.price * 0.1).toFixed(
-                                            2
-                                          )
-                                      )
-                                    }
-                                  >
-                                    <span
-                                      className="position-absolute top-0 start-50 translate-middle-x text-center small"
-                                      style={{
-                                        fontSize: "0.75rem",
-                                        padding: "3px",
-                                      }}
-                                    >
-                                      10% Off
-                                    </span>
-                                    <button
-                                      type="button"
-                                      className="btn border-secondary p-3 w-100"
-                                      style={{
-                                        paddingTop: "2rem",
-                                        backgroundColor:
-                                          add === "36.00"
-                                            ? "rgba(38, 109, 28, 0.19)"
-                                            : null,
-                                      }}
-                                    >
-                                      <b style={{ fontSize: ".95rem" }}>
-                                        &#36;
-                                        {productdetails.price -
-                                          (productdetails.price * 0.1).toFixed(
-                                            2
-                                          )}
-                                      </b>
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                              {/*success */}
-                              <div
-                                className="text-center"
-                                style={{ display: success ? "" : "none" }}
-                              >
-                                <i class="bi bi-check2-circle text-success fs-1"></i>
-                              </div>
-                              <div className="modal-footer">
-                                {isLoggedIn ? (
-                                  <button
-                                    onClick={handleOffer}
-                                    style={{ display: success ? "none" : "" }}
-                                    type="button"
-                                    className="btn btn-secondary w-100"
-                                  >
-                                    Send Offer
-                                  </button>
-                                ) : (
-                                  <button
-                                    disabled
-                                    type="button"
-                                    className="btn btn-secondary w-100"
-                                  >
-                                    Send Offer
-                                  </button>
-                                )}
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
 
-                     
-                    </div>
-                    )}
-                     <div className="col-12 col-md-7 mt-3">
-                        <div className="user-details border shadow-sm p-3 bg-body rounded">
-                          {userdetails.map((user) => (
-                            <div className="d-flex justify-content-between m-2">
-                              <p>
-                                <i className="bi bi-person-circle fs-5"></i>
-                                &nbsp;{user.name}
-                              </p>
-                              <button
-                                className="btn btn-outline-primary"
-                                onClick={() => handleViewProfile(user.userId)}
-                              >
-                                View
-                              </button>
-                            </div>
-                          ))}
+
                         </div>
-                      </div>
+                      )}
+
+                    </div>
                   </div>
-                </div>
+
+                </>
               ) : (
                 <>
                   <button
@@ -800,6 +798,24 @@ export default function Productdetails() {
                 </h5>
               </>
             )}
+            <div className="col-12 col-md-7 mt-3">
+              <div className="user-details border shadow-sm p-3 bg-body rounded">
+                {userdetails.map((user) => (
+                  <div className="d-flex justify-content-between m-2">
+                    <p>
+                      <i className="bi bi-person-circle fs-5"></i>
+                      &nbsp;{user.name}
+                    </p>
+                    <button
+                      className="btn btn-outline-primary"
+                      onClick={() => handleViewProfile(user.userId)}
+                    >
+                      View
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </main>

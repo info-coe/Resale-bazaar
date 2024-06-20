@@ -87,7 +87,9 @@ const Product = (props) => {
           <p className="card-text text-success">
             <b>&#36; {props.product.price}.00</b>
           </p>
-          <h6 className="card-text" style={{lineHeight:"8px"}}>{props.product.size}</h6>         
+          {props.product.size !== "NA" &&
+          <h6 className="card-text" style={{lineHeight:"8px"}}>{props.product.size}</h6>  
+          }       
         </div>
       </div>
     </div>

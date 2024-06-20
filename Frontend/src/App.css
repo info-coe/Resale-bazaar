@@ -165,9 +165,9 @@ body {
 /* .Productsgap{
   row-gap:"3rem"
 } */
-/* .productcard .card-body {
-  height: 110px;
-} */
+.productcard .card-body {
+  height: 75px;
+}
 .productimgback{
   background-color: rgb(249, 244, 244)
 }

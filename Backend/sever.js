@@ -656,6 +656,7 @@ app.post("/addproducts", upload.array('images', 10), (req, res) => {
   
   const images = req.files.map(file => file.filename);
   const sql = addProductsQuery;
+  // console.log(req.body)
 
   const values = [
     req.body.producttype,
@@ -675,14 +676,14 @@ app.post("/addproducts", upload.array('images', 10), (req, res) => {
     req.body.quantity,
     req.body.price,
     req.body.material,
-    req.body.occasion,
-    req.body.type,
-    req.body.brand,
-    req.body.product_condition,
-    req.body.style,
-    req.body.season,
-    req.body.fit,
-    req.body.length,
+    req.body.Occasion,
+    req.body.Type,
+    req.body.Brand,
+    // req.body.product_condition,
+    req.body.Style,
+    req.body.Season,
+    req.body.Fit,
+    req.body.Length,
     req.body.accepted_by_admin,
     req.body.seller_id,
   ];

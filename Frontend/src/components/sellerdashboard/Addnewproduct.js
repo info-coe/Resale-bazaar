@@ -300,6 +300,7 @@ export default function Addnewproduct() {
       formData.append(attribute.name, attribute.value);
     });
   
+    // console.log(customAttributes)
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
@@ -314,6 +315,7 @@ export default function Addnewproduct() {
       if (response.data === "Error") {
         alert("Error while adding product. Please try again filling all the fields");
       } else {
+        // console.log(response.data)
         alert("Product added successfully");
         window.location.reload(false);
       }
