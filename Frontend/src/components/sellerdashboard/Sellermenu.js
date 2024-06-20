@@ -70,11 +70,11 @@ export default function Sellermenu() {
         >
           <div className="accordion-body p-0">
             <ul className="list-group">
-              <Link to="/sellerorders" className="text-decoration-none text-dark">
+              {/* <Link to="/sellerorders" className="text-decoration-none text-dark">
                 <li className="list-group-item">
                   <i className="bi bi-record-circle"></i> Orders
                 </li>
-              </Link>
+              </Link> */}
               <Link to="/shipments" className="text-decoration-none text-dark">
                 <li className="list-group-item">
                   <i className="bi bi-record-circle"></i> Shipments

@@ -19,6 +19,28 @@ export default function Shipments() {
       setCurrentPage(1);
       setViewRowIndex(null);
     }, [pageSize]);
+
+    // useEffect(() => {
+    //   axios
+    //     .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //         res.data.map((item)=>{
+    //         if(parseInt(sessionStorage.getItem("user-token")) === (item.user_id)){
+    //           setValues(prev => ({
+    //             ...prev,
+    //             firstname: (item.firstname === null) ? ("") : (item.firstname),
+    //             lastname: (item.lastname === null) ? ("") : (item.lastname),
+    //             email: (item.email === null) ? ("") : (item.email),
+    //             phone: (item.phone === null) ? ("") : (item.phone),
+    //           }))
+    //         }
+    //         return null;
+    //       })
+    //     })
+    //     .catch((err) => console.log(err));
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
   
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
@@ -153,17 +175,17 @@ export default function Shipments() {
                     </thead>
                     <tbody>
                       <tr role="row" className="">
-                        <td>No data available</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td> row 2</td>
+                      <th className="sorting p-3" rowSpan="1" colSpan="1">
+                          <label className="pos-rel">
+                            <input
+                              type="checkbox"
+                              name="allcheckboxes"
+                              className="ace"
+                              onChange={handleChecked}
+                            />
+                            <span className="lbl"></span>
+                          </label>
+                        </th>
                         <td></td>
                         <td></td>
                         <td></td>

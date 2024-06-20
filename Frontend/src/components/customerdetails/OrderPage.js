@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import MyNavbar from '../navbar';
+import Footer from '../footer';
 
 const OrderPage = () => {
   const location = useLocation();
   const { filteredProducts} = location.state || {};
   const productData = filteredProducts || {}
   const [orderStages, setOrderStages] = useState([]);
+
+  console.log(productData)
   useEffect(() => {
     // Example logic to determine order stages based on order data
     const stages = [
-      { title: 'Order Placed', isCompleted: productData.order_id !== null },
-      { title: 'Shipped', isCompleted: productData.shipment_id !== null },
-      { title: 'Arrived', isCompleted:  productData.shipped_date !== null  }, 
+      { title: 'Order Placed', isCompleted: productData.ordered_date !== null },
+      { title: 'Shipped', isCompleted: productData.shipped_date !== null },
+      { title: 'Arrived', isCompleted:  productData.delivered_date !== null  }, 
       { title: 'Delivered', isCompleted: productData.delivered_date !== null }
     ];
 
@@ -65,9 +69,11 @@ const OrderPage = () => {
   `;
 
   return (
+    <>
+    <MyNavbar/>
     <div className="container py-5">
       <style>{styles}</style>
-      <div className="card shadow">
+      <div className="card shadow p-4">
         <div className="card-body">
           <div className="row align-items-center">
             <div className="col">
@@ -97,6 +103,8 @@ const OrderPage = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

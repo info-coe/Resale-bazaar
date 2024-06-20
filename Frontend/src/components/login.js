@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MyNavbar from "./navbar";
 import Footer from "./footer";
 import axios from "axios";
 import { useData } from "./CartContext";
 import CryptoJS from "crypto-js";
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 
 const Login = () => {
   sessionStorage.clear();
@@ -26,6 +27,37 @@ const Login = () => {
   });
   const [showAdditionalContent, setShowAdditionalContent] = useState(false);
   const [AdditionalContentbtn, setAdditionalContentbtn] = useState("+");
+  const [ user, setUser ] = useState([]);
+  const [ profile, setProfile ] = useState([]);
+
+  const signin = useGoogleLogin({
+      onSuccess: (codeResponse) => setUser(codeResponse),
+      onError: (error) => console.log('Login Failed:', error)
+  });
+  useEffect(
+    () => {
+        if (user) {
+            axios
+                .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                    headers: {
+                        Authorization: `Bearer ${user.access_token}`,
+                        Accept: 'application/json'
+                    }
+                })
+                .then((res) => {
+                    setProfile(res.data);
+                })
+                .catch((err) => console.log(err));
+        }
+    },
+    [ user ]
+);
+
+
+  const logOut = () => {
+    googleLogout();
+    setProfile(null);
+  };  
 
   const handleInput = (event) => {
     setValues((prev) => ({
@@ -87,10 +119,27 @@ const Login = () => {
       setAdditionalContentbtn("-");
     }
   };
+
+  // console.log(profile)
   return (
     <div className="fullscreen">
       <MyNavbar />
       <main>
+      {/* <div className="text-center mt-4">
+            {profile ? (
+                <div>
+                    <img src={profile.picture} alt="googleuser" />
+                    <h3>User Logged in</h3>
+                    <p>Name: {profile.name}</p>
+                    <p>Email Address: {profile.email}</p>
+                    <br />
+                    <br />
+                    <button onClick={logOut}>Log out</button>
+                </div>
+            ) : (
+                <button onClick={signin}>Sign in with Google 🚀 </button>
+            )}
+        </div> */}
         <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">
           {/* <div className="col-md-5">
             <div className="card bg-white shadow mb-3 ">
