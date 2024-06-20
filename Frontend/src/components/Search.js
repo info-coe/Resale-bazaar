@@ -1,47 +1,4 @@
-// import React,{useState,useEffect} from 'react';
-// import axios from 'axios';
-// import Product from './Product';
 
-// const Search = () => {
-//     const [allProducts, setAllProducts] = useState([]);
-
-//     useEffect(() => {
-//       axios
-//       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts`)
-//         .then((res) => {
-//           if (res.data !== "Fail" && res.data !== "Error") {
-//             // console.log(res.data);
-//             setAllProducts(res.data);
-//           }
-//         })
-//         .catch((error) => {
-//           console.log("Error fetching data:", error);
-//         });
-//     }, []);
-//     return (
-//         <>
-//              <div className=" d-flex justify-content-center">
-//   <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 justify-content-start">
-//     {(allProducts.length > 0) ? (
-//       <>
-//         {allProducts.map((product, index) => (
-//           <div key={index}>
-//             <Product product={product} admin="home" />
-//           </div>
-//         ))}
-//       </>
-//     ) : (
-//       <h3 className="text-center mb-4" style={{ fontSize: '28px' }}>No products to display</h3>
-//     )}
-//   </div>
-// </div>
-//         </>
-//     );
-// };
-
-// export default Search;
-
-// Search.js
 
 import React, { useState, useEffect } from 'react';
 import Product from './Product';
@@ -78,7 +35,7 @@ const Search = () => {
         product.name.toLowerCase().includes(lowerCaseTerm) ||
         product.color.toLowerCase().includes(lowerCaseTerm) ||
         product.price.toString().includes(lowerCaseTerm) ||
-        product.description.toLowerCase().includes(lowerCaseTerm)
+        product.size.toLowerCase().includes(lowerCaseTerm)
       ));
       setFilteredProducts(results);
     } else {
