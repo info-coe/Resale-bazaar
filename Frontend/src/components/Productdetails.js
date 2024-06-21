@@ -303,7 +303,7 @@ export default function Productdetails() {
               <p className=" col-md-8 col-lg-10">: {productdetails.location}</p>
             </div>
             }
-            {productdetails.language !== null &&
+            {/* {productdetails.language !== null &&
               productdetails.language !== "" && (
                 <div className="d-flex col-md-9">
                   <p className=" col-md-4 col-lg-5">
@@ -313,7 +313,7 @@ export default function Productdetails() {
                     : {productdetails.language}
                   </p>
                 </div>
-              )}
+              )} */}
             {productdetails.color !== "NA" &&
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
@@ -386,7 +386,7 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.brand}</p>
               </div>
             )}
-            {productdetails.product_condition !== null && productdetails.product_condition !== "NA" && (
+            {/* {productdetails.product_condition !== null && productdetails.product_condition !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Product_Condition</b>
@@ -395,7 +395,7 @@ export default function Productdetails() {
                   : {productdetails.product_condition}
                 </p>
               </div>
-            )}
+            )} */}
             {productdetails.style !== null && productdetails.style !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
@@ -428,13 +428,33 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.length}</p>
               </div>
             )}
-            {productdetails.measurements !== "NA" &&
+            {productdetails.condition !== "NA" &&
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
                 <b>Condition</b>
               </p>
               <p className=" col-md-8  col-lg-10">
                 : {productdetails.condition}
+              </p>
+            </div>
+            }
+             {productdetails.source !== "NA" &&
+            <div className="d-flex col-md-9">
+              <p className=" col-md-4 col-lg-5">
+                <b>Source</b>
+              </p>
+              <p className=" col-md-8  col-lg-10">
+                : {productdetails.source}
+              </p>
+            </div>
+            }
+             {productdetails.age !== "NA" &&
+            <div className="d-flex col-md-9">
+              <p className=" col-md-4 col-lg-5">
+                <b>Age</b>
+              </p>
+              <p className=" col-md-8  col-lg-10">
+                : {productdetails.age}
               </p>
             </div>
             }
