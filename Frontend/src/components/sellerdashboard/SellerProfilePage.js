@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import MyNavbar from '../navbar';
 import Footer from '../footer';
 
@@ -84,22 +84,44 @@ const SellerProfile = () => {
             ) : (
               <div className="d-md-flex  flex-wrap ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
                 {sellerProducts.map(product => (
-                  <div key={product.product_id} className=" mb-4">
-                    <div className="card productcard h-100 border rounded shadow-sm">
-                      <div className="productimgback">
-                        <img
-                          src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
-                          alt={product.name}
-                          className="card-img-top"
-                          style={{ objectFit: "cover" }}
-                        />
-                      </div>
-                      <div className="card-body bodydiv">
-                        {/* <h6 className="card-title" style={{fontSize:"14px"}}>{product.name}</h6> */}
-                        <p className="card-text text-success"><b>&#36; {product.price}</b></p>
-                      </div>
-                    </div>
-                  </div>
+                  // <div key={product.product_id} className=" mb-4">
+                  //   <div className="card productcard h-100 border rounded shadow-sm">
+                  //     <div className="productimgback">
+                  //       <img
+                  //         src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
+                  //         alt={product.name}
+                  //         className="card-img-top"
+                  //         style={{ objectFit: "cover" }}
+                  //       />
+                  //     </div>
+                  //     <div className="card-body bodydiv">
+                  //       {/* <h6 className="card-title" style={{fontSize:"14px"}}>{product.name}</h6> */}
+                  //       <p className="card-text text-success"><b>&#36; {product.price}</b></p>
+                  //     </div>
+                  //   </div>
+                  // </div>
+                   <div className="card productcard">
+                   <Link
+                     to={"/product/" +product.id}
+                     state={{ productdetails:product}}
+                   >
+                     <div className="text-center productimgback">
+                       <img
+                         src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
+                         className="card-img-top"
+                         alt="product"
+                       />
+                     </div>
+                   </Link>
+                   <div className="card-body">
+                     <p className="card-text text-success">
+                       <b>&#36; {product.price}.00</b>
+                     </p>
+                     {product.size !== "NA" &&
+                     <h6 className="card-text" style={{lineHeight:"8px"}}>{product.size}</h6>  
+                     }       
+                   </div>
+                 </div>
                 ))}
               </div>
             )}
