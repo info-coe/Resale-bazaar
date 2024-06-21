@@ -103,7 +103,7 @@ export default function Productdetails() {
 
   const handleAddToCart = () => {
     const isProductInCart = cartItems.some(
-      (item) => item.id === productdetails.id
+      (item) => item.product_id === productdetails.id
     );
     if (isProductInCart) {
       alert("Product already exists in the cart");
@@ -116,7 +116,7 @@ export default function Productdetails() {
 
   const handleAddToWishlist = () => {
     const isProductInWishlist = wishItems.some(
-      (item) => item.id === productdetails.id
+      (item) => item.product_id === productdetails.id
     );
     if (isProductInWishlist) {
       alert("Product already exists in the wishlist");
