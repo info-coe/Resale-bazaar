@@ -129,7 +129,7 @@ const Offers = () => {
                    />
                   </div>       
                       </td>
-                      <td>&#8377; {offer.offeredPrice}</td>
+                      <td>&#36; {offer.offeredPrice}</td>
                       <td>{offer.product_status}</td>
                       {offer.product_status === 'Pending' && (
                         <td>
@@ -172,7 +172,7 @@ const Offers = () => {
                    />
                   </div>                  
                       </td>
-                      <td>&#8377; {offer.offeredPrice}</td>
+                      <td>&#36; {offer.offeredPrice}</td>
                       <td>{offer.product_status}</td>
                     </tr>
                   ))

@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-// import Sellernavbar from "./Sellernavbar";
-// import Sellermenu from "./Sellermenu";
-// import Sellerfooter from "./Sellerfooter";
 import axios from "axios";
 import MyNavbar from "../navbar";
 import Footer from "../footer";
@@ -33,7 +30,7 @@ export default function Addnewproduct() {
   const [customAttributes, setCustomAttributes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState({});
- 
+
   const placeholders = [
     "Cover",
     "Back",
@@ -55,19 +52,13 @@ export default function Addnewproduct() {
       newErrors.productname = "Product name must be less than 90 characters";
     }
 
-    // Validate number of selected images
-    // if (images.length < 1) {
-    //   newErrors.files = "Please select at least 1 images";
-    // } else if (images.length > 7) {
-    //   newErrors.images = "Please select less than 7 images";
-    // }
-     // Validate number of selected images
-     const nonNullImages = images.filter((image) => image !== null);
-     if (nonNullImages.length < 2) {
-       newErrors.files = "Please select at least 2 images";
-     } else if (nonNullImages.length > 7) {
-       newErrors.images = "Please select less than 7 images";
-     }
+
+    const nonNullImages = images.filter((image) => image !== null);
+    if (nonNullImages.length < 2) {
+      newErrors.files = "Please select at least 2 images";
+    } else if (nonNullImages.length > 7) {
+      newErrors.images = "Please select less than 7 images";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if there are no errors
@@ -85,14 +76,8 @@ export default function Addnewproduct() {
 
     setImages(newImages);
   };
-  // const removeImage = (index) => {
-  //   const newImages = [...images];
-  //   newImages.splice(index, 1); // Remove the image at the specified index
-  //   newImages.push(null); // Add a null placeholder to maintain the length of the array
 
-  //   setImages(newImages);
-  // };
-  
+
   const removeImage = (index) => {
     const newImages = [...images];
     newImages[index] = null;
@@ -101,22 +86,8 @@ export default function Addnewproduct() {
     handleValidation(newImages);
   };
   const handleKeyup = (e) => {
-    // if (!e || !e.currentTarget) return;
     const { name, value } = e.target;
     const newErrors = { ...errors };
-
-     // Capitalize the first letter of each word
-    //  if (name === "productname") {
-    //   const capitalizedWords = value.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1));
-    //   const capitalizedValue = capitalizedWords.join(' ');
-
-    //   // Update the input value with the capitalized version
-    //   setValues((prev) => ({
-    //     ...prev,
-    //     [name]: capitalizedValue,
-    //   }));
-    // }
-
 
     // Validate product name length onBlur
     if (
@@ -128,16 +99,6 @@ export default function Addnewproduct() {
       delete newErrors.productname;
     }
 
-   
-
-    // if (name === "productimageurl") {
-    //   // console.log(e.currentTarget.files);
-    //   if (e.currentTarget.files.length < 1) {
-    //     newErrors.files = "Please select at least 1 images";
-    //   } else {
-    //     delete newErrors.files; // Remove the error if number of images is valid
-    //   }
-    // }
     if (name === "productimageurl") {
       const nonNullImages = images.filter((image) => image !== null);
       if (nonNullImages.length < 2) {
@@ -150,13 +111,6 @@ export default function Addnewproduct() {
     setErrors(newErrors);
   };
 
-  // const handleInput = (event) => {
-  //   // console.log(event.target.name)
-  //   setValues((prev) => ({
-  //     ...prev,
-  //     [event.target.name]: event.target.value,
-  //   }));
-  // };
 
   const handleInput = (event) => {
     const { name, value } = event.target;
@@ -212,7 +166,7 @@ export default function Addnewproduct() {
           "Dresses",
           "Twinning-outfits",
         ]);
-        setSizes(["NA","XS", "S", "M", "L", "XL"]);
+        setSizes(["NA", "XS", "S", "M", "L", "XL"]);
       } else if (event.target.value === "kids") {
         setCategories(["Girl", "Boy"]);
         setSizes([
@@ -226,10 +180,8 @@ export default function Addnewproduct() {
         ]);
       } else if (event.target.value === "jewellery") {
         setCategories(["Necklaces", "Bangles", "Earrings", "Rings"]);
-      } 
-      // else if (event.target.value === "books") {
-      //   setCategories(["Fantasy", "Horror", "Fiction", "Drama"]);
-      // }
+      }
+
     }
   };
 
@@ -265,41 +217,33 @@ export default function Addnewproduct() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const isValid = validateForm();
-  
+
     if (!isValid) {
       return;
     }
-  
+
     const updatedValues = { ...values };
-  
+
     if (values.producttype === "jewellery") {
       updatedValues.size = "NA";
       updatedValues.material = "NA";
-    } 
-    // else if (values.producttype === "books") {
-    //   updatedValues.color = "NA";
-    //   updatedValues.alteration = "NA";
-    //   updatedValues.size = "NA";
-    //   updatedValues.measurements = "NA";
-    //   updatedValues.material = "NA";
-    //   updatedValues.condition = "NA";
-    // }
-  
+    }
+
     const formData = new FormData();
     images.forEach((image) => {
       if (image) {
         formData.append("images", image);
       }
     });
-  
+
     for (const key in updatedValues) {
       formData.append(key, updatedValues[key]);
     }
-  
+
     customAttributes.forEach((attribute) => {
       formData.append(attribute.name, attribute.value);
     });
-  
+
     // console.log(customAttributes)
     try {
       const response = await axios.post(
@@ -311,7 +255,7 @@ export default function Addnewproduct() {
           }
         }
       );
-  
+
       if (response.data === "Error") {
         alert("Error while adding product. Please try again filling all the fields");
       } else {
@@ -323,7 +267,7 @@ export default function Addnewproduct() {
       console.error("Error:", error);
     }
   };
-  
+
   const attributeOptions = [
     // "Material",
     "Occasion",
@@ -346,153 +290,95 @@ export default function Addnewproduct() {
     Length: "Enter Length",
     // Add more placeholder values here for additional attributes
   };
-  
-
-//   const allDivs = placeholders.map((placeholder, index) => (
-//     <div className="col-6 col-md-3 mb-3" key={index}>
-//       <div className="card position-relative" style={{ height: "150px" }}>
-//         {images[index] ? (
-//           <>
-//             <img
-//               src={URL.createObjectURL(images[index])}
-//               alt={`upload-${index}`}
-//               className="card-img-top"
-//               style={{ height: "100%" }}
-//             />
-//           <button
-//   type="button"
-//   className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
-//   aria-label="Close"
-//   onClick={() => removeImage(index)}
-//   style={{
-     
-//     padding: '5px', 
-//     fontSize: '10px' 
-//   }}
-// ></button>
 
 
-//             <div
-//               className="placeholder-caption text-center"
-//               style={{
-//                 position: "absolute",
-//                 bottom: "0",
-//                 width: "100%",
-//                 background: "rgba(255, 255, 255, 0.7)",
-//                 padding: "5px 0",
-//                 fontSize: "14px",
-//                 color: "#888",
-//               }}
-//             >
-//               {placeholder}
-//             </div>
-//           </>
-//         ) : (
-//           <div
-//             className="d-flex justify-content-center align-items-center"
-//             style={{
-//               height: "100%",
-//               backgroundColor: "rgba(255, 255, 255, 0.7)",
-//             }}
-//           >
-//             <div className="text-center">
-//               <p>{placeholder}</p>
-//             </div>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   ));
-const allDivs = images.map((image, index) => (
-  <div className="col-6 col-md-3 mb-3" key={index}>
-    <div className="card position-relative" style={{ height: "150px" }}>
-      {image ? (
-        <>
-          <img
-            src={URL.createObjectURL(image)}
-            alt={`upload-${index}`}
-            className="card-img-top"
-            style={{ height: "100%" }}
-          />
-          <button
-            type="button"
-            className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
-            aria-label="Close"
-            onClick={() => removeImage(index)}
+
+  const allDivs = images.map((image, index) => (
+    <div className="col-6 col-md-3 mb-3" key={index}>
+      <div className="card position-relative" style={{ height: "150px" }}>
+        {image ? (
+          <>
+            <img
+              src={URL.createObjectURL(image)}
+              alt={`upload-${index}`}
+              className="card-img-top"
+              style={{ height: "100%" }}
+            />
+            <button
+              type="button"
+              className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+              aria-label="Close"
+              onClick={() => removeImage(index)}
+              style={{
+                padding: '5px',
+                fontSize: '10px'
+              }}
+            ></button>
+          </>
+        ) : (
+          <div
+            className="d-flex justify-content-center align-items-center"
             style={{
-              padding: '5px',
-              fontSize: '10px'
+              height: "100%",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
             }}
-          ></button>
-        </>
-      ) : (
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{
-            height: "100%",
-            backgroundColor: "rgba(255, 255, 255, 0.7)",
-          }}
-        >
-          <div className="text-center">
-            <p>{placeholders[index]}</p>
+          >
+            <div className="text-center">
+              <p>{placeholders[index]}</p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
-  </div>
-));
+  ));
 
-// Add the addPhoto div if there's space available
-const nextAvailableIndex = images.findIndex((image) => image === null);
-if (nextAvailableIndex !== -1) {
-  allDivs.splice(
-    nextAvailableIndex,
-    0,
-    <div className="col-6 col-md-3 mb-3" key="addPhoto" style={{ cursor: 'pointer' }}>
-      <label className="w-100 text-center" htmlFor="productimageurl">
-        <div
-          className="card d-flex justify-content-center align-items-center"
-          style={{ height: "150px" }}
-        >
-          <i className="bi bi-camera" style={{ cursor: 'pointer', fontSize: '1rem' }}>
-            <p>Add a photo</p>
-          </i>
-          <input
-            id="productimageurl"
-            type="file"
-            accept="image/jpeg, image/png"
-            multiple
-            onChange={(e) => {
-              handleFile(e);
-            }}
-            name="productimageurl"
-            title="Upload minimum 2 to max 7 images"
-            required
-            style={{ display: "none" }}
-          />
-        </div>
-      </label>
-    </div>
-  );
-}
+  // Add the addPhoto div if there's space available
+  const nextAvailableIndex = images.findIndex((image) => image === null);
+  if (nextAvailableIndex !== -1) {
+    allDivs.splice(
+      nextAvailableIndex,
+      0,
+      <div className="col-6 col-md-3 mb-3" key="addPhoto" style={{ cursor: 'pointer' }}>
+        <label className="w-100 text-center" htmlFor="productimageurl">
+          <div
+            className="card d-flex justify-content-center align-items-center"
+            style={{ height: "150px" }}
+          >
+            <i className="bi bi-camera" style={{ cursor: 'pointer', fontSize: '1rem' }}>
+              <p>Add a photo</p>
+            </i>
+            <input
+              id="productimageurl"
+              type="file"
+              accept="image/jpeg, image/png"
+              multiple
+              onChange={(e) => {
+                handleFile(e);
+              }}
+              name="productimageurl"
+              title="Upload minimum 2 to max 7 images"
+              required
+              style={{ display: "none" }}
+            />
+          </div>
+        </label>
+      </div>
+    );
+  }
   return (
     <div className="fullscreen">
-      {/* <Sellernavbar /> */}
-      <MyNavbar/>
+      <MyNavbar />
       <div className="d-md-flex">
-        {/* <div className="col-md-2 selleraccordion">
-          <Sellermenu />
-        </div> */}
+
         <div className="col-12">
           <div className="fullscreen2">
             <main>
               <div className="container">
-                {/* <h1 className="mt-2 ms-2 fs-3">List an item</h1> */}
-                {/* <hr className="ms-4 me-4" /> */}
+
                 <div className="row justify-content-center">
                   <div className="col-xs-12 col-sm-8 col-md-9z col-lg-6">
-                  <h1 className="mt-4 fs-3">List an item</h1>
-                  <hr className="mb-4" />
+                    <h1 className="mt-4 fs-3">List an item</h1>
+                    <hr className="mb-4" />
                     <form className="mb-4" onSubmit={handleSubmit}>
                       <div className="mb-3">
                         <label
@@ -513,7 +399,6 @@ if (nextAvailableIndex !== -1) {
                             <option value="women">Women</option>
                             <option value="kids">Kids</option>
                             <option value="jewellery">Jewellery</option>
-                            {/* <option value="books">Books</option> */}
                           </select>
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
@@ -577,7 +462,7 @@ if (nextAvailableIndex !== -1) {
                         )}
                       </div>
                       <div className="mb-4">
-                       
+
                         <div className="container">
                           <label
                             htmlFor="productimageurl"
@@ -585,16 +470,16 @@ if (nextAvailableIndex !== -1) {
                           >
                             Upload Images
                           </label>
-                        
+
                           <div className="row">{allDivs}</div>
-                          
+
                           {/* SVG icons */}
                           <svg style={{ display: "none" }}>
-            <symbol id="photo" viewBox="0 0 24 24">
-              <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
-            </symbol>
-          </svg>
-          {errors.files && <span className="text-danger">{errors.files}</span>}
+                            <symbol id="photo" viewBox="0 0 24 24">
+                              <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
+                            </symbol>
+                          </svg>
+                          {errors.files && <span className="text-danger">{errors.files}</span>}
                         </div>
                       </div>
                       <div className="mb-3">
@@ -617,56 +502,28 @@ if (nextAvailableIndex !== -1) {
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
+
                       <div className="mb-3">
-                        {/* <label
-                          htmlFor="productimageurl"
+                        <label
+                          htmlFor="color"
                           className="form-label fw-bolder"
                         >
-                          Upload Images
-                        </label> */}
-                        {/* <div className="d-flex"> */}
-                          {/* <input
-                            type="file"
+                          Color
+                        </label>
+                        <div className="d-flex">
+                          <input
+                            type="text"
                             className="form-control"
-                            multiple
-                            onChange={(e) => {
-                              handleFile(e);
-                              handleKeyup(e); // Trigger validation when files are selected
-                            }}
-                            name="productimageurl"
-                            id="productimageurl"
-                            title="Upload minimum 4 to max 10 images"
+                            id="color"
+                            name="color"
+                            placeholder="Color"
+                            value={values.color}
+                            onChange={handleInput}
                             required
-                          /> */}
-                          {/* <span className="text-danger fs-4"> &nbsp;*</span> */}
-                        {/* </div> */}
-                        {/* {errors.files && (
-                          <span className="text-danger">{errors.files}</span>
-                        )} */}
-                      </div>
-                      {/* {values.producttype !== "books" && ( */}
-                        <div className="mb-3">
-                          <label
-                            htmlFor="color"
-                            className="form-label fw-bolder"
-                          >
-                            Color
-                          </label>
-                          <div className="d-flex">
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="color"
-                              name="color"
-                              placeholder="Color"
-                              value={values.color}
-                              onChange={handleInput}
-                              required
-                            />
-                            <span className="text-danger fs-4"> &nbsp;*</span>
-                          </div>
+                          />
+                          <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
-                      {/* )} */}
+                      </div>
                       <div className="mb-3">
                         <label
                           htmlFor="location"
@@ -688,57 +545,34 @@ if (nextAvailableIndex !== -1) {
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-                      {/* {values.producttype === "books" && (
-                        <div className="mb-3">
-                          <label
-                            htmlFor="location"
-                            className="form-label fw-bolder"
-                          >
-                            Language
-                          </label>
-                          <div className="d-flex">
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="language"
-                              name="language"
-                              placeholder="Enter Book Language (Eg. English, Hindi, Telugu etc.)"
-                              value={values.language}
-                              onChange={handleInput}
-                              required
-                            />
-                            <span className="text-danger fs-4"> &nbsp;*</span>
-                          </div>
-                        </div>
-                      )} */}
-                      {/* {values.producttype !== "books" && ( */}
-                        <div className="mb-3">
-                          <label
-                            htmlFor="alteration"
-                            className="form-label fw-bolder"
-                          >
-                            Alteration
-                          </label>
-                          <div className="d-flex">
-                            <select
-                              id="alteration"
-                              name="alteration"
-                              className="form-select"
-                              onChange={handleInput}
-                              required
-                            >
-                              <option value="">Select Alteration</option>
-                              <option value="NA">NA</option>
-                              <option value="Yes">Yes</option>
-                              <option value="No">No</option>
-                            </select>
 
-                            <span className="text-danger fs-4"> &nbsp;*</span>
-                          </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="alteration"
+                          className="form-label fw-bolder"
+                        >
+                          Alteration
+                        </label>
+                        <div className="d-flex">
+                          <select
+                            id="alteration"
+                            name="alteration"
+                            className="form-select"
+                            onChange={handleInput}
+                            required
+                          >
+                            <option value="">Select Alteration</option>
+                            <option value="NA">NA</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                          </select>
+
+                          <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
-                      {/* )} */}
+                      </div>
+
                       {values.producttype !== "jewellery" &&
-                         (
+                        (
                           <div className="mb-3">
                             <label
                               htmlFor="size"
@@ -768,31 +602,29 @@ if (nextAvailableIndex !== -1) {
                             </div>
                           </div>
                         )}
-                      {/* {values.producttype !== "books" && ( */}
-                        <div className="mb-3">
-                          <label
-                            htmlFor="measurements"
-                            className="form-label fw-bolder"
-                          >
-                            Measurements
-                          </label>
-                          <div className="d-flex">
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="measurements"
-                              name="measurements"
-                              placeholder="Measurements (eg. 32 to 36)"
-                              value={values.measurements}
-                              onChange={handleInput}
-                              required
-                            />
-                            <span className="text-danger fs-4"> &nbsp;*</span>
-                          </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="measurements"
+                          className="form-label fw-bolder"
+                        >
+                          Measurements
+                        </label>
+                        <div className="d-flex">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="measurements"
+                            name="measurements"
+                            placeholder="Measurements (eg. 32 to 36)"
+                            value={values.measurements}
+                            onChange={handleInput}
+                            required
+                          />
+                          <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
-                      {/* )} */}
+                      </div>
                       {values.producttype !== "jewellery" &&
-                         (
+                        (
                           <div className="mb-3">
                             <label
                               htmlFor="material"
@@ -802,7 +634,6 @@ if (nextAvailableIndex !== -1) {
                             </label>
                             <div className="d-flex">
                               <select
-                                //  type="text"
                                 className="form-select"
                                 id="material"
                                 name="material"
@@ -834,79 +665,77 @@ if (nextAvailableIndex !== -1) {
                             </div>
                           </div>
                         )}
-                       {/* {values.producttype !== "books" && (
-                        <> */}
-                          <div className="mb-3">
-                            <label
-                              htmlFor="condition"
-                              className="form-label fw-bolder"
-                            >
-                              Condition
-                            </label>
-                            <div className="d-flex">
-                              <select
-                                className="form-select"
-                                id="condition"
-                                name="condition"
-                                value={values.condition}
-                                onChange={handleInput}
-                                required
-                              >
-                                <option value="">Select Condition</option>
-                                <option value="NA">NA</option>
-                                <option value="Brand new">
-                                  Brand new
-                                </option>
-                                <option value="Like new">
-                                  Like new
-                                </option>
-                                <option value="Excellent">
-                                  Used - Excellent 
-                                </option>
-                                <option value="Good">
-                                  Used - Good
-                                </option>
-                                <option value="Fair">
-                                  Used - Fair
-                                </option>
-                              </select>
-                              <span className="text-danger fs-4"> &nbsp;*</span>
-                            </div>
-                          </div>
-                          <div className="mb-3">
-                            <label
-                              htmlFor="source"
-                              className="form-label fw-bolder"
-                            >
-                              Source
-                            </label>
-                            <div className="d-flex">
-                              <select
-                                className="form-select"
-                                id="source"
-                                name="source"
-                                value={values.source}
-                                onChange={handleInput}
-                                required
-                              >
-                                <option value="">Select source</option>
-                                <option value="NA">NA</option>
-                                <option value="Vintage">Vintage</option>
-                                <option value="Preloved">Preloved</option>
-                                <option value="Reworked/upcycled">
-                                  Reworked / Upcycled
-                                </option>
-                                <option value="Custom">Custom</option>
-                                <option value="Homemade">Homemade</option>
-                                <option value="Deadstock">Deadstock</option>
-                                <option value="Designer">Designer</option>
-                                <option value="Repaired">Repaired</option>
-                              </select>
-                              <span className="text-danger fs-4"> &nbsp;*</span>
-                            </div>
-                          </div>
-                        {/* </>
-                      )}  */}
+
+                      <div className="mb-3">
+                        <label
+                          htmlFor="condition"
+                          className="form-label fw-bolder"
+                        >
+                          Condition
+                        </label>
+                        <div className="d-flex">
+                          <select
+                            className="form-select"
+                            id="condition"
+                            name="condition"
+                            value={values.condition}
+                            onChange={handleInput}
+                            required
+                          >
+                            <option value="">Select Condition</option>
+                            <option value="NA">NA</option>
+                            <option value="Brand new">
+                              Brand new
+                            </option>
+                            <option value="Like new">
+                              Like new
+                            </option>
+                            <option value="Excellent">
+                              Used - Excellent
+                            </option>
+                            <option value="Good">
+                              Used - Good
+                            </option>
+                            <option value="Fair">
+                              Used - Fair
+                            </option>
+                          </select>
+                          <span className="text-danger fs-4"> &nbsp;*</span>
+                        </div>
+                      </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="source"
+                          className="form-label fw-bolder"
+                        >
+                          Source
+                        </label>
+                        <div className="d-flex">
+                          <select
+                            className="form-select"
+                            id="source"
+                            name="source"
+                            value={values.source}
+                            onChange={handleInput}
+                            required
+                          >
+                            <option value="">Select source</option>
+                            <option value="NA">NA</option>
+                            <option value="Vintage">Vintage</option>
+                            <option value="Preloved">Preloved</option>
+                            <option value="Reworked/upcycled">
+                              Reworked / Upcycled
+                            </option>
+                            <option value="Custom">Custom</option>
+                            <option value="Homemade">Homemade</option>
+                            <option value="Deadstock">Deadstock</option>
+                            <option value="Designer">Designer</option>
+                            <option value="Repaired">Repaired</option>
+                          </select>
+                          <span className="text-danger fs-4"> &nbsp;*</span>
+                        </div>
+                      </div>
+
                       <div className="mb-3">
                         <label htmlFor="age" className="form-label fw-bolder">
                           Age
@@ -979,174 +808,84 @@ if (nextAvailableIndex !== -1) {
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-                      {/* {customAttributes.map((attr, index) => (
-                        <div key={index} className="mb-3">
-                          <label
-                            htmlFor={attr.name}
-                            className="form-label fw-bolder"
-                          >
-                            {attr.name}
+
+                      {customAttributes.map((attribute) => (
+                        <div key={attribute.name} className="mb-3">
+                          <label htmlFor={attribute.name} className="form-label">
+                            {attribute.name}
                           </label>
                           <input
                             type="text"
                             className="form-control"
-                            id={attr.name}
-                            name={attr.name}
-                            value={attr.value}
-                            onChange={(e) => {
-                              const updatedAttrs = [...customAttributes];
-                              updatedAttrs[index].value = e.target.value;
-                              setCustomAttributes(updatedAttrs);
-                            }}
-                            placeholder={placeholderValues[attr.name]}
-                            //  required
+                            id={attribute.name}
+                            placeholder={placeholderValues[attribute.name]}
+                            value={attribute.value}
+                            onChange={(event) => handleInputChange(event, attribute.name)}
                           />
                         </div>
-                      ))} */}
-                       {customAttributes.map((attribute) => (
-          <div key={attribute.name} className="mb-3">
-            <label htmlFor={attribute.name} className="form-label">
-              {attribute.name}
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id={attribute.name}
-              placeholder={placeholderValues[attribute.name]}
-              value={attribute.value}
-              onChange={(event) => handleInputChange(event, attribute.name)}
-            />
-          </div>
-        ))}
-                        {/* <div className="mb-3">
-                          <button
-                            type="button"
-                            className="btn btn-primary mb-3"
-                            onClick={handleAddAttribute}
-                          >
-                            Add Custom Attribute
-                          </button>
-                          <div
-                            className="modal"
-                            style={{ display: showModal ? "block" : "none" }}
-                          >
-                            <div className="modal-dialog">
-                              <div className="modal-content">
-                                <div className="modal-header">
-                                  <h5 className="modal-title">
-                                    Select Custom Attributes
-                                  </h5>
-                                  <button
-                                    type="button"
-                                    className="btn-close"
-                                    onClick={() => setShowModal(false)}
-                                  ></button>
-                                </div>
-                                <div className="modal-body">
-                                  {attributeOptions.map((option) => (
-                                    <div key={option} className="form-check">
-                                      <input
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        id={option}
-                                        checked={selectedAttributes.includes(
-                                          option
-                                        )}
-                                        onChange={() =>
-                                          handleCheckboxChange(option)
-                                        }
-                                      />
-                                      <label
-                                        className="form-check-label"
-                                        htmlFor={option}
-                                      >
-                                        {option}
-                                      </label>
-                                    </div>
-                                  ))}
-                                </div>
-                                <div className="modal-footer">
-                                  <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    onClick={() => setShowModal(false)}
-                                  >
-                                    Close
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="btn btn-primary"
-                                    onClick={handleModalSubmit}
-                                    disabled={selectedAttributes.length === 0}
-                                  >
-                                    Submit
-                                  </button>
-                                </div>
+                      ))}
+
+                      <div className="mb-3">
+                        <button
+                          type="button"
+                          className="btn btn-primary mb-3"
+                          onClick={handleAddAttribute}
+                        >
+                          Add Custom Attribute
+                        </button>
+                        <div
+                          className="modal"
+                          style={{ display: showModal ? "block" : "none" }}
+                        >
+                          <div className="modal-dialog">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h5 className="modal-title">Select Custom Attributes</h5>
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  onClick={() => setShowModal(false)}
+                                ></button>
+                              </div>
+                              <div className="modal-body">
+                                {attributeOptions.map((option) => (
+                                  <div key={option} className="form-check">
+                                    <input
+                                      type="checkbox"
+                                      className="form-check-input"
+                                      id={option}
+                                      checked={selectedAttributes.includes(option)}
+                                      onChange={() => handleCheckboxChange(option)}
+                                    />
+                                    <label className="form-check-label" htmlFor={option}>
+                                      {option}
+                                    </label>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className="modal-footer">
+                                <button
+                                  type="button"
+                                  className="btn btn-secondary"
+                                  onClick={() => setShowModal(false)}
+                                >
+                                  Close
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn btn-primary"
+                                  onClick={handleModalSubmit}
+                                  disabled={selectedAttributes.length === 0}
+                                >
+                                  Submit
+                                </button>
                               </div>
                             </div>
                           </div>
-                        </div> */}
-                        <div className="mb-3">
-        <button
-          type="button"
-          className="btn btn-primary mb-3"
-          onClick={handleAddAttribute}
-        >
-          Add Custom Attribute
-        </button>
-        <div
-          className="modal"
-          style={{ display: showModal ? "block" : "none" }}
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Select Custom Attributes</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShowModal(false)}
-                ></button>
-              </div>
-              <div className="modal-body">
-                {attributeOptions.map((option) => (
-                  <div key={option} className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id={option}
-                      checked={selectedAttributes.includes(option)}
-                      onChange={() => handleCheckboxChange(option)}
-                    />
-                    <label className="form-check-label" htmlFor={option}>
-                      {option}
-                    </label>
-                  </div>
-                ))}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowModal(false)}
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleModalSubmit}
-                  disabled={selectedAttributes.length === 0}
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                        </div>
+                      </div>
 
-     
+
                       <div className="text-center">
                         <button
                           type="submit"
@@ -1165,8 +904,7 @@ if (nextAvailableIndex !== -1) {
                 </div>
               </div>
             </main>
-            {/* <Sellerfooter /> */}
-            <Footer/>
+            <Footer />
           </div>
         </div>
       </div>

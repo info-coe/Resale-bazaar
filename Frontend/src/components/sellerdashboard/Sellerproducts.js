@@ -208,7 +208,7 @@ export default function Sellerproducts() {
                               ></img>
                             </td>
                             <td>{item.name}</td>
-                            <td>&#8377;{item.price}.00</td>
+                            <td>&#36;{item.price}.00</td>
                             <td>
                             {item.accepted_by_admin === 'true' ? 
                               <span className="text-success" style={{fontWeight:"600"}}>Approved</span> : 
