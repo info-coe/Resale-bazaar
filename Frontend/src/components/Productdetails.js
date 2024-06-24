@@ -40,7 +40,7 @@ export default function Productdetails() {
   const location = useLocation();
   const { productdetails, admin } = location.state || {};
   productdetails.userid = sessionStorage.getItem("user-token");
-  console.log(productdetails.id)
+  console.log(productdetails.id);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
@@ -198,8 +198,10 @@ export default function Productdetails() {
   };
 
   const [userdetails, setUserDetails] = useState([]);
-//Offer 
-const offerExists = offer.some((curr) => curr.product_id === productdetails.id);
+  //Offer
+  const offerExists = offer.some(
+    (curr) => curr.product_id === productdetails.id
+  );
 
   useEffect(() => {
     axios
@@ -230,10 +232,11 @@ const offerExists = offer.some((curr) => curr.product_id === productdetails.id);
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`
       )
       .then((e) => {
+       
         setOffer(e.data);
       })
       .catch((error) => console.log(error));
-  }, [productdetails.seller_id]);
+  }, [offer,productdetails.seller_id]);
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
     // console.log(sellerId);
