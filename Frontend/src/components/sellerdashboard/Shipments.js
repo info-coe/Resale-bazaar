@@ -4,53 +4,67 @@ import Sellermenu from "./Sellermenu";
 import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Shipments() {
-    // eslint-disable-next-line no-unused-vars
-    const [products, setProducts] = useState([]);
-    const [pageSize, setPageSize] = useState(6);
-    const [currentPage, setCurrentPage] = useState(1);
-    // eslint-disable-next-line no-unused-vars
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    // eslint-disable-next-line no-unused-vars
-    const [viewRowIndex, setViewRowIndex] = useState(null);
-  
-    useEffect(() => {
-      setCurrentPage(1);
-      setViewRowIndex(null);
-    }, [pageSize]);
+  // eslint-disable-next-line no-unused-vars
+  const [products, setProducts] = useState([]);
+  const [pageSize, setPageSize] = useState(6);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [viewRowIndex, setViewRowIndex] = useState(null);
+  const [shippingProducts, setShippingProducts] = useState([]);
+  const [orderStatus, setOrderStatus] = useState("");
 
-    // useEffect(() => {
-    //   axios
-    //     .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //         res.data.map((item)=>{
-    //         if(parseInt(sessionStorage.getItem("user-token")) === (item.user_id)){
-    //           setValues(prev => ({
-    //             ...prev,
-    //             firstname: (item.firstname === null) ? ("") : (item.firstname),
-    //             lastname: (item.lastname === null) ? ("") : (item.lastname),
-    //             email: (item.email === null) ? ("") : (item.email),
-    //             phone: (item.phone === null) ? ("") : (item.phone),
-    //           }))
-    //         }
-    //         return null;
-    //       })
-    //     })
-    //     .catch((err) => console.log(err));
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
-  
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    // eslint-disable-next-line no-unused-vars
-    const tableData = filteredProducts.slice(startIndex, endIndex);
+  useEffect(() => {
+    setCurrentPage(1);
+    setViewRowIndex(null);
+  }, [pageSize]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updatepayment`
+      )
+      .then((res) => {
+        setFilteredProducts(res.data);
+        axios
+        .get(
+          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`
+        )
+        .then((result) => {
+          setShippingProducts(
+            result.data.filter(
+              (item) =>
+                item.seller_id.toString() === sessionStorage.getItem("user-token")
+            )
+          );
+        })
+        .catch((err) => console.log(err));
+
+      })
+      .catch((err) => console.log(err));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const allSellerProducts = filteredProducts
+  .filter((product) =>
+    shippingProducts.some(
+      (order) => order.id === product.product_id
+    )
+  );
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const tableData = allSellerProducts.slice(startIndex, endIndex);
+
   const handleChecked = (e) => {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     if (e.currentTarget.checked) {
       for (let i = 0; i < checkboxes.length; i++) {
         checkboxes[i].checked = true;
+        console.log(checkboxes[i]);
       }
     } else {
       for (let i = 0; i < checkboxes.length; i++) {
@@ -58,6 +72,25 @@ export default function Shipments() {
       }
     }
   };
+
+  const handleOrder = () => {
+    // console.log(order);
+    axios
+    .post(
+      `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateOrder`, {
+        shipment_id : orderStatus,
+        shipped_date : new Date().toLocaleDateString("fr-CA")
+      }
+    )
+    .then((res) => {
+      console.log(res.data);
+      // setFilteredProducts(res.data);
+    })
+    .catch((err) => console.log(err));
+  };
+
+  // console.log(shippingProducts);
+
   return (
     <div className="">
       <Sellernavbar />
@@ -69,16 +102,17 @@ export default function Shipments() {
           <div className="fullscreen2">
             <main>
               <div className="d-flex justify-content-between m-2">
-                <h1 style={{fontSize:"28px"}}>Shipments</h1>
+                <h1 style={{ fontSize: "28px" }}>Shipments</h1>
                 <div className="d-flex gap-2">
-                  <Link to="/addnewproduct">
-                    <button className="btn btn-info">
+                  {/* <Link to="/addnewproduct"> */}
+                    <button className="btn btn-info" onClick={handleOrder}>
                       <i className="bi bi-truck"></i> Set as shipped(selected)
                     </button>
-                  </Link>
+                  {/* </Link> */}
                   <Link to="/addnewproduct">
                     <button className="btn btn-success">
-                      <i className="bi bi-check2-circle"></i> Set as delivered(selected)
+                      <i className="bi bi-check2-circle"></i> Set as
+                      delivered(selected)
                     </button>
                   </Link>
                 </div>
@@ -94,7 +128,7 @@ export default function Shipments() {
                   >
                     <thead className="">
                       <tr role="row">
-                      <th className="sorting p-3" rowSpan="1" colSpan="1">
+                        <th className="sorting p-3" rowSpan="1" colSpan="1">
                           <label className="pos-rel">
                             <input
                               type="checkbox"
@@ -126,24 +160,14 @@ export default function Shipments() {
                           Order#
                         </th>
                         <th
-                          className="sorting p-3"
-                          tabIndex="0"
-                          aria-controls="dynamic-table"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="Address:activate to sort column ascending"
-                        >
-                          Tracking Number
-                        </th>
-                        <th
                           className="hidden-480 sorting p-3"
                           tabIndex="0"
                           aria-controls="dynamic-table"
                           rowSpan="1"
                           colSpan="1"
-                          aria-label="City: activate to sort column ascending"
+                          aria-label="Timings: activate to sort column ascending"
                         >
-                          Total Weight
+                          Date Ordered
                         </th>
                         <th
                           className="hidden-480 sorting p-3"
@@ -163,37 +187,38 @@ export default function Shipments() {
                         >
                           Date Delivered
                         </th>
-                        <th
-                          className="hidden-480 sorting p-3"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="Status"
-                        >
-                          view
-                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr role="row" className="">
-                      <th className="sorting p-3" rowSpan="1" colSpan="1">
-                          <label className="pos-rel">
-                            <input
-                              type="checkbox"
-                              name="allcheckboxes"
-                              className="ace"
-                              onChange={handleChecked}
-                            />
-                            <span className="lbl"></span>
-                          </label>
-                        </th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
+                      {tableData.map((item, index) => (
+                        <tr role="row" key={index} className="">
+                          <th className="sorting p-3" rowSpan="1" colSpan="1">
+                            <label className="pos-rel">
+                              <input
+                                type="checkbox"
+                                name="allcheckboxes"
+                                className="ace"
+                                onChange={() => setOrderStatus(item.shipment_id)}
+                              />
+                              <span className="lbl"></span>
+                            </label>
+                          </th>
+                          <td>{item.shipment_id}</td>
+                          <td>{item.order_id}</td>
+                          <td>
+                            {item.ordered_date &&
+                              item.ordered_date.slice(0, 10)}
+                          </td>
+                          <td>
+                            {item.shipped_date &&
+                              item.shipped_date.slice(0, 10)}
+                          </td>
+                          <td>
+                            {item.delivered_date &&
+                              item.delivered_date.slice(0, 10)}
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
