@@ -25,6 +25,7 @@
     "nodemon": "^2.0.22",
     "path": "^0.12.7",
     "paypal-rest-sdk": "^1.8.1",
+    "public": "^0.1.5",
     "two-step-auth": "^1.1.2"
   }
 }

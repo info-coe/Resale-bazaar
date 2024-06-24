@@ -34,13 +34,17 @@ const responsive = {
 export default function Productdetails() {
   const [add, setAdd] = useState("0.00");
   const [success, setSuccess] = useState(false);
-
+  const [offer, setOffer] = useState([]);
+  console.log(offer);
   const { id } = useParams();
   const location = useLocation();
   const { productdetails, admin } = location.state || {};
   productdetails.userid = sessionStorage.getItem("user-token");
+  console.log(productdetails.id)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  // console.log(isLoggedIn);
 
   if (productdetails) {
     productdetails.userid = sessionStorage.getItem("user-token");
@@ -53,6 +57,7 @@ export default function Productdetails() {
   }, []);
 
   const AmountChange = (e) => {
+    // console.log(e)
     setAdd(e);
   };
   const handleChange = (e) => {
@@ -193,6 +198,8 @@ export default function Productdetails() {
   };
 
   const [userdetails, setUserDetails] = useState([]);
+//Offer 
+const offerExists = offer.some((curr) => curr.product_id === productdetails.id);
 
   useEffect(() => {
     axios
@@ -209,18 +216,27 @@ export default function Productdetails() {
             email: item.email,
             phone: item.phone,
             name: item.firstname + " " + item.lastname,
-            // Add more fields as needed
+            //Add more fields as needed
           }));
           // Set filtered user details to state
           setUserDetails(userDetails);
+          // console.log()
         }
       })
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    axios
+      .get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`
+      )
+      .then((e) => {
+        setOffer(e.data);
+      })
+      .catch((error) => console.log(error));
   }, [productdetails.seller_id]);
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
-    console.log(sellerId);
+    // console.log(sellerId);
     // Navigate to seller profile page with sellerId as a parameter
     navigates(`/sellerprofile/${sellerId}`);
   };
@@ -295,14 +311,16 @@ export default function Productdetails() {
             <h1 className="text-secondary fs-2">{productdetails.name}</h1>
             <p>{productdetails.description}</p>
             <br />
-            {productdetails.location !== "NA" &&
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>Location</b>
-              </p>
-              <p className=" col-md-8 col-lg-10">: {productdetails.location}</p>
-            </div>
-            }
+            {productdetails.location !== "NA" && (
+              <div className="d-flex col-md-9">
+                <p className=" col-md-4 col-lg-5">
+                  <b>Location</b>
+                </p>
+                <p className=" col-md-8 col-lg-10">
+                  : {productdetails.location}
+                </p>
+              </div>
+            )}
             {/* {productdetails.language !== null &&
               productdetails.language !== "" && (
                 <div className="d-flex col-md-9">
@@ -314,15 +332,15 @@ export default function Productdetails() {
                   </p>
                 </div>
               )} */}
-            {productdetails.color !== "NA" &&
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>Color</b>
-              </p>
-              <p className=" col-md-8 col-lg-10">: {productdetails.color}</p>
-            </div>
-              }
-            {productdetails.alteration !== "NA" &&
+            {productdetails.color !== "NA" && (
+              <div className="d-flex col-md-9">
+                <p className=" col-md-4 col-lg-5">
+                  <b>Color</b>
+                </p>
+                <p className=" col-md-8 col-lg-10">: {productdetails.color}</p>
+              </div>
+            )}
+            {productdetails.alteration !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Can it be altered</b>
@@ -331,45 +349,47 @@ export default function Productdetails() {
                   : {productdetails.alteration}
                 </p>
               </div>
-            }
-            {productdetails.size !== "NA" &&
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>Size</b>
-              </p>
-              <p className=" col-md-8 col-lg-10">: {productdetails.size}</p>
-            </div>
-             }
-            {productdetails.measurements !== "NA" &&
-                        <div className="d-flex col-md-9">
-                          <p className=" col-md-4 col-lg-5">
-                            <b>Measurements</b>
-                          </p>
-                          <p className=" col-md-8 col-lg-10">
-                            : {productdetails.measurements}
-                          </p>
-                        </div>
-            }
-            {productdetails.material !== null && productdetails.material !== "NA" && (
+            )}
+            {productdetails.size !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
-                  <b>Material</b>
+                  <b>Size</b>
+                </p>
+                <p className=" col-md-8 col-lg-10">: {productdetails.size}</p>
+              </div>
+            )}
+            {productdetails.measurements !== "NA" && (
+              <div className="d-flex col-md-9">
+                <p className=" col-md-4 col-lg-5">
+                  <b>Measurements</b>
                 </p>
                 <p className=" col-md-8 col-lg-10">
-                  : {productdetails.material}
+                  : {productdetails.measurements}
                 </p>
               </div>
             )}
-            {productdetails.occasion !== null && productdetails.occasion !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Occasion</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">
-                  : {productdetails.occasion}
-                </p>
-              </div>
-            )}
+            {productdetails.material !== null &&
+              productdetails.material !== "NA" && (
+                <div className="d-flex col-md-9">
+                  <p className=" col-md-4 col-lg-5">
+                    <b>Material</b>
+                  </p>
+                  <p className=" col-md-8 col-lg-10">
+                    : {productdetails.material}
+                  </p>
+                </div>
+              )}
+            {productdetails.occasion !== null &&
+              productdetails.occasion !== "NA" && (
+                <div className="d-flex col-md-9">
+                  <p className=" col-md-4 col-lg-5">
+                    <b>Occasion</b>
+                  </p>
+                  <p className=" col-md-8 col-lg-10">
+                    : {productdetails.occasion}
+                  </p>
+                </div>
+              )}
             {productdetails.type !== null && productdetails.type !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
@@ -404,14 +424,17 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.style}</p>
               </div>
             )}
-            {productdetails.season !== null && productdetails.season !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Season</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.season}</p>
-              </div>
-            )}
+            {productdetails.season !== null &&
+              productdetails.season !== "NA" && (
+                <div className="d-flex col-md-9">
+                  <p className=" col-md-4 col-lg-5">
+                    <b>Season</b>
+                  </p>
+                  <p className=" col-md-8 col-lg-10">
+                    : {productdetails.season}
+                  </p>
+                </div>
+              )}
             {productdetails.fit !== null && productdetails.fit !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
@@ -420,44 +443,45 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.fit}</p>
               </div>
             )}
-            {productdetails.length !== null && productdetails.length !== "NA" && (
+            {productdetails.length !== null &&
+              productdetails.length !== "NA" && (
+                <div className="d-flex col-md-9">
+                  <p className=" col-md-4 col-lg-5">
+                    <b>Length</b>
+                  </p>
+                  <p className=" col-md-8 col-lg-10">
+                    : {productdetails.length}
+                  </p>
+                </div>
+              )}
+            {productdetails.condition !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
-                  <b>Length</b>
+                  <b>Condition</b>
                 </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.length}</p>
+                <p className=" col-md-8  col-lg-10">
+                  : {productdetails.condition}
+                </p>
               </div>
             )}
-            {productdetails.condition !== "NA" &&
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>Condition</b>
-              </p>
-              <p className=" col-md-8  col-lg-10">
-                : {productdetails.condition}
-              </p>
-            </div>
-            }
-             {productdetails.source !== "NA" &&
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>Source</b>
-              </p>
-              <p className=" col-md-8  col-lg-10">
-                : {productdetails.source}
-              </p>
-            </div>
-            }
-             {productdetails.age !== "NA" &&
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>Age</b>
-              </p>
-              <p className=" col-md-8  col-lg-10">
-                : {productdetails.age}
-              </p>
-            </div>
-            }
+            {productdetails.source !== "NA" && (
+              <div className="d-flex col-md-9">
+                <p className=" col-md-4 col-lg-5">
+                  <b>Source</b>
+                </p>
+                <p className=" col-md-8  col-lg-10">
+                  : {productdetails.source}
+                </p>
+              </div>
+            )}
+            {productdetails.age !== "NA" && (
+              <div className="d-flex col-md-9">
+                <p className=" col-md-4 col-lg-5">
+                  <b>Age</b>
+                </p>
+                <p className=" col-md-8  col-lg-10">: {productdetails.age}</p>
+              </div>
+            )}
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
                 <b>Product ID</b>
@@ -496,7 +520,7 @@ export default function Productdetails() {
                   </button> */}
 
                     <div className="container">
-                      {sessionStorage.getItem('token') === "admin" ? null : (
+                      {sessionStorage.getItem("token") === "admin" ? null : (
                         <div className="row ">
                           <div className="col-12 col-md-7 mb-2 mt-2 ">
                             <button
@@ -530,13 +554,16 @@ export default function Productdetails() {
                           {/*Button trigger modal*/}
 
                           <div className="col-12 col-md-7 mb-2">
-                            {success ? (
+                            {offerExists ? (
                               <div className="text-center">
                                 <i
                                   className="bi bi-check-lg fs-3"
                                   style={{ width: "2em" }}
                                 ></i>
-                                <button type="button" className="btn mb-2  w-10">
+                                <button
+                                  type="button"
+                                  className="btn mb-2  w-10"
+                                >
                                   <b>MAKE OFFER</b>
                                 </button>
                               </div>
@@ -547,7 +574,7 @@ export default function Productdetails() {
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"
                               >
-                                <b>MAKE OFFER</b>{" "}
+                                <b>MAKE OFFER</b>
                               </button>
                             )}
 
@@ -631,9 +658,9 @@ export default function Productdetails() {
                                         onClick={() =>
                                           AmountChange(
                                             productdetails.price -
-                                            (productdetails.price * 0.2).toFixed(
-                                              2
-                                            )
+                                              (
+                                                productdetails.price * 0.2
+                                              ).toFixed(2)
                                           )
                                         }
                                         className="col-4 mb-2 position-relative "
@@ -663,9 +690,9 @@ export default function Productdetails() {
                                           <b style={{ fontSize: ".95rem" }}>
                                             &#36;
                                             {productdetails.price -
-                                              (productdetails.price * 0.2).toFixed(
-                                                2
-                                              )}
+                                              (
+                                                productdetails.price * 0.2
+                                              ).toFixed(2)}
                                           </b>
                                         </button>
                                       </div>
@@ -675,9 +702,9 @@ export default function Productdetails() {
                                         onClick={() =>
                                           AmountChange(
                                             productdetails.price -
-                                            (productdetails.price * 0.15).toFixed(
-                                              2
-                                            )
+                                              (
+                                                productdetails.price * 0.15
+                                              ).toFixed(2)
                                           )
                                         }
                                       >
@@ -704,9 +731,9 @@ export default function Productdetails() {
                                           <b style={{ fontSize: ".95rem" }}>
                                             &#36;
                                             {productdetails.price -
-                                              (productdetails.price * 0.15).toFixed(
-                                                2
-                                              )}
+                                              (
+                                                productdetails.price * 0.15
+                                              ).toFixed(2)}
                                           </b>
                                         </button>
                                       </div>
@@ -715,9 +742,9 @@ export default function Productdetails() {
                                         onClick={() =>
                                           AmountChange(
                                             productdetails.price -
-                                            (productdetails.price * 0.1).toFixed(
-                                              2
-                                            )
+                                              (
+                                                productdetails.price * 0.1
+                                              ).toFixed(2)
                                           )
                                         }
                                       >
@@ -744,9 +771,9 @@ export default function Productdetails() {
                                           <b style={{ fontSize: ".95rem" }}>
                                             &#36;
                                             {productdetails.price -
-                                              (productdetails.price * 0.1).toFixed(
-                                                2
-                                              )}
+                                              (
+                                                productdetails.price * 0.1
+                                              ).toFixed(2)}
                                           </b>
                                         </button>
                                       </div>
@@ -763,7 +790,9 @@ export default function Productdetails() {
                                     {isLoggedIn ? (
                                       <button
                                         onClick={handleOffer}
-                                        style={{ display: success ? "none" : "" }}
+                                        style={{
+                                          display: success ? "none" : "",
+                                        }}
                                         type="button"
                                         className="btn btn-secondary w-100"
                                       >
@@ -783,14 +812,10 @@ export default function Productdetails() {
                               </div>
                             </div>
                           </div>
-
-
                         </div>
                       )}
-
                     </div>
                   </div>
-
                 </>
               ) : (
                 <>
