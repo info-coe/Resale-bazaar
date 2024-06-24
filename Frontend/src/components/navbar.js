@@ -303,6 +303,7 @@ const handleKeyPress = (event) => {
                       </Link>
                     </li>
                     {user.email !== "admin@admin" ? (
+                      <>
                     <li className="p-1">
                       <Link
                         to="/offers"
@@ -311,6 +312,15 @@ const handleKeyPress = (event) => {
                         <i className="bi bi-cash-stack"></i> Your Offers
                       </Link>
                     </li>
+                     <li className="p-1">
+                     <Link
+                       to="/contactseller"
+                       className="text-decoration-none text-dark ps-3"
+                     >
+                       <i class="bi bi-person-rolodex"></i> Contact Sellers
+                     </Link>
+                   </li> 
+                   </>
                   ) : null}
 
                     <li className="p-1">

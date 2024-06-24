@@ -61,6 +61,7 @@ import SellerProfile from "./components/sellerdashboard/SellerProfilePage";
 
 // import axios from "axios";
 import Scrolltotop from "./components/Scrolltotop";
+import ContactSeller from "./components/sellerdashboard/ContactSeller";
 
 
 function App() {
@@ -233,6 +234,7 @@ function App() {
           <Route path="/search" element={<Search/>} />
           <Route path="/orderpage" element={<OrderPage/>} />
           <Route path="/sellerprofile/:sellerId" element={<SellerProfile/>} />
+          <Route path="/contactseller" element={<ContactSeller/>}/>
 
         </Routes>
       </BrowserRouter>

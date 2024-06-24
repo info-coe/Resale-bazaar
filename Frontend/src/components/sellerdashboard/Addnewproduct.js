@@ -24,25 +24,20 @@ export default function Addnewproduct() {
     quantity: "",
     price: "",
     accepted_by_admin: "false",
-    seller_id: sessionStorage.getItem("user-token"),
+    seller_id: sessionStorage.getItem("user-token") || "", // Ensure this correctly fetches the user token
   });
   const [selectedAttributes, setSelectedAttributes] = useState([]);
   const [customAttributes, setCustomAttributes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState({});
-
-  const placeholders = [
-    "Cover",
-    "Back",
-    "Detail",
-    "Forward",
-    "Label",
-    "Side",
-    "Video",
-  ];
+ 
+  const placeholders = ['Cover', 'Back', 'Detail', 'Forward', 'Label', 'Side'];
   const totalPlaceholders = placeholders.length;
 
-  const [images, setImages] = useState(Array(totalPlaceholders).fill(null));
+  const [media, setMedia] = useState({
+    images: Array(totalPlaceholders).fill(null),
+    video: null
+  });
 
   const validateForm = () => {
     const newErrors = {};
@@ -52,42 +47,61 @@ export default function Addnewproduct() {
       newErrors.productname = "Product name must be less than 90 characters";
     }
 
-
-    const nonNullImages = images.filter((image) => image !== null);
-    if (nonNullImages.length < 2) {
-      newErrors.files = "Please select at least 2 images";
-    } else if (nonNullImages.length > 7) {
-      newErrors.images = "Please select less than 7 images";
-    }
+   
+     // Validate number of selected images
+     const nonNullImages = media.images.filter((image) => image !== null);
+     if (nonNullImages.length < 2) {
+       newErrors.files = "Please select at least 2 images";
+     } else if (nonNullImages.length > 7) {
+       newErrors.images = "Please select less than 7 images";
+     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if there are no errors
   };
-  const handleFile = (e) => {
+  const handleAddMediaChange = (e, type) => {
     const files = Array.from(e.target.files);
-    const newImages = [...images];
+    const newMedia = { ...media };
 
-    files.forEach((file, idx) => {
-      const nextAvailableIndex = newImages.findIndex((image) => image === null);
-      if (nextAvailableIndex !== -1) {
-        newImages[nextAvailableIndex] = file;
-      }
-    });
+    if (type === 'images') {
+      files.forEach((file) => {
+        const nextAvailableIndex = newMedia.images.findIndex(image => image === null);
+        if (nextAvailableIndex !== -1) {
+          newMedia.images[nextAvailableIndex] = file;
+        }
+      });
+    } else if (type === 'video' && files.length > 0) {
+      newMedia.video = files[0];
+    }
 
-    setImages(newImages);
+    setMedia(newMedia);
   };
 
+  const removeMedia = (type, index) => {
+    const newMedia = { ...media };
 
-  const removeImage = (index) => {
-    const newImages = [...images];
-    newImages[index] = null;
+    if (type === 'images') {
+      newMedia.images.splice(index, 1, null); // Replace removed image with null
+    } else if (type === 'video') {
+      newMedia.video = null;
+    }
 
-    setImages(newImages);
-    handleValidation(newImages);
+    setMedia(newMedia);
   };
+
+  // const removeImage = (index) => {
+  //   const newImages = [...images];
+  //   newImages.splice(index, 1); // Remove the image at the specified index
+  //   newImages.push(null); // Add a null placeholder to maintain the length of the array
+
+  //   setImages(newImages);
+  // };
+  
+ 
   const handleKeyup = (e) => {
     const { name, value } = e.target;
     const newErrors = { ...errors };
+
 
     // Validate product name length onBlur
     if (
@@ -99,8 +113,9 @@ export default function Addnewproduct() {
       delete newErrors.productname;
     }
 
+  
     if (name === "productimageurl") {
-      const nonNullImages = images.filter((image) => image !== null);
+      const nonNullImages = media.images.filter((image) => image !== null);
       if (nonNullImages.length < 2) {
         newErrors.files = "Please select at least 2 images";
       } else {
@@ -125,21 +140,7 @@ export default function Addnewproduct() {
 
     handleKeyup(event, capitalizedValue);
   };
-  // const formData = new FormData();
-  const handleValidation = (newImages) => {
-    const nonNullImages = newImages.filter((image) => image !== null);
-    const newErrors = { ...errors };
-
-    if (nonNullImages.length < 2) {
-      newErrors.files = "Please select at least 2 images";
-    } else if (nonNullImages.length > 7) {
-      newErrors.files = "Please select less than 7 images";
-    } else {
-      delete newErrors.files;
-    }
-
-    setErrors(newErrors);
-  };
+ 
 
   const handleInputChange = (event, attribute) => {
     const value = event.target.value;
@@ -166,7 +167,7 @@ export default function Addnewproduct() {
           "Dresses",
           "Twinning-outfits",
         ]);
-        setSizes(["NA", "XS", "S", "M", "L", "XL"]);
+        setSizes(["NA","XS", "S", "M", "L", "XL"]);
       } else if (event.target.value === "kids") {
         setCategories(["Girl", "Boy"]);
         setSizes([
@@ -180,8 +181,8 @@ export default function Addnewproduct() {
         ]);
       } else if (event.target.value === "jewellery") {
         setCategories(["Necklaces", "Bangles", "Earrings", "Rings"]);
-      }
-
+      } 
+     
     }
   };
 
@@ -214,37 +215,47 @@ export default function Addnewproduct() {
     setShowModal(false);
   };
 
+ 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const isValid = validateForm();
-
+  
     if (!isValid) {
       return;
     }
-
+  
     const updatedValues = { ...values };
-
+  
     if (values.producttype === "jewellery") {
       updatedValues.size = "NA";
       updatedValues.material = "NA";
     }
-
+  
     const formData = new FormData();
-    images.forEach((image) => {
+    const allMedia = [];
+  
+    media.images.forEach((image) => {
       if (image) {
-        formData.append("images", image);
+        formData.append('media', image);
+        allMedia.push(image);
       }
     });
-
+  
+    if (media.video) {
+      formData.append('media', media.video);
+      allMedia.push(media.video);
+    }
+  
     for (const key in updatedValues) {
       formData.append(key, updatedValues[key]);
     }
-
+  
     customAttributes.forEach((attribute) => {
       formData.append(attribute.name, attribute.value);
     });
-
-    // console.log(customAttributes)
+  
+    formData.append('allMedia', JSON.stringify(allMedia.map(file => file.name))); // Store media filenames
+  
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
@@ -255,21 +266,22 @@ export default function Addnewproduct() {
           }
         }
       );
-
+  
       if (response.data === "Error") {
         alert("Error while adding product. Please try again filling all the fields");
       } else {
-        // console.log(response.data)
         alert("Product added successfully");
         window.location.reload(false);
       }
     } catch (error) {
       console.error("Error:", error);
+      // Handle specific error cases as needed
     }
   };
-
+  
+  
+  
   const attributeOptions = [
-    // "Material",
     "Occasion",
     "Type",
     "Brand",
@@ -280,7 +292,6 @@ export default function Addnewproduct() {
     // Add more attribute options here
   ];
   const placeholderValues = {
-    // Material: "Enter Material Name (eg. silk,cotton)",
     Occasion: "Enter Occasion (eg. Function,Party)",
     Type: "Enter Type",
     Brand: "Enter Brand Name",
@@ -290,95 +301,107 @@ export default function Addnewproduct() {
     Length: "Enter Length",
     // Add more placeholder values here for additional attributes
   };
+  
 
 
+const allDivs = placeholders.map((placeholder, index) => (
+  <div className="col-4 col-md-3  mb-3" key={index}>
+    <div className="card position-relative bg-light" style={{ height: '140px' }}>
+      {media.images[index] ? (
+        <>
+          <img src={URL.createObjectURL(media.images[index])} alt={`upload-${index}`} className="card-img-top" style={{ height: '100%',objectFit:"contain" }} />
+          <button
+            type="button"
+            className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+            style={{ padding: '5px', fontSize: '16px' }}
+            aria-label="Close"
+            onClick={() => removeMedia('images', index)}
+          ></button>
+          <div className="placeholder-caption text-center" style={{ position: 'absolute', bottom: '0', width: '100%', background: 'rgba(255, 255, 255, 0.7)', padding: '5px 0', fontSize: '14px', color: 'black' }}>
+            {placeholder}
+          </div>
+        </>
+      ) : (
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
+          <div className="text-center">
+            <p>{placeholder}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+));
 
-  const allDivs = images.map((image, index) => (
-    <div className="col-6 col-md-3 mb-3" key={index}>
-      <div className="card position-relative" style={{ height: "150px" }}>
-        {image ? (
+// Add the addPhoto div if there's space available
+const nextAvailableIndex = media.images.findIndex(image => image === null);
+  if (nextAvailableIndex !== -1 && nextAvailableIndex < totalPlaceholders) {
+    allDivs.splice(nextAvailableIndex, 0, (
+      <div className="col-4 col-md-3 mb-3" key="addPhoto">
+        <div className="card d-flex justify-content-center align-items-center bg-light" style={{ height: '140px' }}>
+          <label className="w-100 text-center" htmlFor="addPhotoInput">
+           
+            <i className="bi bi-camera-fill fs-5"></i>
+            <p>Add a photo</p>
+          </label>
+          <input
+            id="addPhotoInput"
+            type="file"
+            accept="image/jpeg, image/png"
+            multiple
+            onChange={(e) => handleAddMediaChange(e, 'images')}
+            style={{ display: 'none' }}
+          />
+        </div>
+      </div>
+    ));
+  }
+  allDivs.push(
+    <div className="col-4 col-md-3 mb-3" key="addVideo">
+      <div className="card d-flex justify-content-center align-items-center bg-light" style={{ height: '140px' }}>
+        {media.video ? (
           <>
-            <img
-              src={URL.createObjectURL(image)}
-              alt={`upload-${index}`}
-              className="card-img-top"
-              style={{ height: "100%" }}
-            />
+            <video controls src={URL.createObjectURL(media.video)} style={{ height: '100%', width:"100%", objectFit:"contain", display:"flex", alignItems:"center" }} />
             <button
               type="button"
               className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+              style={{ padding: '5px', fontSize: '16px' }}
               aria-label="Close"
-              onClick={() => removeImage(index)}
-              style={{
-                padding: '5px',
-                fontSize: '10px'
-              }}
+              onClick={() => removeMedia('video')}
             ></button>
           </>
         ) : (
-          <div
-            className="d-flex justify-content-center align-items-center"
-            style={{
-              height: "100%",
-              backgroundColor: "rgba(255, 255, 255, 0.7)",
-            }}
-          >
-            <div className="text-center">
-              <p>{placeholders[index]}</p>
-            </div>
-          </div>
+          <>
+            <label className="w-100 text-center" htmlFor="addVideoInput">
+              
+              <i className="bi bi-camera-reels-fill fs-5"></i>
+              <p>Add a video</p>
+            </label>
+            <input
+              id="addVideoInput"
+              type="file"
+              accept="video/mp4, video/webm"
+              onChange={(e) => handleAddMediaChange(e, 'video')}
+              style={{ display: 'none' }}
+            />
+          </>
         )}
       </div>
     </div>
-  ));
-
-  // Add the addPhoto div if there's space available
-  const nextAvailableIndex = images.findIndex((image) => image === null);
-  if (nextAvailableIndex !== -1) {
-    allDivs.splice(
-      nextAvailableIndex,
-      0,
-      <div className="col-6 col-md-3 mb-3" key="addPhoto" style={{ cursor: 'pointer' }}>
-        <label className="w-100 text-center" htmlFor="productimageurl">
-          <div
-            className="card d-flex justify-content-center align-items-center"
-            style={{ height: "150px" }}
-          >
-            <i className="bi bi-camera" style={{ cursor: 'pointer', fontSize: '1rem' }}>
-              <p>Add a photo</p>
-            </i>
-            <input
-              id="productimageurl"
-              type="file"
-              accept="image/jpeg, image/png"
-              multiple
-              onChange={(e) => {
-                handleFile(e);
-              }}
-              name="productimageurl"
-              title="Upload minimum 2 to max 7 images"
-              required
-              style={{ display: "none" }}
-            />
-          </div>
-        </label>
-      </div>
-    );
-  }
+  );
   return (
     <div className="fullscreen">
-      <MyNavbar />
+      <MyNavbar/>
       <div className="d-md-flex">
-
+        
         <div className="col-12">
           <div className="fullscreen2">
             <main>
               <div className="container">
-
+               
                 <div className="row justify-content-center">
                   <div className="col-xs-12 col-sm-8 col-md-9z col-lg-6">
-                    <h1 className="mt-4 fs-3">List an item</h1>
-                    <hr className="mb-4" />
+                  <h1 className="mt-4 fs-3">List an item</h1>
+                  <hr className="mb-4" />
                     <form className="mb-4" onSubmit={handleSubmit}>
                       <div className="mb-3">
                         <label
@@ -462,25 +485,34 @@ export default function Addnewproduct() {
                         )}
                       </div>
                       <div className="mb-4">
+                       
+                      <div className="">
+                      <label
+                          htmlFor="Images"
+                          className="form-label fw-bolder"
+                        >
+                         Upload Images & Video
+                        </label>
+     
+      
+     
+        <div className="row">
+          {allDivs}
+        </div>
+       
 
-                        <div className="container">
-                          <label
-                            htmlFor="productimageurl"
-                            className="form-label fw-bolder"
-                          >
-                            Upload Images
-                          </label>
+      {/* SVG icons */}
+      <svg style={{ display: 'none' }}>
+        <symbol id="photo" viewBox="0 0 24 24">
+          <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
+        </symbol>
+        <symbol id="video" viewBox="0 0 24 24">
+          <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
+        </symbol>
+      </svg>
+      {errors.files && <span className="text-danger">{errors.files}</span>}
+    </div>
 
-                          <div className="row">{allDivs}</div>
-
-                          {/* SVG icons */}
-                          <svg style={{ display: "none" }}>
-                            <symbol id="photo" viewBox="0 0 24 24">
-                              <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
-                            </symbol>
-                          </svg>
-                          {errors.files && <span className="text-danger">{errors.files}</span>}
-                        </div>
                       </div>
                       <div className="mb-3">
                         <label
@@ -502,28 +534,30 @@ export default function Addnewproduct() {
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-
-                      <div className="mb-3">
-                        <label
-                          htmlFor="color"
-                          className="form-label fw-bolder"
-                        >
-                          Color
-                        </label>
-                        <div className="d-flex">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="color"
-                            name="color"
-                            placeholder="Color"
-                            value={values.color}
-                            onChange={handleInput}
-                            required
-                          />
-                          <span className="text-danger fs-4"> &nbsp;*</span>
+                     
+                       
+                        <div className="mb-3">
+                          <label
+                            htmlFor="color"
+                            className="form-label fw-bolder"
+                          >
+                            Color
+                          </label>
+                          <div className="d-flex">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="color"
+                              name="color"
+                              placeholder="Color"
+                              value={values.color}
+                              onChange={handleInput}
+                              required
+                            />
+                            <span className="text-danger fs-4"> &nbsp;*</span>
+                          </div>
                         </div>
-                      </div>
+                      
                       <div className="mb-3">
                         <label
                           htmlFor="location"
@@ -545,34 +579,33 @@ export default function Addnewproduct() {
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-
-                      <div className="mb-3">
-                        <label
-                          htmlFor="alteration"
-                          className="form-label fw-bolder"
-                        >
-                          Alteration
-                        </label>
-                        <div className="d-flex">
-                          <select
-                            id="alteration"
-                            name="alteration"
-                            className="form-select"
-                            onChange={handleInput}
-                            required
+                      
+                        <div className="mb-3">
+                          <label
+                            htmlFor="alteration"
+                            className="form-label fw-bolder"
                           >
-                            <option value="">Select Alteration</option>
-                            <option value="NA">NA</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                          </select>
+                            Alteration
+                          </label>
+                          <div className="d-flex">
+                            <select
+                              id="alteration"
+                              name="alteration"
+                              className="form-select"
+                              onChange={handleInput}
+                              required
+                            >
+                              <option value="">Select Alteration</option>
+                              <option value="NA">NA</option>
+                              <option value="Yes">Yes</option>
+                              <option value="No">No</option>
+                            </select>
 
-                          <span className="text-danger fs-4"> &nbsp;*</span>
+                            <span className="text-danger fs-4"> &nbsp;*</span>
+                          </div>
                         </div>
-                      </div>
-
                       {values.producttype !== "jewellery" &&
-                        (
+                         (
                           <div className="mb-3">
                             <label
                               htmlFor="size"
@@ -602,29 +635,31 @@ export default function Addnewproduct() {
                             </div>
                           </div>
                         )}
-                      <div className="mb-3">
-                        <label
-                          htmlFor="measurements"
-                          className="form-label fw-bolder"
-                        >
-                          Measurements
-                        </label>
-                        <div className="d-flex">
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="measurements"
-                            name="measurements"
-                            placeholder="Measurements (eg. 32 to 36)"
-                            value={values.measurements}
-                            onChange={handleInput}
-                            required
-                          />
-                          <span className="text-danger fs-4"> &nbsp;*</span>
+                     
+                        <div className="mb-3">
+                          <label
+                            htmlFor="measurements"
+                            className="form-label fw-bolder"
+                          >
+                            Measurements
+                          </label>
+                          <div className="d-flex">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="measurements"
+                              name="measurements"
+                              placeholder="Measurements (eg. 32 to 36)"
+                              value={values.measurements}
+                              onChange={handleInput}
+                              required
+                            />
+                            <span className="text-danger fs-4"> &nbsp;*</span>
+                          </div>
                         </div>
-                      </div>
+                      
                       {values.producttype !== "jewellery" &&
-                        (
+                         (
                           <div className="mb-3">
                             <label
                               htmlFor="material"
@@ -665,77 +700,77 @@ export default function Addnewproduct() {
                             </div>
                           </div>
                         )}
-
-                      <div className="mb-3">
-                        <label
-                          htmlFor="condition"
-                          className="form-label fw-bolder"
-                        >
-                          Condition
-                        </label>
-                        <div className="d-flex">
-                          <select
-                            className="form-select"
-                            id="condition"
-                            name="condition"
-                            value={values.condition}
-                            onChange={handleInput}
-                            required
-                          >
-                            <option value="">Select Condition</option>
-                            <option value="NA">NA</option>
-                            <option value="Brand new">
-                              Brand new
-                            </option>
-                            <option value="Like new">
-                              Like new
-                            </option>
-                            <option value="Excellent">
-                              Used - Excellent
-                            </option>
-                            <option value="Good">
-                              Used - Good
-                            </option>
-                            <option value="Fair">
-                              Used - Fair
-                            </option>
-                          </select>
-                          <span className="text-danger fs-4"> &nbsp;*</span>
-                        </div>
-                      </div>
-                      <div className="mb-3">
-                        <label
-                          htmlFor="source"
-                          className="form-label fw-bolder"
-                        >
-                          Source
-                        </label>
-                        <div className="d-flex">
-                          <select
-                            className="form-select"
-                            id="source"
-                            name="source"
-                            value={values.source}
-                            onChange={handleInput}
-                            required
-                          >
-                            <option value="">Select source</option>
-                            <option value="NA">NA</option>
-                            <option value="Vintage">Vintage</option>
-                            <option value="Preloved">Preloved</option>
-                            <option value="Reworked/upcycled">
-                              Reworked / Upcycled
-                            </option>
-                            <option value="Custom">Custom</option>
-                            <option value="Homemade">Homemade</option>
-                            <option value="Deadstock">Deadstock</option>
-                            <option value="Designer">Designer</option>
-                            <option value="Repaired">Repaired</option>
-                          </select>
-                          <span className="text-danger fs-4"> &nbsp;*</span>
-                        </div>
-                      </div>
-
+                     
+                          <div className="mb-3">
+                            <label
+                              htmlFor="condition"
+                              className="form-label fw-bolder"
+                            >
+                              Condition
+                            </label>
+                            <div className="d-flex">
+                              <select
+                                className="form-select"
+                                id="condition"
+                                name="condition"
+                                value={values.condition}
+                                onChange={handleInput}
+                                required
+                              >
+                                <option value="">Select Condition</option>
+                                <option value="NA">NA</option>
+                                <option value="Brand new">
+                                  Brand new
+                                </option>
+                                <option value="Like new">
+                                  Like new
+                                </option>
+                                <option value="Excellent">
+                                  Used - Excellent 
+                                </option>
+                                <option value="Good">
+                                  Used - Good
+                                </option>
+                                <option value="Fair">
+                                  Used - Fair
+                                </option>
+                              </select>
+                              <span className="text-danger fs-4"> &nbsp;*</span>
+                            </div>
+                          </div>
+                          <div className="mb-3">
+                            <label
+                              htmlFor="source"
+                              className="form-label fw-bolder"
+                            >
+                              Source
+                            </label>
+                            <div className="d-flex">
+                              <select
+                                className="form-select"
+                                id="source"
+                                name="source"
+                                value={values.source}
+                                onChange={handleInput}
+                                required
+                              >
+                                <option value="">Select source</option>
+                                <option value="NA">NA</option>
+                                <option value="Vintage">Vintage</option>
+                                <option value="Preloved">Preloved</option>
+                                <option value="Reworked/upcycled">
+                                  Reworked / Upcycled
+                                </option>
+                                <option value="Custom">Custom</option>
+                                <option value="Homemade">Homemade</option>
+                                <option value="Deadstock">Deadstock</option>
+                                <option value="Designer">Designer</option>
+                                <option value="Repaired">Repaired</option>
+                              </select>
+                              <span className="text-danger fs-4"> &nbsp;*</span>
+                            </div>
+                          </div>
+                       
                       <div className="mb-3">
                         <label htmlFor="age" className="form-label fw-bolder">
                           Age
@@ -808,84 +843,84 @@ export default function Addnewproduct() {
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
+                     
+                       {customAttributes.map((attribute) => (
+          <div key={attribute.name} className="mb-3">
+            <label htmlFor={attribute.name} className="form-label">
+              {attribute.name}
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id={attribute.name}
+              placeholder={placeholderValues[attribute.name]}
+              value={attribute.value}
+              onChange={(event) => handleInputChange(event, attribute.name)}
+            />
+          </div>
+        ))}
+                        
+                        <div className="mb-3">
+        <button
+          type="button"
+          className="btn btn-primary mb-3"
+          onClick={handleAddAttribute}
+        >
+          Add Custom Attribute
+        </button>
+        <div
+          className="modal"
+          style={{ display: showModal ? "block" : "none" }}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Select Custom Attributes</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setShowModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                {attributeOptions.map((option) => (
+                  <div key={option} className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={option}
+                      checked={selectedAttributes.includes(option)}
+                      onChange={() => handleCheckboxChange(option)}
+                    />
+                    <label className="form-check-label" htmlFor={option}>
+                      {option}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setShowModal(false)}
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleModalSubmit}
+                  disabled={selectedAttributes.length === 0}
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                      {customAttributes.map((attribute) => (
-                        <div key={attribute.name} className="mb-3">
-                          <label htmlFor={attribute.name} className="form-label">
-                            {attribute.name}
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id={attribute.name}
-                            placeholder={placeholderValues[attribute.name]}
-                            value={attribute.value}
-                            onChange={(event) => handleInputChange(event, attribute.name)}
-                          />
-                        </div>
-                      ))}
-
-                      <div className="mb-3">
-                        <button
-                          type="button"
-                          className="btn btn-primary mb-3"
-                          onClick={handleAddAttribute}
-                        >
-                          Add Custom Attribute
-                        </button>
-                        <div
-                          className="modal"
-                          style={{ display: showModal ? "block" : "none" }}
-                        >
-                          <div className="modal-dialog">
-                            <div className="modal-content">
-                              <div className="modal-header">
-                                <h5 className="modal-title">Select Custom Attributes</h5>
-                                <button
-                                  type="button"
-                                  className="btn-close"
-                                  onClick={() => setShowModal(false)}
-                                ></button>
-                              </div>
-                              <div className="modal-body">
-                                {attributeOptions.map((option) => (
-                                  <div key={option} className="form-check">
-                                    <input
-                                      type="checkbox"
-                                      className="form-check-input"
-                                      id={option}
-                                      checked={selectedAttributes.includes(option)}
-                                      onChange={() => handleCheckboxChange(option)}
-                                    />
-                                    <label className="form-check-label" htmlFor={option}>
-                                      {option}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                              <div className="modal-footer">
-                                <button
-                                  type="button"
-                                  className="btn btn-secondary"
-                                  onClick={() => setShowModal(false)}
-                                >
-                                  Close
-                                </button>
-                                <button
-                                  type="button"
-                                  className="btn btn-primary"
-                                  onClick={handleModalSubmit}
-                                  disabled={selectedAttributes.length === 0}
-                                >
-                                  Submit
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
+     
                       <div className="text-center">
                         <button
                           type="submit"
@@ -904,7 +939,7 @@ export default function Addnewproduct() {
                 </div>
               </div>
             </main>
-            <Footer />
+            <Footer/>
           </div>
         </div>
       </div>

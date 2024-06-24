@@ -10,8 +10,44 @@ const SellerProfile = () => {
   const [sellerDetails, setSellerDetails] = useState({});
   const [sellerProducts, setSellerProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    user_id: sellerId, 
+    name: '',
+    email: '',
+    phone: '',
+    comment:""
+  });
+  
+  const { name, email, phone,comment } = formData;
+  
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+  const handleSubmit = () => {
+  // Basic validation
+  if (!name || !email || !phone) {
+    alert("Please fill out all required fields");
+    return;
+  }
 
+  axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/contactseller`, {
+    name,
+    email,
+    phone,
+    comment,
+    user_id: sellerId 
+  })
+  .then(res => {
+    alert('Data added successfully')
+    setFormData({ name: '', email: '', phone: '', comment: '' }); 
+  }).catch(err => {
+    console.error('Error posting data:', err);
+    // Handle error
+  });
+};
+
+  
+  
   useEffect(() => {
     // Fetch seller details including profile picture URL
     axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
@@ -30,7 +66,6 @@ const SellerProfile = () => {
       })
       .catch(err => console.log(err));
 
-    // Fetch products based on sellerId
     axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts/`)
       .then(res => {
         if (res.data !== "Fail" && res.data !== "Error") {
@@ -56,9 +91,7 @@ const SellerProfile = () => {
     return stars;
   };
 
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-
+ 
   return (
     <>
       <MyNavbar/>
@@ -71,7 +104,7 @@ const SellerProfile = () => {
                   <i className="bi bi-person-circle fs-1"></i>&nbsp;{sellerDetails.name}
                 </h2>
                 {/* <p className='ms-5'>{renderStarRatings(4)}</p> */}
-                <button className="btn btn-primary ms-5" onClick={handleShowModal}>
+                <button className="btn btn-primary ms-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
                   Contact Seller
                 </button>
               </div>
@@ -88,7 +121,7 @@ const SellerProfile = () => {
             ) : sellerProducts.length === 0 ? (
               <p>No products available.</p>
             ) : (
-              <div className="d-md-flex flex-wrap ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
+              <div className="d-flex flex-wrap justify-content-center ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2">
                 {sellerProducts.map(product => (
                   <div className="card productcard" key={product.id}>
                     <Link to={"/product/" + product.id} state={{ productdetails: product }}>
@@ -116,37 +149,40 @@ const SellerProfile = () => {
         </div>
       </div>
 
-      {/* Contact Seller Modal */}
-      <div className={`modal fade ${showModal ? 'show' : ''}`} style={{ display: showModal ? 'block' : 'none' }} tabIndex="-1">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Contact Seller</h5>
-              <button type="button" className="btn-close" onClick={handleCloseModal}></button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">Name</label>
-                  <input type="text" className="form-control" id="name" />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email</label>
-                  <input type="email" className="form-control" id="email" />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="phone" className="form-label">Phone</label>
-                  <input type="text" className="form-control" id="phone" />
-                </div>
-              </form>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
-              <button type="button" className="btn btn-primary">Send</button>
-            </div>
-          </div>
-        </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <div className="modal-body">
+        <form>
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label">Name</label>
+            <input type="text" className="form-control" id="name" value={name} onChange={handleInputChange} />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input type="email" className="form-control" id="email" value={email} onChange={handleInputChange} />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="phone" className="form-label">Phone</label>
+            <input type="text" className="form-control" id="phone" value={phone} onChange={handleInputChange} />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="comment" className="form-label">Comment</label>
+            <textarea  type="text" className="form-control" id="comment" value={comment} onChange={handleInputChange} />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  onClick={handleSubmit}>Save</button>
+      </div>
+    </div>
+  </div>
+</div>
 
       <Footer/>
     </>

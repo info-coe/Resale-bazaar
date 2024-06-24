@@ -202,6 +202,17 @@ CREATE TABLE IF NOT EXISTS shipping_address (
 );
 `;
 
+const ContactData = `
+CREATE TABLE IF NOT EXISTS contactseller (
+  id SERIAL PRIMARY KEY,
+  seller_id INTEGER NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  phone BIGINT(10) NOT NULL,
+  comment VARCHAR(255)NOT NULL
+);
+`
+
 const loginCheckQuery = "SELECT * FROM register WHERE `email` = ? AND `password` = ?";
 const adminLoginQuery = "SELECT * FROM admin WHERE `email` = ? AND `password` = ?";
 const retrievingUsersQuery = "SELECT * FROM register";
@@ -217,7 +228,7 @@ const retrievingWomenProductsQuery = "select * from products WHERE `product_type
 const retrievingKidsProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingJewelleryProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingBooksProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
-const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, language, quantity, price, material, occasion, type, brand, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
+const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, quantity, price, material, occasion, type, brand, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, \`condition\`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
 const retrievingCartItemsQuery = "select * from cart";
 const updateCartItemsQuery = "UPDATE cart SET userid = ? WHERE id = ?";
@@ -244,6 +255,8 @@ const offeredProductsQuery = "INSERT INTO offered_products (`product_id`,`offere
 const retrievingOfferedProductsQuery = "select * from offered_products";
 const updatedOfferProductAcceptedQuery = "UPDATE offered_products SET product_status = 'Accepted' WHERE id = ?";
 const updatedOfferProductRejectQuery  = "UPDATE offered_products SET product_status = 'Rejected' WHERE id = ?"
+const AddContactSellerQuery = "INSERT INTO contactseller (name, email, phone, user_id, comment) VALUES (?, ?, ?, ?,?)";
+const retrievingContactSellerQuery = "select * from contactseller"  
 
 // const cartpaymentupdateQuery = "UPDATE cart SET payment_status = ?, buyer_id = ? WHERE id = ?";
 
@@ -303,5 +316,8 @@ module.exports = {
   updateShippingAddress,
   deleteShippingAddress,
   updatedOfferProductAcceptedQuery,
-  updatedOfferProductRejectQuery
+  updatedOfferProductRejectQuery,
+  AddContactSellerQuery,
+  retrievingContactSellerQuery,
+  ContactData
 };

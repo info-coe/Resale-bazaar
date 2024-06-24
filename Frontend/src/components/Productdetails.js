@@ -35,7 +35,6 @@ export default function Productdetails() {
   const [add, setAdd] = useState("0.00");
   const [success, setSuccess] = useState(false);
   const [offer, setOffer] = useState([]);
-  console.log(offer);
   const { id } = useParams();
   const location = useLocation();
   const { productdetails, admin } = location.state || {};
@@ -135,25 +134,49 @@ export default function Productdetails() {
 
   const productDetailsImgRef = useRef();
 
-  const activeSubimageRef = useRef();
+  const activeSubimageRef = useRef(null);
   const carouselRef = useRef();
   // eslint-disable-next-line no-unused-vars
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const updateProductDetailsImg = (newSrc, index) => {
-    productDetailsImgRef.current.src = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${newSrc}`;
+  // const updateProductDetailsImg = (newSrc, index) => {
+  //   productDetailsImgRef.current.src = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${newSrc}`;
 
-    if (activeSubimageRef.current) {
-      activeSubimageRef.current.style.border = "1px solid grey";
+  //   if (activeSubimageRef.current) {
+  //     activeSubimageRef.current.style.border = "1px solid grey";
+  //   }
+
+  //   const newActiveSubimage = document.getElementById(`subimage-${index}`);
+  //   if (newActiveSubimage) {
+  //     newActiveSubimage.style.border = "3px solid green";
+
+  //     activeSubimageRef.current = newActiveSubimage;
+  //   }
+  //   setCurrentSlide(index);
+  // };
+  const updateProductDetailsImg = (product, index) => {
+    const extension = product.split('.').pop().toLowerCase();
+    if (['mp4', 'webm', 'avi'].includes(extension)) {
+      // If it's a video, update productDetailsImgRef to show video
+      productDetailsImgRef.current.innerHTML = `
+        <video
+          src="${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}"
+          controls
+          class="productdetailsimg"
+        >
+          Your browser does not support the video tag.
+        </video>
+      `;
+    } else {
+      // If it's an image, update productDetailsImgRef to show image
+      productDetailsImgRef.current.innerHTML = `
+        <img
+          src="${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}"
+          alt="product"
+          class="productdetailsimg"
+        />
+      `;
     }
-
-    const newActiveSubimage = document.getElementById(`subimage-${index}`);
-    if (newActiveSubimage) {
-      newActiveSubimage.style.border = "3px solid green";
-
-      activeSubimageRef.current = newActiveSubimage;
-    }
-    setCurrentSlide(index);
   };
 
   const handleProductReject = () => {
@@ -199,9 +222,10 @@ export default function Productdetails() {
 
   const [userdetails, setUserDetails] = useState([]);
   //Offer
-  const offerExists = offer.some(
-    (curr) => curr.product_id === productdetails.id
-  );
+  console.log(offer);
+
+  const offerExists = offer.some((curr) => curr.product_id === productdetails.id);
+
 
   useEffect(() => {
     axios
@@ -232,17 +256,21 @@ export default function Productdetails() {
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`
       )
       .then((e) => {
-       
-        setOffer(e.data);
+        if (e.data !== "Fail" && e.data !== "Error") {
+          setOffer(e.data);
+
+        }
       })
       .catch((error) => console.log(error));
-  }, [offer,productdetails.seller_id]);
+  }, [offer, productdetails.seller_id]);
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
     // console.log(sellerId);
     // Navigate to seller profile page with sellerId as a parameter
     navigates(`/sellerprofile/${sellerId}`);
   };
+
+  // console.log(productDetailsImgRef.current.src)
 
   return (
     <div className="fullscreen">
@@ -270,10 +298,10 @@ export default function Productdetails() {
         </nav>
         <div className="p-2 ps-lg-5 pe-lg-5 d-lg-flex">
           <div className="p-2 ps-lg-4 pe-lg-4 d-flex flex-column  col-lg-5">
-            <div className="ms-auto me-auto text-center productdetailsimgdiv">
+            <div className="ms-auto me-auto text-center productdetailsimgdiv" ref={productDetailsImgRef}>
+              {/* Initial display of firstImage */}
               <img
                 src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
-                ref={productDetailsImgRef}
                 alt="product"
                 className="productdetailsimg"
               />
@@ -293,18 +321,36 @@ export default function Productdetails() {
                     onClick={() => updateProductDetailsImg(product, index)}
                     style={{ border: "1px solid grey" }}
                   >
-                    <img
-                      src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`}
-                      alt="images"
-                      style={{
-                        cursor: "pointer",
-                        maxWidth: "100%",
-                        height: "110px",
-                        objectFit: "contain",
-                        alignSelf: "center",
-                        padding: "3px",
-                      }}
-                    />
+                    {['mp4', 'webm', 'avi'].includes(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`.split('.').pop().toLowerCase()) ? (
+                      <video
+                        style={{
+                          cursor: "pointer",
+                          maxWidth: "100%",
+                          height: "110px",
+                          objectFit: "contain",
+                          alignSelf: "center",
+                          padding: "3px",
+                        }}
+                      // controls
+
+                      >
+                        <source src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <img
+                        src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`}
+                        alt="images"
+                        style={{
+                          cursor: "pointer",
+                          maxWidth: "100%",
+                          height: "110px",
+                          objectFit: "contain",
+                          alignSelf: "center",
+                          padding: "3px",
+                        }}
+                      />
+                    )}
                   </div>
                 ))}
               </Carousel>
@@ -314,16 +360,14 @@ export default function Productdetails() {
             <h1 className="text-secondary fs-2">{productdetails.name}</h1>
             <p>{productdetails.description}</p>
             <br />
-            {productdetails.location !== "NA" && (
+            {productdetails.location !== "NA" &&
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Location</b>
                 </p>
-                <p className=" col-md-8 col-lg-10">
-                  : {productdetails.location}
-                </p>
+                <p className=" col-md-8 col-lg-10">: {productdetails.location}</p>
               </div>
-            )}
+            }
             {/* {productdetails.language !== null &&
               productdetails.language !== "" && (
                 <div className="d-flex col-md-9">
@@ -335,15 +379,15 @@ export default function Productdetails() {
                   </p>
                 </div>
               )} */}
-            {productdetails.color !== "NA" && (
+            {productdetails.color !== "NA" &&
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Color</b>
                 </p>
                 <p className=" col-md-8 col-lg-10">: {productdetails.color}</p>
               </div>
-            )}
-            {productdetails.alteration !== "NA" && (
+            }
+            {productdetails.alteration !== "NA" &&
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Can it be altered</b>
@@ -352,16 +396,16 @@ export default function Productdetails() {
                   : {productdetails.alteration}
                 </p>
               </div>
-            )}
-            {productdetails.size !== "NA" && (
+            }
+            {productdetails.size !== "NA" &&
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Size</b>
                 </p>
                 <p className=" col-md-8 col-lg-10">: {productdetails.size}</p>
               </div>
-            )}
-            {productdetails.measurements !== "NA" && (
+            }
+            {productdetails.measurements !== "NA" &&
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Measurements</b>
@@ -370,29 +414,27 @@ export default function Productdetails() {
                   : {productdetails.measurements}
                 </p>
               </div>
+            }
+            {productdetails.material !== null && productdetails.material !== "NA" && (
+              <div className="d-flex col-md-9">
+                <p className=" col-md-4 col-lg-5">
+                  <b>Material</b>
+                </p>
+                <p className=" col-md-8 col-lg-10">
+                  : {productdetails.material}
+                </p>
+              </div>
             )}
-            {productdetails.material !== null &&
-              productdetails.material !== "NA" && (
-                <div className="d-flex col-md-9">
-                  <p className=" col-md-4 col-lg-5">
-                    <b>Material</b>
-                  </p>
-                  <p className=" col-md-8 col-lg-10">
-                    : {productdetails.material}
-                  </p>
-                </div>
-              )}
-            {productdetails.occasion !== null &&
-              productdetails.occasion !== "NA" && (
-                <div className="d-flex col-md-9">
-                  <p className=" col-md-4 col-lg-5">
-                    <b>Occasion</b>
-                  </p>
-                  <p className=" col-md-8 col-lg-10">
-                    : {productdetails.occasion}
-                  </p>
-                </div>
-              )}
+            {productdetails.occasion !== null && productdetails.occasion !== "NA" && (
+              <div className="d-flex col-md-9">
+                <p className=" col-md-4 col-lg-5">
+                  <b>Occasion</b>
+                </p>
+                <p className=" col-md-8 col-lg-10">
+                  : {productdetails.occasion}
+                </p>
+              </div>
+            )}
             {productdetails.type !== null && productdetails.type !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
@@ -446,18 +488,15 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.fit}</p>
               </div>
             )}
-            {productdetails.length !== null &&
-              productdetails.length !== "NA" && (
-                <div className="d-flex col-md-9">
-                  <p className=" col-md-4 col-lg-5">
-                    <b>Length</b>
-                  </p>
-                  <p className=" col-md-8 col-lg-10">
-                    : {productdetails.length}
-                  </p>
-                </div>
-              )}
-            {productdetails.condition !== "NA" && (
+            {productdetails.length !== null && productdetails.length !== "NA" && (
+              <div className="d-flex col-md-9">
+                <p className=" col-md-4 col-lg-5">
+                  <b>Length</b>
+                </p>
+                <p className=" col-md-8 col-lg-10">: {productdetails.length}</p>
+              </div>
+            )}
+            {productdetails.condition !== "NA" &&
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Condition</b>
@@ -466,8 +505,8 @@ export default function Productdetails() {
                   : {productdetails.condition}
                 </p>
               </div>
-            )}
-            {productdetails.source !== "NA" && (
+            }
+            {productdetails.source !== "NA" &&
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Source</b>
@@ -476,15 +515,17 @@ export default function Productdetails() {
                   : {productdetails.source}
                 </p>
               </div>
-            )}
-            {productdetails.age !== "NA" && (
+            }
+            {productdetails.age !== "NA" &&
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Age</b>
                 </p>
-                <p className=" col-md-8  col-lg-10">: {productdetails.age}</p>
+                <p className=" col-md-8  col-lg-10">
+                  : {productdetails.age}
+                </p>
               </div>
-            )}
+            }
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
                 <b>Product ID</b>
@@ -661,9 +702,9 @@ export default function Productdetails() {
                                         onClick={() =>
                                           AmountChange(
                                             productdetails.price -
-                                              (
-                                                productdetails.price * 0.2
-                                              ).toFixed(2)
+                                            (
+                                              productdetails.price * 0.2
+                                            ).toFixed(2)
                                           )
                                         }
                                         className="col-4 mb-2 position-relative "
@@ -705,9 +746,9 @@ export default function Productdetails() {
                                         onClick={() =>
                                           AmountChange(
                                             productdetails.price -
-                                              (
-                                                productdetails.price * 0.15
-                                              ).toFixed(2)
+                                            (
+                                              productdetails.price * 0.15
+                                            ).toFixed(2)
                                           )
                                         }
                                       >
@@ -745,9 +786,9 @@ export default function Productdetails() {
                                         onClick={() =>
                                           AmountChange(
                                             productdetails.price -
-                                              (
-                                                productdetails.price * 0.1
-                                              ).toFixed(2)
+                                            (
+                                              productdetails.price * 0.1
+                                            ).toFixed(2)
                                           )
                                         }
                                       >

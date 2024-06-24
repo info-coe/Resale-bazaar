@@ -58,7 +58,10 @@ const {
   updateShippingAddress,
   deleteShippingAddress,
   updatedOfferProductAcceptedQuery,
-  updatedOfferProductRejectQuery
+  updatedOfferProductRejectQuery,
+  ContactData,
+  AddContactSellerQuery,
+  retrievingContactSellerQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -68,26 +71,39 @@ app.use(cors("*"));
 app.use(express.json());
 app.use(express.static('public'));
 const secretKey = 'yourSecretKey';
+const { v4: uuidv4 } = require('uuid');
 
 // Define storage for multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'public/images'); // Save uploaded files to 'public/images'
+    cb(null, 'public/images'); // Destination directory for uploaded files
   },
+  // filename: (req, file, cb) => {
+  //   const uniqueSuffix = Date.now(); // Generate a unique identifier
+  //   const fileExtension = path.extname(file.originalname); // Get the file extension
+  //   const filename = `file_${uniqueSuffix}${fileExtension}`; // Construct the filename with extension
+  //   cb(null, filename); // Callback to set the filename
+  // }
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now(); // Generate a unique identifier
     const fileExtension = path.extname(file.originalname); // Get the file extension
-    const filename = 'images_' + uniqueSuffix + fileExtension; // Construct the filename with extension
-    cb(null, filename);
+    const filename = `file_${uuidv4()}${fileExtension}`; // Generate a unique filename with UUID
+    cb(null, filename); // Callback to set the filename
   }
 });
 
-
+// Multer upload instance
 const upload = multer({
-  storage: storage
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 200 // Limit file size to 20MB (adjust as needed)
+  },
+  fileFilter: (req, file, cb) => {
+    // Validate file type here if needed
+    cb(null, true); // Accept the file
+  }
 });
 // CORS middleware
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -114,8 +130,8 @@ app.delete('/logout', (req, res) => {
   res.sendStatus(204)
 })
 
-function generateAccessToken({user}) {
-  return jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' })
+function generateAccessToken({ user }) {
+  return jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' })
 }
 
 function authenticateToken(req, res, next) {
@@ -127,7 +143,7 @@ function authenticateToken(req, res, next) {
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     console.log(err)
     if (err) return res.sendStatus(403)
-  console.log(req.user, user);
+    console.log(req.user, user);
     req.user = user
     next()
   })
@@ -217,14 +233,18 @@ db.query(createDatabaseQuery, (err) => {
                       if (err) throw err;
                       db.query(addressinfo2, (err) => {
                         if (err) throw err;
-                      db.query(ordersproducts, (err) => {
-                        if (err) throw err;
-                        db.query(offeredProducts, (err) => {
+                        db.query(ordersproducts, (err) => {
                           if (err) throw err;
-                          console.log("Database and tables created successfully");
+                          db.query(offeredProducts, (err) => {
+                            if (err) throw err;
+
+                            db.query(ContactData, (err) => {
+                              if (err) throw err;
+                              console.log("Database and tables created successfully");
+                            });
+                          });
                         });
                       });
-                    });
                     });
                   });
                 });
@@ -341,8 +361,8 @@ app.post("/offers/:offerId/reject", (req, res) => {
 
 app.post("/offeredproducts", (req, res) => {
   const sql = offeredProductsQuery;
-  const { product_id, offered_buyer_id, offered_price ,product_status} = req.body;
-  db.query(sql, [product_id, offered_buyer_id, offered_price,product_status ], (err, data) => {
+  const { product_id, offered_buyer_id, offered_price, product_status } = req.body;
+  db.query(sql, [product_id, offered_buyer_id, offered_price, product_status], (err, data) => {
     if (err) {
       console.log(err);
       return res.json("Error");
@@ -354,6 +374,36 @@ app.post("/offeredproducts", (req, res) => {
 
 app.get("/offeredproducts", (req, res) => {
   const sql = retrievingOfferedProductsQuery;
+  db.query(sql, (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
+
+app.post("/contactseller", (req, res) => {
+  const { name, email, phone, user_id, comment } = req.body; // Destructure values from req.body
+  const sql = AddContactSellerQuery
+  const values = [name, email, phone, user_id, comment];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error inserting data:", err);
+      return res.status(500).json({ error: "Error inserting data" });
+    }
+
+    console.log("Data added successfully");
+    return res.status(200).json({ message: "Data added successfully", data: result });
+  });
+});
+
+app.get("/contactseller", (req, res) => {
+  const sql = retrievingContactSellerQuery;
   db.query(sql, (err, data) => {
     if (err) {
       return res.json("Error");
@@ -594,7 +644,7 @@ app.get("/books", (req, res) => {
 
 app.post("/updateproducts", (req, res) => {
   const { product_id, quantity } = req.body;
- 
+
   // Perform the update operation in the database 
   const sql = "UPDATE products SET quantity = ? WHERE id = ?";
   db.query(sql, [quantity, product_id], (err, result) => {
@@ -652,42 +702,96 @@ app.post("/updateproducts", (req, res) => {
 //   });
 // });
 
-app.post("/addproducts", upload.array('images', 10), (req, res) => {
-  
-  const images = req.files.map(file => file.filename);
-  const sql = addProductsQuery;
-  // console.log(req.body)
+// app.post('/addproducts', upload.fields([
+//   { name: 'images', maxCount: 10 }, // Handle up to 10 images
+//   { name: 'video', maxCount: 1 }    // Handle 1 video
+// ]), (req, res) => {
+//   // Handle file uploads and retrieve filenames
+//   const images = req.files['images'].map(file => file.filename); // Map filenames from 'images' field
+//   const video = req.files['video'] ? req.files['video'][0].filename : null; // Retrieve filename from 'video' field if exists
 
+//   // Construct SQL query for inserting product data
+//   const sql = addProductsQuery
+//   const values = [
+//     req.body.producttype,
+//     req.body.category,
+//     req.body.productname,
+//     req.body.productdescription,
+//     JSON.stringify({ images, video }), 
+//     req.body.location,
+//     req.body.color,
+//     req.body.alteration,
+//     req.body.size,
+//     req.body.measurements,
+//     req.body.condition,
+//     req.body.source,
+//     req.body.age,
+//     req.body.quantity,
+//     req.body.price,
+//     req.body.material,
+//     req.body.occasion,
+//     req.body.type,
+//     req.body.brand,
+//     req.body.style,
+//     req.body.season,
+//     req.body.fit,
+//     req.body.length,
+//     req.body.accepted_by_admin,
+//     req.body.seller_id
+//   ];
+
+//   // Execute SQL query to insert product data into database
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Error while inserting product:", err);
+//       return res.status(500).json({ message: "Error while inserting product" });
+//     }
+//     console.log("Product inserted successfully");
+//     return res.status(200).json({ message: "Product inserted successfully" });
+//   });
+// });
+
+app.post('/addproducts', upload.array('media', 11), (req, res) => {
+  const mediaFiles = req.files.map(file => file.filename); // Extract filenames from the uploaded files
+  // const mediaFiles = req.files.map(file => {
+  //   const uniqueFilename = `${uuidv4()}-${file.originalname}`; // Example: uuid-v4-filename.jpg
+  //   return uniqueFilename;
+  // });
+
+  // Extract additional product details from the request body
+  const { allMedia, ...productDetails } = req.body;
+
+  // Construct the SQL query for inserting product data
+  const sql = addProductsQuery;
   const values = [
-    req.body.producttype,
-    req.body.category,
-    req.body.productname,
-    req.body.productdescription,
-    JSON.stringify(images),
-    req.body.location,
-    req.body.color,
-    req.body.alteration,
-    req.body.size,
-    req.body.measurements,
-    req.body.condition,
-    req.body.source,
-    req.body.age,
-    req.body.language,
-    req.body.quantity,
-    req.body.price,
-    req.body.material,
-    req.body.Occasion,
-    req.body.Type,
-    req.body.Brand,
-    // req.body.product_condition,
-    req.body.Style,
-    req.body.Season,
-    req.body.Fit,
-    req.body.Length,
-    req.body.accepted_by_admin,
-    req.body.seller_id,
+    productDetails.producttype,
+    productDetails.category,
+    productDetails.productname,
+    productDetails.productdescription,
+    JSON.stringify(mediaFiles), // Store the combined media array as JSON string
+    productDetails.location,
+    productDetails.color,
+    productDetails.alteration,
+    productDetails.size,
+    productDetails.measurements,
+    productDetails.condition,
+    productDetails.source,
+    productDetails.age,
+    productDetails.quantity,
+    productDetails.price,
+    productDetails.material,
+    productDetails.occasion,
+    productDetails.type,
+    productDetails.brand,
+    productDetails.style,
+    productDetails.season,
+    productDetails.fit,
+    productDetails.length,
+    productDetails.accepted_by_admin,
+    productDetails.seller_id
   ];
 
+  // Execute the SQL query to insert product data into the database
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error("Error while inserting product:", err);
@@ -697,6 +801,7 @@ app.post("/addproducts", upload.array('images', 10), (req, res) => {
     return res.status(200).json({ message: "Product inserted successfully" });
   });
 });
+
 
 
 app.delete("/handleproducts/:id", (req, res) => {
@@ -724,9 +829,9 @@ app.post("/addcart", (req, res) => {
   if (req.body.from === "wish") {
     productid = req.body.product.product_id;
   } else {
-    productid= req.body.product.id;
+    productid = req.body.product.id;
   }
- 
+
   const sql = addToCartQuery;
   const data = [
     productid,
@@ -820,13 +925,13 @@ app.delete("/products/:id", (req, res) => {
 });
 app.delete("/updateorders/:id", (req, res) => {
   const productId = req.params.id;
-  const orderId=req.body.orderid;
- 
+  const orderId = req.body.orderid;
+
   // Construct the DELETE SQL query
   const query = deleteOrderItemsQuery;
 
   // Execute the query with the provided product ID
-  db.query(query, [productId,orderId], (error, results) => {
+  db.query(query, [productId, orderId], (error, results) => {
     if (error) {
       console.error("Error deleting product: " + error.message);
       res.status(500).send("Error deleting product");
@@ -934,8 +1039,8 @@ app.post("/saveBillingAddress", (req, res) => {
   const token = req.body.token
 
   const sql = addBillingAddress;
-  
-  const values = [firstname, lastname, email, country, state, city, address1, address2, pincode, phone,token];
+
+  const values = [firstname, lastname, email, country, state, city, address1, address2, pincode, phone, token];
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error("Error saving billing address:", err);
@@ -948,8 +1053,8 @@ app.post("/saveBillingAddress", (req, res) => {
 
 app.get("/saveBillingAddress", (req, res) => {
   const sql = getbillingAddress;
-  
-  
+
+
 
   db.query(sql, (err, data) => {
     if (err) {
@@ -971,7 +1076,7 @@ app.post("/saveShippingAddress", (req, res) => {
   // Assuming the token contains the user ID
 
   const sql = addShippingAddress;
-  const values = [firstname, lastname, email, country, state, city, address1, address2, pincode, phone,token];
+  const values = [firstname, lastname, email, country, state, city, address1, address2, pincode, phone, token];
 
   db.query(sql, values, (err, result) => {
     if (err) {
@@ -1035,11 +1140,11 @@ app.delete('/saveShippingAddress/:id', (req, res) => {
 app.post("/updatepayment", (req, res) => {
   const payment_status = req.body.payment_status;
   const token = parseInt(req.body.token); // Ensure that token is parsed as an integer
-  const {shipment_id,order_id,ordered_date,shipped_date,delivered_date} = req.body;
+  const { shipment_id, order_id, ordered_date, shipped_date, delivered_date } = req.body;
 
   // Insert into orders table
   const insertOrderSql = paymentStatusQuery;
-  db.query(insertOrderSql, [req.body.product_id, payment_status, token, shipment_id,order_id,ordered_date,shipped_date,delivered_date], (err, result) => {
+  db.query(insertOrderSql, [req.body.product_id, payment_status, token, shipment_id, order_id, ordered_date, shipped_date, delivered_date], (err, result) => {
     if (err) {
       console.error("Error inserting into orders table:", err);
       return res.status(500).json({ error: "Error updating payment status" });
@@ -1155,7 +1260,7 @@ app.get("/success", (req, res) => {
         );
         res.status(500).send("Error executing payment");
       } else {
-       
+
         res.redirect(`${process.env.REACT_APP_HOST}3000/Resale-bazaar/finalcheckoutpage`);
       }
     }
@@ -1163,7 +1268,7 @@ app.get("/success", (req, res) => {
 });
 
 app.get("/cancel", (req, res) => {
- 
+
   res.redirect(`${process.env.REACT_APP_HOST}3000/Resale-bazaar/`);
 });
 
