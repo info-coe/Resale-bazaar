@@ -127,30 +127,70 @@ export default function Addnewproduct() {
   };
 
 
+  // const handleInput = (event) => {
+  //   const { name, value } = event.target;
+
+  //   // Capitalize the first letter of the entire input string
+  //   const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+
+  //   setValues((prevValues) => ({
+  //     ...prevValues,
+  //     [name]: capitalizedValue,
+  //   }));
+
+  //   handleKeyup(event, capitalizedValue);
+  // };
   const handleInput = (event) => {
     const { name, value } = event.target;
 
-    // Capitalize the first letter of the entire input string
-    const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+    // Capitalize the first letter of each word in the input string
+    const capitalizeWords = (str) => {
+        return str.split(' ').map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join(' ');
+    };
+
+    const capitalizedValue = capitalizeWords(value);
 
     setValues((prevValues) => ({
-      ...prevValues,
-      [name]: capitalizedValue,
+        ...prevValues,
+        [name]: capitalizedValue,
     }));
 
     handleKeyup(event, capitalizedValue);
-  };
+};
+
  
+
+  // const handleInputChange = (event, attribute) => {
+  //   const value = event.target.value;
+  //   const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+  //   setCustomAttributes(
+  //     customAttributes.map((item) =>
+  //       item.name === attribute ? { ...item, value: capitalizedValue } : item
+  //     )
+  //   );
+  // };
 
   const handleInputChange = (event, attribute) => {
     const value = event.target.value;
-    const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+
+    // Capitalize the first letter of each word in the input string
+    const capitalizeWords = (str) => {
+        return str.split(' ').map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join(' ');
+    };
+
+    const capitalizedValue = capitalizeWords(value);
+
     setCustomAttributes(
       customAttributes.map((item) =>
         item.name === attribute ? { ...item, value: capitalizedValue } : item
       )
     );
-  };
+};
+
 
   const handleProducttype = (event) => {
     setValues((prev) => ({
@@ -719,11 +759,11 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                               >
                                 <option value="">Select Condition</option>
                                 <option value="NA">NA</option>
-                                <option value="Brand new">
-                                  Brand new
+                                <option value="Brand New">
+                                  Brand New
                                 </option>
-                                <option value="Like new">
-                                  Like new
+                                <option value="Like New">
+                                  Like New
                                 </option>
                                 <option value="Excellent">
                                   Used - Excellent 

@@ -307,7 +307,7 @@ export default function Productdetails() {
               />
             </div>
             <div className="ms-auto me-auto">
-              <Carousel
+              {/* <Carousel
                 responsive={responsive}
                 className=" mt-2 productdetailscarousel"
                 ref={carouselRef}
@@ -319,9 +319,25 @@ export default function Productdetails() {
                     key={index}
                     id={`subimage-${index}`}
                     onClick={() => updateProductDetailsImg(product, index)}
-                    style={{ border: "1px solid grey" }}
+                    style={{ border: "1px solid grey",  position: "relative"  }}
                   >
                     {['mp4', 'webm', 'avi'].includes(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`.split('.').pop().toLowerCase()) ? (
+                      // <video
+                      //   style={{
+                      //     cursor: "pointer",
+                      //     maxWidth: "100%",
+                      //     height: "110px",
+                      //     objectFit: "contain",
+                      //     alignSelf: "center",
+                      //     padding: "3px",
+                      //   }}
+                      // // controls
+
+                      // >
+                      //   <source src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`} type="video/mp4" />
+                      //   Your browser does not support the video tag.
+                      // </video>
+                      <div style={{ position: "relative" }}>
                       <video
                         style={{
                           cursor: "pointer",
@@ -331,12 +347,23 @@ export default function Productdetails() {
                           alignSelf: "center",
                           padding: "3px",
                         }}
-                      // controls
-
                       >
                         <source src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
+                      <i
+                        className="bi bi-play-btn-fill"
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          fontSize: "2rem",
+                          // color: "white",
+                          pointerEvents: "none",
+                        }}
+                      ></i>
+                    </div>
                     ) : (
                       <img
                         src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`}
@@ -353,7 +380,64 @@ export default function Productdetails() {
                     )}
                   </div>
                 ))}
-              </Carousel>
+              </Carousel> */}
+              <Carousel
+  responsive={responsive}
+  className="mt-2 productdetailscarousel"
+  ref={carouselRef}
+  beforeChange={(nextSlide) => setCurrentSlide(nextSlide)}
+>
+  {datta.map((product, index) => (
+    <div
+      className="card m-3"
+      key={index}
+      id={`subimage-${index}`}
+      onClick={() => updateProductDetailsImg(product, index)}
+      style={{ border: "1px solid grey", position: "relative" }}
+    >
+      {['mp4', 'webm', 'avi'].includes(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`.split('.').pop().toLowerCase()) ? (
+        <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", height: "110px" }}>
+          <video
+            style={{
+              cursor: "pointer",
+              maxWidth: "100%",
+              height: "100%",
+              objectFit: "contain",
+              alignSelf: "center",
+              padding: "3px",
+            }}
+          >
+            <source src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <i
+            className="bi bi-play-btn-fill"
+            style={{
+              position: "absolute",
+              fontSize: "2rem",
+              color: "white",
+              pointerEvents: "none",
+            }}
+          ></i>
+        </div>
+      ) : (
+        <img
+          src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`}
+          alt="images"
+          style={{
+            cursor: "pointer",
+            maxWidth: "100%",
+            height: "110px",
+            objectFit: "contain",
+            alignSelf: "center",
+            padding: "3px",
+          }}
+        />
+      )}
+    </div>
+  ))}
+</Carousel>
+
             </div>
           </div>
           <div className="ps-md-3 p-2 col-lg-7 detailsdiv">
