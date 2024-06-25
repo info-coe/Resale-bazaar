@@ -77,8 +77,8 @@ const OrderPage = () => {
         <div className="card-body">
           <div className="row align-items-center">
             <div className="col">
-              <h5 className="mb-0">ORDER <span className="text-primary">{productData.order_id}</span></h5>
-              <h1>{productData.name}</h1>
+              <h5 className="mb-0">ORDER ID &nbsp;<span className="text-primary">{productData.order_id}</span></h5>
+              <h3>{productData.name}</h3>
             </div>
             <div className="col text-end">
               <p className="mb-0">Expected Arrival <span className="fw-bold">{productData.expected_arrival_date}</span></p>
