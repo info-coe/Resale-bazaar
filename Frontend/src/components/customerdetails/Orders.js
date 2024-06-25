@@ -42,24 +42,24 @@ export default function Orders() {
   const userId = parseInt(sessionStorage.getItem("user-token"));
 
   const filteredProducts = allProducts
-  .filter((product) =>
-    orders.some(
-      (order) => order.buyer_id === userId && order.product_id === product.id
+    .filter((product) =>
+      orders.some(
+        (order) => order.buyer_id === userId && order.product_id === product.id
+      )
     )
-  )
-  .map((product) => {
-    const relatedOrder = orders.find(
-      (order) => order.buyer_id === userId && order.product_id === product.id
-    );
-    return {
-      ...product,
-      order_id: relatedOrder.order_id,
-      shipment_id: relatedOrder.shipment_id,
-      ordered_date: relatedOrder.ordered_date,
-      shipped_date: relatedOrder.shipped_date,
-      delivered_date: relatedOrder.delivered_date,
-    };
-  });
+    .map((product) => {
+      const relatedOrder = orders.find(
+        (order) => order.buyer_id === userId && order.product_id === product.id
+      );
+      return {
+        ...product,
+        order_id: relatedOrder.order_id,
+        shipment_id: relatedOrder.shipment_id,
+        ordered_date: relatedOrder.ordered_date,
+        shipped_date: relatedOrder.shipped_date,
+        delivered_date: relatedOrder.delivered_date,
+      };
+    });
 
 
   const cancelClick = (id, updatedQuantity) => {
@@ -112,54 +112,65 @@ export default function Orders() {
 
           <div className="col-xs-12 col-md-12 col-lg-9 p-lg-4 p-2">
             {filteredProducts.length > 0 ? (
-              <table className="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Product Image</th>
-                    <th>Product Name</th>
-                    <th>Total Price</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {filteredProducts.map((product, index) => (
-                    <tr key={index}>
-                      <td>
-                        <Link
-                        to="/orderpage"
-                        state={{filteredProducts:product}}
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                        >
-                          <img
-                            src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
-                            alt={product.name}
-                            style={{ maxWidth: "60px", maxHeight: "100px" }}
-                          />
-                        </Link>
-                      </td>
-                      <td className="text-secondary">
-                          {product.name}
-                      </td>
-                      <td>
-                          {product.price}
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-danger"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation(); // Prevent Link click event
-                            cancelClick(product.id, product.quantity + 1);
-                          }}
-                        >
-                          Cancel
-                        </button>
-                      </td>
+              <div className="table-responsive">
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Product Image</th>
+                      <th>Product Name</th>
+                      <th>Total Price</th>
+                      <th>Action</th>
+                      <th></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+
+                  <tbody>
+                    {filteredProducts.map((product, index) => (
+                      <tr key={index}>
+                        <td style={{ minWidth: "120px" }}>
+                          <Link
+                            to="/orderpage"
+                            state={{ filteredProducts: product }}
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            <img
+                              src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
+                              alt={product.name}
+                              style={{ maxWidth: "60px", maxHeight: "100px" }}
+                            />
+                          </Link>
+                        </td>
+                        <td className="text-secondary pt-3" style={{ minWidth: "170px" }}>
+                          {product.name}
+                        </td>
+                        <td className="pt-3" style={{ minWidth: "100px" }}>
+                          &#36; {product.price}
+                        </td>
+                        <td className="pt-3" style={{ minWidth: "100px" }}>
+                          {product.delivered_date === null ? (
+                            <button
+                              className="btn btn-danger"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation(); // Prevent Link click event
+                                cancelClick(product.id, product.quantity + 1);
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          ) : (
+                            <Link to="/feedback" className="text-decoration-none"><i className="bi bi-star-fill"></i>&nbsp; Rate & Review Product</Link>
+                          )}
+
+                        </td>
+                        {/* <td className="pt-3" style={{minWidth:"170px"}}>
+                     
+                      </td> */}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             ) : (
               <h1 style={{ fontSize: "20px" }}>No orders</h1>
             )}

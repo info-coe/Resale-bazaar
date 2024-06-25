@@ -62,6 +62,7 @@ import SellerProfile from "./components/sellerdashboard/SellerProfilePage";
 // import axios from "axios";
 import Scrolltotop from "./components/Scrolltotop";
 import ContactSeller from "./components/sellerdashboard/ContactSeller";
+import ReviewRatings from "./components/customerdetails/reviewsRatings";
 
 
 function App() {
@@ -235,6 +236,8 @@ function App() {
           <Route path="/orderpage" element={<OrderPage/>} />
           <Route path="/sellerprofile/:sellerId" element={<SellerProfile/>} />
           <Route path="/contactseller" element={<ContactSeller/>}/>
+          <Route path="/feedback" element={<ReviewRatings/>}/>
+
 
         </Routes>
       </BrowserRouter>
