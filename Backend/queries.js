@@ -256,8 +256,10 @@ const retrievingOfferedProductsQuery = "select * from offered_products";
 const updatedOfferProductAcceptedQuery = "UPDATE offered_products SET product_status = 'Accepted' WHERE id = ?";
 const updatedOfferProductRejectQuery  = "UPDATE offered_products SET product_status = 'Rejected' WHERE id = ?"
 const AddContactSellerQuery = "INSERT INTO contactseller (name, email, phone, user_id, comment) VALUES (?, ?, ?, ?,?)";
-const retrievingContactSellerQuery = "select * from contactseller"  
-
+const retrievingContactSellerQuery = "select * from contactseller" 
+const updateOrderShippmentQuery = "UPDATE orders SET shipped_date = ? WHERE shipment_id = ?"
+const updateOrderDeliveredQuery = "UPDATE orders SET delivered_date = ? WHERE shipment_id = ?"
+const updateOrderDeliveredandShippementQuery = "UPDATE orders SET shipped_date = ?, delivered_date = ? WHERE shipment_id = ?"
 // const cartpaymentupdateQuery = "UPDATE cart SET payment_status = ?, buyer_id = ? WHERE id = ?";
 
 module.exports = {
@@ -319,5 +321,8 @@ module.exports = {
   updatedOfferProductRejectQuery,
   AddContactSellerQuery,
   retrievingContactSellerQuery,
-  ContactData
+  ContactData,
+  updateOrderShippmentQuery,
+  updateOrderDeliveredQuery,
+  updateOrderDeliveredandShippementQuery
 };

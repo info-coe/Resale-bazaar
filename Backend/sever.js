@@ -61,7 +61,10 @@ const {
   updatedOfferProductRejectQuery,
   ContactData,
   AddContactSellerQuery,
-  retrievingContactSellerQuery
+  retrievingContactSellerQuery,
+  updateOrderDeliveredQuery,
+  updateOrderShippmentQuery,
+  updateOrderDeliveredandShippementQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -656,19 +659,47 @@ app.post("/updateproducts", (req, res) => {
   });
 });
 
-app.post("/updateOrder",(req, res) => {
-  const shipped_date = req.body.shipped_date;
-  const shipment_id = req.body.shipment_id;
-  const sql = "UPDATE orders SET shipped_date = ? WHERE shipment_id = ?";
-  db.query(sql, [shipped_date, shipment_id], (err, result) => {
+// app.post("/updateOrder",(req, res) => {
+//   const shipped_date = req.body.shipped_date;
+//   const shipment_id = req.body.shipment_id;
+//   const sql = "UPDATE orders SET shipped_date = ? WHERE shipment_id = ?";
+//   db.query(sql, [shipped_date, shipment_id], (err, result) => {
+//     if (err) {
+//       console.error("Error updating order:", err);
+//       res.status(500).json({ error: "Error updating order" });
+//       return;
+//     }
+//     return res.json(result);
+//   })
+// })
+app.post("/updateOrder", (req, res) => {
+  const { shipment_id, shipped_date, delivered_date } = req.body;
+
+  let sql;
+  let values = [];
+
+  if (shipped_date && delivered_date) {
+    sql = updateOrderDeliveredandShippementQuery;
+    values = [shipped_date, delivered_date, shipment_id];
+  } else if (shipped_date) {
+    sql = updateOrderShippmentQuery;
+    values = [shipped_date, shipment_id];
+  } else if (delivered_date) {
+    sql = updateOrderDeliveredQuery;
+    values = [delivered_date, shipment_id];
+  } else {
+    return res.status(400).json({ error: "No date provided for update" });
+  }
+
+  // Execute the SQL query
+  db.query(sql, values, (err, result) => {
     if (err) {
       console.error("Error updating order:", err);
-      res.status(500).json({ error: "Error updating order" });
-      return;
+      return res.status(500).json({ error: "Error updating order" });
     }
-    return res.json(result);
-  })
-})
+    return res.json({ success: true, message: "Order updated successfully", result });
+  });
+});
 
 // add products
 // app.post("/addproducts",upload.array('images', 10), (req, res) => {

@@ -3,7 +3,6 @@ import Sellernavbar from "./Sellernavbar";
 import Sellermenu from "./Sellermenu";
 import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Shipments() {
@@ -30,66 +29,62 @@ export default function Shipments() {
       .then((res) => {
         setFilteredProducts(res.data);
         axios
-        .get(
-          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`
-        )
-        .then((result) => {
-          setShippingProducts(
-            result.data.filter(
-              (item) =>
-                item.seller_id.toString() === sessionStorage.getItem("user-token")
-            )
-          );
-        })
-        .catch((err) => console.log(err));
-
+          .get(
+            `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`
+          )
+          .then((result) => {
+            setShippingProducts(
+              result.data.filter(
+                (item) =>
+                  item.seller_id.toString() ===
+                  sessionStorage.getItem("user-token")
+              )
+            );
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const allSellerProducts = filteredProducts
-  .filter((product) =>
-    shippingProducts.some(
-      (order) => order.id === product.product_id
-    )
+  const allSellerProducts = filteredProducts.filter((product) =>
+    shippingProducts.some((order) => order.id === product.product_id)
   );
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const tableData = allSellerProducts.slice(startIndex, endIndex);
 
-  const handleChecked = (e) => {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    if (e.currentTarget.checked) {
-      for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = true;
-        console.log(checkboxes[i]);
-      }
-    } else {
-      for (let i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = false;
-      }
+  const handleOrder = (actionType) => {
+    if (!orderStatus) {
+      console.log("No shipment selected.");
+      return;
     }
-  };
 
-  const handleOrder = () => {
-    // console.log(order);
+    let updateData = {
+      shipment_id: orderStatus,
+    };
+
+    if (actionType === "delivered") {
+      updateData.delivered_date = new Date().toLocaleDateString("fr-CA");
+    } else if (actionType === "shipped") {
+      updateData.shipped_date = new Date().toLocaleDateString("fr-CA");
+    }
+
     axios
-    .post(
-      `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateOrder`, {
-        shipment_id : orderStatus,
-        shipped_date : new Date().toLocaleDateString("fr-CA")
-      }
-    )
-    .then((res) => {
-      console.log(res.data);
-      // setFilteredProducts(res.data);
-    })
-    .catch((err) => console.log(err));
+      .post(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateOrder`,
+        updateData
+      )
+      .then((res) => {
+        console.log("Order updated successfully:", res.data);
+      })
+      .catch((err) => console.log("Error updating order:", err));
   };
-
-  // console.log(shippingProducts);
+  const [isChecked, setIsChecked] = useState(false); // State to track checkbox checked status
+  const handleChecked = (e) => {
+    setIsChecked(e.target.checked);
+  };
 
   return (
     <div className="">
@@ -105,16 +100,22 @@ export default function Shipments() {
                 <h1 style={{ fontSize: "28px" }}>Shipments</h1>
                 <div className="d-flex gap-2">
                   {/* <Link to="/addnewproduct"> */}
-                    <button className="btn btn-info" onClick={handleOrder}>
-                      <i className="bi bi-truck"></i> Set as shipped(selected)
-                    </button>
+                  <button
+                    className="btn btn-info"
+                    onClick={() => handleOrder("shipped")}
+                    disabled={!isChecked}
+                  >
+                    <i className="bi bi-truck"></i> Set as shipped(selected)
+                  </button>
                   {/* </Link> */}
-                  <Link to="/addnewproduct">
-                    <button className="btn btn-success">
-                      <i className="bi bi-check2-circle"></i> Set as
-                      delivered(selected)
-                    </button>
-                  </Link>
+                  <button
+                    className="btn btn-success"
+                    onClick={() => handleOrder("delivered")}
+                    disabled={!isChecked}
+                  >
+                    <i className="bi bi-check2-circle"></i> Set as
+                    delivered(selected)
+                  </button>
                 </div>
               </div>
 
@@ -130,12 +131,12 @@ export default function Shipments() {
                       <tr role="row">
                         <th className="sorting p-3" rowSpan="1" colSpan="1">
                           <label className="pos-rel">
-                            <input
+                            {/* <input
                               type="checkbox"
                               name="allcheckboxes"
                               className="ace"
                               onChange={handleChecked}
-                            />
+                            /> */}
                             <span className="lbl"></span>
                           </label>
                         </th>
@@ -198,8 +199,12 @@ export default function Shipments() {
                                 type="checkbox"
                                 name="allcheckboxes"
                                 className="ace"
-                                onChange={() => setOrderStatus(item.shipment_id)}
+                                onChange={(e) => {
+                                  setOrderStatus(item.shipment_id);
+                                  handleChecked(e);
+                                }}
                               />
+
                               <span className="lbl"></span>
                             </label>
                           </th>
