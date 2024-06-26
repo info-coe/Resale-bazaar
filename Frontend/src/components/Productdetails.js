@@ -131,7 +131,9 @@ export default function Productdetails() {
       navigate("/login");
     }
   };
-
+  const [liked, setLiked] = useState(productdetails.liked);
+  const [likeCount, setLikeCount] = useState(productdetails.likes);
+  const [currentProduct, setCurrentProduct] = useState(productdetails);
   const productDetailsImgRef = useRef();
 
   const activeSubimageRef = useRef(null);
@@ -271,6 +273,26 @@ export default function Productdetails() {
   };
 
   // console.log(productDetailsImgRef.current.src)
+  const toggleLike = (productId) => {
+
+    if(isLoggedIn){
+      const newLikeCount = liked ? likeCount - 1 : likeCount + 1;
+
+      axios.put(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${productId}/allproducts`, {
+        likeCount: newLikeCount
+      })
+        .then(response => {
+          setLiked(!liked);
+          setLikeCount(newLikeCount);
+        })
+        .catch(error => {
+          console.error('Error updating like count:', error);
+        });
+    }else{
+      navigate('/login')
+    }
+    
+  };
 
   return (
     <div className="fullscreen">
@@ -305,6 +327,16 @@ export default function Productdetails() {
                 alt="product"
                 className="productdetailsimg"
               />
+            </div>
+            <div >
+            <div className="ms-5 d-flex gap-2">
+            <div className="heart-icon" onClick={() => toggleLike(currentProduct.id)} style={{  fontSize: '1.5rem', color: liked ? 'red' : 'grey', cursor: 'pointer' }}>
+            <i className="bi bi-heart-fill" style={{ cursor: "pointer" }}></i>
+          </div>
+          <div className="like-count mt-2" style={{ fontSize: '1rem', color: 'black' }}>
+            {likeCount} likes
+          </div>
+            </div>
             </div>
             <div className="ms-auto me-auto">
               {/* <Carousel

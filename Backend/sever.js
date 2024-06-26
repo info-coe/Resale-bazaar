@@ -1224,6 +1224,23 @@ app.get("/updatepayment", (req, res) => {
   });
 });
 
+app.put('/:productId/allproducts', (req, res) => {
+  const productId = req.params.productId;
+  const { likeCount } = req.body; // Assuming likeCount is sent in the request body
+
+  // Update like count in your database
+  const sql = 'UPDATE products SET likes = ? WHERE id = ?';
+  const values = [likeCount, productId];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('Error updating like count:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    console.log('Like count updated successfully');
+    return res.status(200).json({ message: 'Like count updated successfully' });
+  });
+});
 
 // payment
 // Replace these with your PayPal Sandbox API credentials

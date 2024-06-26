@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS products (
     accepted_by_admin VARCHAR(60) NOT NULL,
     rejection_reason TINYTEXT NULL,
     seller_id INT NOT NULL,
+    likes BIGINT(10) NULL,
     UNIQUE INDEX id_UNIQUE (id ASC),
     FOREIGN KEY (seller_id) REFERENCES register(user_id)
 );
@@ -228,7 +229,7 @@ const retrievingWomenProductsQuery = "select * from products WHERE `product_type
 const retrievingKidsProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingJewelleryProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingBooksProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
-const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, quantity, price, material, occasion, type, brand, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, quantity, price, material, occasion, type, brand, style, season, fit, length, accepted_by_admin, seller_id,likes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
 const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, \`condition\`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
 const retrievingCartItemsQuery = "select * from cart";
 const updateCartItemsQuery = "UPDATE cart SET userid = ? WHERE id = ?";
