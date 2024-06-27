@@ -68,32 +68,40 @@ function ReviewRatings() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const formData = new FormData();
     formData.append('rating', values.rating);
     formData.append('description', values.description);
     formData.append('title', values.title);
     formData.append('sellerId', values.sellerId); 
-    formData.append('buyerId',values.buyerId)
+    formData.append('buyerId', values.buyerId);
+  
     values.images.forEach(image => {
       formData.append('images', image); 
     });
-
+  
     try {
       const response = await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/reviews`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      // console.log('Review added successfully:', response.data);
-      alert('Review added successfully')
-      setValues({formData})
-      // Handle success (e.g., show a success message)
+      // Clear the form after successful submission
+      setValues({
+        rating: '',
+        description: '',
+        title: '',
+        sellerId: '', 
+        buyerId: '', 
+        images: [] 
+      });
+      alert('Review added successfully');
+      window.location.reload(false)
     } catch (error) {
       console.error('Error adding review:', error);
-      // Handle error (e.g., show an error message)
     }
   };
+  
 
   return (
     <div className='fullscreen'>
