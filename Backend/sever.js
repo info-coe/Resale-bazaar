@@ -1242,6 +1242,53 @@ app.put('/:productId/allproducts', (req, res) => {
   });
 });
 
+app.post('/reviews', upload.array('images', 5), (req, res) => {
+  const { rating, description, title ,sellerId ,buyerId} = req.body;
+  const images = req.files.map(file => file.filename); // Extract filenames from the uploaded files
+
+  const query = 'INSERT INTO review (rating, description, title, images ,seller_id,buyer_id) VALUES (?, ?, ?, ?,?,?)';
+  db.query(query, [rating, description, title, JSON.stringify(images),sellerId,buyerId ], (err, result) => {
+    if (err) {
+      console.error('Error inserting review:', err);
+      res.status(500).send({ message: 'Error inserting review' });
+      return;
+    }
+    res.send({ message: 'Review added successfully', reviewId: result.insertId });
+  });
+});
+
+
+
+app.get('/reviews', (req, res) => {
+  const query = `
+    SELECT 
+      review.*, 
+      register.firstname, 
+      register.lastname
+    FROM 
+      review
+    INNER JOIN 
+      register 
+    ON 
+      review.buyer_id = register.user_id;
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching reviews:', err);
+      res.status(500).send({ message: 'Error fetching reviews' });
+      return;
+    }
+
+    const reviews = results.map(review => ({
+      ...review,
+      images: JSON.parse(review.images),
+    }));
+
+    res.send(reviews);
+  });
+});
+
 // payment
 // Replace these with your PayPal Sandbox API credentials
 paypal.configure({

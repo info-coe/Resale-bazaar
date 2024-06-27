@@ -213,6 +213,17 @@ CREATE TABLE IF NOT EXISTS contactseller (
   comment VARCHAR(255)NOT NULL
 );
 `
+const ReviewsQuery = `
+CREATE TABLE IF NOT EXISTS review (
+  id SERIAL PRIMARY KEY,
+  rating  INTEGER NOT NULL,
+  description  VARCHAR(255) NOT NULL,
+  title  VARCHAR(255) NOT NULL,
+  images JSON,
+  seller_id INTEGER NOT NULL,
+  buyer_id INTEGER NOT NULL
+);
+` 
 
 const loginCheckQuery = "SELECT * FROM register WHERE `email` = ? AND `password` = ?";
 const adminLoginQuery = "SELECT * FROM admin WHERE `email` = ? AND `password` = ?";
@@ -256,7 +267,7 @@ const offeredProductsQuery = "INSERT INTO offered_products (`product_id`,`offere
 const retrievingOfferedProductsQuery = "select * from offered_products";
 const updatedOfferProductAcceptedQuery = "UPDATE offered_products SET product_status = 'Accepted' WHERE id = ?";
 const updatedOfferProductRejectQuery  = "UPDATE offered_products SET product_status = 'Rejected' WHERE id = ?"
-const AddContactSellerQuery = "INSERT INTO contactseller (name, email, phone, user_id, comment) VALUES (?, ?, ?, ?,?)";
+const AddContactSellerQuery = "INSERT INTO contactseller (name, email, phone, seller_id, comment) VALUES (?, ?, ?, ?,?)";
 const retrievingContactSellerQuery = "select * from contactseller" 
 const updateOrderShippmentQuery = "UPDATE orders SET shipped_date = ? WHERE shipment_id = ?"
 const updateOrderDeliveredQuery = "UPDATE orders SET delivered_date = ? WHERE shipment_id = ?"
@@ -325,5 +336,6 @@ module.exports = {
   ContactData,
   updateOrderShippmentQuery,
   updateOrderDeliveredQuery,
-  updateOrderDeliveredandShippementQuery
+  updateOrderDeliveredandShippementQuery,
+  ReviewsQuery
 };
