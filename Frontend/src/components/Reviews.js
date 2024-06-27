@@ -65,7 +65,7 @@ const Reviews = ({ userDetails }) => {
                 <>
                   <h5 className="d-md-flex align-items-center mb-1 fs-6 justify-content-evenly">
                     {renderStars(review.rating)}
-                    <span className="ms-4"> by {review.firstname}&nbsp;{review.lastname}</span>
+                    <span className="ms-4">{review.firstname}&nbsp;{review.lastname}</span>
                     <small className="text-muted ms-auto">
                       Posted {moment(review.created_at).fromNow()}
                     </small>
