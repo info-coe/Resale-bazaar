@@ -58,6 +58,7 @@ export default function Orders() {
         ordered_date: relatedOrder.ordered_date,
         shipped_date: relatedOrder.shipped_date,
         delivered_date: relatedOrder.delivered_date,
+        buyer_id :relatedOrder.buyer_id,
       };
     });
 
@@ -159,7 +160,7 @@ export default function Orders() {
                               Cancel
                             </button>
                           ) : (
-                            <Link to="/feedback" className="text-decoration-none"><i className="bi bi-star-fill"></i>&nbsp; Rate & Review Product</Link>
+                            <Link to="/feedback"  state={{ filteredProducts: product }} className="text-decoration-none"><i className="bi bi-star-fill"></i>&nbsp; Rate & Review Product</Link>
                           )}
 
                         </td>
@@ -175,6 +176,7 @@ export default function Orders() {
               <h1 style={{ fontSize: "20px" }}>No orders</h1>
             )}
           </div>
+          
         </div>
       </main>
       <Footer />

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useCart } from "./CartContext";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import Reviews from "./Reviews";
 // import { escape } from "../../../Backend/db";
 
 const responsive = {
@@ -38,8 +39,8 @@ export default function Productdetails() {
   const { id } = useParams();
   const location = useLocation();
   const { productdetails, admin } = location.state || {};
-  productdetails.userid = sessionStorage.getItem("user-token");
-  console.log(productdetails.id);
+  // productdetails.userid = sessionStorage.getItem("user-token");
+  // console.log(productdetails.id);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
@@ -135,7 +136,6 @@ export default function Productdetails() {
   const [likeCount, setLikeCount] = useState(productdetails.likes);
   const [currentProduct, setCurrentProduct] = useState(productdetails);
   const productDetailsImgRef = useRef();
-
   const activeSubimageRef = useRef(null);
   const carouselRef = useRef();
   // eslint-disable-next-line no-unused-vars
@@ -1003,6 +1003,7 @@ export default function Productdetails() {
                 </h5>
               </>
             )}
+
             <div className="col-12 col-md-7 mt-3">
               <div className="user-details border shadow-sm p-3 bg-body rounded">
                 {userdetails.map((user) => (
@@ -1020,6 +1021,7 @@ export default function Productdetails() {
                   </div>
                 ))}
               </div>
+              <Reviews userDetails={userdetails}/>
             </div>
           </div>
         </div>

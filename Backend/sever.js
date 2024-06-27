@@ -241,13 +241,16 @@ db.query(createDatabaseQuery, (err) => {
                           if (err) throw err;
                           db.query(offeredProducts, (err) => {
                             if (err) throw err;
-
                             db.query(ContactData, (err) => {
                               if (err) throw err;
+
                          
                             db.query(ReviewsQuery, (err) => {
                               if (err) throw err;
                               console.log("Database and tables created successfully");
+
+                                console.log("Database and tables created successfully");
+                            
                             });
                           });
                           });
@@ -1247,12 +1250,14 @@ app.put('/:productId/allproducts', (req, res) => {
   });
 });
 
+
 app.post('/reviews', upload.array('images', 5), (req, res) => {
   const { rating, description, title ,sellerId ,buyerId} = req.body;
   const images = req.files.map(file => file.filename); // Extract filenames from the uploaded files
-
-  const query = 'INSERT INTO review (rating, description, title, images ,seller_id,buyer_id) VALUES (?, ?, ?, ?,?,?)';
-  db.query(query, [rating, description, title, JSON.stringify(images),sellerId,buyerId ], (err, result) => {
+  const createdAt = new Date(); 
+  const updatedAt = new Date();
+  const query = 'INSERT INTO review (rating, description, title, images ,seller_id,buyer_id,created_at, updated_at) VALUES (?, ?, ?, ?,?,?,?,?)';
+  db.query(query, [rating, description, title, JSON.stringify(images),sellerId,buyerId,createdAt, updatedAt], (err, result) => {
     if (err) {
       console.error('Error inserting review:', err);
       res.status(500).send({ message: 'Error inserting review' });
@@ -1293,6 +1298,10 @@ app.get('/reviews', (req, res) => {
     res.send(reviews);
   });
 });
+
+
+
+
 
 // payment
 // Replace these with your PayPal Sandbox API credentials
