@@ -64,7 +64,8 @@ const {
   retrievingContactSellerQuery,
   updateOrderDeliveredQuery,
   updateOrderShippmentQuery,
-  updateOrderDeliveredandShippementQuery
+  updateOrderDeliveredandShippementQuery,
+  ReviewsQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -243,8 +244,12 @@ db.query(createDatabaseQuery, (err) => {
 
                             db.query(ContactData, (err) => {
                               if (err) throw err;
+                         
+                            db.query(ReviewsQuery, (err) => {
+                              if (err) throw err;
                               console.log("Database and tables created successfully");
                             });
+                          });
                           });
                         });
                       });
