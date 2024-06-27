@@ -67,7 +67,8 @@ function ReviewRatings() {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     const formData = new FormData();
     formData.append('rating', values.rating);
     formData.append('description', values.description);
@@ -84,7 +85,9 @@ function ReviewRatings() {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log('Review added successfully:', response.data);
+      // console.log('Review added successfully:', response.data);
+      alert('Review added successfully')
+      setValues({formData})
       // Handle success (e.g., show a success message)
     } catch (error) {
       console.error('Error adding review:', error);
