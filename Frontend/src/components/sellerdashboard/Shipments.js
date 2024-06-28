@@ -8,7 +8,7 @@ import axios from "axios";
 export default function Shipments() {
   // eslint-disable-next-line no-unused-vars
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(6);
+  const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
   // eslint-disable-next-line no-unused-vars
@@ -78,6 +78,7 @@ export default function Shipments() {
       )
       .then((res) => {
         console.log("Order updated successfully:", res.data);
+        window.location.reload(false);
       })
       .catch((err) => console.log("Error updating order:", err));
   };
