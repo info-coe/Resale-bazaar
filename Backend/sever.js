@@ -189,47 +189,25 @@ app.post("/sendotp", (req, res) => {
     html: `<b>Hello user, Please use this otp ${otp} for verification</b>`,
   };
 
-//   smtpTransport.sendMail(mailOptions, function (error, response) {
-//     if (error) {
-//       response.send("couldn't send");
-//     } else {
-//       savedOTPS[email] = otp;
-//       setTimeout(() => {
-//         delete savedOTPS.email;
-//       }, 60000);
-//       return res.json(response);
-//     }
-//     smtpTransport.close();
-//   });
-// });
-smtpTransport.sendMail(mailOptions, (error, info) => {
-  if (error) {
-    console.error('Error sending email:', error);
-    return res.status(500).send("Couldn't send OTP");
-  } else {
-    savedOTPS[email] = otp;
-    setTimeout(() => {
-      delete savedOTPS[email];
-    }, 60000);
-    return res.json({ message: 'OTP sent successfully', info });
-  }
+  smtpTransport.sendMail(mailOptions, function (error, response) {
+    if (error) {
+      response.send("couldn't send");
+    } else {
+      savedOTPS[email] = otp;
+      setTimeout(() => {
+        delete savedOTPS.email;
+      }, 60000);
+      return res.json(response);
+    }
+    smtpTransport.close();
+  });
 });
-});
-
-// app.post("/verify", (req, res) => {
-//   let otprecived = req.body.otp;
-//   let email = req.body.email;
-//   if (savedOTPS[email] == otprecived) {
-//     res.send("Verfied");
-//   } else {
-//     res.status(500).send("Invalid OTP");
-//   }
-// });
 
 app.post("/verify", (req, res) => {
-  const { otp, email } = req.body;
-  if (savedOTPS[email] === otp) {
-    res.send("Verified");
+  let otprecived = req.body.otp;
+  let email = req.body.email;
+  if (savedOTPS[email] == otprecived) {
+    res.send("Verfied");
   } else {
     res.status(500).send("Invalid OTP");
   }
