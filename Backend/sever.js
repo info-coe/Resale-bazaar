@@ -243,14 +243,9 @@ db.query(createDatabaseQuery, (err) => {
                             if (err) throw err;
                             db.query(ContactData, (err) => {
                               if (err) throw err;
-
-                         
                             db.query(ReviewsQuery, (err) => {
                               if (err) throw err;
-                              console.log("Database and tables created successfully");
-
-                                console.log("Database and tables created successfully");
-                            
+                              console.log("Database and tables created successfully");                            
                             });
                           });
                           });
