@@ -1045,6 +1045,13 @@ export default function Productdetails() {
                   </div>
                 ))}
               </div>
+              {
+                productdetails.notes !== null &&
+              
+              <div className="p-2">
+                <b>Notes:</b> {productdetails.notes}
+              </div>
+              }
               <Reviews userDetails={userdetails}/>
             </div>
           </div>

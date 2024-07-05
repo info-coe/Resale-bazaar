@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS products (
     language VARCHAR(45) NULL,
     quantity INT NOT NULL,
     price INT NOT NULL,
+    notes LONGTEXT NULL,
     material VARCHAR(90) NOT NULL,
     occasion VARCHAR(90) NULL,
     type VARCHAR(90) NULL,
@@ -242,7 +243,7 @@ const retrievingWomenProductsQuery = "select * from products WHERE `product_type
 const retrievingKidsProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingJewelleryProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingBooksProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
-const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, quantity, price, material, occasion, type, brand, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, quantity, price, notes, material, occasion, type, brand, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, \`condition\`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
 const retrievingCartItemsQuery = "select * from cart";
 const updateCartItemsQuery = "UPDATE cart SET userid = ? WHERE id = ?";

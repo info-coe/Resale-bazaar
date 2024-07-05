@@ -957,6 +957,7 @@ app.post('/addproducts', upload.array('media', 11), (req, res) => {
       productDetails.age,
       productDetails.quantity,
       productDetails.price,
+      productDetails.notes,
       productDetails.material,
       productDetails.Occasion,
       productDetails.Type,

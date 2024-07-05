@@ -23,6 +23,7 @@ export default function Addnewproduct() {
     language: "",
     quantity: "",
     price: "",
+    notes:"",
     accepted_by_admin: "false",
     seller_id: sessionStorage.getItem("user-token") || "", // Ensure this correctly fetches the user token
   });
@@ -389,6 +390,19 @@ export default function Addnewproduct() {
     if (values.producttype === "jewellery") {
       updatedValues.size = "NA";
       updatedValues.material = "NA";
+      updatedValues.source = "NA";
+
+    }
+    if (values.producttype === "women") {
+      updatedValues.size = "NA";
+      updatedValues.alteration = "NA";
+      updatedValues.material = "NA";
+      updatedValues.measurements = "NA";
+      updatedValues.source = "NA";
+    }
+    if (values.producttype === "kids") {
+      updatedValues.source = "NA";
+
     }
   
     const formData = new FormData();
@@ -735,7 +749,8 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-                      
+                      {values.producttype !== "women" &&
+                         (
                         <div className="mb-3">
                           <label
                             htmlFor="alteration"
@@ -760,7 +775,8 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             <span className="text-danger fs-4"> &nbsp;*</span>
                           </div>
                         </div>
-                      {values.producttype !== "jewellery" &&
+                         )}
+                      {values.producttype !== "jewellery" && values.producttype !== "women" &&
                          (
                           <div className="mb-3">
                             <label
@@ -791,7 +807,8 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             </div>
                           </div>
                         )}
-                     
+                      {values.producttype !== "women" &&
+                         (
                         <div className="mb-3">
                           <label
                             htmlFor="measurements"
@@ -805,7 +822,7 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                               className="form-control"
                               id="measurements"
                               name="measurements"
-                              placeholder="Measurements (eg. 32 to 36)"
+                              placeholder="Measurements (eg. 12 to 16)"
                               value={values.measurements}
                               onChange={handleInput}
                               required
@@ -813,8 +830,8 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             <span className="text-danger fs-4"> &nbsp;*</span>
                           </div>
                         </div>
-                      
-                      {values.producttype !== "jewellery" &&
+                         )}
+                      {values.producttype !== "jewellery" && values.producttype !== "women" &&
                          (
                           <div className="mb-3">
                             <label
@@ -894,6 +911,8 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                               <span className="text-danger fs-4"> &nbsp;*</span>
                             </div>
                           </div>
+                          {values.producttype !== "women" && values.producttype !== "jewellery" && values.producttype !== "kids" &&
+                         (
                           <div className="mb-3">
                             <label
                               htmlFor="source"
@@ -926,6 +945,7 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                               <span className="text-danger fs-4"> &nbsp;*</span>
                             </div>
                           </div>
+                         )}
                        
                       <div className="mb-3">
                         <label htmlFor="age" className="form-label fw-bolder">
@@ -974,6 +994,8 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                           >
                             <option value="">Select Quantity</option>
                             <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
                           </select>
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
@@ -988,7 +1010,7 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             className="form-control"
                             id="price"
                             name="price"
-                            placeholder="Price"
+                            placeholder="Ex: &#36;100"
                             value={values.price}
                             onChange={handleInput}
                             min="1"
@@ -997,6 +1019,26 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             required
                           />
                           <span className="text-danger fs-4"> &nbsp;*</span>
+                        </div>
+                      </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="notes"
+                          className="form-label fw-bolder"
+                        >
+                          Notes
+                        </label>
+                        <div className="d-flex">
+                          <textarea
+                            className="form-control"
+                            id="notes"
+                            name="notes"
+                            placeholder="Notes (Optional)"
+                            value={values.notes}
+                            onChange={handleInput}
+                            // required
+                          ></textarea>
+                          {/* <span className="text-danger fs-4"> &nbsp;*</span> */}
                         </div>
                       </div>
                      
