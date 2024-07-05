@@ -69,6 +69,7 @@ const {
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
+const multerS3 = require('multer-s3');
 const path = require('path');
 const app = express();
 app.use(cors("*"));
@@ -76,36 +77,77 @@ app.use(express.json());
 app.use(express.static('public'));
 const secretKey = 'yourSecretKey';
 const { v4: uuidv4 } = require('uuid');
+const AWS = require('aws-sdk');
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { Upload } = require("@aws-sdk/lib-storage");
+
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  }
+});
 
 // Define storage for multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/images'); // Destination directory for uploaded files
-  },
-  // filename: (req, file, cb) => {
-  //   const uniqueSuffix = Date.now(); // Generate a unique identifier
-  //   const fileExtension = path.extname(file.originalname); // Get the file extension
-  //   const filename = `file_${uniqueSuffix}${fileExtension}`; // Construct the filename with extension
-  //   cb(null, filename); // Callback to set the filename
-  // }
-  filename: (req, file, cb) => {
-    const fileExtension = path.extname(file.originalname); // Get the file extension
-    const filename = `file_${uuidv4()}${fileExtension}`; // Generate a unique filename with UUID
-    cb(null, filename); // Callback to set the filename
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'public/images'); // Destination directory for uploaded files
+//   },
+//   // filename: (req, file, cb) => {
+//   //   const uniqueSuffix = Date.now(); // Generate a unique identifier
+//   //   const fileExtension = path.extname(file.originalname); // Get the file extension
+//   //   const filename = `file_${uniqueSuffix}${fileExtension}`; // Construct the filename with extension
+//   //   cb(null, filename); // Callback to set the filename
+//   // }
+//   filename: (req, file, cb) => {
+//     const fileExtension = path.extname(file.originalname); // Get the file extension
+//     const filename = `file_${uuidv4()}${fileExtension}`; // Generate a unique filename with UUID
+//     cb(null, filename); // Callback to set the filename
+//   }
+// });
 
 // Multer upload instance
+// const upload = multer({
+//   storage: storage,
+//   limits: {
+//     fileSize: 1024 * 1024 * 200 // Limit file size to 20MB (adjust as needed)
+//   },
+//   fileFilter: (req, file, cb) => {
+//     // Validate file type here if needed
+//     cb(null, true); // Accept the file
+//   }
+// });
+
 const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 200 // Limit file size to 20MB (adjust as needed)
-  },
-  fileFilter: (req, file, cb) => {
-    // Validate file type here if needed
-    cb(null, true); // Accept the file
-  }
+  storage: multerS3({
+    s3: s3,
+    bucket: 'resale-bazaar-products-images',
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      const filename = `${file.originalname.split('.')[0]}_${uuidv4()}.${file.mimetype.split('/')[1]}`;
+      cb(null, filename);
+    }
+    // acl: 'public-read', // Set ACL if needed
+  }),
 });
+
+// app.post('/upload', upload.array('images', 3), async (req, res) => {
+//   try {
+//     const imageUrls = req.files.map(file => {
+//       const s3Url = file.location.replace('s3.amazonaws.com', 's3.us-east-1.amazonaws.com');
+//       return s3Url;
+//     });
+
+//     // Save imageUrls in the database
+//     // Example: await Product.update({ images: JSON.stringify(imageUrls) }, { where: { id: productId } });
+//     res.status(200).send({ imageUrls });
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// });
 // CORS middleware
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -799,57 +841,147 @@ app.post("/updateOrder", (req, res) => {
 //   });
 // });
 
+// app.post('/addproducts', upload.array('media', 11), (req, res) => {
+//   const mediaFiles = req.files.map(file => file.filename); // Extract filenames from the uploaded files
+//   // const mediaFiles = req.files.map(file => {
+//   //   const uniqueFilename = `${uuidv4()}-${file.originalname}`; // Example: uuid-v4-filename.jpg
+//   //   return uniqueFilename;
+//   // });
+
+//   // Extract additional product details from the request body
+//   const { allMedia, ...productDetails } = req.body;
+
+//   // Construct the SQL query for inserting product data
+//   const sql = addProductsQuery;
+//   const values = [
+//     productDetails.producttype,
+//     productDetails.category,
+//     productDetails.productname,
+//     productDetails.productdescription,
+//     JSON.stringify(mediaFiles), // Store the combined media array as JSON string
+//     productDetails.location,
+//     productDetails.color,
+//     productDetails.alteration,
+//     productDetails.size,
+//     productDetails.measurements,
+//     productDetails.condition,
+//     productDetails.source,
+//     productDetails.age,
+//     productDetails.quantity,
+//     productDetails.price,
+//     productDetails.material,
+//     productDetails.occasion,
+//     productDetails.type,
+//     productDetails.brand,
+//     productDetails.style,
+//     productDetails.season,
+//     productDetails.fit,
+//     productDetails.length,
+//     productDetails.accepted_by_admin,
+//     productDetails.seller_id
+//   ];
+
+//   // Execute the SQL query to insert product data into the database
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Error while inserting product:", err);
+//       return res.status(500).json({ message: "Error while inserting product" });
+//     }
+//     console.log("Product inserted successfully");
+//     return res.status(200).json({ message: "Product inserted successfully" });
+//   });
+// });
+// app.post('/addproducts', upload.array('media', 11), (req, res) => {
+//   const mediaFiles = req.files.map(file => file.key); // Extract S3 filenames from the uploaded files
+
+//   const { allMedia, ...productDetails } = req.body;
+
+//   const sql = addProductsQuery;
+//   const values = [
+//     productDetails.producttype,
+//     productDetails.category,
+//     productDetails.productname,
+//     productDetails.productdescription,
+//     JSON.stringify(mediaFiles), // Store the combined media array as JSON string
+//     productDetails.location,
+//     productDetails.color,
+//     productDetails.alteration,
+//     productDetails.size,
+//     productDetails.measurements,
+//     productDetails.condition,
+//     productDetails.source,
+//     productDetails.age,
+//     productDetails.quantity,
+//     productDetails.price,
+//     productDetails.material,
+//     productDetails.occasion,
+//     productDetails.type,
+//     productDetails.brand,
+//     productDetails.style,
+//     productDetails.season,
+//     productDetails.fit,
+//     productDetails.length,
+//     productDetails.accepted_by_admin,
+//     productDetails.seller_id
+//   ];
+
+//   db.query(sql, values, (err, result) => {
+//     if (err) {
+//       console.error("Error while inserting product:", err);
+//       return res.status(500).json({ message: "Error while inserting product" });
+//     }
+//     console.log("Product inserted successfully");
+//     return res.status(200).json({ message: "Product inserted successfully" });
+//   });
+// });
 app.post('/addproducts', upload.array('media', 11), (req, res) => {
-  const mediaFiles = req.files.map(file => file.filename); // Extract filenames from the uploaded files
-  // const mediaFiles = req.files.map(file => {
-  //   const uniqueFilename = `${uuidv4()}-${file.originalname}`; // Example: uuid-v4-filename.jpg
-  //   return uniqueFilename;
-  // });
+  try {
+    const mediaFiles = req.files.map(file => file.location); // Extract file URLs from S3
 
-  // Extract additional product details from the request body
-  const { allMedia, ...productDetails } = req.body;
+    const { allMedia, ...productDetails } = req.body;
 
-  // Construct the SQL query for inserting product data
-  const sql = addProductsQuery;
-  const values = [
-    productDetails.producttype,
-    productDetails.category,
-    productDetails.productname,
-    productDetails.productdescription,
-    JSON.stringify(mediaFiles), // Store the combined media array as JSON string
-    productDetails.location,
-    productDetails.color,
-    productDetails.alteration,
-    productDetails.size,
-    productDetails.measurements,
-    productDetails.condition,
-    productDetails.source,
-    productDetails.age,
-    productDetails.quantity,
-    productDetails.price,
-    productDetails.material,
-    productDetails.occasion,
-    productDetails.type,
-    productDetails.brand,
-    productDetails.style,
-    productDetails.season,
-    productDetails.fit,
-    productDetails.length,
-    productDetails.accepted_by_admin,
-    productDetails.seller_id
-  ];
+    const sql = addProductsQuery; // Ensure this query is properly defined
+    const values = [
+      productDetails.producttype,
+      productDetails.category,
+      productDetails.productname,
+      productDetails.productdescription,
+      JSON.stringify(mediaFiles), // Store the combined media array as JSON string
+      productDetails.location,
+      productDetails.color,
+      productDetails.alteration,
+      productDetails.size,
+      productDetails.measurements,
+      productDetails.condition,
+      productDetails.source,
+      productDetails.age,
+      productDetails.quantity,
+      productDetails.price,
+      productDetails.material,
+      productDetails.occasion,
+      productDetails.type,
+      productDetails.brand,
+      productDetails.style,
+      productDetails.season,
+      productDetails.fit,
+      productDetails.length,
+      productDetails.accepted_by_admin,
+      productDetails.seller_id
+    ];
 
-  // Execute the SQL query to insert product data into the database
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("Error while inserting product:", err);
-      return res.status(500).json({ message: "Error while inserting product" });
-    }
-    console.log("Product inserted successfully");
-    return res.status(200).json({ message: "Product inserted successfully" });
-  });
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Error while inserting product:", err);
+        return res.status(500).json({ message: "Error while inserting product" });
+      }
+      console.log("Product inserted successfully");
+      return res.status(200).json({ message: "Product inserted successfully" });
+    });
+  } catch (error) {
+    console.error("Error in /addproducts route:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 });
-
 
 
 app.delete("/handleproducts/:id", (req, res) => {

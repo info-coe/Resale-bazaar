@@ -256,6 +256,126 @@ export default function Addnewproduct() {
   };
 
  
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const isValid = validateForm();
+  
+  //   if (!isValid) {
+  //     return;
+  //   }
+  
+  //   const updatedValues = { ...values };
+  
+  //   if (values.producttype === "jewellery") {
+  //     updatedValues.size = "NA";
+  //     updatedValues.material = "NA";
+  //   }
+  
+  //   const formData = new FormData();
+  //   const allMedia = [];
+  
+  //   media.images.forEach((image) => {
+  //     if (image) {
+  //       formData.append('media', image);
+  //       allMedia.push(image);
+  //     }
+  //   });
+  
+  //   if (media.video) {
+  //     formData.append('media', media.video);
+  //     allMedia.push(media.video);
+  //   }
+  
+  //   for (const key in updatedValues) {
+  //     formData.append(key, updatedValues[key]);
+  //   }
+  
+  //   customAttributes.forEach((attribute) => {
+  //     formData.append(attribute.name, attribute.value);
+  //   });
+  
+  //   formData.append('allMedia', JSON.stringify(allMedia.map(file => file.name))); // Store media filenames
+  
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         }
+  //       }
+  //     );
+  
+  //     if (response.data === "Error") {
+  //       alert("Error while adding product. Please try again filling all the fields");
+  //     } else {
+  //       alert("Product added successfully");
+  //       window.location.reload(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     // Handle specific error cases as needed
+  //   }
+  // };
+  
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const isValid = validateForm();
+  
+  //   if (!isValid) {
+  //     return;
+  //   }
+  
+  //   const updatedValues = { ...values };
+  
+  //   if (values.producttype === "jewellery") {
+  //     updatedValues.size = "NA";
+  //     updatedValues.material = "NA";
+  //   }
+  
+  //   const formData = new FormData();
+  
+  //   media.images.forEach((image) => {
+  //     if (image) {
+  //       formData.append('media', image);
+  //     }
+  //   });
+  
+  //   if (media.video) {
+  //     formData.append('media', media.video);
+  //   }
+  
+  //   for (const key in updatedValues) {
+  //     formData.append(key, updatedValues[key]);
+  //   }
+  
+  //   customAttributes.forEach((attribute) => {
+  //     formData.append(attribute.name, attribute.value);
+  //   });
+  
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         }
+  //       }
+  //     );
+  
+  //     if (response.data === "Error") {
+  //       alert("Error while adding product. Please try again filling all the fields");
+  //     } else {
+  //       alert("Product added successfully");
+  //       window.location.reload(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     alert("An error occurred while adding the product. Please try again.");
+  //   }
+  // };
   const handleSubmit = async (event) => {
     event.preventDefault();
     const isValid = validateForm();
@@ -272,18 +392,15 @@ export default function Addnewproduct() {
     }
   
     const formData = new FormData();
-    const allMedia = [];
   
     media.images.forEach((image) => {
       if (image) {
         formData.append('media', image);
-        allMedia.push(image);
       }
     });
   
     if (media.video) {
       formData.append('media', media.video);
-      allMedia.push(media.video);
     }
   
     for (const key in updatedValues) {
@@ -293,8 +410,6 @@ export default function Addnewproduct() {
     customAttributes.forEach((attribute) => {
       formData.append(attribute.name, attribute.value);
     });
-  
-    formData.append('allMedia', JSON.stringify(allMedia.map(file => file.name))); // Store media filenames
   
     try {
       const response = await axios.post(
@@ -315,9 +430,10 @@ export default function Addnewproduct() {
       }
     } catch (error) {
       console.error("Error:", error);
-      // Handle specific error cases as needed
+      alert("An error occurred while adding the product. Please try again.");
     }
   };
+  
   
   
   
