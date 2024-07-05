@@ -11,6 +11,7 @@ export default function Customerinfo() {
   const [values, setValues] = useState({
     firstname: "" ,
     lastname: "",
+    shopname:"",
     email: "",
     phone: "",
   });
@@ -30,6 +31,7 @@ export default function Customerinfo() {
               ...prev,
               firstname: (item.firstname === null) ? ("") : (item.firstname),
               lastname: (item.lastname === null) ? ("") : (item.lastname),
+              shopname: (item.shopname === null) ? ("") : (item.shopname),
               email: (item.email === null) ? ("") : (item.email),
               phone: (item.phone === null) ? ("") : (item.phone),
             }))
@@ -93,7 +95,7 @@ export default function Customerinfo() {
                     name="firstname"
                     id="firstname"
                     placeholder="First Name"
-                    defaultValue={user.firstname ? user.firstname : ""}
+                    defaultValue={values.firstname ? values.firstname : ""}
                     className="form-control"
                     onChange={handleInput}
                     required
@@ -111,12 +113,30 @@ export default function Customerinfo() {
                     name="lastname"
                     id="lastname"
                     placeholder="Last Name"
-                    defaultValue={user.lastname ? user.lastname : ""}
+                    defaultValue={values.lastname ? values.lastname : ""}
                     className="form-control"
                     onChange={handleInput}
                     required
                   />
                   &nbsp;<span className="text-danger fs-4">*</span>
+                </div>
+              </div>
+              <div className="d-md-flex col-md-8 col-xs-12 mt-3 mb-3">
+                <label htmlFor="shopname" className="col-md-4 col-xs-12">
+                  <b>Shop Name</b>
+                </label>
+                <div className="d-flex col-md-8">
+                  <input
+                    type="text"
+                    name="shopname"
+                    id="shopname"
+                    placeholder="Shop Name"
+                    defaultValue={values.shopname ? values.shopname : ""}
+                    className="form-control"
+                    onChange={handleInput}
+                    
+                  />
+                
                 </div>
               </div>
               <div className="d-md-flex col-md-8 col-xs-12 mt-3 mb-3">
@@ -130,7 +150,7 @@ export default function Customerinfo() {
                     id="email"
                     placeholder="Email"
                     className="form-control"
-                    defaultValue={user.email ? user.email : ""}
+                    defaultValue={values.email ? values.email : ""}
                     onChange={handleInput}
                     required
                   />
@@ -153,7 +173,7 @@ export default function Customerinfo() {
                   name="phone"
                   id="phone"
                   placeholder="Mobile Number"
-                  defaultValue={user.phone ? user.phone : ""}
+                  defaultValue={values.phone ? values.phone : ""}
                   className="form-control "
                   onChange={handleInput}
                   required
