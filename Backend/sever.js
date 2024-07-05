@@ -130,10 +130,8 @@ const upload = multer({
       const filename = `${file.originalname.split('.')[0]}_${uuidv4()}.${file.mimetype.split('/')[1]}`;
       cb(null, filename);
     }
-    // acl: 'public-read', // Set ACL if needed
   }),
 });
-
 // app.post('/upload', upload.array('images', 3), async (req, res) => {
 //   try {
 //     const imageUrls = req.files.map(file => {
@@ -934,9 +932,62 @@ app.post("/updateOrder", (req, res) => {
 //     return res.status(200).json({ message: "Product inserted successfully" });
 //   });
 // });
+// app.post('/addproducts', upload.array('media', 11), (req, res) => {
+//   try {
+//     const mediaFiles = req.files.map(file => file.location); // Extract file URLs from S3
+
+//     const { allMedia, ...productDetails } = req.body;
+
+//     const sql = addProductsQuery; // Ensure this query is properly defined
+//     const values = [
+//       productDetails.producttype,
+//       productDetails.category,
+//       productDetails.productname,
+//       productDetails.productdescription,
+//       JSON.stringify(mediaFiles), // Store the combined media array as JSON string
+//       productDetails.location,
+//       productDetails.color,
+//       productDetails.alteration,
+//       productDetails.size,
+//       productDetails.measurements,
+//       productDetails.condition,
+//       productDetails.source,
+//       productDetails.age,
+//       productDetails.quantity,
+//       productDetails.price,
+//       productDetails.notes,
+//       productDetails.material,
+//       productDetails.Occasion,
+//       productDetails.Type,
+//       productDetails.Brand,
+//       productDetails.Style,
+//       productDetails.Season,
+//       productDetails.Fit,
+//       productDetails.Length,
+//       productDetails.accepted_by_admin,
+//       productDetails.seller_id
+//     ];
+
+//     db.query(sql, values, (err, result) => {
+//       if (err) {
+//         console.error("Error while inserting product:", err);
+//         return res.status(500).json({ message: "Error while inserting product" });
+//       }
+//       console.log("Product inserted successfully");
+//       return res.status(200).json({ message: "Product inserted successfully" });
+//     });
+//   } catch (error) {
+//     console.error("Error in /addproducts route:", error);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// });
 app.post('/addproducts', upload.array('media', 11), (req, res) => {
   try {
-    const mediaFiles = req.files.map(file => file.location); // Extract file URLs from S3
+    const mediaFiles = req.files.map(file => {
+      const urlParts = file.location.split('/');
+      const bucketName = urlParts[2].split('.')[0];
+      return `https://${bucketName}.s3.amazonaws.com/${urlParts.slice(3).join('/')}`;
+    });
 
     const { allMedia, ...productDetails } = req.body;
 
@@ -984,6 +1035,50 @@ app.post('/addproducts', upload.array('media', 11), (req, res) => {
   }
 });
 
+
+app.put('/handleproducts/:id', (req, res) => {
+  const id = req.params.id;
+  const {
+    name, price, description, location, color, alteration, size, measurements,
+    condition, age, occasion, material, brand, style, season
+  } = req.body;
+
+  const sql = `UPDATE products SET 
+    name = ?, price = ?, description = ?, location = ?, color = ?, alteration = ?, 
+    size = ?, measurements = ?, \`condition\` = ?, age = ?, occasion = ?, material = ?, 
+    brand = ?, style = ?, season = ? WHERE id = ?`;
+
+  const values = [
+    name, price, description, location, color, alteration, size, measurements,
+    condition, age, occasion, material, brand, style, season, id
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('Error updating product:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    console.log('Product updated successfully');
+    return res.status(200).json({ message: 'Product updated successfully' });
+  });
+});
+
+
+// app.get('/allproducts', async (req, res) => {
+//   try {
+//     const sql = 'SELECT * FROM products'; // Adjust this query based on your table structure
+//     db.query(sql, (err, results) => {
+//       if (err) {
+//         console.error('Error fetching products:', err);
+//         return res.status(500).json({ message: 'Error fetching products' });
+//       }
+//       res.status(200).json(results);
+//     });
+//   } catch (error) {
+//     console.error('Error in /products route:', error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// });
 
 app.delete("/handleproducts/:id", (req, res) => {
   const productId = req.params.id;

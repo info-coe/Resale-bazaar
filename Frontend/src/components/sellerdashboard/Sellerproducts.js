@@ -1,92 +1,97 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Sellernavbar from "./Sellernavbar";
 import Sellermenu from "./Sellermenu";
 import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Sellerproducts() {
-  // eslint-disable-next-line no-unused-vars
-  const [products, setProducts] = useState([]);
   const [pageSize, setPageSize] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
-  // eslint-disable-next-line no-unused-vars
   const [filteredProducts, setFilteredProducts] = useState([]);
-  // eslint-disable-next-line no-unused-vars
+  const [editingId, setEditingId] = useState(null);
   const [viewRowIndex, setViewRowIndex] = useState(null);
-  
+  const [formData, setFormData] = useState({
+    id: null,
+    name: "",
+    description: "",
+    // image: "",
+    location: "",
+    color: "",
+    alteration: "",
+    size: "",
+    measurements: "",
+    condition: "",
+    // source: "",
+    age: "",
+    // quantity: "",
+    price: "",
+    material: "",
+    occasion: "",
+    type: "",
+    brand: "",
+    style: "",
+    season: "",
+    fit: ""
+  });
 
-
-  const userid = sessionStorage.getItem('user-token')
-
-  useEffect(() => {
-    // Fetching all products
-    axios
-    .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`)
-    .then((res) => {
-      console.log(res.data);
-      if (res.data !== "Fail" && res.data !== "Error") {
-        const rejectedProducts = res.data.filter(item => item.rejectedReason !== null && item.accepted_by_admin === "false" && item.seller_id.toString() === userid);
-        const approvedProducts = res.data.filter(item => item.accepted_by_admin === "true" && item.seller_id.toString() === userid);
-         
-        const pendingProducts = res.data.filter(item =>item.rejectedReason === null && item.accepted_by_admin === "false" && item.seller_id.toString() === userid);
-
-        const mergedProducts = [...approvedProducts, ...rejectedProducts, ...pendingProducts];
-         setFilteredProducts(mergedProducts)
-      }
-
-      })
-      .catch((err) => console.log(err));
-
-      // axios
-      // .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/adminproducts`)
-      // .then((adminRes) => {
-      //   // console.log(adminRes.data);
-      //   if (adminRes.data !== "Fail" && adminRes.data !== "Error") {
-      //     setRejectedProducts(adminRes.data.filter(item => item.rejection_reason !== null && item.accepted_by_admin === "false" && item.seller_id.toString() === userid));
-      //     // Fetching pending products
-      //     setPendingProducts(adminRes.data.filter(item =>item.rejection_reason === null && item.accepted_by_admin === "false" && item.seller_id.toString() === userid));
-      //     // Merge all products
-      //   }
-      // })
-      // .catch((err) => console.log(err));
-      // const mergedProducts = [...approvedProducts, ...rejectedProducts, ...pendingProducts];
-      // setProducts(mergedProducts);
-      // setFilteredProducts(mergedProducts)
-      //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userid]);
-
-  // console.log(approvedProducts);
- 
-
+  const userid = sessionStorage.getItem("user-token");
+  const navigate = useNavigate();
   useEffect(() => {
     setCurrentPage(1);
     setViewRowIndex(null);
   }, [pageSize]);
 
+  useEffect(() => {
+    // Fetching all products
+    axios
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`)
+      .then((res) => {
+        if (res.data !== "Fail" && res.data !== "Error") {
+          const rejectedProducts = res.data.filter(
+            (item) =>
+              item.rejectedReason !== null &&
+              item.accepted_by_admin === "false" &&
+              item.seller_id.toString() === userid
+          );
+          const approvedProducts = res.data.filter(
+            (item) =>
+              item.accepted_by_admin === "true" &&
+              item.seller_id.toString() === userid
+          );
+          const pendingProducts = res.data.filter(
+            (item) =>
+              item.rejectedReason === null &&
+              item.accepted_by_admin === "false" &&
+              item.seller_id.toString() === userid
+          );
+          const mergedProducts = [
+            ...approvedProducts,
+            ...rejectedProducts,
+            ...pendingProducts,
+          ];
+          setFilteredProducts(mergedProducts);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [userid]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [pageSize]);
+
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  // eslint-disable-next-line no-unused-vars
   const tableData = filteredProducts.slice(startIndex, endIndex);
 
-  // const handleDelete = (id) => {
-  //   axios
-  //     .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${id}`)
-  //     .then((response) => {
-  //       // console.log(response.data);
-  //       alert("Product has been deleted!");
-  //       window.location.reload(false);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
   const handleDelete = (id) => {
     if (window.confirm("Do you want to delete this product?")) {
       axios
-        .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${id}`)
+        .delete(
+          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${id}`
+        )
         .then((response) => {
-          // alert("Product has been deleted!");
           window.location.reload(false);
         })
         .catch((error) => {
@@ -94,8 +99,62 @@ export default function Sellerproducts() {
         });
     }
   };
+
+  const handleEdit = (id, initialData) => {
+    setEditingId(id);
+    setFormData({
+      id: initialData.id,
+      name: initialData.name,
+      description: initialData.description , 
+      location: initialData.location ,
+      color: initialData.color ,
+      alteration: initialData.alteration ,
+      size: initialData.size,
+      measurements: initialData.measurements ,
+      condition: initialData.condition ,
+      age: initialData.age ,
+      price: initialData.price ,
+      material: initialData.material ,
+      occasion: initialData.occasion ,
+      brand: initialData.brand,
+      style: initialData.style ,
+      season: initialData.season ,
+      fit: initialData.fit 
+    });
+  };
+
+  const handleSubmitEdit = async (e) => {
+    e.preventDefault();
+    try {
+      // Filter out empty values from formData
+      const filteredFormData = {};
+      Object.keys(formData).forEach(key => {
+        if (formData[key]) {
+          filteredFormData[key] = formData[key];
+        }
+      });
+
+      const response = await axios.put(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
+        filteredFormData
+      );
+      alert("Product updated successfully");
+      setEditingId(null);
+      window.location.reload(false); // Reload the page or update state as necessary
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
   
-  
+
   return (
     <div className="">
       <Sellernavbar />
@@ -106,14 +165,8 @@ export default function Sellerproducts() {
         <div className="col-md-10 ">
           <div className="fullscreen2">
             <main>
-              {/* <div className="d-flex justify-content-between m-2"> */}
               <div className="m-2">
-                <h1 style={{fontSize:"28px"}}>Products</h1>
-                {/* <Link to="/addnewproduct">
-                  <button className="btn btn-primary">
-                    <i className="bi bi-plus-square-fill"></i> Add new product
-                  </button>
-                </Link> */}
+                <h1 style={{ fontSize: "28px" }}>Products</h1>
               </div>
 
               <div className="border m-3 rounded">
@@ -126,127 +179,90 @@ export default function Sellerproducts() {
                   >
                     <thead className="">
                       <tr role="row">
-                        <th
-                          className="sorting p-3"
-                          tabIndex="0"
-                          aria-controls="dynamic-table"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="ID: activate to sort column ascending"
-                        >
-                          Product ID
-                        </th>
-                        <th
-                          className="sorting p-3"
-                          tabIndex="0"
-                          aria-controls="dynamic-table"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="Name: activate to sort column ascending"
-                        >
-                          Picture
-                        </th>
-                        <th
-                          className="sorting p-3"
-                          tabIndex="0"
-                          aria-controls="dynamic-table"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="Address:activate to sort column ascending"
-                        >
-                          Product Name
-                        </th>
-                        <th
-                          className="hidden-480 sorting p-3"
-                          tabIndex="0"
-                          aria-controls="dynamic-table"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="City: activate to sort column ascending"
-                        >
-                          Price Including Shipping
-                        </th>
-                        <th
-                          className="hidden-480 sorting p-3"
-                          tabIndex="0"
-                          aria-controls="dynamic-table"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="Timings: activate to sort column ascending"
-                        >
-                          Product Status
-                        </th>
-                        <th
-                          className="hidden-480 sorting p-3"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="Status"
-                        >
-                          Order Created Date
-                        </th>
-                        <th
-                          className="hidden-480 sorting p-3"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="Status"
-                        >
-                          Edit
-                        </th>
+                        <th>Product ID</th>
+                        <th>Picture</th>
+                        <th>Product Name</th>
+                        <th>Price Including Shipping</th>
+                        <th>Product Status</th>
+                        <th>Edit</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {tableData.length>0 ?(
-                      tableData.map((item, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>{item.id}</td>
-                            <td style={{ width: "100px", height: "100px" }}>
-                              <img
-                                src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(item.image)[0]}`}
-                                alt="sellerproduct"
-                                style={{ maxWidth: "100%", height: "100px", objectFit: "contain" }}
-                              ></img>
-                            </td>
-                            <td>{item.name}</td>
-                            <td>&#36;{item.price}.00</td>
-                            <td>
-                            {item.accepted_by_admin === 'true' ? 
-                              <span className="text-success" style={{fontWeight:"600"}}>Approved</span> : 
-                              (item.rejection_reason ? 
-                                <>
-                                  <div><span className="text-danger" style={{fontWeight:"600"}}>Rejected</span></div>
-                                  <div>Reason : {item.rejection_reason}</div>
-                                </> : 
-                                <span className="text-warning" style={{fontWeight:"600"}}>...Pending</span>)}
-                            </td>
-                            <td></td>
-                            <td>
-                              <button
-                                type="button"
-                                className="btn btn-outline-danger"
-                                onClick={() => handleDelete(item.id)}
-                              >
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ):(<tr>
-                      <td colSpan={7} className="text-center">
-                        No Data To Display
-                      </td>
-                    </tr>)
-                    }
+                      {tableData.length > 0 ? (
+                        tableData.map((item, index) => {
+                          return (
+                            <tr key={index}>
+                              <td>{item.id}</td>
+                              <td style={{ width: "100px", height: "100px" }}>
+                                <img
+                                  src={`${JSON.parse(
+                                    item.image
+                                  )[0]}`}
+                                  // src={item.image}
+                                  alt="sellerproduct"
+                                  style={{
+                                    maxWidth: "100%",
+                                    height: "100px",
+                                    objectFit: "contain",
+                                  }}
+                                ></img>
+                              </td>
+                              <td>{item.name}</td>
+                              <td>${item.price}.00</td>
+                              <td>
+                                {item.accepted_by_admin === "true" ? (
+                                  <span className="text-success" style={{ fontWeight: "600" }}>
+                                    Approved
+                                  </span>
+                                ) : item.rejection_reason ? (
+                                  <>
+                                    <div>
+                                      <span className="text-danger" style={{ fontWeight: "600" }}>
+                                        Rejected
+                                      </span>
+                                    </div>
+                                    <div>Reason: {item.rejection_reason}</div>
+                                  </>
+                                ) : (
+                                  <span className="text-warning" style={{ fontWeight: "600" }}>
+                                    ...Pending
+                                  </span>
+                                )}
+                              </td>
+                              <td>
+                                <button
+                                  className="btn btn-outline-primary"
+                                  type="button"data-toggle="modal" data-target="#exampleModalLong"
+                                  onClick={() => handleEdit(item.id, item)}
+                                >
+                                  Edit
+                                </button>{" "}
+                                <button
+                                  className="btn btn-outline-danger"
+                                  onClick={() => handleDelete(item.id)}
+                                >
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan={6} className="text-center">
+                            No Data To Display
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>
 
                 <Sellerpagination
                   stateData={filteredProducts}
+                  setViewRowIndex={setViewRowIndex}
                   pageSize={pageSize}
                   setPageSize={setPageSize}
-                  setViewRowIndex={setViewRowIndex}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                 />
@@ -256,6 +272,277 @@ export default function Sellerproducts() {
           </div>
         </div>
       </div>
+
+      {/* Modal for editing product */}
+      {editingId !== null && (
+        <div className="modal fade show" tabIndex="-1" style={{ display: "block" }}>
+          <div className="modal-dialog modal-dialog-scrollable">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Edit Product</h5>
+                <button type="button" className="btn-close" onClick={() => setEditingId(null)}></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handleSubmitEdit}>
+                  {formData.name !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productName" className="form-label">
+                        Product Name
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productName"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  )}
+                  {formData.description !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productDescription" className="form-label">
+                        Description
+                      </label>
+                      <textarea
+                        className="form-control"
+                        id="productDescription"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                
+                  {formData.location !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productLocation" className="form-label">
+                        Location
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productLocation"
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  {formData.color !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productColor" className="form-label">
+                        Color
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productColor"
+                        name="color"
+                        value={formData.color}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  {formData.alteration !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productAlteration" className="form-label">
+                        Alteration
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productAlteration"
+                        name="alteration"
+                        value={formData.alteration}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  {formData.size !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productSize" className="form-label">
+                        Size
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productSize"
+                        name="size"
+                        value={formData.size}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  {formData.measurements !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productMeasurements" className="form-label">
+                        Measurements
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productMeasurements"
+                        name="measurements"
+                        value={formData.measurements}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  {formData.condition !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productCondition" className="form-label">
+                        Condition
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productCondition"
+                        name="condition"
+                        value={formData.condition}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                
+                  {formData.age !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productAge" className="form-label">
+                        Age
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productAge"
+                        name="age"
+                        value={formData.age}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                 
+                  {formData.price !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productPrice" className="form-label">
+                        Price
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productPrice"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  )}
+                  {formData.material !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productMaterial" className="form-label">
+                        Material
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productMaterial"
+                        name="material"
+                        value={formData.material}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  {formData.occasion !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productOccasion" className="form-label">
+                        Occasion
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productOccasion"
+                        name="occasion"
+                        value={formData.occasion}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                 
+                  {formData.brand !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productBrand" className="form-label">
+                        Brand
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productBrand"
+                        name="brand"
+                        value={formData.brand}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  {formData.style !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productStyle" className="form-label">
+                        Style
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productStyle"
+                        name="style"
+                        value={formData.style}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  {formData.season !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productSeason" className="form-label">
+                        Season
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productSeason"
+                        name="season"
+                        value={formData.season}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  {formData.fit !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productFit" className="form-label">
+                        Fit
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productFit"
+                        name="fit"
+                        value={formData.fit}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )}
+                  <button type="submit" className="btn btn-primary">
+                    Save Changes
+                  </button>{" "}
+                  <button type="button" className="btn btn-secondary" onClick={() => setEditingId(null)}>
+                    Cancel
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      
     </div>
   );
 }

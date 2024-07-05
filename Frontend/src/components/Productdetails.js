@@ -162,7 +162,7 @@ export default function Productdetails() {
       // If it's a video, update productDetailsImgRef to show video
       productDetailsImgRef.current.innerHTML = `
         <video
-          src="${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}"
+          src=${product}
           controls
           class="productdetailsimg"
         >
@@ -173,7 +173,7 @@ export default function Productdetails() {
       // If it's an image, update productDetailsImgRef to show image
       productDetailsImgRef.current.innerHTML = `
         <img
-          src="${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}"
+          src=${product}
           alt="product"
           class="productdetailsimg"
         />
@@ -244,6 +244,7 @@ export default function Productdetails() {
             email: item.email,
             phone: item.phone,
             name: item.firstname + " " + item.lastname,
+            shopname:item.shopname
             //Add more fields as needed
           }));
           // Set filtered user details to state
@@ -347,7 +348,8 @@ export default function Productdetails() {
             <div className="ms-auto me-auto text-center productdetailsimgdiv" ref={productDetailsImgRef}>
               {/* Initial display of firstImage */}
               <img
-                src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
+                // src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
+                src={firstImage}
                 alt="product"
                 className="productdetailsimg"
               />
@@ -463,7 +465,11 @@ export default function Productdetails() {
               padding: "3px",
             }}
           >
-            <source src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`} type="video/mp4" />
+            <source 
+            // src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`} 
+            src={product}
+            type="video/mp4" 
+            />
             Your browser does not support the video tag.
           </video>
           <i
@@ -478,7 +484,8 @@ export default function Productdetails() {
         </div>
       ) : (
         <img
-          src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`}
+          // src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`}
+          src={product}
           alt="images"
           style={{
             cursor: "pointer",
@@ -1034,7 +1041,7 @@ export default function Productdetails() {
                   <div className="d-flex justify-content-between m-2">
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
-                      &nbsp;{user.name}
+                      &nbsp;{user.shopname==null||undefined||''?user.name:user.shopname}
                     </p>
                     <button
                       className="btn btn-outline-primary"
