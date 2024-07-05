@@ -23,7 +23,7 @@ export default function Addnewproduct() {
     language: "",
     quantity: "",
     price: "",
-    notes:"",
+    notes: "",
     accepted_by_admin: "false",
     seller_id: sessionStorage.getItem("user-token") || "", // Ensure this correctly fetches the user token
   });
@@ -31,13 +31,13 @@ export default function Addnewproduct() {
   const [customAttributes, setCustomAttributes] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState({});
- 
-  const placeholders = ['Cover', 'Back', 'Detail', 'Forward', 'Label', 'Side'];
+
+  const placeholders = ["Cover", "Back", "Detail", "Forward", "Label", "Side"];
   const totalPlaceholders = placeholders.length;
 
   const [media, setMedia] = useState({
     images: Array(totalPlaceholders).fill(null),
-    video: null
+    video: null,
   });
 
   const validateForm = () => {
@@ -48,14 +48,13 @@ export default function Addnewproduct() {
       newErrors.productname = "Product name must be less than 90 characters";
     }
 
-   
-     // Validate number of selected images
-     const nonNullImages = media.images.filter((image) => image !== null);
-     if (nonNullImages.length < 2) {
-       newErrors.files = "Please select at least 2 images";
-     } else if (nonNullImages.length > 7) {
-       newErrors.images = "Please select less than 7 images";
-     }
+    // Validate number of selected images
+    const nonNullImages = media.images.filter((image) => image !== null);
+    if (nonNullImages.length < 2) {
+      newErrors.files = "Please select at least 2 images";
+    } else if (nonNullImages.length > 7) {
+      newErrors.images = "Please select less than 7 images";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if there are no errors
@@ -64,14 +63,16 @@ export default function Addnewproduct() {
     const files = Array.from(e.target.files);
     const newMedia = { ...media };
 
-    if (type === 'images') {
+    if (type === "images") {
       files.forEach((file) => {
-        const nextAvailableIndex = newMedia.images.findIndex(image => image === null);
+        const nextAvailableIndex = newMedia.images.findIndex(
+          (image) => image === null
+        );
         if (nextAvailableIndex !== -1) {
           newMedia.images[nextAvailableIndex] = file;
         }
       });
-    } else if (type === 'video' && files.length > 0) {
+    } else if (type === "video" && files.length > 0) {
       newMedia.video = files[0];
     }
 
@@ -81,9 +82,9 @@ export default function Addnewproduct() {
   const removeMedia = (type, index) => {
     const newMedia = { ...media };
 
-    if (type === 'images') {
+    if (type === "images") {
       newMedia.images.splice(index, 1, null); // Replace removed image with null
-    } else if (type === 'video') {
+    } else if (type === "video") {
       newMedia.video = null;
     }
 
@@ -97,24 +98,18 @@ export default function Addnewproduct() {
 
   //   setImages(newImages);
   // };
-  
- 
+
   const handleKeyup = (e) => {
     const { name, value } = e.target;
     const newErrors = { ...errors };
 
-
     // Validate product name length onBlur
-    if (
-      name === "productname" &&
-      value.length > 90
-    ) {
+    if (name === "productname" && value.length > 90) {
       newErrors.productname = "Product name must be less than 90 characters";
     } else {
       delete newErrors.productname;
     }
 
-  
     if (name === "productimageurl") {
       const nonNullImages = media.images.filter((image) => image !== null);
       if (nonNullImages.length < 2) {
@@ -126,7 +121,6 @@ export default function Addnewproduct() {
 
     setErrors(newErrors);
   };
-
 
   // const handleInput = (event) => {
   //   const { name, value } = event.target;
@@ -146,22 +140,23 @@ export default function Addnewproduct() {
 
     // Capitalize the first letter of each word in the input string
     const capitalizeWords = (str) => {
-        return str.split(' ').map(word => {
-            return word.charAt(0).toUpperCase() + word.slice(1);
-        }).join(' ');
+      return str
+        .split(" ")
+        .map((word) => {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(" ");
     };
 
     const capitalizedValue = capitalizeWords(value);
 
     setValues((prevValues) => ({
-        ...prevValues,
-        [name]: capitalizedValue,
+      ...prevValues,
+      [name]: capitalizedValue,
     }));
 
     handleKeyup(event, capitalizedValue);
-};
-
- 
+  };
 
   // const handleInputChange = (event, attribute) => {
   //   const value = event.target.value;
@@ -178,9 +173,12 @@ export default function Addnewproduct() {
 
     // Capitalize the first letter of each word in the input string
     const capitalizeWords = (str) => {
-        return str.split(' ').map(word => {
-            return word.charAt(0).toUpperCase() + word.slice(1);
-        }).join(' ');
+      return str
+        .split(" ")
+        .map((word) => {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(" ");
     };
 
     const capitalizedValue = capitalizeWords(value);
@@ -190,8 +188,7 @@ export default function Addnewproduct() {
         item.name === attribute ? { ...item, value: capitalizedValue } : item
       )
     );
-};
-
+  };
 
   const handleProducttype = (event) => {
     setValues((prev) => ({
@@ -208,7 +205,7 @@ export default function Addnewproduct() {
           "Dresses",
           "Twinning-outfits",
         ]);
-        setSizes(["NA","XS", "S", "M", "L", "XL"]);
+        setSizes(["NA", "XS", "S", "M", "L", "XL"]);
       } else if (event.target.value === "kids") {
         setCategories(["Girl", "Boy"]);
         setSizes([
@@ -222,8 +219,7 @@ export default function Addnewproduct() {
         ]);
       } else if (event.target.value === "jewellery") {
         setCategories(["Necklaces", "Bangles", "Earrings", "Rings"]);
-      } 
-     
+      }
     }
   };
 
@@ -256,47 +252,46 @@ export default function Addnewproduct() {
     setShowModal(false);
   };
 
- 
   // const handleSubmit = async (event) => {
   //   event.preventDefault();
   //   const isValid = validateForm();
-  
+
   //   if (!isValid) {
   //     return;
   //   }
-  
+
   //   const updatedValues = { ...values };
-  
+
   //   if (values.producttype === "jewellery") {
   //     updatedValues.size = "NA";
   //     updatedValues.material = "NA";
   //   }
-  
+
   //   const formData = new FormData();
   //   const allMedia = [];
-  
+
   //   media.images.forEach((image) => {
   //     if (image) {
   //       formData.append('media', image);
   //       allMedia.push(image);
   //     }
   //   });
-  
+
   //   if (media.video) {
   //     formData.append('media', media.video);
   //     allMedia.push(media.video);
   //   }
-  
+
   //   for (const key in updatedValues) {
   //     formData.append(key, updatedValues[key]);
   //   }
-  
+
   //   customAttributes.forEach((attribute) => {
   //     formData.append(attribute.name, attribute.value);
   //   });
-  
+
   //   formData.append('allMedia', JSON.stringify(allMedia.map(file => file.name))); // Store media filenames
-  
+
   //   try {
   //     const response = await axios.post(
   //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
@@ -307,7 +302,7 @@ export default function Addnewproduct() {
   //         }
   //       }
   //     );
-  
+
   //     if (response.data === "Error") {
   //       alert("Error while adding product. Please try again filling all the fields");
   //     } else {
@@ -319,42 +314,42 @@ export default function Addnewproduct() {
   //     // Handle specific error cases as needed
   //   }
   // };
-  
+
   // const handleSubmit = async (event) => {
   //   event.preventDefault();
   //   const isValid = validateForm();
-  
+
   //   if (!isValid) {
   //     return;
   //   }
-  
+
   //   const updatedValues = { ...values };
-  
+
   //   if (values.producttype === "jewellery") {
   //     updatedValues.size = "NA";
   //     updatedValues.material = "NA";
   //   }
-  
+
   //   const formData = new FormData();
-  
+
   //   media.images.forEach((image) => {
   //     if (image) {
   //       formData.append('media', image);
   //     }
   //   });
-  
+
   //   if (media.video) {
   //     formData.append('media', media.video);
   //   }
-  
+
   //   for (const key in updatedValues) {
   //     formData.append(key, updatedValues[key]);
   //   }
-  
+
   //   customAttributes.forEach((attribute) => {
   //     formData.append(attribute.name, attribute.value);
   //   });
-  
+
   //   try {
   //     const response = await axios.post(
   //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
@@ -365,7 +360,7 @@ export default function Addnewproduct() {
   //         }
   //       }
   //     );
-  
+
   //     if (response.data === "Error") {
   //       alert("Error while adding product. Please try again filling all the fields");
   //     } else {
@@ -380,18 +375,17 @@ export default function Addnewproduct() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const isValid = validateForm();
-  
+
     if (!isValid) {
       return;
     }
-  
+
     const updatedValues = { ...values };
-  
+
     if (values.producttype === "jewellery") {
       updatedValues.size = "NA";
       updatedValues.material = "NA";
       updatedValues.source = "NA";
-
     }
     if (values.producttype === "women") {
       updatedValues.size = "NA";
@@ -402,29 +396,28 @@ export default function Addnewproduct() {
     }
     if (values.producttype === "kids") {
       updatedValues.source = "NA";
-
     }
-  
+
     const formData = new FormData();
-  
+
     media.images.forEach((image) => {
       if (image) {
-        formData.append('media', image);
+        formData.append("media", image);
       }
     });
-  
+
     if (media.video) {
-      formData.append('media', media.video);
+      formData.append("media", media.video);
     }
-  
+
     for (const key in updatedValues) {
       formData.append(key, updatedValues[key]);
     }
-  
+
     customAttributes.forEach((attribute) => {
       formData.append(attribute.name, attribute.value);
     });
-  
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
@@ -432,12 +425,14 @@ export default function Addnewproduct() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-          }
+          },
         }
       );
-  
+
       if (response.data === "Error") {
-        alert("Error while adding product. Please try again filling all the fields");
+        alert(
+          "Error while adding product. Please try again filling all the fields"
+        );
       } else {
         alert("Product added successfully");
         window.location.reload(false);
@@ -447,10 +442,7 @@ export default function Addnewproduct() {
       alert("An error occurred while adding the product. Please try again.");
     }
   };
-  
-  
-  
-  
+
   const attributeOptions = [
     "Occasion",
     "Type",
@@ -471,45 +463,72 @@ export default function Addnewproduct() {
     Length: "Enter Length",
     // Add more placeholder values here for additional attributes
   };
-  
 
-
-const allDivs = placeholders.map((placeholder, index) => (
-  <div className="col-4 col-md-3  mb-3" key={index}>
-    <div className="card position-relative bg-light" style={{ height: '140px' }}>
-      {media.images[index] ? (
-        <>
-          <img src={URL.createObjectURL(media.images[index])} alt={`upload-${index}`} className="card-img-top" style={{ height: '100%',objectFit:"contain" }} />
-          <button
-            type="button"
-            className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
-            style={{ padding: '5px', fontSize: '16px' }}
-            aria-label="Close"
-            onClick={() => removeMedia('images', index)}
-          ></button>
-          <div className="placeholder-caption text-center" style={{ position: 'absolute', bottom: '0', width: '100%', background: 'rgba(255, 255, 255, 0.7)', padding: '5px 0', fontSize: '14px', color: 'black' }}>
-            {placeholder}
+  const allDivs = placeholders.map((placeholder, index) => (
+    <div className="col-4 col-md-3  mb-3" key={index}>
+      <div
+        className="card position-relative bg-light"
+        style={{ height: "140px" }}
+      >
+        {media.images[index] ? (
+          <>
+            <img
+              src={URL.createObjectURL(media.images[index])}
+              alt={`upload-${index}`}
+              className="card-img-top"
+              style={{ height: "100%", objectFit: "contain" }}
+            />
+            <button
+              type="button"
+              className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+              style={{ padding: "5px", fontSize: "16px" }}
+              aria-label="Close"
+              onClick={() => removeMedia("images", index)}
+            ></button>
+            <div
+              className="placeholder-caption text-center"
+              style={{
+                position: "absolute",
+                bottom: "0",
+                width: "100%",
+                background: "rgba(255, 255, 255, 0.7)",
+                padding: "5px 0",
+                fontSize: "14px",
+                color: "black",
+              }}
+            >
+              {placeholder}
+            </div>
+          </>
+        ) : (
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{
+              height: "100%",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+            }}
+          >
+            <div className="text-center">
+              <p>{placeholder}</p>
+            </div>
           </div>
-        </>
-      ) : (
-        <div className="d-flex justify-content-center align-items-center" style={{ height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
-          <div className="text-center">
-            <p>{placeholder}</p>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
-  </div>
-));
+  ));
 
-// Add the addPhoto div if there's space available
-const nextAvailableIndex = media.images.findIndex(image => image === null);
+  // Add the addPhoto div if there's space available
+  const nextAvailableIndex = media.images.findIndex((image) => image === null);
   if (nextAvailableIndex !== -1 && nextAvailableIndex < totalPlaceholders) {
-    allDivs.splice(nextAvailableIndex, 0, (
+    allDivs.splice(
+      nextAvailableIndex,
+      0,
       <div className="col-4 col-md-3 mb-3" key="addPhoto">
-        <div className="card d-flex justify-content-center align-items-center bg-light" style={{ height: '140px' }}>
+        <div
+          className="card d-flex justify-content-center align-items-center bg-light"
+          style={{ height: "140px" }}
+        >
           <label className="w-100 text-center" htmlFor="addPhotoInput">
-           
             <i className="bi bi-camera-fill fs-5"></i>
             <p>Add a photo</p>
           </label>
@@ -518,31 +537,43 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
             type="file"
             accept="image/jpeg, image/png"
             multiple
-            onChange={(e) => handleAddMediaChange(e, 'images')}
-            style={{ display: 'none' }}
+            onChange={(e) => handleAddMediaChange(e, "images")}
+            style={{ display: "none" }}
           />
         </div>
       </div>
-    ));
+    );
   }
   allDivs.push(
     <div className="col-4 col-md-3 mb-3" key="addVideo">
-      <div className="card d-flex justify-content-center align-items-center bg-light" style={{ height: '140px' }}>
+      <div
+        className="card d-flex justify-content-center align-items-center bg-light"
+        style={{ height: "140px" }}
+      >
         {media.video ? (
           <>
-            <video controls src={URL.createObjectURL(media.video)} style={{ height: '100%', width:"100%", objectFit:"contain", display:"flex", alignItems:"center" }} />
+            <video
+              controls
+              src={URL.createObjectURL(media.video)}
+              style={{
+                height: "100%",
+                width: "100%",
+                objectFit: "contain",
+                display: "flex",
+                alignItems: "center",
+              }}
+            />
             <button
               type="button"
               className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
-              style={{ padding: '5px', fontSize: '16px' }}
+              style={{ padding: "5px", fontSize: "16px" }}
               aria-label="Close"
-              onClick={() => removeMedia('video')}
+              onClick={() => removeMedia("video")}
             ></button>
           </>
         ) : (
           <>
             <label className="w-100 text-center" htmlFor="addVideoInput">
-              
               <i className="bi bi-camera-reels-fill fs-5"></i>
               <p>Add a video</p>
             </label>
@@ -550,8 +581,8 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
               id="addVideoInput"
               type="file"
               accept="video/mp4, video/webm"
-              onChange={(e) => handleAddMediaChange(e, 'video')}
-              style={{ display: 'none' }}
+              onChange={(e) => handleAddMediaChange(e, "video")}
+              style={{ display: "none" }}
             />
           </>
         )}
@@ -560,18 +591,16 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
   );
   return (
     <div className="fullscreen">
-      <MyNavbar/>
+      <MyNavbar />
       <div className="d-md-flex">
-        
         <div className="col-12">
           <div className="fullscreen2">
             <main>
               <div className="container">
-               
                 <div className="row justify-content-center">
                   <div className="col-xs-12 col-sm-8 col-md-9z col-lg-6">
-                  <h1 className="mt-4 fs-3">List an item</h1>
-                  <hr className="mb-4" />
+                    <h1 className="mt-4 fs-3">List an item</h1>
+                    <hr className="mb-4" />
                     <form className="mb-4" onSubmit={handleSubmit}>
                       <div className="mb-3">
                         <label
@@ -655,34 +684,29 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                         )}
                       </div>
                       <div className="mb-4">
-                       
-                      <div className="">
-                      <label
-                          htmlFor="Images"
-                          className="form-label fw-bolder"
-                        >
-                         Upload Images & Video
-                        </label>
-     
-      
-     
-        <div className="row">
-          {allDivs}
-        </div>
-       
+                        <div className="">
+                          <label
+                            htmlFor="Images"
+                            className="form-label fw-bolder"
+                          >
+                            Upload Images & Video
+                          </label>
 
-      {/* SVG icons */}
-      <svg style={{ display: 'none' }}>
-        <symbol id="photo" viewBox="0 0 24 24">
-          <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
-        </symbol>
-        <symbol id="video" viewBox="0 0 24 24">
-          <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
-        </symbol>
-      </svg>
-      {errors.files && <span className="text-danger">{errors.files}</span>}
-    </div>
+                          <div className="row">{allDivs}</div>
 
+                          {/* SVG icons */}
+                          <svg style={{ display: "none" }}>
+                            <symbol id="photo" viewBox="0 0 24 24">
+                              <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
+                            </symbol>
+                            <symbol id="video" viewBox="0 0 24 24">
+                              <path d="M12 2a9 9 0 11-6.363 15.364L12 12l6.363 6.364A9 9 0 0112 2z"></path>
+                            </symbol>
+                          </svg>
+                          {errors.files && (
+                            <span className="text-danger">{errors.files}</span>
+                          )}
+                        </div>
                       </div>
                       <div className="mb-3">
                         <label
@@ -704,30 +728,26 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-                     
-                       
-                        <div className="mb-3">
-                          <label
-                            htmlFor="color"
-                            className="form-label fw-bolder"
-                          >
-                            Color
-                          </label>
-                          <div className="d-flex">
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="color"
-                              name="color"
-                              placeholder="Color"
-                              value={values.color}
-                              onChange={handleInput}
-                              required
-                            />
-                            <span className="text-danger fs-4"> &nbsp;*</span>
-                          </div>
+
+                      <div className="mb-3">
+                        <label htmlFor="color" className="form-label fw-bolder">
+                          Color
+                        </label>
+                        <div className="d-flex">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="color"
+                            name="color"
+                            placeholder="Color"
+                            value={values.color}
+                            onChange={handleInput}
+                            required
+                          />
+                          <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
-                      
+                      </div>
+
                       <div className="mb-3">
                         <label
                           htmlFor="location"
@@ -749,8 +769,7 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-                      {values.producttype !== "women" &&
-                         (
+                      {values.producttype !== "women" && (
                         <div className="mb-3">
                           <label
                             htmlFor="alteration"
@@ -775,9 +794,9 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             <span className="text-danger fs-4"> &nbsp;*</span>
                           </div>
                         </div>
-                         )}
-                      {values.producttype !== "jewellery" && values.producttype !== "women" &&
-                         (
+                      )}
+                      {values.producttype !== "jewellery" &&
+                        values.producttype !== "women" && (
                           <div className="mb-3">
                             <label
                               htmlFor="size"
@@ -807,8 +826,7 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             </div>
                           </div>
                         )}
-                      {values.producttype !== "women" &&
-                         (
+                      {values.producttype !== "women" && (
                         <div className="mb-3">
                           <label
                             htmlFor="measurements"
@@ -830,9 +848,9 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             <span className="text-danger fs-4"> &nbsp;*</span>
                           </div>
                         </div>
-                         )}
-                      {values.producttype !== "jewellery" && values.producttype !== "women" &&
-                         (
+                      )}
+                      {values.producttype !== "jewellery" &&
+                        values.producttype !== "women" && (
                           <div className="mb-3">
                             <label
                               htmlFor="material"
@@ -873,46 +891,37 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             </div>
                           </div>
                         )}
-                     
-                          <div className="mb-3">
-                            <label
-                              htmlFor="condition"
-                              className="form-label fw-bolder"
-                            >
-                              Condition
-                            </label>
-                            <div className="d-flex">
-                              <select
-                                className="form-select"
-                                id="condition"
-                                name="condition"
-                                value={values.condition}
-                                onChange={handleInput}
-                                required
-                              >
-                                <option value="">Select Condition</option>
-                                <option value="NA">NA</option>
-                                <option value="Brand New">
-                                  Brand New
-                                </option>
-                                <option value="Like New">
-                                  Like New
-                                </option>
-                                <option value="Excellent">
-                                  Used - Excellent 
-                                </option>
-                                <option value="Good">
-                                  Used - Good
-                                </option>
-                                <option value="Fair">
-                                  Used - Fair
-                                </option>
-                              </select>
-                              <span className="text-danger fs-4"> &nbsp;*</span>
-                            </div>
-                          </div>
-                          {values.producttype !== "women" && values.producttype !== "jewellery" && values.producttype !== "kids" &&
-                         (
+
+                      <div className="mb-3">
+                        <label
+                          htmlFor="condition"
+                          className="form-label fw-bolder"
+                        >
+                          Condition
+                        </label>
+                        <div className="d-flex">
+                          <select
+                            className="form-select"
+                            id="condition"
+                            name="condition"
+                            value={values.condition}
+                            onChange={handleInput}
+                            required
+                          >
+                            <option value="">Select Condition</option>
+                            <option value="NA">NA</option>
+                            <option value="Brand New">Brand New</option>
+                            <option value="Like New">Like New</option>
+                            <option value="Excellent">Used - Excellent</option>
+                            <option value="Good">Used - Good</option>
+                            <option value="Fair">Used - Fair</option>
+                          </select>
+                          <span className="text-danger fs-4"> &nbsp;*</span>
+                        </div>
+                      </div>
+                      {values.producttype !== "women" &&
+                        values.producttype !== "jewellery" &&
+                        values.producttype !== "kids" && (
                           <div className="mb-3">
                             <label
                               htmlFor="source"
@@ -945,8 +954,8 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                               <span className="text-danger fs-4"> &nbsp;*</span>
                             </div>
                           </div>
-                         )}
-                       
+                        )}
+
                       <div className="mb-3">
                         <label htmlFor="age" className="form-label fw-bolder">
                           Age
@@ -970,7 +979,6 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                             <option value="60s">60s</option>
                             <option value="50s">50s</option>
                             <option value="Antique">Antique</option>
-
                           </select>
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
@@ -1022,10 +1030,7 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                         </div>
                       </div>
                       <div className="mb-3">
-                        <label
-                          htmlFor="notes"
-                          className="form-label fw-bolder"
-                        >
+                        <label htmlFor="notes" className="form-label fw-bolder">
                           Notes
                         </label>
                         <div className="d-flex">
@@ -1041,84 +1046,97 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                           {/* <span className="text-danger fs-4"> &nbsp;*</span> */}
                         </div>
                       </div>
-                     
-                       {customAttributes.map((attribute) => (
-          <div key={attribute.name} className="mb-3">
-            <label htmlFor={attribute.name} className="form-label">
-              {attribute.name}
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id={attribute.name}
-              placeholder={placeholderValues[attribute.name]}
-              value={attribute.value}
-              onChange={(event) => handleInputChange(event, attribute.name)}
-            />
-          </div>
-        ))}
-                        
-                        <div className="mb-3">
-        <button
-          type="button"
-          className="btn btn-primary mb-3"
-          onClick={handleAddAttribute}
-        >
-          Add Custom Attribute
-        </button>
-        <div
-          className="modal"
-          style={{ display: showModal ? "block" : "none" }}
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Select Custom Attributes</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShowModal(false)}
-                ></button>
-              </div>
-              <div className="modal-body">
-                {attributeOptions.map((option) => (
-                  <div key={option} className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id={option}
-                      checked={selectedAttributes.includes(option)}
-                      onChange={() => handleCheckboxChange(option)}
-                    />
-                    <label className="form-check-label" htmlFor={option}>
-                      {option}
-                    </label>
-                  </div>
-                ))}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowModal(false)}
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleModalSubmit}
-                  disabled={selectedAttributes.length === 0}
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-     
+                      {customAttributes.map((attribute) => (
+                        <div key={attribute.name} className="mb-3">
+                          <label
+                            htmlFor={attribute.name}
+                            className="form-label"
+                          >
+                            {attribute.name}
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id={attribute.name}
+                            placeholder={placeholderValues[attribute.name]}
+                            value={attribute.value}
+                            onChange={(event) =>
+                              handleInputChange(event, attribute.name)
+                            }
+                          />
+                        </div>
+                      ))}
+
+                      <div className="mb-3">
+                        <button
+                          type="button"
+                          className="btn btn-primary mb-3"
+                          onClick={handleAddAttribute}
+                        >
+                          Add Custom Attribute
+                        </button>
+                        <div
+                          className="modal"
+                          style={{ display: showModal ? "block" : "none" }}
+                        >
+                          <div className="modal-dialog">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h5 className="modal-title">
+                                  Select Custom Attributes
+                                </h5>
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  onClick={() => setShowModal(false)}
+                                ></button>
+                              </div>
+                              <div className="modal-body">
+                                {attributeOptions.map((option) => (
+                                  <div key={option} className="form-check">
+                                    <input
+                                      type="checkbox"
+                                      className="form-check-input"
+                                      id={option}
+                                      checked={selectedAttributes.includes(
+                                        option
+                                      )}
+                                      onChange={() =>
+                                        handleCheckboxChange(option)
+                                      }
+                                    />
+                                    <label
+                                      className="form-check-label"
+                                      htmlFor={option}
+                                    >
+                                      {option}
+                                    </label>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className="modal-footer">
+                                <button
+                                  type="button"
+                                  className="btn btn-secondary"
+                                  onClick={() => setShowModal(false)}
+                                >
+                                  Close
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn btn-primary"
+                                  onClick={handleModalSubmit}
+                                  disabled={selectedAttributes.length === 0}
+                                >
+                                  Submit
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="text-center">
                         <button
                           type="submit"
@@ -1137,7 +1155,7 @@ const nextAvailableIndex = media.images.findIndex(image => image === null);
                 </div>
               </div>
             </main>
-            <Footer/>
+            <Footer />
           </div>
         </div>
       </div>

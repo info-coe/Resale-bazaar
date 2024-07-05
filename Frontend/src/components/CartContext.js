@@ -16,7 +16,7 @@ export const CartProvider = ({ children }) => {
 
   const [user, setUser] = useState(() => {
     const storedUser = JSON.parse(sessionStorage.getItem("user"));
-    return storedUser || { firstname: "", lastname: "", email: "" };
+    return storedUser || { firstname: "", lastname: "", email: "",shopname:'' };
   });
 
   const setUserData = (userData) => {

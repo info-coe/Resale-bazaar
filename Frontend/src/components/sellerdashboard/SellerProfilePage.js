@@ -60,6 +60,7 @@ const SellerProfile = () => {
               email: user.email,
               phone: user.phone,
               name: `${user.firstname} ${user.lastname}`,
+              shopname:user.shopname
             });
           }
         }
@@ -101,7 +102,8 @@ const SellerProfile = () => {
             <div className="seller-profile-header border">
               <div className='m-5'>
                 <h2 className="seller-name fs-1">
-                  <i className="bi bi-person-circle fs-1"></i>&nbsp;{sellerDetails.name}
+                  <i className="bi bi-person-circle fs-1"></i>&nbsp;{sellerDetails.shopname==null||undefined||''?sellerDetails.name:sellerDetails.shopname}
+                  {/* {sellerDe tails.shopname} */}
                 </h2>
                 {/* <p className='ms-5'>{renderStarRatings(4)}</p> */}
                 <button className="btn btn-primary ms-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
