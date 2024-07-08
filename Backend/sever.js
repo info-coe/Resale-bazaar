@@ -122,7 +122,7 @@ const s3 = new S3Client({
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'resale-bazaar-products-images',
+    bucket: process.env.AWS_S3_BUCKET_NAME,
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
@@ -1490,11 +1490,17 @@ app.put('/:productId/allproducts', (req, res) => {
 
 app.post('/reviews', upload.array('images', 5), (req, res) => {
   const { rating, description, title ,sellerId ,buyerId} = req.body;
-  const images = req.files.map(file => file.filename); // Extract filenames from the uploaded files
+  // const images = req.files.map(file => file.filename); // Extract filenames from the uploaded files
+  try {
+    const mediaFiles = req.files.map(file => {
+      const urlParts = file.location.split('/');
+      const bucketName = urlParts[2].split('.')[0];
+      return `https://${bucketName}.s3.amazonaws.com/${urlParts.slice(3).join('/')}`;
+    });
   const createdAt = new Date(); 
   const updatedAt = new Date();
   const query = 'INSERT INTO review (rating, description, title, images ,seller_id,buyer_id,created_at, updated_at) VALUES (?, ?, ?, ?,?,?,?,?)';
-  db.query(query, [rating, description, title, JSON.stringify(images),sellerId,buyerId,createdAt, updatedAt], (err, result) => {
+  db.query(query, [rating, description, title, JSON.stringify(mediaFiles),sellerId,buyerId,createdAt, updatedAt], (err, result) => {
     if (err) {
       console.error('Error inserting review:', err);
       res.status(500).send({ message: 'Error inserting review' });
@@ -1502,6 +1508,10 @@ app.post('/reviews', upload.array('images', 5), (req, res) => {
     }
     res.send({ message: 'Review added successfully', reviewId: result.insertId });
   });
+} catch (error) {
+  console.error("Error in /reviews route:", error);
+  return res.status(500).json({ message: "Internal Server Error" });
+}
 });
 
 
