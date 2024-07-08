@@ -6,6 +6,7 @@ import axios from "axios";
 import { useData } from "./CartContext";
 import CryptoJS from "crypto-js";
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useAuth } from "../AuthContext";
 
 const Login = () => {
   sessionStorage.clear();
@@ -20,15 +21,14 @@ const Login = () => {
   //   });
   // },[]);
   const { setUserData } = useData();
+  const {setIsAuthenticated} = useAuth();
   // eslint-disable-next-line no-unused-vars
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
-  const [showAdditionalContent, setShowAdditionalContent] = useState(false);
-  const [AdditionalContentbtn, setAdditionalContentbtn] = useState("+");
   const [ user, setUser ] = useState([]);
-  const [ profile, setProfile ] = useState([]);
+  const [ profile, setProfile ] = useState(null);
 
   const signin = useGoogleLogin({
       onSuccess: (codeResponse) => setUser(codeResponse),
@@ -45,7 +45,51 @@ const Login = () => {
                     }
                 })
                 .then((res) => {
-                    setProfile(res.data);
+                  setProfile(res.data);
+                  axios
+                  .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`, values)
+                  .then((res) => {
+                    // console.log(res)
+                    if (res.data !== "Error") {
+                      // sessionStorage.setItem("accessToken", res.data.accessToken)
+                      // setAuthToken(res.data.accessToken);
+                      if(res.data === "Fail"){
+                        axios
+                        .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/register`, {
+                          firstname: res.data.name,
+                          lastname: "",
+                          shopname: "",
+                          email: res.data.email,
+                          phone: 0,
+                          password: "",
+                        })
+                        .then((res) => {
+                          if (res.data !== "Error") {
+                            navigate("/");
+                          }
+                        })
+                        .catch((err) => console.log(err));
+                      }
+                      else{
+                      const data = res.data[0];
+                      setUserData(data);
+                      var token = data.user_id;
+                      sessionStorage.setItem("token", "user");
+                      if (!token) {
+                        alert("Unable to login. Please try after some time.");
+                        return;
+                      }
+                      sessionStorage.removeItem("user-token");
+                      sessionStorage.setItem("user-token", token);
+                      navigate("/");
+                      // window.location.reload(false);
+                    } 
+                  }else {
+                      alert("Invalid Username or Password");
+                      window.location.reload(false);
+                    }
+                  })
+                  .catch((err) => console.log(err));
                 })
                 .catch((err) => console.log(err));
         }
@@ -100,6 +144,7 @@ const Login = () => {
           }
           sessionStorage.removeItem("user-token");
           sessionStorage.setItem("user-token", token);
+          setIsAuthenticated(true);
           navigate("/");
           // window.location.reload(false);
         } else {
@@ -110,22 +155,12 @@ const Login = () => {
       .catch((err) => console.log(err));
   };
 
-  const toggleAdditionalContent = () => {
-    if (showAdditionalContent) {
-      setShowAdditionalContent(false);
-      setAdditionalContentbtn("+");
-    } else {
-      setShowAdditionalContent(true);
-      setAdditionalContentbtn("-");
-    }
-  };
-
   // console.log(profile)
   return (
     <div className="fullscreen">
       <MyNavbar />
       <main>
-      {/* <div className="text-center mt-4">
+      <div className="text-center mt-4">
             {profile ? (
                 <div>
                     <img src={profile.picture} alt="googleuser" />
@@ -139,53 +174,8 @@ const Login = () => {
             ) : (
                 <button onClick={signin}>Sign in with Google 🚀 </button>
             )}
-        </div> */}
+        </div>
         <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">
-          {/* <div className="col-md-5">
-            <div className="card bg-white shadow mb-3 ">
-              <div className="card-body">
-                <h1 className="fs-4">NEW CUSTOMER</h1>
-                <hr />
-                <p style={{ color: "#646464" }}>
-                  By creating an account on our website, you will be able to
-                  shop faster, be up to date on an orders status, and keep track
-                  of the orders you have previously made.
-                </p>
-                <Link to="/register" className="text-decoration-none">
-                  <button type="button" className="btn btn-primary">
-                    Register
-                  </button>
-                </Link>
-              </div>
-            </div>
-            <div className="card bg-white shadow mb-3">
-              <div className="card-body ">
-                <div>
-                  <h2 className="fs-5">
-                    Why do you have to register?{" "}
-                    <span
-                      className="float-end"
-                      onClick={toggleAdditionalContent}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {AdditionalContentbtn}
-                    </span>
-                  </h2>
-                </div>
-                {showAdditionalContent && (
-                  <div>
-                    <hr />
-                    Registration as a buyer is mandatory. To track your order
-                    and shipment status, or to reach out to you in case of any
-                    issues, we prefer you to register and create a buyer's
-                    account. The process takes less than a minute and will
-                    definitely prove to be beneficial in the long run; just
-                    enter a few basic details and you are good to go!
-                  </div>
-                )}
-              </div>
-            </div>
-          </div> */}
           <div className="col-md-4">
             <div className="card bg-white shadow mb-3">
               <div className="card-body">

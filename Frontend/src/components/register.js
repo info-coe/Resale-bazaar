@@ -5,6 +5,7 @@ import Footer from "./footer";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import CryptoJS from "crypto-js";
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 
 const Register = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
@@ -68,11 +69,72 @@ const Register = () => {
     }
   };
   // console.log(values);
+  const [ user, setUser ] = useState([]);
+  const [ profile, setProfile ] = useState(null);
+
+  const signin = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log('Login Failed:', error)
+});
+useEffect(
+  () => {
+      if (user) {
+          axios
+              .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                  headers: {
+                      Authorization: `Bearer ${user.access_token}`,
+                      Accept: 'application/json'
+                  }
+              })
+              .then((res) => {
+                  setProfile(res.data);
+                  console.log(res.data)
+                  axios
+                  .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/register`, {
+                    firstname: res.data.name,
+                    lastname: "",
+                    shopname: "",
+                    email: res.data.email,
+                    phone: 0,
+                    password: "",
+                  })
+                  .then((res) => {
+                    if (res.data !== "Error") {
+                      navigate("/");
+                    }
+                  })
+                  .catch((err) => console.log(err));
+              })
+              .catch((err) => console.log(err));
+      }
+  },
+  [ user ]
+);
+
+const logOut = () => {
+  googleLogout();
+  setProfile(null);
+};  
 
   return (
     <div className="fullscreen">
       <MyNavbar />
       <main>
+      <div className="text-center mt-4">
+            {profile ? (
+                <div>
+                    <img src={profile.picture} alt="googleuser" />
+                    <h3>User Logged in</h3>
+                    <p>Name: {profile.name}</p>
+                    <p>Email Address: {profile.email}</p>
+                    <br />
+                    <br />
+                    <button onClick={logOut}>Log out</button>
+                </div>
+            ) : (
+                <button onClick={signin}>Sign in with Google 🚀 </button>
+            )}
+        </div>
         <div className="p-2 ps-lg-5 pe-lg-5 mb-5">
           <div className="col-xs-12 col-md-12 col-lg-12">
             <form method="post" onSubmit={handleSubmit}>
