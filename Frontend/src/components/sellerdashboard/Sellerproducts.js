@@ -33,8 +33,9 @@ export default function Sellerproducts() {
     brand: "",
     style: "",
     season: "",
-    fit: ""
+    fit: "",
   });
+  const [sizes, setSizes] = useState([]);
 
   const userid = sessionStorage.getItem("user-token");
   const navigate = useNavigate();
@@ -46,7 +47,9 @@ export default function Sellerproducts() {
   useEffect(() => {
     // Fetching all products
     axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`)
+      .get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`
+      )
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const rejectedProducts = res.data.filter(
@@ -105,22 +108,43 @@ export default function Sellerproducts() {
     setFormData({
       id: initialData.id,
       name: initialData.name,
-      description: initialData.description , 
-      location: initialData.location ,
-      color: initialData.color ,
-      alteration: initialData.alteration ,
+      description: initialData.description,
+      location: initialData.location,
+      color: initialData.color,
+      alteration: initialData.alteration,
       size: initialData.size,
-      measurements: initialData.measurements ,
-      condition: initialData.condition ,
-      age: initialData.age ,
-      price: initialData.price ,
-      material: initialData.material ,
-      occasion: initialData.occasion ,
+      measurements: initialData.measurements,
+      condition: initialData.condition,
+      age: initialData.age,
+      price: initialData.price,
+      material: initialData.material,
+      occasion: initialData.occasion,
       brand: initialData.brand,
-      style: initialData.style ,
-      season: initialData.season ,
-      fit: initialData.fit 
+      style: initialData.style,
+      season: initialData.season,
+      fit: initialData.fit,
     });
+    setSizes(getSizesForProductType(initialData.product_type));
+  };
+  const getSizesForProductType = (producttype) => {
+    let newSizes = [];
+    if (producttype === "women") {
+      newSizes = ["NA", "XS", "S", "M", "L", "XL"];
+    } else if (producttype === "kids") {
+      newSizes = [
+        "NA",
+        "0-2 Years",
+        "2-4 Years",
+        "4-6 Years",
+        "6-8 Years",
+        "8-10 Years",
+        "10-15 Years",
+      ];
+    } else if (producttype === "jewellery") {
+      // Assuming jewellery doesn't have sizes
+      newSizes = [];
+    }
+    return newSizes;
   };
 
   const handleSubmitEdit = async (e) => {
@@ -128,7 +152,7 @@ export default function Sellerproducts() {
     try {
       // Filter out empty values from formData
       const filteredFormData = {};
-      Object.keys(formData).forEach(key => {
+      Object.keys(formData).forEach((key) => {
         if (formData[key]) {
           filteredFormData[key] = formData[key];
         }
@@ -145,15 +169,41 @@ export default function Sellerproducts() {
       console.error("Error updating product:", error);
     }
   };
+  const [errors, setErrors] = useState({});
 
+  const handleKeyup = (e) => {
+    const { name, value } = e.target;
+    const newErrors = { ...errors };
+
+    // Validate product name length onBlur
+    if (name === "name" && value.length > 90) {
+      newErrors.name = "Product name must be less than 90 characters";
+    } else {
+      delete newErrors.name;
+    }
+
+
+    setErrors(newErrors);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const capitalizeWords = (str) => {
+      return str
+        .split(" ")
+        .map((word) => {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(" ");
+    };
+    const capitalizedValue = capitalizeWords(value);
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: capitalizedValue,
     }));
+    handleKeyup(e, capitalizedValue);
+
   };
-  
 
   return (
     <div className="">
@@ -209,20 +259,29 @@ export default function Sellerproducts() {
                               <td>${item.price}.00</td>
                               <td>
                                 {item.accepted_by_admin === "true" ? (
-                                  <span className="text-success" style={{ fontWeight: "600" }}>
+                                  <span
+                                    className="text-success"
+                                    style={{ fontWeight: "600" }}
+                                  >
                                     Approved
                                   </span>
                                 ) : item.rejection_reason ? (
                                   <>
                                     <div>
-                                      <span className="text-danger" style={{ fontWeight: "600" }}>
+                                      <span
+                                        className="text-danger"
+                                        style={{ fontWeight: "600" }}
+                                      >
                                         Rejected
                                       </span>
                                     </div>
                                     <div>Reason: {item.rejection_reason}</div>
                                   </>
                                 ) : (
-                                  <span className="text-warning" style={{ fontWeight: "600" }}>
+                                  <span
+                                    className="text-warning"
+                                    style={{ fontWeight: "600" }}
+                                  >
                                     ...Pending
                                   </span>
                                 )}
@@ -230,7 +289,9 @@ export default function Sellerproducts() {
                               <td>
                                 <button
                                   className="btn btn-outline-primary"
-                                  type="button"data-toggle="modal" data-target="#exampleModalLong"
+                                  type="button"
+                                  data-toggle="modal"
+                                  data-target="#exampleModalLong"
                                   onClick={() => handleEdit(item.id, item)}
                                 >
                                   Edit
@@ -273,12 +334,22 @@ export default function Sellerproducts() {
 
       {/* Modal for editing product */}
       {editingId !== null && (
-        <div className="modal fade show" tabIndex="-1" style={{ display: "block" }}>
+        <div
+          className="modal fade show"
+          tabIndex="-1"
+          style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+          onClick={() => setEditingId(null)}  
+
+          >
           <div className="modal-dialog modal-dialog-scrollable">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Edit Product</h5>
-                <button type="button" className="btn-close" onClick={() => setEditingId(null)}></button>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setEditingId(null)}
+                ></button>
               </div>
               <div className="modal-body">
                 <form onSubmit={handleSubmitEdit}>
@@ -293,14 +364,26 @@ export default function Sellerproducts() {
                         id="productName"
                         name="name"
                         value={formData.name}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          handleChange(e);
+                          handleKeyup(e);
+                        }}
+                        title="Enter product name less than 90 chars"
                         required
                       />
+                       {errors.name && (
+                          <span className="text-danger fs-6">
+                            {errors.name}
+                          </span>
+                        )}
                     </div>
                   )}
                   {formData.description !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productDescription" className="form-label">
+                      <label
+                        htmlFor="productDescription"
+                        className="form-label"
+                      >
                         Description
                       </label>
                       <textarea
@@ -309,10 +392,10 @@ export default function Sellerproducts() {
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   )}
-                
                   {formData.location !== null && (
                     <div className="mb-3">
                       <label htmlFor="productLocation" className="form-label">
@@ -325,6 +408,7 @@ export default function Sellerproducts() {
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   )}
@@ -340,6 +424,7 @@ export default function Sellerproducts() {
                         name="color"
                         value={formData.color}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   )}
@@ -348,14 +433,19 @@ export default function Sellerproducts() {
                       <label htmlFor="productAlteration" className="form-label">
                         Alteration
                       </label>
-                      <input
-                        type="text"
-                        className="form-control"
+                      <select
                         id="productAlteration"
                         name="alteration"
                         value={formData.alteration}
+                        className="form-select"
                         onChange={handleChange}
-                      />
+                        required
+                      >
+                        <option value="">Select Alteration</option>
+                        <option value="NA">NA</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
                     </div>
                   )}
                   {formData.size !== null && (
@@ -363,19 +453,28 @@ export default function Sellerproducts() {
                       <label htmlFor="productSize" className="form-label">
                         Size
                       </label>
-                      <input
-                        type="text"
-                        className="form-control"
+                      <select
+                        className="form-select"
                         id="productSize"
                         name="size"
                         value={formData.size}
                         onChange={handleChange}
-                      />
+                        required
+                      >
+                        {sizes.map((size, index) => (
+                          <option key={index} value={size}>
+                            {size}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   )}
                   {formData.measurements !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productMeasurements" className="form-label">
+                      <label
+                        htmlFor="productMeasurements"
+                        className="form-label"
+                      >
                         Measurements
                       </label>
                       <input
@@ -385,6 +484,7 @@ export default function Sellerproducts() {
                         name="measurements"
                         value={formData.measurements}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   )}
@@ -393,33 +493,55 @@ export default function Sellerproducts() {
                       <label htmlFor="productCondition" className="form-label">
                         Condition
                       </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="productCondition"
-                        name="condition"
-                        value={formData.condition}
-                        onChange={handleChange}
-                      />
+                      <div className="d-flex">
+                        <select
+                          className="form-select"
+                          id="productCondition"
+                          name="condition"
+                          value={formData.condition}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select Condition</option>
+                          <option value="NA">NA</option>
+                          <option value="Brand New">Brand New</option>
+                          <option value="Like New">Like New</option>
+                          <option value="Excellent">Used - Excellent</option>
+                          <option value="Good">Used - Good</option>
+                          <option value="Fair">Used - Fair</option>
+                        </select>
+                      </div>
                     </div>
                   )}
-                
                   {formData.age !== null && (
                     <div className="mb-3">
                       <label htmlFor="productAge" className="form-label">
                         Age
                       </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="productAge"
-                        name="age"
-                        value={formData.age}
-                        onChange={handleChange}
-                      />
+                      <div className="d-flex">
+                        <select
+                          className="form-select"
+                          id="productAge"
+                          name="age"
+                          value={formData.age}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select Age</option>
+                          <option value="NA">NA</option>
+                          <option value="Modern">Modern</option>
+                          <option value="00s">00s</option>
+                          <option value="90s">90s</option>
+                          <option value="80s">80s</option>
+                          <option value="80s">80s</option>
+                          <option value="60s">60s</option>
+                          <option value="50s">50s</option>
+                          <option value="Antique">Antique</option>
+                        </select>
+                        <span className="text-danger fs-4"> &nbsp;*</span>
+                      </div>
                     </div>
                   )}
-                 
                   {formData.price !== null && (
                     <div className="mb-3">
                       <label htmlFor="productPrice" className="form-label">
@@ -441,14 +563,36 @@ export default function Sellerproducts() {
                       <label htmlFor="productMaterial" className="form-label">
                         Material
                       </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="productMaterial"
-                        name="material"
-                        value={formData.material}
-                        onChange={handleChange}
-                      />
+                      <div className="d-flex">
+                        <select
+                          className="form-select"
+                          id="productMaterial"
+                          name="material"
+                          value={formData.material}
+                          onChange={handleChange}
+                          placeholder="Material (eg. Silk,Cotton etc.)"
+                          required
+                        >
+                          <option value="">Select Material</option>
+                          <option value="NA">NA</option>
+                          <option value="Silk">Silk</option>
+                          <option value="Cotton">Cotton</option>
+                          <option value="Crepe">Crepe</option>
+                          <option value="Net">Net</option>
+                          <option value="Georgette">Georgette</option>
+                          <option value="Rayon">Rayon</option>
+                          <option value="Polyester">Polyester</option>
+                          <option value="Wool">Wool</option>
+                          <option value="Linen">Linen</option>
+                          <option value="Nylon">Nylon</option>
+                          <option value="Denim">Denim</option>
+                          <option value="Leather">Leather</option>
+                          <option value="Velvet">Velvet</option>
+                          <option value="Spandex (Elastane)">
+                            Spandex (Elastane)
+                          </option>
+                        </select>
+                      </div>
                     </div>
                   )}
                   {formData.occasion !== null && (
@@ -463,10 +607,10 @@ export default function Sellerproducts() {
                         name="occasion"
                         value={formData.occasion}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   )}
-                 
                   {formData.brand !== null && (
                     <div className="mb-3">
                       <label htmlFor="productBrand" className="form-label">
@@ -479,6 +623,7 @@ export default function Sellerproducts() {
                         name="brand"
                         value={formData.brand}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   )}
@@ -494,6 +639,7 @@ export default function Sellerproducts() {
                         name="style"
                         value={formData.style}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   )}
@@ -509,6 +655,7 @@ export default function Sellerproducts() {
                         name="season"
                         value={formData.season}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   )}
@@ -524,13 +671,18 @@ export default function Sellerproducts() {
                         name="fit"
                         value={formData.fit}
                         onChange={handleChange}
+                        required
                       />
                     </div>
                   )}
                   <button type="submit" className="btn btn-primary">
                     Save Changes
                   </button>{" "}
-                  <button type="button" className="btn btn-secondary" onClick={() => setEditingId(null)}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setEditingId(null)}
+                  >
                     Cancel
                   </button>
                 </form>
@@ -539,8 +691,6 @@ export default function Sellerproducts() {
           </div>
         </div>
       )}
-
-      
     </div>
   );
 }
