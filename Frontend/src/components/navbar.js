@@ -7,6 +7,7 @@ import Wishlistemptyimg from '../images/wishlistemptyimg.png'
 import RBLogo from '../images/RB-logo5.png'
 import SearchBar from "./Searchbar";
 import SideOffcanvas from "./SideOffcanvas";
+import { useAuth } from "../AuthContext";
 
 
 const MyNavbar = () => {
@@ -14,6 +15,7 @@ const MyNavbar = () => {
   const { user } = useData();
   const [isRotated, setIsRotated] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const { setIsAuthenticated } = useAuth();
   
   const navigate = useNavigate();
 
@@ -49,6 +51,7 @@ const MyNavbar = () => {
   const handlelogout = () => {
     sessionStorage.removeItem("user-token");
     sessionStorage.removeItem("token");
+    setIsAuthenticated(false);
     axios
       .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/logout`, {
         headers: {
@@ -447,7 +450,7 @@ const handleKeyPress = (event) => {
                       </td>
                       <td>
                         <img
-                          src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
+                          src={`${JSON.parse(product.image)[0]}`}
                           alt={product.name}
                           style={{ maxWidth: "50px", maxHeight: "80px" }}
                         />

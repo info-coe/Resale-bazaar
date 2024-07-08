@@ -195,9 +195,7 @@ export default function Sellerproducts() {
                               <td>{item.id}</td>
                               <td style={{ width: "100px", height: "100px" }}>
                                 <img
-                                  src={`${JSON.parse(
-                                    item.image
-                                  )[0]}`}
+                                  src={`${JSON.parse(item.image)[0]}`}
                                   // src={item.image}
                                   alt="sellerproduct"
                                   style={{

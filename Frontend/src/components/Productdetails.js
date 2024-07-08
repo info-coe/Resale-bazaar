@@ -135,9 +135,9 @@ export default function Productdetails() {
   const [liked, setLiked] = useState(productdetails.liked);
   const [likeCount, setLikeCount] = useState(productdetails.likes);
   const [currentProduct, setCurrentProduct] = useState(productdetails);
-  const productDetailsImgRef = useRef();
+  const productDetailsImgRef = useRef(null);
   const activeSubimageRef = useRef(null);
-  const carouselRef = useRef();
+  const carouselRef = useRef(null);
   // eslint-disable-next-line no-unused-vars
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -156,10 +156,33 @@ export default function Productdetails() {
   //   }
   //   setCurrentSlide(index);
   // };
+  // const updateProductDetailsImg = (product, index) => {
+  //   const extension = product.split('.').pop().toLowerCase();
+  //   if (['mp4', 'webm', 'avi'].includes(extension)) {
+  //     // If it's a video, update productDetailsImgRef to show video
+  //     productDetailsImgRef.current.innerHTML = `
+  //       <video
+  //         src=${product}
+  //         controls
+  //         class="productdetailsimg"
+  //       >
+  //         Your browser does not support the video tag.
+  //       </video>
+  //     `;
+  //   } else {
+  //     // If it's an image, update productDetailsImgRef to show image
+  //     productDetailsImgRef.current.innerHTML = `
+  //       <img
+  //         src=${product}
+  //         alt="product"
+  //         class="productdetailsimg"
+  //       />
+  //     `;
+  //   }
+  // };
   const updateProductDetailsImg = (product, index) => {
     const extension = product.split('.').pop().toLowerCase();
     if (['mp4', 'webm', 'avi'].includes(extension)) {
-      // If it's a video, update productDetailsImgRef to show video
       productDetailsImgRef.current.innerHTML = `
         <video
           src=${product}
@@ -170,7 +193,6 @@ export default function Productdetails() {
         </video>
       `;
     } else {
-      // If it's an image, update productDetailsImgRef to show image
       productDetailsImgRef.current.innerHTML = `
         <img
           src=${product}
@@ -179,6 +201,20 @@ export default function Productdetails() {
         />
       `;
     }
+
+    // Reset previous active border to grey
+    if (activeSubimageRef.current) {
+      activeSubimageRef.current.style.border = "1px solid grey";
+    }
+
+    // Set new active border to green
+    const newActiveSubimage = document.getElementById(`subimage-${index}`);
+    if (newActiveSubimage) {
+      newActiveSubimage.style.border = "3px solid green";
+      activeSubimageRef.current = newActiveSubimage;
+    }
+
+    setCurrentSlide(index);
   };
 
   const handleProductReject = () => {
@@ -224,7 +260,7 @@ export default function Productdetails() {
 
   const [userdetails, setUserDetails] = useState([]);
   //Offer
-  console.log(offer);
+  // console.log(offer);
 
   const offerExists = offer.some((curr) => curr.product_id === productdetails.id);
 
@@ -439,7 +475,7 @@ export default function Productdetails() {
                   </div>
                 ))}
               </Carousel> */}
-              <Carousel
+              {/* <Carousel
   responsive={responsive}
   className="mt-2 productdetailscarousel"
   ref={carouselRef}
@@ -499,7 +535,69 @@ export default function Productdetails() {
       )}
     </div>
   ))}
-</Carousel>
+</Carousel> */}
+<Carousel
+      responsive={responsive}
+      className="mt-2 productdetailscarousel"
+      ref={carouselRef}
+      beforeChange={(nextSlide) => setCurrentSlide(nextSlide)}
+    >
+      {datta.map((product, index) => (
+        <div
+          className="card m-3"
+          key={index}
+          id={`subimage-${index}`}
+          onClick={() => updateProductDetailsImg(product, index)}
+          style={{ 
+            border: currentSlide === index ? "3px solid green" : "1px solid grey", 
+            position: "relative" 
+          }}
+        >
+          {['mp4', 'webm', 'avi'].includes(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`.split('.').pop().toLowerCase()) ? (
+            <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", height: "110px" }}>
+              <video
+                style={{
+                  cursor: "pointer",
+                  maxWidth: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  alignSelf: "center",
+                  padding: "3px",
+                }}
+              >
+                <source 
+                  src={product} 
+                  type="video/mp4" 
+                />
+                Your browser does not support the video tag.
+              </video>
+              <i
+                className="bi bi-play-btn-fill"
+                style={{
+                  position: "absolute",
+                  fontSize: "2rem",
+                  color: "white",
+                  pointerEvents: "none",
+                }}
+              ></i>
+            </div>
+          ) : (
+            <img
+              src={product}
+              alt="images"
+              style={{
+                cursor: "pointer",
+                maxWidth: "100%",
+                height: "110px",
+                objectFit: "contain",
+                alignSelf: "center",
+                padding: "3px",
+              }}
+            />
+          )}
+        </div>
+      ))}
+    </Carousel>
 
             </div>
           </div>

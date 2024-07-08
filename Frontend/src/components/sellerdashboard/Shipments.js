@@ -47,9 +47,12 @@ export default function Shipments() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const allSellerProducts = filteredProducts.filter((product) =>
-    shippingProducts.some((order) => order.id === product.product_id)
-  );
+  const allSellerProducts = Array.isArray(filteredProducts)
+    ? filteredProducts.filter((product) =>
+        shippingProducts.some((order) => order.id === product.product_id)
+      )
+    : [];
+
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;

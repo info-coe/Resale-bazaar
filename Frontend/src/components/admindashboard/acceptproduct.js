@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default function Acceptproduct() {
   // eslint-disable-next-line no-unused-vars
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(3);
+  const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -176,7 +176,7 @@ export default function Acceptproduct() {
                               >
                                 <div className="text-center" style={{width:"100px",height:"100px"}}>
                                 <img
-                                   src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(item.image)[0]}`}
+                                   src={`${JSON.parse(item.image)[0]}`}
                                   alt="product"
                                   style={{maxWidth:"100%",height:"100px",objectFit:"contain"}}
                                 />

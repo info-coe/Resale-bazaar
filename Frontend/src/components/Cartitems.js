@@ -49,7 +49,7 @@ export default function Cartitems() {
                   <td>
                    <div style={{width:"70px", height:"60px" }}>
                    <img
-                      src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
+                      src={`${JSON.parse(product.image)[0]}`}
                       alt={product.name}
                       style={{ maxWidth: "100%", maxHeight: "100%" ,backgroundSize:"contain"}}
                     />
