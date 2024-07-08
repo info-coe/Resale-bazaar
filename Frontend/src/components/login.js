@@ -187,7 +187,12 @@ const Login = () => {
               <button onClick={logOut}>Log out</button>
             </div>
           ) : ( */}
-            <button onClick={signin}>Sign in with Google 🚀 </button>
+          <button onClick={signin} className="btn border">
+            <span className="fs-5">
+              <i className="bi bi-google"></i>
+            </span>
+            &nbsp;&nbsp;&nbsp;Continue With Google
+          </button>
           {/* )} */}
         </div>
         <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">

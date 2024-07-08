@@ -5,7 +5,8 @@ import Footer from "./footer";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import CryptoJS from "crypto-js";
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { useData } from "./CartContext";
 
 const Register = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
@@ -17,6 +18,7 @@ const Register = () => {
     phone: "",
     password: "",
   });
+  const { setUserData } = useData();
   const [error, setError] = useState("");
   const [userdetails, setUserDetails] = useState([]);
   const navigate = useNavigate();
@@ -69,59 +71,103 @@ const Register = () => {
     }
   };
   // console.log(values);
-  const [ user, setUser ] = useState([]);
-  const [ profile, setProfile ] = useState(null);
+  const [user, setUser] = useState([]);
+  const [profile, setProfile] = useState(null);
 
   const signin = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
-    onError: (error) => console.log('Login Failed:', error)
-});
-useEffect(
-  () => {
-      if (user) {
+    onError: (error) => console.log("Login Failed:", error),
+  });
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setProfile(res.data);
           axios
-              .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-                  headers: {
-                      Authorization: `Bearer ${user.access_token}`,
-                      Accept: 'application/json'
-                  }
-              })
-              .then((res) => {
-                  setProfile(res.data);
-                  console.log(res.data)
+            .post(
+              `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/googleLogin`,
+              { username: res.data.email }
+            )
+            .then((res) => {
+              // console.log(res)
+              if (res.data !== "Error") {
+                // sessionStorage.setItem("accessToken", res.data.accessToken)
+                // setAuthToken(res.data.accessToken);
+                if (res.data === "Fail") {
                   axios
-                  .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/register`, {
-                    firstname: res.data.name,
-                    lastname: "",
-                    shopname: "",
-                    email: res.data.email,
-                    phone: 0,
-                    password: "",
-                  })
-                  .then((res) => {
-                    if (res.data !== "Error") {
-                      navigate("/");
-                    }
-                  })
-                  .catch((err) => console.log(err));
-              })
-              .catch((err) => console.log(err));
-      }
-  },
-  [ user ]
-);
+                    .post(
+                      `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/register`,
+                      {
+                        firstname: res.data.name,
+                        lastname: "",
+                        shopname: "",
+                        email: res.data.email,
+                        phone: 0,
+                        password: "",
+                      }
+                    )
+                    .then((result) => {
+                      if (result.data !== "Error") {
+                        const data = result.data[0];
+                        setUserData(data);
+                        var token = data.user_id;
+                        sessionStorage.setItem("token", "user");
+                        if (!token) {
+                          alert("Unable to login. Please try after some time.");
+                          return;
+                        }
+                        sessionStorage.removeItem("user-token");
+                        sessionStorage.setItem("user-token", token);
+                        navigate("/");
+                      }
+                    })
+                    .catch((err) => console.log(err));
+                } else {
+                  const data = res.data[0];
+                  setUserData(data);
+                  var token = data.user_id;
+                  sessionStorage.setItem("token", "user");
+                  if (!token) {
+                    alert("Unable to login. Please try after some time.");
+                    return;
+                  }
+                  sessionStorage.removeItem("user-token");
+                  sessionStorage.setItem("user-token", token);
+                  navigate("/");
+                  // window.location.reload(false);
+                }
+              } else {
+                alert("Invalid Username or Password");
+                window.location.reload(false);
+              }
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
-const logOut = () => {
-  googleLogout();
-  setProfile(null);
-};  
+  const logOut = () => {
+    googleLogout();
+    setProfile(null);
+  };
 
   return (
     <div className="fullscreen">
       <MyNavbar />
       <main>
-      <div className="text-center mt-4">
-            {profile ? (
+        <div className="text-center mt-4 mb-4">
+          {/* {profile ? (
                 <div>
                     <img src={profile.picture} alt="googleuser" />
                     <h3>User Logged in</h3>
@@ -131,9 +177,14 @@ const logOut = () => {
                     <br />
                     <button onClick={logOut}>Log out</button>
                 </div>
-            ) : (
-                <button onClick={signin}>Sign in with Google 🚀 </button>
-            )}
+            ) : ( */}
+          <button onClick={signin} className="btn border">
+            <span className="fs-5">
+              <i className="bi bi-google"></i>
+            </span>
+            &nbsp;&nbsp;&nbsp;Continue With Google
+          </button>
+          {/* )} */}
         </div>
         <div className="p-2 ps-lg-5 pe-lg-5 mb-5">
           <div className="col-xs-12 col-md-12 col-lg-12">
@@ -143,11 +194,11 @@ const logOut = () => {
                   <h1 className="text-center fs-3">Create Account</h1>
                 </div>
                 <hr />
-                <div className="text-end">
+                {/* <div className="text-end">
                   <Link to="/login" className="text-decoration-none">
                     Back to Login
                   </Link>
-                </div>
+                </div> */}
                 <div className="form-group d-md-flex justify-content-center mt-4 mb-2">
                   <label
                     className="control-label col-sm-2 col-md-2 fw-bold"
