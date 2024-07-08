@@ -8,7 +8,7 @@ import RBLogo from '../images/RB-logo5.png'
 import SearchBar from "./Searchbar";
 import SideOffcanvas from "./SideOffcanvas";
 // import { useAuth } from "../AuthContext";
-
+import { googleLogout } from "@react-oauth/google";
 
 const MyNavbar = () => {
   const [products, setProducts] = useState([]);
@@ -51,6 +51,7 @@ const MyNavbar = () => {
   const handlelogout = () => {
     sessionStorage.removeItem("user-token");
     sessionStorage.removeItem("token");
+    googleLogout();
     // setIsAuthenticated(false);
     axios
       .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/logout`, {

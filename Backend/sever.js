@@ -312,6 +312,20 @@ db.query(createDatabaseQuery, (err) => {
 //       return res.json({accessToken});
 // });
 
+app.post("/googleLogin", (req, res) => {
+  const sql = "SELECT * FROM register WHERE `email` = ?";
+  db.query(sql, [req.body.username], (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
+
 app.post("/user", (req, res) => {
   const sql = loginCheckQuery;
   db.query(sql, [req.body.username, req.body.password], (err, data) => {

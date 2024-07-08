@@ -5,8 +5,7 @@ import Footer from "./footer";
 import axios from "axios";
 import { useData } from "./CartContext";
 import CryptoJS from "crypto-js";
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
-import { useAuth } from "../AuthContext";
+import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   sessionStorage.clear();
@@ -21,87 +20,101 @@ const Login = () => {
   //   });
   // },[]);
   const { setUserData } = useData();
-  const {setIsAuthenticated} = useAuth();
   // eslint-disable-next-line no-unused-vars
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
-  const [ user, setUser ] = useState([]);
-  const [ profile, setProfile ] = useState(null);
+  const [user, setUser] = useState([]);
+  const [profile, setProfile] = useState(null);
 
   const signin = useGoogleLogin({
-      onSuccess: (codeResponse) => setUser(codeResponse),
-      onError: (error) => console.log('Login Failed:', error)
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log("Login Failed:", error),
   });
-  useEffect(
-    () => {
-        if (user) {
-            axios
-                .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-                    headers: {
-                        Authorization: `Bearer ${user.access_token}`,
-                        Accept: 'application/json'
-                    }
-                })
-                .then((res) => {
-                  setProfile(res.data);
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          setProfile(res.data);
+          axios
+            .post(
+              `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/googleLogin`,
+              { username: res.data.email }
+            )
+            .then((res) => {
+              // console.log(res)
+              if (res.data !== "Error") {
+                // sessionStorage.setItem("accessToken", res.data.accessToken)
+                // setAuthToken(res.data.accessToken);
+                if (res.data === "Fail") {
                   axios
-                  .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`, values)
-                  .then((res) => {
-                    // console.log(res)
-                    if (res.data !== "Error") {
-                      // sessionStorage.setItem("accessToken", res.data.accessToken)
-                      // setAuthToken(res.data.accessToken);
-                      if(res.data === "Fail"){
-                        axios
-                        .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/register`, {
-                          firstname: res.data.name,
-                          lastname: "",
-                          shopname: "",
-                          email: res.data.email,
-                          phone: 0,
-                          password: "",
-                        })
-                        .then((res) => {
-                          if (res.data !== "Error") {
-                            navigate("/");
-                          }
-                        })
-                        .catch((err) => console.log(err));
+                    .post(
+                      `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/register`,
+                      {
+                        firstname: res.data.name,
+                        lastname: "",
+                        shopname: "",
+                        email: res.data.email,
+                        phone: 0,
+                        password: "",
                       }
-                      else{
-                      const data = res.data[0];
-                      setUserData(data);
-                      var token = data.user_id;
-                      sessionStorage.setItem("token", "user");
-                      if (!token) {
-                        alert("Unable to login. Please try after some time.");
-                        return;
+                    )
+                    .then((result) => {
+                      if (result.data !== "Error") {
+                        const data = result.data[0];
+                        setUserData(data);
+                        var token = data.user_id;
+                        sessionStorage.setItem("token", "user");
+                        if (!token) {
+                          alert("Unable to login. Please try after some time.");
+                          return;
+                        }
+                        sessionStorage.removeItem("user-token");
+                        sessionStorage.setItem("user-token", token);
+                        navigate("/");
                       }
-                      sessionStorage.removeItem("user-token");
-                      sessionStorage.setItem("user-token", token);
-                      navigate("/");
-                      // window.location.reload(false);
-                    } 
-                  }else {
-                      alert("Invalid Username or Password");
-                      window.location.reload(false);
-                    }
-                  })
-                  .catch((err) => console.log(err));
-                })
-                .catch((err) => console.log(err));
-        }
-    },
-    [ user ]
-);
-
+                    })
+                    .catch((err) => console.log(err));
+                } else {
+                  const data = res.data[0];
+                  setUserData(data);
+                  var token = data.user_id;
+                  sessionStorage.setItem("token", "user");
+                  if (!token) {
+                    alert("Unable to login. Please try after some time.");
+                    return;
+                  }
+                  sessionStorage.removeItem("user-token");
+                  sessionStorage.setItem("user-token", token);
+                  navigate("/");
+                  // window.location.reload(false);
+                }
+              } else {
+                alert("Invalid Username or Password");
+                window.location.reload(false);
+              }
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const logOut = () => {
     googleLogout();
     setProfile(null);
-  };  
+  };
 
   const handleInput = (event) => {
     setValues((prev) => ({
@@ -117,12 +130,15 @@ const Login = () => {
     var url = "";
     if (values.username === "admin@admin") {
       url = "admin";
-    } else{
+    } else {
       url = "user";
     }
     values.password = CryptoJS.MD5(values.password).toString();
     axios
-      .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${url}`, values)
+      .post(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${url}`,
+        values
+      )
       .then((res) => {
         // console.log(res)
         if (res.data !== "Fail" && res.data !== "Error") {
@@ -131,10 +147,10 @@ const Login = () => {
           const data = res.data[0];
           setUserData(data);
           var token;
-          if (url === 'user') {
+          if (url === "user") {
             token = data.user_id;
             sessionStorage.setItem("token", "user");
-          } else if (url === 'admin') {
+          } else if (url === "admin") {
             token = data.admin_id;
             sessionStorage.setItem("token", "admin");
           }
@@ -144,7 +160,6 @@ const Login = () => {
           }
           sessionStorage.removeItem("user-token");
           sessionStorage.setItem("user-token", token);
-          setIsAuthenticated(true);
           navigate("/");
           // window.location.reload(false);
         } else {
@@ -160,20 +175,20 @@ const Login = () => {
     <div className="fullscreen">
       <MyNavbar />
       <main>
-      <div className="text-center mt-4">
-            {profile ? (
-                <div>
-                    <img src={profile.picture} alt="googleuser" />
-                    <h3>User Logged in</h3>
-                    <p>Name: {profile.name}</p>
-                    <p>Email Address: {profile.email}</p>
-                    <br />
-                    <br />
-                    <button onClick={logOut}>Log out</button>
-                </div>
-            ) : (
-                <button onClick={signin}>Sign in with Google 🚀 </button>
-            )}
+        <div className="text-center mt-4">
+          {/* {profile ? (
+            <div>
+              <img src={profile.picture} alt="googleuser" />
+              <h3>User Logged in</h3>
+              <p>Name: {profile.name}</p>
+              <p>Email Address: {profile.email}</p>
+              <br />
+              <br />
+              <button onClick={logOut}>Log out</button>
+            </div>
+          ) : ( */}
+            <button onClick={signin}>Sign in with Google 🚀 </button>
+          {/* )} */}
         </div>
         <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">
           <div className="col-md-4">
