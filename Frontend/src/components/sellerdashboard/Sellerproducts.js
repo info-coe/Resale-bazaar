@@ -338,7 +338,7 @@ export default function Sellerproducts() {
           className="modal fade show"
           tabIndex="-1"
           style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
-          onClick={() => setEditingId(null)}  
+          // onClick={() => setEditingId(null)}  
 
           >
           <div className="modal-dialog modal-dialog-scrollable">
@@ -448,7 +448,7 @@ export default function Sellerproducts() {
                       </select>
                     </div>
                   )}
-                  {formData.size !== null && (
+                  {formData.size !== "NA" && (
                     <div className="mb-3">
                       <label htmlFor="productSize" className="form-label">
                         Size

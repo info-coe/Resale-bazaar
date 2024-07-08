@@ -28,8 +28,9 @@ const ContactSeller = () => {
   
   }, [SellerId]);
   return(
-    <>
+    <div className="fullscreen">
     <MyNavbar/>
+    <main>
     <div className="col-lg-12 p-lg-4 p-2 text-center">
             
               <table className="table table-hover">
@@ -75,8 +76,9 @@ const ContactSeller = () => {
                 </tbody>
               </table>
           </div>
+          </main>
           <Footer/>
-    </>
+    </div>
   )
 };
 
