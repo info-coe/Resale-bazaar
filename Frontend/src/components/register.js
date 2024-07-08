@@ -195,7 +195,7 @@ const logOut = () => {
                 <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
                   <label
                     className="control-label col-sm-2 col-md-2 fw-bold"
-                    htmlFor="lastname"
+                    htmlFor="shopname"
                   >
                     Shop Name
                   </label>
@@ -207,7 +207,8 @@ const logOut = () => {
                       name="shopname"
                       onChange={handleInput}
                       placeholder="Enter Shop Name (Optional)"
-                      pattern="[A-Z][a-z]*\s*\w*"
+                      // pattern="[A-Z][a-z]*\s*\w*"
+                      pattern="^[A-Z][a-z]*[\s\w!@#\$%\^&\*\(\)\-\+=\[\]\{\};:',.<>/?]*$"
                       title="First letter should be uppercase, remaining letters are lowercase. No special characters"
                     />
                     {/* <span className="text-danger fs-4"> &nbsp;*</span> */}

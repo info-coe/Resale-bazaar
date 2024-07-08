@@ -129,7 +129,7 @@ const SellerProfile = () => {
                     <Link to={"/product/" + product.id} state={{ productdetails: product }}>
                       <div className="text-center productimgback">
                         <img
-                          src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
+                          src={`${JSON.parse(product.image)[0]}`}
                           className="card-img-top"
                           alt="product"
                         />
