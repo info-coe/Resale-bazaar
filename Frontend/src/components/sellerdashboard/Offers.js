@@ -95,8 +95,9 @@ const Offers = () => {
   const sellerOffers = filteredOffers.filter(offer => offer.SellerId.toString() === userToken);
   const customerOffers = filtered.filter(offer => offer.SellerId.toString() !== userToken);
   return (
-    <>
+    <div className='fullscreen'>
       <MyNavbar />
+      <main>
       <div className="container mt-4">
         <h1 className="mb-4 text-center">Customer Offers</h1>
         {sellerOffers.length > 0 ? (
@@ -123,7 +124,7 @@ const Offers = () => {
                       <td>
                       <div style={{width:"70px", height:"60px" }}>
                    <img
-                     src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(offer.Product_image)[0]}`}
+                     src={`${JSON.parse(offer.Product_image)[0]}`}
                      alt={offer.name}
                      style={{ maxWidth: "100%", maxHeight: "100%" ,backgroundSize:"contain"}}
                    />
@@ -157,7 +158,7 @@ const Offers = () => {
               <tbody>
                 {customerOffers.length === 0 ? (
                   <tr>
-                    <td colSpan="3" className="text-center">No offers found.</td>
+                    <td colSpan="4" className="text-center">No offers found.</td>
                   </tr>
                 ) : (
                   customerOffers.map(offer => (
@@ -166,7 +167,7 @@ const Offers = () => {
                       <td>
                    <div style={{width:"70px", height:"60px" }}>
                    <img
-                     src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(offer.Product_image)[0]}`}
+                     src={`${JSON.parse(offer.Product_image)[0]}`}
                      alt={offer.name}
                      style={{ maxWidth: "100%", maxHeight: "100%" ,backgroundSize:"contain"}}
                    />
@@ -182,8 +183,9 @@ const Offers = () => {
           </div>
         )}
       </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

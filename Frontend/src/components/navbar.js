@@ -7,7 +7,7 @@ import Wishlistemptyimg from '../images/wishlistemptyimg.png'
 import RBLogo from '../images/RB-logo5.png'
 import SearchBar from "./Searchbar";
 import SideOffcanvas from "./SideOffcanvas";
-import { useAuth } from "../AuthContext";
+// import { useAuth } from "../AuthContext";
 
 
 const MyNavbar = () => {
@@ -15,7 +15,7 @@ const MyNavbar = () => {
   const { user } = useData();
   const [isRotated, setIsRotated] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const { setIsAuthenticated } = useAuth();
+  // const { setIsAuthenticated } = useAuth();
   
   const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ const MyNavbar = () => {
   const handlelogout = () => {
     sessionStorage.removeItem("user-token");
     sessionStorage.removeItem("token");
-    setIsAuthenticated(false);
+    // setIsAuthenticated(false);
     axios
       .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/logout`, {
         headers: {

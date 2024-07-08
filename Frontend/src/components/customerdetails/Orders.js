@@ -135,7 +135,7 @@ export default function Orders() {
                             style={{ textDecoration: 'none', color: 'inherit' }}
                           >
                             <img
-                              src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${JSON.parse(product.image)[0]}`}
+                              src={`${JSON.parse(product.image)[0]}`}
                               alt={product.name}
                               style={{ maxWidth: "60px", maxHeight: "100px" }}
                             />

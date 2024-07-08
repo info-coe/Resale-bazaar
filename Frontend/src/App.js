@@ -1,14 +1,8 @@
-import React from 'react';
 import "./App.css";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-import { AuthProvider } from './AuthContext';
-import ProtectedRoute from './ProtectedRoute';
-import RestrictedRoute from './RestrictedRoute';
-
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Home from "./components/home";
 import Womenallproducts from "./components/women/Womenallproducts";
@@ -24,6 +18,8 @@ import Boy from "./components/kids/Boy";
 
 import Jewelryallcollection from "./components/jewelry/Jewelryallcollection";
 
+
+
 import Login from "./components/login";
 import Register from "./components/register";
 import Customerinfo from "./components/customerdetails/customerinfo";
@@ -38,6 +34,7 @@ import Contactus from "./components/Contactus";
 import Selleraccount from "./components/Selleraccount";
 import FAQ from "./components/Faq";
 import Emailverification from "./components/Emailverification";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Notfound from "./Notfound";
 import Addnewproduct from "./components/sellerdashboard/Addnewproduct";
 import Shipments from "./components/sellerdashboard/Shipments";
@@ -57,69 +54,175 @@ import Search from "./components/Search";
 import OrderPage from "./components/customerdetails/OrderPage";
 import SellerProfile from "./components/sellerdashboard/SellerProfilePage";
 
+// import axios from "axios";
 import Scrolltotop from "./components/Scrolltotop";
 import ContactSeller from "./components/sellerdashboard/ContactSeller";
 import ReviewRatings from "./components/customerdetails/reviewsRatings";
 
-const App = () => {
+
+function App() {
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  const checkUserToken = () => {
+    const userToken = sessionStorage.getItem("user-token");
+    if (!userToken || userToken === "undefined") {
+      setIsUserLoggedIn(false);
+    }
+    setIsUserLoggedIn(true);
+  };
+
+  useEffect(() => {
+    checkUserToken();
+  }, [isUserLoggedIn]);
+
+
+
   return (
-    <BrowserRouter basename="Resale-bazaar">
-      <AuthProvider>
-      <Scrolltotop />
+    <>
+      <BrowserRouter basename="Resale-bazaar">
+        <Scrolltotop />
         <Routes>
-          {/* Restricted routes */}
-          <Route path="/login" element={<RestrictedRoute><Login /></RestrictedRoute>} />
-          <Route path="/register" element={<RestrictedRoute><Register /></RestrictedRoute>} />
+          {/* Login routes */}
+          <Route path="register" element={<Register />}></Route>
+          <Route path="login" element={<Login />}></Route>
+          <Route path="acceptproduct" element={<Acceptproduct/>}></Route>
+          <Route path="checkoutpage" element={<Checkout/>}></Route>
+      
+          <Route
+            path="emailverification"
+            element={<Emailverification />}
+          ></Route>
 
-          {/* Protected routes */}
-          <Route path="customerinfo" element={<ProtectedRoute><Customerinfo /></ProtectedRoute>} />
-          <Route path="addresses" element={<ProtectedRoute><Addresses /></ProtectedRoute>} />
-          <Route path="addaddress" element={<ProtectedRoute><Addaddress /></ProtectedRoute>} />
-          <Route path="orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-          <Route path="changepassword" element={<ProtectedRoute><Changepassword /></ProtectedRoute>} />
-          <Route path="selleraccount" element={<ProtectedRoute><Selleraccount /></ProtectedRoute>} />
-          <Route path="addnewproduct" element={<ProtectedRoute><Addnewproduct /></ProtectedRoute>} />
-          <Route path="shipments" element={<ProtectedRoute><Shipments /></ProtectedRoute>} />
-          <Route path="sellerorders" element={<ProtectedRoute><Sellerorders /></ProtectedRoute>} />
-          <Route path="sellerproducts" element={<ProtectedRoute><Sellerproducts /></ProtectedRoute>} />
-          <Route path="finalcheckoutpage" element={<ProtectedRoute><Finalcheckoutpage /></ProtectedRoute>} />
-          <Route path="orderpage" element={<ProtectedRoute><OrderPage /></ProtectedRoute>} />
-          <Route path="sellerprofile/:sellerId" element={<ProtectedRoute><SellerProfile /></ProtectedRoute>} />
-          <Route path="contactseller" element={<ProtectedRoute><ContactSeller /></ProtectedRoute>} />
-          <Route path="feedback" element={<ProtectedRoute><ReviewRatings /></ProtectedRoute>} />
+          <Route
+            path="cartitems"
+            element={<Cartitems />}
+          ></Route>
 
-          {/* Other routes */}
-          <Route path="cartitems" element={<Cartitems />} />
-          <Route path="checkoutpage" element={<Checkout />} />
-          <Route path="acceptproduct" element={<Acceptproduct />} />
-          <Route path="emailverification" element={<Emailverification />} />
-          <Route path="offers" element={<Offers />} />
-          <Route path="aboutus" element={<Aboutus />} />
-          <Route path="contactus" element={<Contactus />} />
-          <Route path="faq" element={<FAQ />} />
-          <Route path="/" element={<Home />} />
-          <Route path="women" element={<Womenallproducts />} />
-          <Route path="product/:id" element={<Productdetails />} />
-          <Route path="highendcouture" element={<Highendcouture />} />
-          <Route path="sarees" element={<Sarees />} />
-          <Route path="lehenga" element={<Lehenga />} />
-          <Route path="dresses" element={<Dresses />} />
-          <Route path="twinningoutfits" element={<Twinningoutfits />} />
-          <Route path="kids" element={<Kidsallproducts />} />
-          <Route path="girl" element={<Girl />} />
-          <Route path="boy" element={<Boy />} />
-          <Route path="jewellery" element={<Jewelryallcollection />} />
-          <Route path="necklaces" element={<NecklacesChains />} />
-          <Route path="bangles" element={<BraceletsBangles />} />
-          <Route path="earrings" element={<Earrings />} />
-          <Route path="rings" element={<Rings />} />
-          <Route path="forgotpassword" element={<Forgotpassword />} />
-          <Route path="*" element={<Notfound />} />
-          <Route path="/search" element={<Search />} />
+          <Route
+            path="customerinfo"
+            element={
+              <ProtectedRoute>
+                {isUserLoggedIn && <Customerinfo />}
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="addresses"
+            element={
+              <ProtectedRoute>{isUserLoggedIn && <Addresses />}</ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="addaddress"
+            element={
+              <ProtectedRoute>
+                {isUserLoggedIn && <Addaddress />}
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="orders"
+            element={
+              <ProtectedRoute>{isUserLoggedIn && <Orders />}</ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="changepassword"
+            element={
+              <ProtectedRoute>
+                {isUserLoggedIn && <Changepassword />}
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route path="offers" element={<Offers/>}></Route>
+          <Route path="aboutus" element={<Aboutus />}></Route>
+          <Route path="contactus" element={<Contactus />}></Route>
+          <Route
+            path="selleraccount"
+            element={
+              <ProtectedRoute>
+                {isUserLoggedIn && <Selleraccount />}
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route path="faq" element={<FAQ />}></Route>
+
+          {/* Women components routes */}
+          <Route path="/" element={<Home/>}></Route>
+          <Route path="women" element={<Womenallproducts />}></Route>
+          <Route path="product/:id" element={<Productdetails />}></Route>
+          <Route path="highendcouture" element={<Highendcouture />}></Route>
+          <Route path="sarees" element={<Sarees />}></Route>
+          <Route path="lehenga" element={<Lehenga />}></Route>
+          <Route path="dresses" element={<Dresses />}></Route>
+          <Route path="twinningoutfits" element={<Twinningoutfits />}></Route>
+
+          {/* Kids components routes */}
+          <Route path="kids" element={<Kidsallproducts />}></Route>
+          <Route path="girl" element={<Girl />}></Route>
+          <Route path="boy" element={<Boy />}></Route>
+
+          {/* Jewelery components routes */}
+          <Route path="jewellery" element={<Jewelryallcollection />}></Route>
+          <Route path="necklaces" element={<NecklacesChains/>}></Route>
+          <Route path="bangles" element={<BraceletsBangles />}></Route>
+          <Route path="earrings" element={<Earrings />}></Route>
+          <Route path="rings" element={<Rings />}></Route>
+
+        
+          {/* Seller account routes */}
+          <Route
+            path="addnewproduct"
+            element={
+              <ProtectedRoute>
+                {isUserLoggedIn && <Addnewproduct />}
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="shipments"
+            element={
+              <ProtectedRoute>{isUserLoggedIn && <Shipments />}</ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="sellerorders"
+            element={
+              <ProtectedRoute>
+                {isUserLoggedIn && <Sellerorders />}
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="sellerproducts"
+            element={
+              <ProtectedRoute>
+                {isUserLoggedIn && <Sellerproducts />}
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="finalcheckoutpage"
+            element={
+              <ProtectedRoute>
+                {isUserLoggedIn && <Finalcheckoutpage />}
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route path="forgotpassword" element={<Forgotpassword />}></Route>
+          <Route path="*" element={<Notfound />}></Route>
+          <Route path="/search" element={<Search/>} />
+          <Route path="/orderpage" element={<OrderPage/>} />
+          <Route path="/sellerprofile/:sellerId" element={<SellerProfile/>} />
+          <Route path="/contactseller" element={<ContactSeller/>}/>
+          <Route path="/feedback" element={<ReviewRatings/>}/>
+
+
         </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </>
   );
-};
+}
 
 export default App;

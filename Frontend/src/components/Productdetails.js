@@ -906,7 +906,7 @@ export default function Productdetails() {
                                   placeholder="Enter your offer"
                                 /> */}
                                     <img
-                                      src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
+                                      src={`${firstImage}`}
                                       alt="Small"
                                       className="img-fluid mb-3 mx-auto d-block"
                                       style={{
