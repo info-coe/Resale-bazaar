@@ -1336,7 +1336,6 @@ app.post("/createPayment", (req, res) => {
     amount: item.price,
     currency: "USD",
   }));
-  // console.log(items)
   const create_payment_json = {
     intent: "sale",
     payer: {

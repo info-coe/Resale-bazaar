@@ -285,6 +285,7 @@ const reviewsRetrivingJoinQuery=` SELECT review.*, register.firstname, register.
 const shipmentRetrivingJoinQuery=`SELECT * FROM products INNER JOIN  orders ON orders.product_id = products.id;`
 // const cartpaymentupdateQuery = "UPDATE cart SET payment_status = ?, buyer_id = ? WHERE id = ?";
 
+
 module.exports = {
   createAdminTableQuery,
   insertAdminTableQuery,
