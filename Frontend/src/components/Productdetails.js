@@ -304,7 +304,6 @@ export default function Productdetails() {
   }, [offer, productdetails.seller_id]);
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
-    // console.log(sellerId);
     // Navigate to seller profile page with sellerId as a parameter
     navigates(`/sellerprofile/${sellerId}`);
   };
