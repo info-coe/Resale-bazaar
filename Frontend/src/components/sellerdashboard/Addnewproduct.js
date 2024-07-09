@@ -5,6 +5,7 @@ import Footer from "../footer";
 export default function Addnewproduct() {
   const [categories, setCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
+  const [disabled, setDisabled] = useState(false);
 
   const [values, setValues] = useState({
     producttype: "",
@@ -373,6 +374,7 @@ export default function Addnewproduct() {
   //   }
   // };
   const handleSubmit = async (event) => {
+    setDisabled(true)
     event.preventDefault();
     const isValid = validateForm();
 
@@ -1143,6 +1145,7 @@ export default function Addnewproduct() {
                           className="btn btn-success me-2"
                           id="btn-save"
                           name="btn-save"
+                          disabled={disabled}  // Disable the button if disabled state is true
                         >
                           <i className="bi bi-save2-fill"></i>&nbsp; Save
                         </button>
