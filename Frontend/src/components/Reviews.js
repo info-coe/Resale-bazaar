@@ -86,7 +86,7 @@ const Reviews = ({ userDetails, productdetails }) => {
                         <img
                           key={idx}
                           src={`${imageUrl}`}
-                          alt={`Review ${index} Image ${idx}`}
+                          alt={`Review ${index} ${idx}`}
                           className="img-thumbnail"
                           width="70"
                           height="70"
@@ -94,8 +94,7 @@ const Reviews = ({ userDetails, productdetails }) => {
                       ))}
                     </div>
                     <div className="me-3">
-                      <h5 className="mb-4"></h5>
-                      <h6 className="mb-1">{review.title}</h6>
+                      <h6 className="mb-1 mt-4">{review.title}</h6>
                       <p className="mb-0">{review.description}</p>
                     </div>
                   </div>

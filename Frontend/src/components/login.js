@@ -26,6 +26,7 @@ const Login = () => {
     password: "",
   });
   const [user, setUser] = useState([]);
+  //eslint-disable-next-line no-unused-vars
   const [profile, setProfile] = useState(null);
 
   const signin = useGoogleLogin({
@@ -110,7 +111,7 @@ const Login = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-
+//eslint-disable-next-line no-unused-vars
   const logOut = () => {
     googleLogout();
     setProfile(null);
@@ -169,66 +170,23 @@ const Login = () => {
       })
       .catch((err) => console.log(err));
   };
-
-  // console.log(profile)
   return (
     <div className="fullscreen">
       <MyNavbar />
       <main>
         <div className="text-center mt-4">
-          {/* {profile ? (
-            <div>
-              <img src={profile.picture} alt="googleuser" />
-              <h3>User Logged in</h3>
-              <p>Name: {profile.name}</p>
-              <p>Email Address: {profile.email}</p>
-              <br />
-              <br />
-              <button onClick={logOut}>Log out</button>
-            </div>
-          ) : ( */}
           <button onClick={signin} className="btn border">
             <span className="fs-5">
               <i className="bi bi-google"></i>
             </span>
             &nbsp;&nbsp;&nbsp;Continue With Google
           </button>
-          {/* )} */}
         </div>
         <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">
           <div className="col-md-4">
             <div className="card bg-white shadow mb-3">
               <div className="card-body">
                 <form action="" method="post" onSubmit={handleSubmit}>
-                  {/* <div className="d-flex gap-5">
-                    
-                    <label htmlFor="customer" className="d-flex align-items-center">
-                      <input
-                        type="radio"
-                        name="selectedlogin"
-                        id="customer"
-                        value="customer"
-                        onChange={handleInput}
-                        required
-                      />
-                      <h6 className="mt-1">&nbsp;CUSTOMER</h6>
-                    </label>
-
-                    <label htmlFor="admin" className="d-flex align-items-center">
-                      <input
-                        type="radio"
-                        name="selectedlogin"
-                        id="admin"
-                        value="admin"
-                        onChange={handleInput}
-                        required
-                      />
-                      <h6 className="mt-1">&nbsp;ADMIN</h6>
-                    </label>
-
-                 
-                  </div>
-                  <hr /> */}
                   <h3 className="text-center">Login</h3>
                   <div className="form-group p-2">
                     <label htmlFor="username">Email</label>

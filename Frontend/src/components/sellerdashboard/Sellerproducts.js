@@ -4,26 +4,24 @@ import Sellernavbar from "./Sellernavbar";
 import Sellermenu from "./Sellermenu";
 import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
-import { useNavigate } from "react-router-dom";
 
 export default function Sellerproducts() {
   const [pageSize, setPageSize] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  //eslint-disable-next-line no-unused-vars
   const [viewRowIndex, setViewRowIndex] = useState(null);
   const [formData, setFormData] = useState({
     id: null,
     name: "",
     description: "",
-    // image: "",
     location: "",
     color: "",
     alteration: "",
     size: "",
     measurements: "",
     condition: "",
-    // source: "",
     age: "",
     quantity: "",
     price: "",
@@ -40,14 +38,13 @@ export default function Sellerproducts() {
   const [sizes, setSizes] = useState([]);
 
   const userid = sessionStorage.getItem("user-token");
-  const navigate = useNavigate();
+
   useEffect(() => {
     setCurrentPage(1);
     setViewRowIndex(null);
   }, [pageSize]);
 
   useEffect(() => {
-    // Fetching all products
     axios
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`
@@ -99,6 +96,7 @@ export default function Sellerproducts() {
         )
         .then((response) => {
           window.location.reload(false);
+          console.log(response);
         })
         .catch((error) => {
           console.error(error);
@@ -164,7 +162,7 @@ export default function Sellerproducts() {
           filteredFormData[key] = formData[key];
         }
       });
-
+//eslint-disable-next-line no-unused-vars
       const response = await axios.put(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
         filteredFormData

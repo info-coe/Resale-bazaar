@@ -7,7 +7,6 @@ import { useCart } from "./CartContext";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Reviews from "./Reviews";
-// import { escape } from "../../../Backend/db";
 
 const responsive = {
   extraLargeDesktop: {
@@ -39,12 +38,8 @@ export default function Productdetails() {
   const { id } = useParams();
   const location = useLocation();
   const { productdetails, admin } = location.state || {};
-  // productdetails.userid = sessionStorage.getItem("user-token");
-  // console.log(productdetails.id);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-
-  // console.log(isLoggedIn);
 
   if (productdetails) {
     productdetails.userid = sessionStorage.getItem("user-token");
@@ -57,18 +52,11 @@ export default function Productdetails() {
   }, []);
 
   const AmountChange = (e) => {
-    // console.log(e)
     setAdd(e);
   };
   const handleChange = (e) => {
     setAdd(e.target.value); // Update input value on manual input change
   };
-
-  // eslint-disable-next-line no-unused-vars
-  // const [values, setValues] = useState({
-  //   accepted_by_admin: "true",
-  //   id: id,
-  // });
 
   const handleProductlist = () => {
     axios
@@ -87,24 +75,6 @@ export default function Productdetails() {
   };
 
   const { addToCart, addToWishlist, cartItems, wishItems } = useCart();
-
-  // const handleAddToCart = () => {
-  //   if (cartItems.length > 0) {
-  //     var unique_item = true;
-  //     cartItems.map((item) => {
-  //       if (item.id === productdetails.id) {
-  //         alert("Product already exists in the cart");
-  //         unique_item = false;
-  //         //eslint-disable-next-line array-callback-return
-  //         return;
-  //       }
-  //       return null;
-  //     });
-  //     unique_item && addToCart(productdetails,"main");
-  //   } else {
-  //     addToCart(productdetails,"main");
-  //   }
-  // };
 
   const handleAddToCart = () => {
     const isProductInCart = cartItems.some(
@@ -132,57 +102,18 @@ export default function Productdetails() {
       navigate("/login");
     }
   };
-  const [liked, setLiked] = useState(productdetails.liked);
-  const [likeCount, setLikeCount] = useState(productdetails.likes);
-  const [currentProduct, setCurrentProduct] = useState(productdetails);
+  // const [liked, setLiked] = useState(productdetails.liked);
+  // const [likeCount, setLikeCount] = useState(productdetails.likes);
+  // const [currentProduct, setCurrentProduct] = useState(productdetails);
   const productDetailsImgRef = useRef(null);
   const activeSubimageRef = useRef(null);
   const carouselRef = useRef(null);
   // eslint-disable-next-line no-unused-vars
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // const updateProductDetailsImg = (newSrc, index) => {
-  //   productDetailsImgRef.current.src = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${newSrc}`;
-
-  //   if (activeSubimageRef.current) {
-  //     activeSubimageRef.current.style.border = "1px solid grey";
-  //   }
-
-  //   const newActiveSubimage = document.getElementById(`subimage-${index}`);
-  //   if (newActiveSubimage) {
-  //     newActiveSubimage.style.border = "3px solid green";
-
-  //     activeSubimageRef.current = newActiveSubimage;
-  //   }
-  //   setCurrentSlide(index);
-  // };
-  // const updateProductDetailsImg = (product, index) => {
-  //   const extension = product.split('.').pop().toLowerCase();
-  //   if (['mp4', 'webm', 'avi'].includes(extension)) {
-  //     // If it's a video, update productDetailsImgRef to show video
-  //     productDetailsImgRef.current.innerHTML = `
-  //       <video
-  //         src=${product}
-  //         controls
-  //         class="productdetailsimg"
-  //       >
-  //         Your browser does not support the video tag.
-  //       </video>
-  //     `;
-  //   } else {
-  //     // If it's an image, update productDetailsImgRef to show image
-  //     productDetailsImgRef.current.innerHTML = `
-  //       <img
-  //         src=${product}
-  //         alt="product"
-  //         class="productdetailsimg"
-  //       />
-  //     `;
-  //   }
-  // };
   const updateProductDetailsImg = (product, index) => {
-    const extension = product.split('.').pop().toLowerCase();
-    if (['mp4', 'webm', 'avi'].includes(extension)) {
+    const extension = product.split(".").pop().toLowerCase();
+    if (["mp4", "webm", "avi"].includes(extension)) {
       productDetailsImgRef.current.innerHTML = `
         <video
           src=${product}
@@ -259,11 +190,10 @@ export default function Productdetails() {
   };
 
   const [userdetails, setUserDetails] = useState([]);
-  //Offer
-  // console.log(offer);
 
-  const offerExists = offer.some((curr) => curr.product_id === productdetails.id);
-
+  const offerExists = offer.some(
+    (curr) => curr.product_id === productdetails.id
+  );
 
   useEffect(() => {
     axios
@@ -280,16 +210,14 @@ export default function Productdetails() {
             email: item.email,
             phone: item.phone,
             name: item.firstname + " " + item.lastname,
-            shopname:item.shopname
+            shopname: item.shopname,
             //Add more fields as needed
           }));
           // Set filtered user details to state
           setUserDetails(userDetails);
-          // console.log()
         }
       })
       .catch((err) => console.log(err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     axios
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`
@@ -297,7 +225,6 @@ export default function Productdetails() {
       .then((e) => {
         if (e.data !== "Fail" && e.data !== "Error") {
           setOffer(e.data);
-
         }
       })
       .catch((error) => console.log(error));
@@ -308,51 +235,30 @@ export default function Productdetails() {
     navigates(`/sellerprofile/${sellerId}`);
   };
 
-  // console.log(productDetailsImgRef.current.src)
-  // const toggleLike = (productId) => {
-
-  //   if(isLoggedIn){
-  //     const newLikeCount = liked ? likeCount - 1 : likeCount + 1;
-
-  //     axios.put(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${productId}/allproducts`, {
-  //       likeCount: newLikeCount
-  //     })
-  //       .then(response => {
-  //         setLiked(!liked);
-  //         setLikeCount(newLikeCount);
-  //       })
-  //       .catch(error => {
-  //         console.error('Error updating like count:', error);
-  //       });
-  //   }else{
-  //     navigate('/login')
+  // const toggleLike = async (productId, sellerId) => {
+  //   if (!isLoggedIn) {
+  //     navigate('/login');
+  //     return;
   //   }
-    
+
+  //   if (liked) {
+  //     console.log('You have already liked this product.');
+  //     return;
+  //   }
+
+  //   const newLikeCount = likeCount + 1;
+
+  //   try {
+  //     await axios.put(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${productId}/allproducts`, {
+  //       likeCount: newLikeCount
+  //     });
+
+  //     setLiked(true);
+  //     setLikeCount(newLikeCount);
+  //   } catch (error) {
+  //     console.error('Error updating like count:', error);
+  //   }
   // };
-  const toggleLike = async (productId, sellerId) => {
-    if (!isLoggedIn) {
-      navigate('/login');
-      return;
-    }
-
-    if (liked) {
-      console.log('You have already liked this product.');
-      return;
-    }
-
-    const newLikeCount = likeCount + 1;
-
-    try {
-      await axios.put(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${productId}/allproducts`, {
-        likeCount: newLikeCount
-      });
-
-      setLiked(true);
-      setLikeCount(newLikeCount);
-    } catch (error) {
-      console.error('Error updating like count:', error);
-    }
-  };
 
   return (
     <div className="fullscreen">
@@ -380,7 +286,10 @@ export default function Productdetails() {
         </nav>
         <div className="p-2 ps-lg-5 pe-lg-5 d-lg-flex">
           <div className="p-2 ps-lg-4 pe-lg-4 d-flex flex-column  col-lg-5">
-            <div className="ms-auto me-auto text-center productdetailsimgdiv" ref={productDetailsImgRef}>
+            <div
+              className="ms-auto me-auto text-center productdetailsimgdiv"
+              ref={productDetailsImgRef}
+            >
               {/* Initial display of firstImage */}
               <img
                 // src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
@@ -389,20 +298,20 @@ export default function Productdetails() {
                 className="productdetailsimg"
               />
             </div>
-            <div >
-            <div className="ms-5 d-flex gap-2">
+            <div>
+              {/* <div className="ms-5 d-flex gap-2">
             <div className="heart-icon" onClick={()=>toggleLike(productdetails.id, productdetails.seller_id)} style={{ fontSize: '1.5rem', color: liked ? 'red' : 'grey', cursor: 'pointer' }}>
       <i className="bi bi-heart-fill"></i>
       <span className="like-count mt-2" style={{ fontSize: '1rem', color: 'black' }}>
         {likeCount} likes
       </span>
     </div>
-            </div>
+            </div> */}
             </div>
             <div className="ms-auto me-auto">
-              {/* <Carousel
+              <Carousel
                 responsive={responsive}
-                className=" mt-2 productdetailscarousel"
+                className="mt-2 productdetailscarousel"
                 ref={carouselRef}
                 beforeChange={(nextSlide) => setCurrentSlide(nextSlide)}
               >
@@ -412,54 +321,55 @@ export default function Productdetails() {
                     key={index}
                     id={`subimage-${index}`}
                     onClick={() => updateProductDetailsImg(product, index)}
-                    style={{ border: "1px solid grey",  position: "relative"  }}
+                    style={{
+                      border:
+                        currentSlide === index
+                          ? "3px solid green"
+                          : "1px solid grey",
+                      position: "relative",
+                    }}
                   >
-                    {['mp4', 'webm', 'avi'].includes(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`.split('.').pop().toLowerCase()) ? (
-                      // <video
-                      //   style={{
-                      //     cursor: "pointer",
-                      //     maxWidth: "100%",
-                      //     height: "110px",
-                      //     objectFit: "contain",
-                      //     alignSelf: "center",
-                      //     padding: "3px",
-                      //   }}
-                      // // controls
-
-                      // >
-                      //   <source src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`} type="video/mp4" />
-                      //   Your browser does not support the video tag.
-                      // </video>
-                      <div style={{ position: "relative" }}>
-                      <video
+                    {["mp4", "webm", "avi"].includes(
+                      `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`
+                        .split(".")
+                        .pop()
+                        .toLowerCase()
+                    ) ? (
+                      <div
                         style={{
-                          cursor: "pointer",
-                          maxWidth: "100%",
+                          position: "relative",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
                           height: "110px",
-                          objectFit: "contain",
-                          alignSelf: "center",
-                          padding: "3px",
                         }}
                       >
-                        <source src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                      <i
-                        className="bi bi-play-btn-fill"
-                        style={{
-                          position: "absolute",
-                          top: "50%",
-                          left: "50%",
-                          transform: "translate(-50%, -50%)",
-                          fontSize: "2rem",
-                          // color: "white",
-                          pointerEvents: "none",
-                        }}
-                      ></i>
-                    </div>
+                        <video
+                          style={{
+                            cursor: "pointer",
+                            maxWidth: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                            alignSelf: "center",
+                            padding: "3px",
+                          }}
+                        >
+                          <source src={product} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                        <i
+                          className="bi bi-play-btn-fill"
+                          style={{
+                            position: "absolute",
+                            fontSize: "2rem",
+                            color: "white",
+                            pointerEvents: "none",
+                          }}
+                        ></i>
+                      </div>
                     ) : (
                       <img
-                        src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`}
+                        src={product}
                         alt="images"
                         style={{
                           cursor: "pointer",
@@ -473,165 +383,32 @@ export default function Productdetails() {
                     )}
                   </div>
                 ))}
-              </Carousel> */}
-              {/* <Carousel
-  responsive={responsive}
-  className="mt-2 productdetailscarousel"
-  ref={carouselRef}
-  beforeChange={(nextSlide) => setCurrentSlide(nextSlide)}
->
-  {datta.map((product, index) => (
-    <div
-      className="card m-3"
-      key={index}
-      id={`subimage-${index}`}
-      onClick={() => updateProductDetailsImg(product, index)}
-      style={{ border: "1px solid grey", position: "relative" }}
-    >
-      {['mp4', 'webm', 'avi'].includes(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`.split('.').pop().toLowerCase()) ? (
-        <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", height: "110px" }}>
-          <video
-            style={{
-              cursor: "pointer",
-              maxWidth: "100%",
-              height: "100%",
-              objectFit: "contain",
-              alignSelf: "center",
-              padding: "3px",
-            }}
-          >
-            <source 
-            // src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`} 
-            src={product}
-            type="video/mp4" 
-            />
-            Your browser does not support the video tag.
-          </video>
-          <i
-            className="bi bi-play-btn-fill"
-            style={{
-              position: "absolute",
-              fontSize: "2rem",
-              color: "white",
-              pointerEvents: "none",
-            }}
-          ></i>
-        </div>
-      ) : (
-        <img
-          // src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`}
-          src={product}
-          alt="images"
-          style={{
-            cursor: "pointer",
-            maxWidth: "100%",
-            height: "110px",
-            objectFit: "contain",
-            alignSelf: "center",
-            padding: "3px",
-          }}
-        />
-      )}
-    </div>
-  ))}
-</Carousel> */}
-<Carousel
-      responsive={responsive}
-      className="mt-2 productdetailscarousel"
-      ref={carouselRef}
-      beforeChange={(nextSlide) => setCurrentSlide(nextSlide)}
-    >
-      {datta.map((product, index) => (
-        <div
-          className="card m-3"
-          key={index}
-          id={`subimage-${index}`}
-          onClick={() => updateProductDetailsImg(product, index)}
-          style={{ 
-            border: currentSlide === index ? "3px solid green" : "1px solid grey", 
-            position: "relative" 
-          }}
-        >
-          {['mp4', 'webm', 'avi'].includes(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`.split('.').pop().toLowerCase()) ? (
-            <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", height: "110px" }}>
-              <video
-                style={{
-                  cursor: "pointer",
-                  maxWidth: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                  alignSelf: "center",
-                  padding: "3px",
-                }}
-              >
-                <source 
-                  src={product} 
-                  type="video/mp4" 
-                />
-                Your browser does not support the video tag.
-              </video>
-              <i
-                className="bi bi-play-btn-fill"
-                style={{
-                  position: "absolute",
-                  fontSize: "2rem",
-                  color: "white",
-                  pointerEvents: "none",
-                }}
-              ></i>
-            </div>
-          ) : (
-            <img
-              src={product}
-              alt="images"
-              style={{
-                cursor: "pointer",
-                maxWidth: "100%",
-                height: "110px",
-                objectFit: "contain",
-                alignSelf: "center",
-                padding: "3px",
-              }}
-            />
-          )}
-        </div>
-      ))}
-    </Carousel>
-
+              </Carousel>
             </div>
           </div>
           <div className="ps-md-3 p-2 col-lg-7 detailsdiv">
             <h1 className="text-secondary fs-2">{productdetails.name}</h1>
             <p>{productdetails.description}</p>
             <br />
-            {productdetails.location !== "NA" &&
+            {productdetails.location !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Location</b>
                 </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.location}</p>
+                <p className=" col-md-8 col-lg-10">
+                  : {productdetails.location}
+                </p>
               </div>
-            }
-            {/* {productdetails.language !== null &&
-              productdetails.language !== "" && (
-                <div className="d-flex col-md-9">
-                  <p className=" col-md-4 col-lg-5">
-                    <b>Language</b>
-                  </p>
-                  <p className=" col-md-8 col-lg-10">
-                    : {productdetails.language}
-                  </p>
-                </div>
-              )} */}
-            {productdetails.color !== "NA" &&
+            )}
+            {productdetails.color !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Color</b>
                 </p>
                 <p className=" col-md-8 col-lg-10">: {productdetails.color}</p>
               </div>
-            }
-            {productdetails.alteration !== "NA" &&
+            )}
+            {productdetails.alteration !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Can it be altered</b>
@@ -640,16 +417,16 @@ export default function Productdetails() {
                   : {productdetails.alteration}
                 </p>
               </div>
-            }
-            {productdetails.size !== "NA" &&
+            )}
+            {productdetails.size !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Size</b>
                 </p>
                 <p className=" col-md-8 col-lg-10">: {productdetails.size}</p>
               </div>
-            }
-            {productdetails.measurements !== "NA" &&
+            )}
+            {productdetails.measurements !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Measurements</b>
@@ -658,27 +435,29 @@ export default function Productdetails() {
                   : {productdetails.measurements}
                 </p>
               </div>
-            }
-            {productdetails.material !== null && productdetails.material !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Material</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">
-                  : {productdetails.material}
-                </p>
-              </div>
             )}
-            {productdetails.occasion !== null && productdetails.occasion !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Occasion</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">
-                  : {productdetails.occasion}
-                </p>
-              </div>
-            )}
+            {productdetails.material !== null &&
+              productdetails.material !== "NA" && (
+                <div className="d-flex col-md-9">
+                  <p className=" col-md-4 col-lg-5">
+                    <b>Material</b>
+                  </p>
+                  <p className=" col-md-8 col-lg-10">
+                    : {productdetails.material}
+                  </p>
+                </div>
+              )}
+            {productdetails.occasion !== null &&
+              productdetails.occasion !== "NA" && (
+                <div className="d-flex col-md-9">
+                  <p className=" col-md-4 col-lg-5">
+                    <b>Occasion</b>
+                  </p>
+                  <p className=" col-md-8 col-lg-10">
+                    : {productdetails.occasion}
+                  </p>
+                </div>
+              )}
             {productdetails.type !== null && productdetails.type !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
@@ -695,16 +474,6 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.brand}</p>
               </div>
             )}
-            {/* {productdetails.product_condition !== null && productdetails.product_condition !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Product_Condition</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">
-                  : {productdetails.product_condition}
-                </p>
-              </div>
-            )} */}
             {productdetails.style !== null && productdetails.style !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
@@ -732,15 +501,18 @@ export default function Productdetails() {
                 <p className=" col-md-8 col-lg-10">: {productdetails.fit}</p>
               </div>
             )}
-            {productdetails.length !== null && productdetails.length !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Length</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.length}</p>
-              </div>
-            )}
-            {productdetails.condition !== "NA" &&
+            {productdetails.length !== null &&
+              productdetails.length !== "NA" && (
+                <div className="d-flex col-md-9">
+                  <p className=" col-md-4 col-lg-5">
+                    <b>Length</b>
+                  </p>
+                  <p className=" col-md-8 col-lg-10">
+                    : {productdetails.length}
+                  </p>
+                </div>
+              )}
+            {productdetails.condition !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Condition</b>
@@ -749,8 +521,8 @@ export default function Productdetails() {
                   : {productdetails.condition}
                 </p>
               </div>
-            }
-            {productdetails.source !== "NA" &&
+            )}
+            {productdetails.source !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Source</b>
@@ -759,17 +531,15 @@ export default function Productdetails() {
                   : {productdetails.source}
                 </p>
               </div>
-            }
-            {productdetails.age !== "NA" &&
+            )}
+            {productdetails.age !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
                   <b>Age</b>
                 </p>
-                <p className=" col-md-8  col-lg-10">
-                  : {productdetails.age}
-                </p>
+                <p className=" col-md-8  col-lg-10">: {productdetails.age}</p>
               </div>
-            }
+            )}
             <div className="d-flex col-md-9">
               <p className=" col-md-4 col-lg-5">
                 <b>Product ID</b>
@@ -790,23 +560,6 @@ export default function Productdetails() {
                         <option value={1}>1</option>
                       </select>
                     </div>
-                    {/* <div className="p-lg-2">
-                   <button
-                      type="submit"
-                      className="btn btn-secondary ms-3 ps-lg-5 pe-lg-5"
-                      onClick={handleAddToCart}
-                    >
-                    <b>  ADD TO CART</b>
-                    </button>
-                   </div>
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary mt-3 mb-3 ps-lg-5 pe-lg-5 "
-                    onClick={handleAddToWishlist}
-                  >
-                    <i className="bi bi-heart-fill" /> ADD TO WISHLIST
-                  </button> */}
-
                     <div className="container">
                       {sessionStorage.getItem("token") === "admin" ? null : (
                         <div className="row ">
@@ -829,15 +582,6 @@ export default function Productdetails() {
                               <b> ADD TO WISHLIST</b>
                             </button>
                           </div>
-                          {/* <div className="col-12 col-md-7 mb-2">
-                        <button
-                          type="button"
-                          className="btn btn-outline-secondary w-100"
-                          // onClick={handleAddToWishlist}
-                        >
-                      <b> MAKE OFFER</b>
-                        </button>
-                      </div> */}
 
                           {/*Button trigger modal*/}
 
@@ -893,17 +637,6 @@ export default function Productdetails() {
                                     className="modal-body"
                                     style={{ display: success ? "none" : "" }}
                                   >
-                                    {/* <img
-                                  src=""
-                                  alt="Small Image"
-                                  className="img-fluid mb-3 mx-auto d-block"
-                                /> */}
-
-                                    {/* <input
-                                  type="text"
-                                  className="form-control mb-3"
-                                  placeholder="Enter your offer"
-                                /> */}
                                     <img
                                       src={`${firstImage}`}
                                       alt="Small"
@@ -946,9 +679,9 @@ export default function Productdetails() {
                                         onClick={() =>
                                           AmountChange(
                                             productdetails.price -
-                                            (
-                                              productdetails.price * 0.2
-                                            ).toFixed(2)
+                                              (
+                                                productdetails.price * 0.2
+                                              ).toFixed(2)
                                           )
                                         }
                                         className="col-4 mb-2 position-relative "
@@ -990,9 +723,9 @@ export default function Productdetails() {
                                         onClick={() =>
                                           AmountChange(
                                             productdetails.price -
-                                            (
-                                              productdetails.price * 0.15
-                                            ).toFixed(2)
+                                              (
+                                                productdetails.price * 0.15
+                                              ).toFixed(2)
                                           )
                                         }
                                       >
@@ -1030,9 +763,9 @@ export default function Productdetails() {
                                         onClick={() =>
                                           AmountChange(
                                             productdetails.price -
-                                            (
-                                              productdetails.price * 0.1
-                                            ).toFixed(2)
+                                              (
+                                                productdetails.price * 0.1
+                                              ).toFixed(2)
                                           )
                                         }
                                       >
@@ -1138,7 +871,10 @@ export default function Productdetails() {
                   <div className="d-flex justify-content-between m-2">
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
-                      &nbsp;{user.shopname==null||undefined||''?user.name:user.shopname}
+                      &nbsp;
+                      {user.shopname == null || undefined || ""
+                        ? user.name
+                        : user.shopname}
                     </p>
                     <button
                       className="btn btn-outline-primary"
@@ -1149,14 +885,12 @@ export default function Productdetails() {
                   </div>
                 ))}
               </div>
-              {
-                productdetails.notes !== null &&
-              
-              <div className="p-2">
-                <b>Notes:</b> {productdetails.notes}
-              </div>
-              }
-              <Reviews userDetails={userdetails}/>
+              {productdetails.notes !== null && (
+                <div className="p-2">
+                  <b>Notes:</b> {productdetails.notes}
+                </div>
+              )}
+              <Reviews userDetails={userdetails} />
             </div>
           </div>
         </div>
