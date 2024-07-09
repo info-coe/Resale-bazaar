@@ -374,7 +374,7 @@ export default function Addnewproduct() {
   //   }
   // };
   const handleSubmit = async (event) => {
-    setDisabled(true)
+    // setDisabled(true)
     event.preventDefault();
     const isValid = validateForm();
 
@@ -420,6 +420,7 @@ export default function Addnewproduct() {
       formData.append(attribute.name, attribute.value);
     });
 
+    setDisabled(true)
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
@@ -436,6 +437,7 @@ export default function Addnewproduct() {
           "Error while adding product. Please try again filling all the fields"
         );
       } else {
+       
         alert("Product added successfully");
         window.location.reload(false);
       }
@@ -541,6 +543,7 @@ export default function Addnewproduct() {
             multiple
             onChange={(e) => handleAddMediaChange(e, "images")}
             style={{ display: "none" }}
+            // required
           />
         </div>
       </div>
