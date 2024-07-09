@@ -25,7 +25,7 @@ export default function Sellerproducts() {
     condition: "",
     // source: "",
     age: "",
-    // quantity: "",
+    quantity: "",
     price: "",
     material: "",
     occasion: "",
@@ -34,6 +34,8 @@ export default function Sellerproducts() {
     style: "",
     season: "",
     fit: "",
+    length:"",
+    notes:"",
   });
   const [sizes, setSizes] = useState([]);
 
@@ -84,6 +86,7 @@ export default function Sellerproducts() {
     setCurrentPage(1);
   }, [pageSize]);
 
+  
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const tableData = filteredProducts.slice(startIndex, endIndex);
@@ -116,13 +119,17 @@ export default function Sellerproducts() {
       measurements: initialData.measurements,
       condition: initialData.condition,
       age: initialData.age,
+      quantity:initialData.quantity,
       price: initialData.price,
       material: initialData.material,
       occasion: initialData.occasion,
+      type:initialData.type,
       brand: initialData.brand,
       style: initialData.style,
       season: initialData.season,
       fit: initialData.fit,
+      length:initialData.length,
+      notes:initialData.notes,
     });
     setSizes(getSizesForProductType(initialData.product_type));
   };
@@ -353,16 +360,18 @@ export default function Sellerproducts() {
               </div>
               <div className="modal-body">
                 <form onSubmit={handleSubmitEdit}>
-                  {formData.name !== null && (
+                  {formData.name !== "NA" && formData.name !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productName" className="form-label">
+                      <label htmlFor="productName" className="form-label fw-bolder">
                         Product Name
                       </label>
+                      <div className="d-flex">
                       <input
                         type="text"
                         className="form-control"
                         id="productName"
                         name="name"
+                        placeholder="Product Name"
                         value={formData.name}
                         onChange={(e) => {
                           handleChange(e);
@@ -371,68 +380,88 @@ export default function Sellerproducts() {
                         title="Enter product name less than 90 chars"
                         required
                       />
+                    <span className="text-danger fs-4"> &nbsp;*</span>
                        {errors.name && (
                           <span className="text-danger fs-6">
                             {errors.name}
                           </span>
                         )}
                     </div>
+                    </div>
                   )}
-                  {formData.description !== null && (
+                  {formData.description !== "NA" && formData.description !== null && (
                     <div className="mb-3">
                       <label
                         htmlFor="productDescription"
-                        className="form-label"
+                        className="form-label fw-bolder"
                       >
+                        
                         Description
                       </label>
+                      <div className="d-flex">
+
                       <textarea
                         className="form-control"
                         id="productDescription"
                         name="description"
+                        placeholder="Product Description"
                         value={formData.description}
                         onChange={handleChange}
                         required
                       />
+                    <span className="text-danger fs-4"> &nbsp;*</span>
+                    </div>
                     </div>
                   )}
-                  {formData.location !== null && (
+                  
+                  {formData.color !== "NA" && formData.color !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productLocation" className="form-label">
-                        Location
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="productLocation"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  )}
-                  {formData.color !== null && (
-                    <div className="mb-3">
-                      <label htmlFor="productColor" className="form-label">
+                      <label htmlFor="productColor" className="form-label fw-bolder">
                         Color
                       </label>
+                      <div className="d-flex">
+
                       <input
                         type="text"
                         className="form-control"
                         id="productColor"
                         name="color"
+                        placeholder="Color"
                         value={formData.color}
                         onChange={handleChange}
                         required
                       />
+                    <span className="text-danger fs-4"> &nbsp;*</span>
+                    </div>
                     </div>
                   )}
-                  {formData.alteration !== null && (
+                  {formData.location !== "NA" && formData.location !== null  && (
                     <div className="mb-3">
-                      <label htmlFor="productAlteration" className="form-label">
+                      <label htmlFor="productLocation" className="form-label fw-bolder">
+                        Location
+                      </label>
+                      <div className="d-flex">
+
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productLocation"
+                        name="location"
+                        placeholder="Location"
+                        value={formData.location}
+                        onChange={handleChange}
+                        required
+                      />
+                    <span className="text-danger fs-4"> &nbsp;*</span>
+                    </div>
+                    </div>
+                  )}
+                  {formData.alteration !== "NA" && (
+                    <div className="mb-3">
+                      <label htmlFor="productAlteration" className="form-label fw-bolder">
                         Alteration
                       </label>
+                      <div className="d-flex">
                       <select
                         id="productAlteration"
                         name="alteration"
@@ -446,13 +475,16 @@ export default function Sellerproducts() {
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
                       </select>
+                      <span className="text-danger fs-4"> &nbsp;*</span>
+                    </div>
                     </div>
                   )}
                   {formData.size !== "NA" && (
                     <div className="mb-3">
-                      <label htmlFor="productSize" className="form-label">
+                      <label htmlFor="productSize" className="form-label fw-bolder fw-bolder">
                         Size
                       </label>
+                      <div className="d-flex">
                       <select
                         className="form-select"
                         id="productSize"
@@ -467,30 +499,36 @@ export default function Sellerproducts() {
                           </option>
                         ))}
                       </select>
+                      <span className="text-danger fs-4"> &nbsp;*</span>
+                    </div>
                     </div>
                   )}
-                  {formData.measurements !== null && (
+                  {formData.measurements !== "NA" && formData.measurements !== null && (
                     <div className="mb-3">
                       <label
                         htmlFor="productMeasurements"
-                        className="form-label"
+                        className="form-label fw-bolder"
                       >
                         Measurements
                       </label>
+                      <div className="d-flex">
                       <input
                         type="text"
                         className="form-control"
                         id="productMeasurements"
                         name="measurements"
+                        placeholder="Measurements (eg. 12 to 16)"
                         value={formData.measurements}
                         onChange={handleChange}
                         required
                       />
+                      <span className="text-danger fs-4"> &nbsp;*</span>
+                    </div>
                     </div>
                   )}
-                  {formData.condition !== null && (
+                  {formData.condition !== "NA"  && (
                     <div className="mb-3">
-                      <label htmlFor="productCondition" className="form-label">
+                      <label htmlFor="productCondition" className="form-label fw-bolder">
                         Condition
                       </label>
                       <div className="d-flex">
@@ -510,12 +548,14 @@ export default function Sellerproducts() {
                           <option value="Good">Used - Good</option>
                           <option value="Fair">Used - Fair</option>
                         </select>
+                        <span className="text-danger fs-4"> &nbsp;*</span>
+
                       </div>
                     </div>
                   )}
-                  {formData.age !== null && (
+                  {formData.age !== "NA" && (
                     <div className="mb-3">
-                      <label htmlFor="productAge" className="form-label">
+                      <label htmlFor="productAge" className="form-label fw-bolder">
                         Age
                       </label>
                       <div className="d-flex">
@@ -542,9 +582,36 @@ export default function Sellerproducts() {
                       </div>
                     </div>
                   )}
-                  {formData.price !== null && (
+                  {formData.quantity !== "NA" && (
                     <div className="mb-3">
-                      <label htmlFor="productPrice" className="form-label">
+                    <label
+                      htmlFor="ProductQuantity"
+                      className="form-label fw-bolder"
+                    >
+                      Quantity
+                    </label>
+                    <div className="d-flex">
+                      <select
+                        className="form-select"
+                        id="ProductQuantity"
+                        name="quantity"
+                        placeholder="Enter Quantity"
+                        value={formData.quantity}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select Quantity</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
+                      <span className="text-danger fs-4"> &nbsp;*</span>
+                    </div>
+                  </div>
+                  )}
+                  {formData.price !== "NA" && formData.price !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productPrice" className="form-label fw-bolder">
                         Price
                       </label>
                       <input
@@ -552,15 +619,19 @@ export default function Sellerproducts() {
                         className="form-control"
                         id="productPrice"
                         name="price"
+                        placeholder="Ex: &#36;100"
                         value={formData.price}
                         onChange={handleChange}
+                        min="1"
+                        pattern="[0-9]+"
+                        title="Price must be positive numbers"
                         required
                       />
                     </div>
                   )}
-                  {formData.material !== null && (
+                  {formData.material !== "NA" && (
                     <div className="mb-3">
-                      <label htmlFor="productMaterial" className="form-label">
+                      <label htmlFor="productMaterial" className="form-label fw-bolder">
                         Material
                       </label>
                       <div className="d-flex">
@@ -592,12 +663,14 @@ export default function Sellerproducts() {
                             Spandex (Elastane)
                           </option>
                         </select>
+                        <span className="text-danger fs-4"> &nbsp;*</span>
+
                       </div>
                     </div>
                   )}
-                  {formData.occasion !== null && (
+                  {formData.occasion !== "NA" && formData.occasion !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productOccasion" className="form-label">
+                      <label htmlFor="productOccasion" className="form-label fw-bolder">
                         Occasion
                       </label>
                       <input
@@ -605,15 +678,33 @@ export default function Sellerproducts() {
                         className="form-control"
                         id="productOccasion"
                         name="occasion"
+                        placeholder="Enter Occasion (eg. Function,Party)"
                         value={formData.occasion}
                         onChange={handleChange}
                         required
                       />
                     </div>
                   )}
-                  {formData.brand !== null && (
+                  {formData.type !== "NA" && formData.type !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productBrand" className="form-label">
+                      <label htmlFor="productType" className="form-label fw-bolder">
+                        Type
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productType"
+                        name="type"
+                        placeholder="Enter Type"
+                        value={formData.type}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  )}
+                  {formData.brand !== "NA" && formData.brand !== null  && (
+                    <div className="mb-3">
+                      <label htmlFor="productBrand" className="form-label fw-bolder">
                         Brand
                       </label>
                       <input
@@ -621,15 +712,16 @@ export default function Sellerproducts() {
                         className="form-control"
                         id="productBrand"
                         name="brand"
+                        placeholder="Enter Brand Name"
                         value={formData.brand}
                         onChange={handleChange}
                         required
                       />
                     </div>
                   )}
-                  {formData.style !== null && (
+                  {formData.style !== "NA" && formData.style !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productStyle" className="form-label">
+                      <label htmlFor="productStyle" className="form-label fw-bolder">
                         Style
                       </label>
                       <input
@@ -637,15 +729,16 @@ export default function Sellerproducts() {
                         className="form-control"
                         id="productStyle"
                         name="style"
+                        placeholder="Enter Style"
                         value={formData.style}
                         onChange={handleChange}
                         required
                       />
                     </div>
                   )}
-                  {formData.season !== null && (
+                  {formData.season !== "NA" && formData.season !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productSeason" className="form-label">
+                      <label htmlFor="productSeason" className="form-label fw-bolder">
                         Season
                       </label>
                       <input
@@ -653,15 +746,16 @@ export default function Sellerproducts() {
                         className="form-control"
                         id="productSeason"
                         name="season"
+                        placeholder="Enter Season (eg. Summer,Winter)"
                         value={formData.season}
                         onChange={handleChange}
                         required
                       />
                     </div>
                   )}
-                  {formData.fit !== null && (
+                  {formData.fit !== "NA" && formData.fit !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productFit" className="form-label">
+                      <label htmlFor="productFit" className="form-label fw-bolder">
                         Fit
                       </label>
                       <input
@@ -669,11 +763,48 @@ export default function Sellerproducts() {
                         className="form-control"
                         id="productFit"
                         name="fit"
+                        placeholder="Enter Fit"
                         value={formData.fit}
                         onChange={handleChange}
                         required
                       />
                     </div>
+                  )}
+                  {formData.length !== "NA" && formData.length !== null && (
+                    <div className="mb-3">
+                      <label htmlFor="productLength" className="form-label fw-bolder">
+                        Length
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productLength"
+                        name="length"
+                        placeholder="Enter Length"
+                        value={formData.length}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  )}
+                  {formData.notes !== "" && (
+                    <div className="mb-3">
+                    <label htmlFor="ProductNotes" className="form-label fw-bolder">
+                      Notes
+                    </label>
+                    <div className="d-flex">
+                      <textarea
+                        className="form-control"
+                        id="ProductNotes"
+                        name="notes"
+                        placeholder="Notes (Optional)"
+                        value={formData.notes}
+                        onChange={handleChange}
+                        // required
+                      ></textarea>
+                      {/* <span className="text-danger fs-4"> &nbsp;*</span> */}
+                    </div>
+                  </div>
                   )}
                   <button type="submit" className="btn btn-primary">
                     Save Changes
