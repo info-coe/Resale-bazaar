@@ -9,7 +9,6 @@ const OrderPage = () => {
   const productData = filteredProducts || {}
   const [orderStages, setOrderStages] = useState([]);
 
-  console.log(productData)
   useEffect(() => {
     // Example logic to determine order stages based on order data
     const stages = [

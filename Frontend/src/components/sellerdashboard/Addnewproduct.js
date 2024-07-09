@@ -92,14 +92,6 @@ export default function Addnewproduct() {
     setMedia(newMedia);
   };
 
-  // const removeImage = (index) => {
-  //   const newImages = [...images];
-  //   newImages.splice(index, 1); // Remove the image at the specified index
-  //   newImages.push(null); // Add a null placeholder to maintain the length of the array
-
-  //   setImages(newImages);
-  // };
-
   const handleKeyup = (e) => {
     const { name, value } = e.target;
     const newErrors = { ...errors };
@@ -123,19 +115,7 @@ export default function Addnewproduct() {
     setErrors(newErrors);
   };
 
-  // const handleInput = (event) => {
-  //   const { name, value } = event.target;
 
-  //   // Capitalize the first letter of the entire input string
-  //   const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
-
-  //   setValues((prevValues) => ({
-  //     ...prevValues,
-  //     [name]: capitalizedValue,
-  //   }));
-
-  //   handleKeyup(event, capitalizedValue);
-  // };
   const handleInput = (event) => {
     const { name, value } = event.target;
 
@@ -159,15 +139,6 @@ export default function Addnewproduct() {
     handleKeyup(event, capitalizedValue);
   };
 
-  // const handleInputChange = (event, attribute) => {
-  //   const value = event.target.value;
-  //   const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
-  //   setCustomAttributes(
-  //     customAttributes.map((item) =>
-  //       item.name === attribute ? { ...item, value: capitalizedValue } : item
-  //     )
-  //   );
-  // };
 
   const handleInputChange = (event, attribute) => {
     const value = event.target.value;
@@ -253,126 +224,6 @@ export default function Addnewproduct() {
     setShowModal(false);
   };
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const isValid = validateForm();
-
-  //   if (!isValid) {
-  //     return;
-  //   }
-
-  //   const updatedValues = { ...values };
-
-  //   if (values.producttype === "jewellery") {
-  //     updatedValues.size = "NA";
-  //     updatedValues.material = "NA";
-  //   }
-
-  //   const formData = new FormData();
-  //   const allMedia = [];
-
-  //   media.images.forEach((image) => {
-  //     if (image) {
-  //       formData.append('media', image);
-  //       allMedia.push(image);
-  //     }
-  //   });
-
-  //   if (media.video) {
-  //     formData.append('media', media.video);
-  //     allMedia.push(media.video);
-  //   }
-
-  //   for (const key in updatedValues) {
-  //     formData.append(key, updatedValues[key]);
-  //   }
-
-  //   customAttributes.forEach((attribute) => {
-  //     formData.append(attribute.name, attribute.value);
-  //   });
-
-  //   formData.append('allMedia', JSON.stringify(allMedia.map(file => file.name))); // Store media filenames
-
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         }
-  //       }
-  //     );
-
-  //     if (response.data === "Error") {
-  //       alert("Error while adding product. Please try again filling all the fields");
-  //     } else {
-  //       alert("Product added successfully");
-  //       window.location.reload(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     // Handle specific error cases as needed
-  //   }
-  // };
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const isValid = validateForm();
-
-  //   if (!isValid) {
-  //     return;
-  //   }
-
-  //   const updatedValues = { ...values };
-
-  //   if (values.producttype === "jewellery") {
-  //     updatedValues.size = "NA";
-  //     updatedValues.material = "NA";
-  //   }
-
-  //   const formData = new FormData();
-
-  //   media.images.forEach((image) => {
-  //     if (image) {
-  //       formData.append('media', image);
-  //     }
-  //   });
-
-  //   if (media.video) {
-  //     formData.append('media', media.video);
-  //   }
-
-  //   for (const key in updatedValues) {
-  //     formData.append(key, updatedValues[key]);
-  //   }
-
-  //   customAttributes.forEach((attribute) => {
-  //     formData.append(attribute.name, attribute.value);
-  //   });
-
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addproducts`,
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         }
-  //       }
-  //     );
-
-  //     if (response.data === "Error") {
-  //       alert("Error while adding product. Please try again filling all the fields");
-  //     } else {
-  //       alert("Product added successfully");
-  //       window.location.reload(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     alert("An error occurred while adding the product. Please try again.");
-  //   }
-  // };
   const handleSubmit = async (event) => {
     // setDisabled(true)
     event.preventDefault();
@@ -436,6 +287,7 @@ export default function Addnewproduct() {
         alert(
           "Error while adding product. Please try again filling all the fields"
         );
+        setDisabled(false); // Re-enable the save button on error
       } else {
        
         alert("Product added successfully");
@@ -444,6 +296,7 @@ export default function Addnewproduct() {
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while adding the product. Please try again.");
+      setDisabled(false); // Re-enable the save button on error
     }
   };
 

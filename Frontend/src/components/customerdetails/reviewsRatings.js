@@ -81,6 +81,7 @@ function ReviewRatings() {
     });
   
     try {
+      //eslint-disable-next-line no-unused-vars
       const response = await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/reviews`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'

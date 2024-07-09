@@ -3,7 +3,6 @@ import MyNavbar from "./navbar";
 import { useNavigate } from "react-router-dom";
 import Footer from "./footer";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { useData } from "./CartContext";
@@ -72,6 +71,7 @@ const Register = () => {
   };
   // console.log(values);
   const [user, setUser] = useState([]);
+  //eslint-disable-next-line no-unused-vars
   const [profile, setProfile] = useState(null);
 
   const signin = useGoogleLogin({
@@ -100,8 +100,6 @@ const Register = () => {
             .then((res) => {
               // console.log(res)
               if (res.data !== "Error") {
-                // sessionStorage.setItem("accessToken", res.data.accessToken)
-                // setAuthToken(res.data.accessToken);
                 if (res.data === "Fail") {
                   axios
                     .post(
@@ -156,7 +154,7 @@ const Register = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-
+//eslint-disable-next-line no-unused-vars
   const logOut = () => {
     googleLogout();
     setProfile(null);
@@ -167,24 +165,12 @@ const Register = () => {
       <MyNavbar />
       <main>
         <div className="text-center mt-4 mb-4">
-          {/* {profile ? (
-                <div>
-                    <img src={profile.picture} alt="googleuser" />
-                    <h3>User Logged in</h3>
-                    <p>Name: {profile.name}</p>
-                    <p>Email Address: {profile.email}</p>
-                    <br />
-                    <br />
-                    <button onClick={logOut}>Log out</button>
-                </div>
-            ) : ( */}
           <button onClick={signin} className="btn border">
             <span className="fs-5">
               <i className="bi bi-google"></i>
             </span>
             &nbsp;&nbsp;&nbsp;Continue With Google
           </button>
-          {/* )} */}
         </div>
         <div className="p-2 ps-lg-5 pe-lg-5 mb-5">
           <div className="col-xs-12 col-md-12 col-lg-12">
@@ -194,11 +180,6 @@ const Register = () => {
                   <h1 className="text-center fs-3">Create Account</h1>
                 </div>
                 <hr />
-                {/* <div className="text-end">
-                  <Link to="/login" className="text-decoration-none">
-                    Back to Login
-                  </Link>
-                </div> */}
                 <div className="form-group d-md-flex justify-content-center mt-4 mb-2">
                   <label
                     className="control-label col-sm-2 col-md-2 fw-bold"

@@ -18,14 +18,12 @@ export default function Acceptproduct() {
     id: null,
     name: "",
     description: "",
-    // image: "",
     location: "",
     color: "",
     alteration: "",
     size: "",
     measurements: "",
     condition: "",
-    // source: "",
     age: "",
     quantity: "",
     price: "",
@@ -98,7 +96,7 @@ export default function Acceptproduct() {
           filteredFormData[key] = formData[key];
         }
       });
-
+//eslint-disable-next-line no-unused-vars
       const response = await axios.put(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
         filteredFormData
@@ -376,8 +374,6 @@ export default function Acceptproduct() {
           className="modal fade show"
           tabIndex="-1"
           style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
-          // onClick={() => setEditingId(null)}  
-
           >
           <div className="modal-dialog modal-dialog-scrollable">
             <div className="modal-content">
@@ -426,7 +422,6 @@ export default function Acceptproduct() {
                         htmlFor="productDescription"
                         className="form-label fw-bolder"
                       >
-                        
                         Description
                       </label>
                       <div className="d-flex">

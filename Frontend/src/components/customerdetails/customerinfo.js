@@ -3,11 +3,11 @@ import Customermenu from "./Customermenu";
 import MyNavbar from "../navbar";
 import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
-import { useData } from "../CartContext";
+// import { useData } from "../CartContext";
 import axios from "axios";
 
 export default function Customerinfo() {
-  const { user,authToken } = useData();
+  // const { user,authToken } = useData();
   const [values, setValues] = useState({
     firstname: "" ,
     lastname: "",
@@ -15,8 +15,6 @@ export default function Customerinfo() {
     email: "",
     phone: "",
   });
-
-  console.log(authToken);
 
   useEffect(() => {
     axios

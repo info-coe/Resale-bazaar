@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+// import { Link } from "react-router-dom";
 
 export default function Sellerfooter() {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
@@ -13,23 +13,36 @@ export default function Sellerfooter() {
   }, []);
 
   const formatDate = (date) => {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return date.toLocaleDateString("en-US", options);
   };
 
   const formatTime = (date) => {
-    const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
-    return date.toLocaleTimeString('en-US', options);
+    const options = { hour: "numeric", minute: "numeric", second: "numeric" };
+    return date.toLocaleTimeString("en-US", options);
   };
   return (
-    <div className='border'>
+    <div className="border">
       <footer>
-        <p className='d-md-flex justify-content-between p-1'>
-          <span className='fs-6'>Powered by <Link to="https://infomericainc.com" className='text-decoration-none'>Infomericainc</Link></span>
+        <p className="d-md-flex justify-content-between p-1">
+          <span className="fs-6">
+            Powered by{" "}
+            {/* <Link
+              to="https://infomericainc.com"
+              className="text-decoration-none"
+            > */}
+              The Resale Bazaar
+            {/* </Link> */}
+          </span>
           <span>{formatDate(currentDateTime)}</span>
           <span>{formatTime(currentDateTime)}</span>
         </p>
       </footer>
     </div>
-  )
+  );
 }

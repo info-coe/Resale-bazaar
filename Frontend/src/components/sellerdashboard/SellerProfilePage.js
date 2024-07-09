@@ -80,7 +80,7 @@ const SellerProfile = () => {
         setLoading(false);
       });
   }, [sellerId]);
-
+//eslint-disable-next-line no-unused-vars
   const renderStarRatings = (rating) => {
     const stars = [];
     const filledStars = Math.floor(rating);
