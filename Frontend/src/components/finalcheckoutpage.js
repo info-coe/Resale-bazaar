@@ -17,7 +17,6 @@ export default function Finalcheckoutpage() {
             const filteredProducts = response.data.filter((item) => item.userid.toString() === sessionStorage.getItem("user-token"));
             setProduct(filteredProducts);
 
-            // Execute update request for each item in the cart
             filteredProducts.forEach((item) => {
               axios
                 .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updatepayment`, {
