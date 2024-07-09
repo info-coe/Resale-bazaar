@@ -72,7 +72,8 @@ const {
   ordersQuery,
   addReviewsQuery,
   reviewsRetrivingJoinQuery,
-  shipmentRetrivingJoinQuery
+  shipmentRetrivingJoinQuery,
+  offergetQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -621,6 +622,22 @@ app.get("/allproducts", (req, res) => {
 
 app.get("/sellerproducts", (req, res) => {
   const sql = retrievingSellerProductsQuery;
+
+
+  db.query(sql, (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
+
+app.get("/sellerproductsoffers", (req, res) => {
+  const sql = offergetQuery;
 
 
   db.query(sql, (err, data) => {
@@ -1316,7 +1333,6 @@ app.get('/shipmentjoin', (req, res) => {
     }
   });
 });
-
 
 
 
