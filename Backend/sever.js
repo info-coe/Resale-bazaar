@@ -65,7 +65,14 @@ const {
   updateOrderDeliveredQuery,
   updateOrderShippmentQuery,
   updateOrderDeliveredandShippementQuery,
-  ReviewsQuery
+  ReviewsQuery,
+  updateProductQuery,
+  googleLoginQuery,
+  updateProductQtyQuery,
+  ordersQuery,
+  addReviewsQuery,
+  reviewsRetrivingJoinQuery,
+  shipmentRetrivingJoinQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -313,7 +320,7 @@ db.query(createDatabaseQuery, (err) => {
 // });
 
 app.post("/googleLogin", (req, res) => {
-  const sql = "SELECT * FROM register WHERE `email` = ?";
+  const sql = googleLoginQuery;
   db.query(sql, [req.body.username], (err, data) => {
     if (err) {
       return res.json("Error");
@@ -706,7 +713,7 @@ app.post("/updateproducts", (req, res) => {
   const { product_id, quantity } = req.body;
 
   // Perform the update operation in the database 
-  const sql = "UPDATE products SET quantity = ? WHERE id = ?";
+  const sql = updateProductQtyQuery;
   db.query(sql, [quantity, product_id], (err, result) => {
     if (err) {
       console.log("Error updating product quantity:", err);
@@ -759,242 +766,6 @@ app.post("/updateOrder", (req, res) => {
 });
 
 // add products
-// app.post("/addproducts",upload.array('images', 10), (req, res) => {
-//   console.log(req)
-//   const images = req.files.map(file => file.filename);
-//   const sql = addProductsQuery;
-
-//   const values = [
-//     req.body.producttype,
-//     req.body.category,
-//     req.body.productname,
-//     req.body.productdescription,
-//     JSON.stringify(images),
-//     req.body.location,
-//     req.body.color,
-//     req.body.alteration,
-//     req.body.size,
-//     req.body.measurements,
-//     req.body.condition,
-//     req.body.source,
-//     req.body.age,
-//     req.body.language,
-//     req.body.quantity,
-//     req.body.price,
-//     req.body.material,
-    // req.body.Occasion,
-    // req.body.Type,
-    // req.body.Brand,
-    // req.body.Product_Condition,
-    // req.body.Style,
-    // req.body.Season,
-    // req.body.Fit,
-    // req.body.Length,
-//     req.body.accepted_by_admin,
-//     req.body.seller_id,
-//   ];
-
-//   db.query(sql, values, (err, result) => {
-//     if (err) {
-//       console.error("Error while inserting product:", err);
-//       return res.status(500).json({ message: "Error while inserting product" });
-//     }
-//     console.log("Product inserted successfully");
-//     return res.status(200).json({ message: "Product inserted successfully" });
-//   });
-// });
-
-// app.post('/addproducts', upload.fields([
-//   { name: 'images', maxCount: 10 }, // Handle up to 10 images
-//   { name: 'video', maxCount: 1 }    // Handle 1 video
-// ]), (req, res) => {
-//   // Handle file uploads and retrieve filenames
-//   const images = req.files['images'].map(file => file.filename); // Map filenames from 'images' field
-//   const video = req.files['video'] ? req.files['video'][0].filename : null; // Retrieve filename from 'video' field if exists
-
-//   // Construct SQL query for inserting product data
-//   const sql = addProductsQuery
-//   const values = [
-//     req.body.producttype,
-//     req.body.category,
-//     req.body.productname,
-//     req.body.productdescription,
-//     JSON.stringify({ images, video }), 
-//     req.body.location,
-//     req.body.color,
-//     req.body.alteration,
-//     req.body.size,
-//     req.body.measurements,
-//     req.body.condition,
-//     req.body.source,
-//     req.body.age,
-//     req.body.quantity,
-//     req.body.price,
-//     req.body.material,
-//     req.body.occasion,
-//     req.body.type,
-//     req.body.brand,
-//     req.body.style,
-//     req.body.season,
-//     req.body.fit,
-//     req.body.length,
-//     req.body.accepted_by_admin,
-//     req.body.seller_id
-//   ];
-
-//   // Execute SQL query to insert product data into database
-//   db.query(sql, values, (err, result) => {
-//     if (err) {
-//       console.error("Error while inserting product:", err);
-//       return res.status(500).json({ message: "Error while inserting product" });
-//     }
-//     console.log("Product inserted successfully");
-//     return res.status(200).json({ message: "Product inserted successfully" });
-//   });
-// });
-
-// app.post('/addproducts', upload.array('media', 11), (req, res) => {
-//   const mediaFiles = req.files.map(file => file.filename); // Extract filenames from the uploaded files
-//   // const mediaFiles = req.files.map(file => {
-//   //   const uniqueFilename = `${uuidv4()}-${file.originalname}`; // Example: uuid-v4-filename.jpg
-//   //   return uniqueFilename;
-//   // });
-
-//   // Extract additional product details from the request body
-//   const { allMedia, ...productDetails } = req.body;
-
-//   // Construct the SQL query for inserting product data
-//   const sql = addProductsQuery;
-//   const values = [
-//     productDetails.producttype,
-//     productDetails.category,
-//     productDetails.productname,
-//     productDetails.productdescription,
-//     JSON.stringify(mediaFiles), // Store the combined media array as JSON string
-//     productDetails.location,
-//     productDetails.color,
-//     productDetails.alteration,
-//     productDetails.size,
-//     productDetails.measurements,
-//     productDetails.condition,
-//     productDetails.source,
-//     productDetails.age,
-//     productDetails.quantity,
-//     productDetails.price,
-//     productDetails.material,
-//     productDetails.occasion,
-//     productDetails.type,
-//     productDetails.brand,
-//     productDetails.style,
-//     productDetails.season,
-//     productDetails.fit,
-//     productDetails.length,
-//     productDetails.accepted_by_admin,
-//     productDetails.seller_id
-//   ];
-
-//   // Execute the SQL query to insert product data into the database
-//   db.query(sql, values, (err, result) => {
-//     if (err) {
-//       console.error("Error while inserting product:", err);
-//       return res.status(500).json({ message: "Error while inserting product" });
-//     }
-//     console.log("Product inserted successfully");
-//     return res.status(200).json({ message: "Product inserted successfully" });
-//   });
-// });
-// app.post('/addproducts', upload.array('media', 11), (req, res) => {
-//   const mediaFiles = req.files.map(file => file.key); // Extract S3 filenames from the uploaded files
-
-//   const { allMedia, ...productDetails } = req.body;
-
-//   const sql = addProductsQuery;
-//   const values = [
-//     productDetails.producttype,
-//     productDetails.category,
-//     productDetails.productname,
-//     productDetails.productdescription,
-//     JSON.stringify(mediaFiles), // Store the combined media array as JSON string
-//     productDetails.location,
-//     productDetails.color,
-//     productDetails.alteration,
-//     productDetails.size,
-//     productDetails.measurements,
-//     productDetails.condition,
-//     productDetails.source,
-//     productDetails.age,
-//     productDetails.quantity,
-//     productDetails.price,
-//     productDetails.material,
-//     productDetails.occasion,
-//     productDetails.type,
-//     productDetails.brand,
-//     productDetails.style,
-//     productDetails.season,
-//     productDetails.fit,
-//     productDetails.length,
-//     productDetails.accepted_by_admin,
-//     productDetails.seller_id
-//   ];
-
-//   db.query(sql, values, (err, result) => {
-//     if (err) {
-//       console.error("Error while inserting product:", err);
-//       return res.status(500).json({ message: "Error while inserting product" });
-//     }
-//     console.log("Product inserted successfully");
-//     return res.status(200).json({ message: "Product inserted successfully" });
-//   });
-// });
-// app.post('/addproducts', upload.array('media', 11), (req, res) => {
-//   try {
-//     const mediaFiles = req.files.map(file => file.location); // Extract file URLs from S3
-
-//     const { allMedia, ...productDetails } = req.body;
-
-//     const sql = addProductsQuery; // Ensure this query is properly defined
-//     const values = [
-//       productDetails.producttype,
-//       productDetails.category,
-//       productDetails.productname,
-//       productDetails.productdescription,
-//       JSON.stringify(mediaFiles), // Store the combined media array as JSON string
-//       productDetails.location,
-//       productDetails.color,
-//       productDetails.alteration,
-//       productDetails.size,
-//       productDetails.measurements,
-//       productDetails.condition,
-//       productDetails.source,
-//       productDetails.age,
-//       productDetails.quantity,
-//       productDetails.price,
-//       productDetails.notes,
-//       productDetails.material,
-//       productDetails.Occasion,
-//       productDetails.Type,
-//       productDetails.Brand,
-//       productDetails.Style,
-//       productDetails.Season,
-//       productDetails.Fit,
-//       productDetails.Length,
-//       productDetails.accepted_by_admin,
-//       productDetails.seller_id
-//     ];
-
-//     db.query(sql, values, (err, result) => {
-//       if (err) {
-//         console.error("Error while inserting product:", err);
-//         return res.status(500).json({ message: "Error while inserting product" });
-//       }
-//       console.log("Product inserted successfully");
-//       return res.status(200).json({ message: "Product inserted successfully" });
-//     });
-//   } catch (error) {
-//     console.error("Error in /addproducts route:", error);
-//     return res.status(500).json({ message: "Internal Server Error" });
-//   }
-// });
 app.post('/addproducts', upload.array('media', 11), (req, res) => {
   try {
     const mediaFiles = req.files.map(file => {
@@ -1054,17 +825,14 @@ app.put('/handleproducts/:id', (req, res) => {
   const id = req.params.id;
   const {
     name, price, description, location, color, alteration, size, measurements,
-    condition, age, occasion, material, brand, style, season
+    condition, age, quantity, occasion, material, brand, type, style, fit, length, season, notes
   } = req.body;
 
-  const sql = `UPDATE products SET 
-    name = ?, price = ?, description = ?, location = ?, color = ?, alteration = ?, 
-    size = ?, measurements = ?, \`condition\` = ?, age = ?, occasion = ?, material = ?, 
-    brand = ?, style = ?, season = ? WHERE id = ?`;
+  const sql = updateProductQuery;
 
   const values = [
     name, price, description, location, color, alteration, size, measurements,
-    condition, age, occasion, material, brand, style, season, id
+    condition, age, quantity, occasion, material, brand, type, style, fit, length, season,notes, id
   ];
 
   db.query(sql, values, (err, result) => {
@@ -1455,7 +1223,7 @@ app.post("/updatepayment", (req, res) => {
 });
 
 app.get("/updatepayment", (req, res) => {
-  const sql = "Select * from orders";
+  const sql = ordersQuery;
 
   db.query(sql, (err, data) => {
     if (err) {
@@ -1499,7 +1267,7 @@ app.post('/reviews', upload.array('images', 5), (req, res) => {
     });
   const createdAt = new Date(); 
   const updatedAt = new Date();
-  const query = 'INSERT INTO review (rating, description, title, images ,seller_id,buyer_id,created_at, updated_at) VALUES (?, ?, ?, ?,?,?,?,?)';
+  const query = addReviewsQuery;
   db.query(query, [rating, description, title, JSON.stringify(mediaFiles),sellerId,buyerId,createdAt, updatedAt], (err, result) => {
     if (err) {
       console.error('Error inserting review:', err);
@@ -1517,18 +1285,7 @@ app.post('/reviews', upload.array('images', 5), (req, res) => {
 
 
 app.get('/reviews', (req, res) => {
-  const query = `
-    SELECT 
-      review.*, 
-      register.firstname, 
-      register.lastname
-    FROM 
-      review
-    INNER JOIN 
-      register 
-    ON 
-      review.buyer_id = register.user_id;
-  `;
+  const query = reviewsRetrivingJoinQuery;
 
   db.query(query, (err, results) => {
     if (err) {
@@ -1543,6 +1300,20 @@ app.get('/reviews', (req, res) => {
     }));
 
     res.send(reviews);
+  });
+});
+app.get('/shipmentjoin', (req, res) => {
+  const query = shipmentRetrivingJoinQuery;
+
+  db.query(query, (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+    } else {
+      return res.json("Fail");
+    }
   });
 });
 

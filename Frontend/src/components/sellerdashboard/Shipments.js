@@ -22,17 +22,12 @@ export default function Shipments() {
   }, [pageSize]);
 
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updatepayment`
-      )
-      .then((res) => {
-        setFilteredProducts(res.data);
         axios
           .get(
-            `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`
+            `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/shipmentjoin`
           )
           .then((result) => {
+            console.log(result.data)
             setShippingProducts(
               result.data.filter(
                 (item) =>
@@ -42,21 +37,20 @@ export default function Shipments() {
             );
           })
           .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const allSellerProducts = Array.isArray(filteredProducts)
-    ? filteredProducts.filter((product) =>
-        shippingProducts.some((order) => order.id === product.product_id)
-      )
-    : [];
+  // const allSellerProducts = Array.isArray(filteredProducts)
+  //   ? filteredProducts.filter((product) =>
+  //       shippingProducts.some((order) => order.id === product.product_id)
+  //     )
+  //   : [];
 
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const tableData = allSellerProducts.slice(startIndex, endIndex);
+  const tableData = shippingProducts.slice(startIndex, endIndex);
+  // console.log(tableData)
 
   const handleOrder = (actionType) => {
     if (!orderStatus) {
@@ -152,6 +146,16 @@ export default function Shipments() {
                           colSpan="1"
                           aria-label="ID: activate to sort column ascending"
                         >
+                          Picture
+                        </th>
+                        <th
+                          className="sorting p-3"
+                          tabIndex="0"
+                          aria-controls="dynamic-table"
+                          rowSpan="1"
+                          colSpan="1"
+                          aria-label="ID: activate to sort column ascending"
+                        >
                           Shipment#
                         </th>
                         <th
@@ -212,6 +216,19 @@ export default function Shipments() {
                               <span className="lbl"></span>
                             </label>
                           </th>
+                          {/* <td></td> */}
+                          <td style={{ width: "100px", height: "100px" }}>
+                                <img
+                                  src={`${JSON.parse(item.image)[0]}`}
+                                  // src={item.image}
+                                  alt="Shipmentproduct"
+                                  style={{
+                                    maxWidth: "100%",
+                                    height: "100px",
+                                    objectFit: "contain",
+                                  }}
+                                ></img>
+                              </td>
                           <td>{item.shipment_id}</td>
                           <td>{item.order_id}</td>
                           <td>
