@@ -34,6 +34,7 @@ export default function Sellerproducts() {
     fit: "",
     length:"",
     notes:"",
+    image: []
   });
   const [sizes, setSizes] = useState([]);
 
@@ -105,7 +106,11 @@ export default function Sellerproducts() {
   };
 
   const handleEdit = (id, initialData) => {
+    // console.log(initialData)
+
     setEditingId(id);
+    const parsedImage = initialData.image ? JSON.parse(initialData.image) : [];
+
     setFormData({
       id: initialData.id,
       name: initialData.name,
@@ -128,6 +133,7 @@ export default function Sellerproducts() {
       fit: initialData.fit,
       length:initialData.length,
       notes:initialData.notes,
+      image: parsedImage
     });
     setSizes(getSizesForProductType(initialData.product_type));
   };
@@ -174,6 +180,10 @@ export default function Sellerproducts() {
       console.error("Error updating product:", error);
     }
   };
+
+
+
+
   const [errors, setErrors] = useState({});
 
   const handleKeyup = (e) => {
@@ -209,7 +219,24 @@ export default function Sellerproducts() {
     handleKeyup(e, capitalizedValue);
 
   };
-
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    const newImages = files.map((file) => URL.createObjectURL(file));
+    setFormData((prevData) => ({
+      ...prevData,
+      image: [...prevData.image, ...newImages],
+    }));
+  };
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...formData.image];
+    updatedImages.splice(index, 1);
+    setFormData({
+      ...formData,
+      image: updatedImages,
+    });
+  };
+  
+  
   return (
     <div className="">
       <Sellernavbar />
@@ -358,6 +385,50 @@ export default function Sellerproducts() {
               </div>
               <div className="modal-body">
                 <form onSubmit={handleSubmitEdit}>
+                {formData.image !== "NA" && formData.image !== null && (
+        <>
+          <div className="mb-3">
+            <label htmlFor="productImages" className="form-label fw-bolder">
+              Product Images
+            </label>
+            <input
+              type="file"
+              className="form-control"
+              id="productImages"
+              name="images"
+              multiple
+              onChange={handleImageChange}
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label fw-bolder">Current Images</label>
+            <div className="d-flex flex-wrap">
+  {formData.image && formData.image.length > 0 ? (
+    formData.image.map((imageUrl, index) => (
+      <div key={index} className="me-2 mb-2 position-relative">
+        <img
+          src={imageUrl}
+          alt={`Product Image ${index + 1}`}
+          className="img-thumbnail"
+          style={{ width: '100px', height: '100px' }}
+        />
+        <button
+          type="button"
+          className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+          style={{ padding: "5px", fontSize: "16px" }}
+          aria-label="Close"
+          onClick={() => handleDeleteImage(index)}
+        ></button>
+      </div>
+    ))
+  ) : (
+    <p>No images available</p>
+  )}
+</div>
+
+          </div>
+        </>
+      )}
                   {formData.name !== "NA" && formData.name !== null && (
                     <div className="mb-3">
                       <label htmlFor="productName" className="form-label fw-bolder">
