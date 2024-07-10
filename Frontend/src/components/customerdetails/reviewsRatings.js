@@ -98,6 +98,8 @@ function ReviewRatings() {
       });
       alert('Review added successfully');
       window.location.reload(false)
+      window.location.href = `${process.env.REACT_APP_HOST}3000/Resale-bazaar`;
+
     } catch (error) {
       console.error('Error adding review:', error);
     }
