@@ -223,6 +223,7 @@ export default function Productdetails() {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           // Filter user details where user_id === productdetails.seller_id
+          // const filteredUserDetails = res.data.filter(
           const filteredUserDetails = res.data.filter(
             (item) => item.user_id === productdetails.seller_id
           );
