@@ -158,30 +158,28 @@ export default function Sellerproducts() {
     return newSizes;
   };
 
-  const handleSubmitEdit = async (e) => {
-    e.preventDefault();
-    try {
-      // Filter out empty values from formData
-      const filteredFormData = {};
-      Object.keys(formData).forEach((key) => {
-        if (formData[key]) {
-          filteredFormData[key] = formData[key];
-        }
-      });
-//eslint-disable-next-line no-unused-vars
-      const response = await axios.put(
-        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
-        filteredFormData
-      );
-      alert("Product updated successfully");
-      setEditingId(null);
-      window.location.reload(false); // Reload the page or update state as necessary
-    } catch (error) {
-      console.error("Error updating product:", error);
-    }
-  };
-
-
+//   const handleSubmitEdit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       // Filter out empty values from formData
+//       const filteredFormData = {};
+//       Object.keys(formData).forEach((key) => {
+//         if (formData[key]) {
+//           filteredFormData[key] = formData[key];
+//         }
+//       });
+// //eslint-disable-next-line no-unused-vars
+//       const response = await axios.put(
+//         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
+//         filteredFormData
+//       );
+//       alert("Product updated successfully");
+//       setEditingId(null);
+//       window.location.reload(false); // Reload the page or update state as necessary
+//     } catch (error) {
+//       console.error("Error updating product:", error);
+//     }
+//   };
 
 
   const [errors, setErrors] = useState({});
@@ -221,22 +219,65 @@ export default function Sellerproducts() {
   };
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map((file) => URL.createObjectURL(file));
+    const newImages = files.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file)
+    }));
+  
     setFormData((prevData) => ({
       ...prevData,
       image: [...prevData.image, ...newImages],
     }));
   };
+    
   const handleDeleteImage = (index) => {
     const updatedImages = [...formData.image];
-    updatedImages.splice(index, 1);
-    setFormData({
-      ...formData,
+    const deletedImage = updatedImages.splice(index, 1)[0]; // Remove the image and get the removed image URL
+  
+    setFormData((prevData) => ({
+      ...prevData,
       image: updatedImages,
-    });
+      deletedImages: [...(prevData.deletedImages || []), deletedImage.preview || deletedImage], // Track deleted images
+    }));
   };
   
+  const handleSubmitEdit = async (e) => {
+    e.preventDefault();
+    try {
+      const formDataToSend = new FormData();
+      // Append non-file form data
+      Object.keys(formData).forEach((key) => {
+        if (key !== 'image' && key !== 'deletedImages') {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+      // Append image files
+      formData.image.forEach((imageObj) => {
+        if (imageObj.file) {
+          formDataToSend.append('images', imageObj.file);
+        }
+      });
   
+      // Append deleted images
+      formDataToSend.append('deletedImages', JSON.stringify(formData.deletedImages || []));
+  
+      const response = await axios.put(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      alert('Product updated successfully');
+      setEditingId(null);
+      window.location.reload(false); // Reload the page or update state as necessary
+    } catch (error) {
+      console.error('Error updating product:', error);
+    }
+  };
+    
   return (
     <div className="">
       <Sellernavbar />
@@ -386,49 +427,49 @@ export default function Sellerproducts() {
               <div className="modal-body">
                 <form onSubmit={handleSubmitEdit}>
                 {formData.image !== "NA" && formData.image !== null && (
-        <>
-          <div className="mb-3">
-            <label htmlFor="productImages" className="form-label fw-bolder">
-              Product Images
-            </label>
-            <input
-              type="file"
-              className="form-control"
-              id="productImages"
-              name="images"
-              multiple
-              onChange={handleImageChange}
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label fw-bolder">Current Images</label>
-            <div className="d-flex flex-wrap">
-  {formData.image && formData.image.length > 0 ? (
-    formData.image.map((imageUrl, index) => (
-      <div key={index} className="me-2 mb-2 position-relative">
-        <img
-          src={imageUrl}
-          alt={`Product Image ${index + 1}`}
-          className="img-thumbnail"
-          style={{ width: '100px', height: '100px' }}
-        />
-        <button
-          type="button"
-          className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
-          style={{ padding: "5px", fontSize: "16px" }}
-          aria-label="Close"
-          onClick={() => handleDeleteImage(index)}
-        ></button>
+  <>
+    <div className="mb-3">
+      <label htmlFor="productImages" className="form-label fw-bolder">
+        Product Images
+      </label>
+      <input
+        type="file"
+        className="form-control"
+        id="productImages"
+        name="images"
+        multiple
+        onChange={handleImageChange}
+      />
+    </div>
+    <div className="mb-3">
+      <label className="form-label fw-bolder">Current Images</label>
+      <div className="d-flex flex-wrap">
+        {formData.image && formData.image.length > 0 ? (
+          formData.image.map((imageObj, index) => (
+            <div key={index} className="me-2 mb-2 position-relative">
+              <img
+                src={imageObj.preview || imageObj}
+                alt={`Product Image ${index + 1}`}
+                className="img-thumbnail"
+                style={{ width: '100px', height: '100px' }}
+              />
+              <button
+                type="button"
+                className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+                style={{ padding: "5px", fontSize: "16px" }}
+                aria-label="Close"
+                onClick={() => handleDeleteImage(index)}
+              ></button>
+            </div>
+          ))
+        ) : (
+          <p>No images available</p>
+        )}
       </div>
-    ))
-  ) : (
-    <p>No images available</p>
-  )}
-</div>
+    </div>
+  </>
+)}
 
-          </div>
-        </>
-      )}
                   {formData.name !== "NA" && formData.name !== null && (
                     <div className="mb-3">
                       <label htmlFor="productName" className="form-label fw-bolder">
@@ -856,7 +897,7 @@ export default function Sellerproducts() {
                       />
                     </div>
                   )}
-                  {formData.notes !== "" && (
+                  {formData.notes !== "" && formData.notes !==null &&  (
                     <div className="mb-3">
                     <label htmlFor="ProductNotes" className="form-label fw-bolder">
                       Notes
