@@ -6,7 +6,7 @@ import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
 
 export default function Sellerproducts() {
-  const [pageSize, setPageSize] = useState(6);
+  const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);

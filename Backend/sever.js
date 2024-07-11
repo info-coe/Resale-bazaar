@@ -73,7 +73,9 @@ const {
   addReviewsQuery,
   reviewsRetrivingJoinQuery,
   shipmentRetrivingJoinQuery,
-  offergetQuery
+  offergetQuery,
+  fetchFindImagesQuery,
+  productsUpdateQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -838,94 +840,7 @@ app.post('/addproducts', upload.array('media', 11), (req, res) => {
 });
 
 
-// app.put('/handleproducts/:id', (req, res) => {
-//   const id = req.params.id;
-//   const {
-//     name, price, description, location, color, alteration, size, measurements,
-//     condition, age, quantity, occasion, material, brand, type, style, fit, length, season, notes
-//   } = req.body;
 
-//   const sql = updateProductQuery;
-
-//   const values = [
-//     name, price, description, location, color, alteration, size, measurements,
-//     condition, age, quantity, occasion, material, brand, type, style, fit, length, season,notes, id
-//   ];
-
-//   db.query(sql, values, (err, result) => {
-//     if (err) {
-//       console.error('Error updating product:', err);
-//       return res.status(500).json({ error: 'Internal server error' });
-//     }
-//     console.log('Product updated successfully');
-//     return res.status(200).json({ message: 'Product updated successfully' });
-//   });
-// });
-
-
-
-// app.put('/handleproducts/:id', upload.array('images', 5), (req, res) => {
-//   const id = req.params.id;
-//   const {
-//     name, price, description, location, color, alteration, size, measurements,
-//     condition, age, quantity, occasion, material, brand, type, style, fit, length, season, notes
-//   } = req.body;
-
-//   const deletedImages = JSON.parse(req.body.deletedImages || '[]');
-
-//   // Fetch existing images from the database
-//   const fetchSql = 'SELECT image FROM products WHERE id = ?';
-//   db.query(fetchSql, [id], (err, result) => {
-//     if (err) {
-//       console.error('Error fetching existing images:', err);
-//       return res.status(500).json({ error: 'Internal server error' });
-//     }
-    
-//     // Parse existing images
-//     let existingImages = [];
-//     if (result.length > 0 && result[0].image) {
-//       existingImages = JSON.parse(result[0].image);
-//     }
-
-//     // Handle uploaded images
-//     const newImages = req.files.map(file => {
-//       const urlParts = file.location.split('/');
-//       const bucketName = urlParts[2].split('.')[0];
-//       return `https://${bucketName}.s3.amazonaws.com/${urlParts.slice(3).join('/')}`;
-//     });
-
-//     // Filter out deleted images from existing images
-//     let updatedImages = existingImages.filter(image => !deletedImages.includes(image));
-
-//     // Combine existing images with new images
-//     updatedImages = [...updatedImages, ...newImages];
-
-//     // Construct your SQL query for updating product details
-//     const updateSql = `UPDATE products SET 
-//                        name = ?, price = ?, description = ?, location = ?, color = ?, alteration = ?, 
-//                        size = ?, measurements = ?, \`condition\` = ?, age = ?, quantity = ?, occasion = ?, 
-//                        material = ?, brand = ?, type = ?, style = ?, fit = ?, length = ?, season = ?, notes = ?, 
-//                        image = ?
-//                        WHERE id = ?`;
-
-    // const values = [
-    //   name, price, description, location, color, alteration, size, measurements,
-    //   condition, age, quantity, occasion, material, brand, type, style, fit, length, season, notes,
-    //   JSON.stringify(updatedImages), id
-    // ];
-
-//     // Execute the SQL query to update product details
-//     db.query(updateSql, values, (err, result) => {
-//       if (err) {
-//         console.error('Error updating product:', err);
-//         return res.status(500).json({ error: 'Internal server error' });
-//       }
-
-//       console.log('Product updated successfully');
-//       return res.status(200).json({ message: 'Product updated successfully' });
-//     });
-//   });
-// });
 
 app.put('/handleproducts/:id', upload.array('images', 6), (req, res) => {
   const id = req.params.id;
@@ -941,7 +856,7 @@ app.put('/handleproducts/:id', upload.array('images', 6), (req, res) => {
   const deletedImages = JSON.parse(req.body.deletedImages || '[]');
 
   // Fetch existing images from the database
-  const fetchSql = 'SELECT image FROM products WHERE id = ?';
+  const fetchSql = fetchFindImagesQuery;
   db.query(fetchSql, [id], (err, result) => {
     if (err) {
       console.error('Error fetching existing images:', err);
@@ -968,12 +883,7 @@ app.put('/handleproducts/:id', upload.array('images', 6), (req, res) => {
     updatedImages = [...updatedImages, ...newImages];
 
     // Construct your SQL query for updating product details
-    const updateSql = `UPDATE products SET 
-                       name = ?, price = ?, description = ?, location = ?, color = ?, alteration = ?, 
-                       size = ?, measurements = ?, \`condition\` = ?, age = ?, quantity = ?, occasion = ?, 
-                       material = ?, brand = ?, type = ?, style = ?, fit = ?, length = ?, season = ?, notes = ?, accepted_by_admin= ?,
-                       image = ?
-                       WHERE id = ?`;
+    const updateSql = productsUpdateQuery;
 
                        const values = [
                         name, price, description, location, color, alteration, size, measurements,
@@ -995,22 +905,6 @@ app.put('/handleproducts/:id', upload.array('images', 6), (req, res) => {
 });
 
 
-
-// app.get('/allproducts', async (req, res) => {
-//   try {
-//     const sql = 'SELECT * FROM products'; // Adjust this query based on your table structure
-//     db.query(sql, (err, results) => {
-//       if (err) {
-//         console.error('Error fetching products:', err);
-//         return res.status(500).json({ message: 'Error fetching products' });
-//       }
-//       res.status(200).json(results);
-//     });
-//   } catch (error) {
-//     console.error('Error in /products route:', error);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// });
 
 app.delete("/handleproducts/:id", (req, res) => {
   const productId = req.params.id;

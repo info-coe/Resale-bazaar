@@ -36,7 +36,7 @@ export default function Sellerfooter() {
               to="https://infomericainc.com"
               className="text-decoration-none"
             > */}
-             Innovative Strides LLC
+              TheResaleBazaar
             {/* </Link> */}
           </span>
           <span>{formatDate(currentDateTime)}</span>

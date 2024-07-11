@@ -134,17 +134,17 @@ const Footer = () => {
               to="mailto:theresalebazaar@gmail.com"
               className="text-decoration-none text-dark"
             >
-              Innovative Strides LLC
+              TheResaleBazaar
             </Link>
           </p>
           <p>
             Copyright 2024{" "}
-            <Link
+            {/* <Link
               to="https://infomericainc.com/"
               className="text-decoration-none text-danger"
-            >
-              INFOMERICAINC
-            </Link>{" "}
+            > */}
+              Innovative Strides LLC{" "}
+            {/* </Link>{" "} */}
             All rights reserved.
           </p>
         </div>
