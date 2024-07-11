@@ -34,9 +34,11 @@ export default function Sellerproducts() {
     fit: "",
     length:"",
     notes:"",
-    image: []
+    image: [],
   });
   const [sizes, setSizes] = useState([]);
+  const [deletedImages, setDeletedImages] = useState([]);
+  const [disabled, setDisabled] = useState(false);
 
   const userid = sessionStorage.getItem("user-token");
 
@@ -133,7 +135,8 @@ export default function Sellerproducts() {
       fit: initialData.fit,
       length:initialData.length,
       notes:initialData.notes,
-      image: parsedImage
+      image: parsedImage,
+    accepted_by_admin: "false"
     });
     setSizes(getSizesForProductType(initialData.product_type));
   };
@@ -158,31 +161,11 @@ export default function Sellerproducts() {
     return newSizes;
   };
 
-//   const handleSubmitEdit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       // Filter out empty values from formData
-//       const filteredFormData = {};
-//       Object.keys(formData).forEach((key) => {
-//         if (formData[key]) {
-//           filteredFormData[key] = formData[key];
-//         }
-//       });
-// //eslint-disable-next-line no-unused-vars
-//       const response = await axios.put(
-//         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
-//         filteredFormData
-//       );
-//       alert("Product updated successfully");
-//       setEditingId(null);
-//       window.location.reload(false); // Reload the page or update state as necessary
-//     } catch (error) {
-//       console.error("Error updating product:", error);
-//     }
-//   };
+
 
 
   const [errors, setErrors] = useState({});
+
 
   const handleKeyup = (e) => {
     const { name, value } = e.target;
@@ -195,9 +178,9 @@ export default function Sellerproducts() {
       delete newErrors.name;
     }
 
-
     setErrors(newErrors);
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const capitalizeWords = (str) => {
@@ -215,52 +198,96 @@ export default function Sellerproducts() {
       [name]: capitalizedValue,
     }));
     handleKeyup(e, capitalizedValue);
-
   };
+  
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map((file) => ({
+    const validFiles = files.filter(file => file.type.startsWith('image/') || file.type.startsWith('video/'));
+    const newFiles = validFiles.map((file) => ({
       file,
-      preview: URL.createObjectURL(file)
+      preview: URL.createObjectURL(file),
+      type: file.type.startsWith('image/') ? 'image' : 'video'
     }));
-  
+
+    const newImages = [...formData.image, ...newFiles];
+
+    if (newImages.length > 6) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        image: "You can only upload up to 6 images or videos.",
+      }));
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
-      image: [...prevData.image, ...newImages],
+      image: newImages,
     }));
   };
-    
+
+  
   const handleDeleteImage = (index) => {
     const updatedImages = [...formData.image];
-    const deletedImage = updatedImages.splice(index, 1)[0]; // Remove the image and get the removed image URL
-  
+    const removedImage = updatedImages.splice(index, 1)[0]; // Remove the image and get the removed image
+
     setFormData((prevData) => ({
       ...prevData,
       image: updatedImages,
-      deletedImages: [...(prevData.deletedImages || []), deletedImage.preview || deletedImage], // Track deleted images
     }));
+
+    setDeletedImages((prevDeleted) => [...prevDeleted, removedImage]);
   };
   
+
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
+
+    if (formData.image.length < 2) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        image: "You must have at least 2 images or videos.",
+      }));
+      return;
+    }
+
+    if (formData.image.length > 6) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        image: "You can only upload up to 6 images or videos.",
+      }));
+      return;
+    }
+    setDisabled(true)
+
     try {
       const formDataToSend = new FormData();
-      // Append non-file form data
+
+      // Filter out empty or null fields from formData
+      const filteredFormData = {};
       Object.keys(formData).forEach((key) => {
-        if (key !== 'image' && key !== 'deletedImages') {
-          formDataToSend.append(key, formData[key]);
+        if (formData[key]) {
+          filteredFormData[key] = formData[key];
         }
       });
+
+      // Append non-file form data
+      Object.keys(filteredFormData).forEach((key) => {
+        if (key !== 'image') {
+          formDataToSend.append(key, filteredFormData[key]);
+        }
+      });
+
       // Append image files
-      formData.image.forEach((imageObj) => {
+      filteredFormData.image.forEach((imageObj) => {
         if (imageObj.file) {
           formDataToSend.append('images', imageObj.file);
         }
       });
-  
+
       // Append deleted images
-      formDataToSend.append('deletedImages', JSON.stringify(formData.deletedImages || []));
-  
+      formDataToSend.append('deletedImages', JSON.stringify(deletedImages));
+
       const response = await axios.put(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
         formDataToSend,
@@ -270,12 +297,23 @@ export default function Sellerproducts() {
           },
         }
       );
+
       alert('Product updated successfully');
-      setEditingId(null);
+      setDeletedImages([]);
       window.location.reload(false); // Reload the page or update state as necessary
     } catch (error) {
       console.error('Error updating product:', error);
+      setDisabled(false);
     }
+  };
+
+
+  const getMediaType = (url) => {
+    const extension = url.split('.').pop().toLowerCase();
+    if (["mp4", "webm", "avi"].includes(extension)) {
+      return 'video';
+    }
+    return 'image';
   };
     
   return (
@@ -328,7 +366,7 @@ export default function Sellerproducts() {
                                   }}
                                 ></img>
                               </td>
-                              <td>{item.name}</td>
+                              <td style={{maxWidth:"200px"}}>{item.name}</td>
                               <td>${item.price}.00</td>
                               <td>
                                 {item.accepted_by_admin === "true" ? (
@@ -428,45 +466,74 @@ export default function Sellerproducts() {
                 <form onSubmit={handleSubmitEdit}>
                 {formData.image !== "NA" && formData.image !== null && (
   <>
-    <div className="mb-3">
-      <label htmlFor="productImages" className="form-label fw-bolder">
-        Product Images
-      </label>
-      <input
-        type="file"
-        className="form-control"
-        id="productImages"
-        name="images"
-        multiple
-        onChange={handleImageChange}
-      />
-    </div>
-    <div className="mb-3">
-      <label className="form-label fw-bolder">Current Images</label>
-      <div className="d-flex flex-wrap">
-        {formData.image && formData.image.length > 0 ? (
-          formData.image.map((imageObj, index) => (
-            <div key={index} className="me-2 mb-2 position-relative">
-              <img
-                src={imageObj.preview || imageObj}
-                alt={`Product Image ${index + 1}`}
-                className="img-thumbnail"
-                style={{ width: '100px', height: '100px' }}
-              />
-              <button
-                type="button"
-                className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
-                style={{ padding: "5px", fontSize: "16px" }}
-                aria-label="Close"
-                onClick={() => handleDeleteImage(index)}
-              ></button>
-            </div>
-          ))
-        ) : (
-          <p>No images available</p>
-        )}
+      <div className="mb-3">
+        <label className="form-label fw-bolder">Current Files</label>
+        <div className="d-flex flex-wrap">
+          {formData.image && formData.image.length > 0 ? (
+            formData.image.map((mediaObj, index) => (
+              <div key={index} className="me-2 mb-2 position-relative">
+                {mediaObj.file ? (
+                  mediaObj.type === 'image' ? (
+                    <img
+                      src={mediaObj.preview}
+                      alt={`Product Image ${index + 1}`}
+                      className="img-thumbnail"
+                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center"  }}
+                    />
+                  ) : (
+                    <video
+                      src={mediaObj.preview}
+                      controls
+                      className="img-thumbnail"
+                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
+                    ></video>
+                  )
+                ) : (
+                  getMediaType(mediaObj) === 'image' ? (
+                    <img
+                      src={mediaObj}
+                      alt={`Product Image ${index + 1}`}
+                      className="img-thumbnail"
+                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
+                    />
+                  ) : (
+                    <video
+                      src={mediaObj}
+                      controls
+                      className="img-thumbnail"
+                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
+                    ></video>
+                  )
+                )}
+                <button
+                  type="button"
+                  className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+                  style={{ padding: "5px", fontSize: "16px" }}
+                  aria-label="Close"
+                  onClick={() => handleDeleteImage(index)}
+                ></button>
+              </div>
+            ))
+          ) : (
+            <p>No media available</p>
+          )}
+        </div>
       </div>
-    </div>
+      <div className="mb-3">
+        <label htmlFor="productImages" className="form-label fw-bolder">
+          Add Photo / Video
+        </label>
+        <input
+          type="file"
+          className="form-control"
+          id="productImages"
+          name="images"
+          multiple
+          onChange={handleImageChange}
+          accept="image/*,video/*"
+        />
+        {errors.image && <p className="text-danger">{errors.image}</p>}
+      </div>
   </>
 )}
 
@@ -791,7 +858,7 @@ export default function Sellerproducts() {
                         placeholder="Enter Occasion (eg. Function,Party)"
                         value={formData.occasion}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -808,7 +875,7 @@ export default function Sellerproducts() {
                         placeholder="Enter Type"
                         value={formData.type}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -825,7 +892,7 @@ export default function Sellerproducts() {
                         placeholder="Enter Brand Name"
                         value={formData.brand}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -842,7 +909,7 @@ export default function Sellerproducts() {
                         placeholder="Enter Style"
                         value={formData.style}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -859,7 +926,7 @@ export default function Sellerproducts() {
                         placeholder="Enter Season (eg. Summer,Winter)"
                         value={formData.season}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -876,7 +943,7 @@ export default function Sellerproducts() {
                         placeholder="Enter Fit"
                         value={formData.fit}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -893,7 +960,7 @@ export default function Sellerproducts() {
                         placeholder="Enter Length"
                         value={formData.length}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -916,7 +983,7 @@ export default function Sellerproducts() {
                     </div>
                   </div>
                   )}
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary"  disabled={disabled}>
                     Save Changes
                   </button>{" "}
                   <button

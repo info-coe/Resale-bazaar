@@ -23,7 +23,7 @@ const Twinningoutfits = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filteredProducts = res.data.filter(
-            (item) => item.category === "Twinning-outfits"
+            (item) => item.category === "Twinning-outfits,Tie Dye"
           );
           setProducts(filteredProducts);
           setFilteredProducts(filteredProducts);
@@ -56,7 +56,7 @@ const Twinningoutfits = () => {
         <Link to="/women" className="text-decoration-none text-dark">
           Women
         </Link>{" "}
-        /&nbsp; Twinning Outfits
+        /&nbsp; Twinning Outfits - Tie Dye
       </nav>
       <div className="d-lg-flex justify-content-around p-2 ps-lg-5 pe-lg-5">
         <div className="col-lg-2 col-xs-12 col-md-12">
@@ -65,7 +65,7 @@ const Twinningoutfits = () => {
         </div>
 
         <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
-          <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Twinning Outfits"/>
+          <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Twinning Outfits / Tie Dye"/>
 
           <div className="">
           <div className="d-md-flex flex-wrap ms-md-2 mt-5">

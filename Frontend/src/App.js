@@ -151,11 +151,11 @@ function App() {
           <Route path="/" element={<Home/>}></Route>
           <Route path="women" element={<Womenallproducts />}></Route>
           <Route path="product/:id" element={<Productdetails />}></Route>
-          <Route path="highendcouture" element={<Highendcouture />}></Route>
+          <Route path="High End Couture" element={<Highendcouture />}></Route>
           <Route path="sarees" element={<Sarees />}></Route>
           <Route path="lehenga" element={<Lehenga />}></Route>
           <Route path="dresses" element={<Dresses />}></Route>
-          <Route path="twinningoutfits" element={<Twinningoutfits />}></Route>
+          <Route path="Twinning-outfits,Tie Dye" element={<Twinningoutfits />}></Route>
 
           {/* Kids components routes */}
           <Route path="kids" element={<Kidsallproducts />}></Route>

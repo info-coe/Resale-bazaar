@@ -36,10 +36,18 @@ export default function Acceptproduct() {
     fit: "",
     length:"",
     notes:"",
+    image: []
   });
   const [sizes, setSizes] = useState([]);
+  const [deletedImages, setDeletedImages] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+
   const handleEdit = (id, initialData) => {
+    // console.log(initialData)
+
     setEditingId(id);
+    const parsedImage = initialData.image ? JSON.parse(initialData.image) : [];
+
     setFormData({
       id: initialData.id,
       name: initialData.name,
@@ -62,6 +70,7 @@ export default function Acceptproduct() {
       fit: initialData.fit,
       length:initialData.length,
       notes:initialData.notes,
+      image: parsedImage
     });
     setSizes(getSizesForProductType(initialData.product_type));
   };
@@ -88,24 +97,68 @@ export default function Acceptproduct() {
 
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
+
+    if (formData.image.length < 2) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        image: "You must have at least 2 images or videos.",
+      }));
+      return;
+    }
+
+    if (formData.image.length > 6) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        image: "You can only upload up to 6 images or videos.",
+      }));
+      return;
+    }
+    setDisabled(true)
+
     try {
-      // Filter out empty values from formData
+      const formDataToSend = new FormData();
+
+      // Filter out empty or null fields from formData
       const filteredFormData = {};
       Object.keys(formData).forEach((key) => {
         if (formData[key]) {
           filteredFormData[key] = formData[key];
         }
       });
-//eslint-disable-next-line no-unused-vars
+
+      // Append non-file form data
+      Object.keys(filteredFormData).forEach((key) => {
+        if (key !== 'image') {
+          formDataToSend.append(key, filteredFormData[key]);
+        }
+      });
+
+      // Append image files
+      filteredFormData.image.forEach((imageObj) => {
+        if (imageObj.file) {
+          formDataToSend.append('images', imageObj.file);
+        }
+      });
+
+      // Append deleted images
+      formDataToSend.append('deletedImages', JSON.stringify(deletedImages));
+
       const response = await axios.put(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
-        filteredFormData
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
-      alert("Product updated successfully");
-      setEditingId(null);
+
+      alert('Product updated successfully');
+      setDeletedImages([]);
       window.location.reload(false); // Reload the page or update state as necessary
     } catch (error) {
-      console.error("Error updating product:", error);
+      console.error('Error updating product:', error);
+      setDisabled(false);
     }
   };
   const [errors, setErrors] = useState({});
@@ -121,9 +174,9 @@ export default function Acceptproduct() {
       delete newErrors.name;
     }
 
-
     setErrors(newErrors);
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const capitalizeWords = (str) => {
@@ -141,7 +194,6 @@ export default function Acceptproduct() {
       [name]: capitalizedValue,
     }));
     handleKeyup(e, capitalizedValue);
-
   };
 
   // eslint-disable-next-line no-unused-vars
@@ -170,7 +222,25 @@ export default function Acceptproduct() {
   const endIndex = startIndex + pageSize;
   const tableData = filteredProducts.slice(startIndex, endIndex);
 
- 
+  const handleDeleteImage = (index) => {
+    const updatedImages = [...formData.image];
+    const removedImage = updatedImages.splice(index, 1)[0]; // Remove the image and get the removed image
+
+    setFormData((prevData) => ({
+      ...prevData,
+      image: updatedImages,
+    }));
+
+    setDeletedImages((prevDeleted) => [...prevDeleted, removedImage]);
+  };
+
+  const getMediaType = (url) => {
+    const extension = url.split('.').pop().toLowerCase();
+    if (["mp4", "webm", "avi"].includes(extension)) {
+      return 'video';
+    }
+    return 'image';
+  };
 
   return (
     <div className="fullscreen">
@@ -259,14 +329,14 @@ export default function Acceptproduct() {
                         >
                           Size
                         </th>
-                        <th
+                        {/* <th
                           className="hidden-480 sorting p-3"
                           rowSpan="1"
                           colSpan="1"
                           aria-label="Status"
                         >
                           Worn
-                        </th>
+                        </th> */}
                         <th
                           className="hidden-480 sorting p-3"
                           rowSpan="1"
@@ -319,7 +389,7 @@ export default function Acceptproduct() {
                             <td>{item.color}</td>
                             <td>{item.measurements}</td>
                             <td>{item.size}</td>
-                            <td>{item.worn}</td>
+                            {/* <td>{item.worn}</td> */}
                             <td>{item.alteration}</td>
                             <td>{item.description}</td>
                             <td>
@@ -374,6 +444,8 @@ export default function Acceptproduct() {
           className="modal fade show"
           tabIndex="-1"
           style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+          // onClick={() => setEditingId(null)}  
+
           >
           <div className="modal-dialog modal-dialog-scrollable">
             <div className="modal-content">
@@ -387,6 +459,80 @@ export default function Acceptproduct() {
               </div>
               <div className="modal-body">
                 <form onSubmit={handleSubmitEdit}>
+                {formData.image !== "NA" && formData.image !== null && (
+  <>
+      <div className="mb-3">
+        <label className="form-label fw-bolder">Current Files</label>
+        <div className="d-flex flex-wrap">
+          {formData.image && formData.image.length > 0 ? (
+            formData.image.map((mediaObj, index) => (
+              <div key={index} className="me-2 mb-2 position-relative">
+                {mediaObj.file ? (
+                  mediaObj.type === 'image' ? (
+                    <img
+                      src={mediaObj.preview}
+                      alt={`Product Image ${index + 1}`}
+                      className="img-thumbnail"
+                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center"  }}
+                    />
+                  ) : (
+                    <video
+                      src={mediaObj.preview}
+                      controls
+                      className="img-thumbnail"
+                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
+                    ></video>
+                  )
+                ) : (
+                  getMediaType(mediaObj) === 'image' ? (
+                    <img
+                      src={mediaObj}
+                      alt={`Product Image ${index + 1}`}
+                      className="img-thumbnail"
+                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
+                    />
+                  ) : (
+                    <video
+                      src={mediaObj}
+                      controls
+                      className="img-thumbnail"
+                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
+                    ></video>
+                  )
+                )}
+                <button
+                  type="button"
+                  className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+                  style={{ padding: "5px", fontSize: "16px" }}
+                  aria-label="Close"
+                  onClick={() => handleDeleteImage(index)}
+                ></button>
+              </div>
+            ))
+          ) : (
+            <p>No media available</p>
+          )}
+        </div>
+        {errors.image && <p className="text-danger">{errors.image}</p>}
+      </div>
+      {/* <div className="mb-3">
+        <label htmlFor="productImages" className="form-label fw-bolder">
+          Add Photo / Video
+        </label>
+        <input
+          type="file"
+          className="form-control"
+          id="productImages"
+          name="images"
+          multiple
+          onChange={handleImageChange}
+          accept="image/*,video/*"
+        />
+        {errors.image && <p className="text-danger">{errors.image}</p>}
+      </div> */}
+  </>
+)}
+
                   {formData.name !== "NA" && formData.name !== null && (
                     <div className="mb-3">
                       <label htmlFor="productName" className="form-label fw-bolder">
@@ -422,6 +568,7 @@ export default function Acceptproduct() {
                         htmlFor="productDescription"
                         className="form-label fw-bolder"
                       >
+                        
                         Description
                       </label>
                       <div className="d-flex">
@@ -707,7 +854,7 @@ export default function Acceptproduct() {
                         placeholder="Enter Occasion (eg. Function,Party)"
                         value={formData.occasion}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -724,7 +871,7 @@ export default function Acceptproduct() {
                         placeholder="Enter Type"
                         value={formData.type}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -741,7 +888,7 @@ export default function Acceptproduct() {
                         placeholder="Enter Brand Name"
                         value={formData.brand}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -758,7 +905,7 @@ export default function Acceptproduct() {
                         placeholder="Enter Style"
                         value={formData.style}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -775,7 +922,7 @@ export default function Acceptproduct() {
                         placeholder="Enter Season (eg. Summer,Winter)"
                         value={formData.season}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -792,7 +939,7 @@ export default function Acceptproduct() {
                         placeholder="Enter Fit"
                         value={formData.fit}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
@@ -809,11 +956,11 @@ export default function Acceptproduct() {
                         placeholder="Enter Length"
                         value={formData.length}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </div>
                   )}
-                  {formData.notes !== "" && (
+                  {formData.notes !== "" && formData.notes !==null &&  (
                     <div className="mb-3">
                     <label htmlFor="ProductNotes" className="form-label fw-bolder">
                       Notes
@@ -832,7 +979,7 @@ export default function Acceptproduct() {
                     </div>
                   </div>
                   )}
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary"  disabled={disabled}>
                     Save Changes
                   </button>{" "}
                   <button

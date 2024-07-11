@@ -60,7 +60,7 @@ const Womenallproducts = () => {
       </h1>
       <div className="scroll-container">
         <div className="m-md-4 m-2 ">
-          <Link to="/highendcouture" className="text-dark text-decoration-none">
+          <Link to="/High End Couture" className="text-dark text-decoration-none">
             <img
               src={Highendcoutureimg}
               alt="high end couture"
@@ -101,7 +101,7 @@ const Womenallproducts = () => {
         </div>
         <div className="m-md-4 m-2">
           <Link
-            to="/twinningoutfits"
+            to="/Twinning-outfits,Tie Dye"
             className="text-dark text-decoration-none"
           >
             <img
@@ -109,7 +109,7 @@ const Womenallproducts = () => {
               alt="twinning outfits"
               className="rounded-circle womenallimgs"
             />
-            <p>Twinning Outfits</p>
+            <p>Twinning Outfits / Tie Dye</p>
           </Link>
         </div>
       </div>

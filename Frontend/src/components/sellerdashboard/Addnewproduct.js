@@ -171,11 +171,11 @@ export default function Addnewproduct() {
     if (event.target.name === "producttype") {
       if (event.target.value === "women") {
         setCategories([
-          "Highendcouture",
+          "High End Couture",
           "Sarees",
           "Lehenga",
           "Dresses",
-          "Twinning-outfits",
+          "Twinning-outfits,Tie Dye",
         ]);
         setSizes(["NA", "XS", "S", "M", "L", "XL"]);
       } else if (event.target.value === "kids") {

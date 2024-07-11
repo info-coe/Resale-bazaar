@@ -36,7 +36,7 @@ export default function Menu() {
               <div className="accordion-body p-0">
                 <ul className="list-group">
                   <Link
-                    to="/highendcouture"
+                    to="/High End Couture"
                     className="text-decoration-none text-dark"
                   >
                     <li className="list-group-item">High end Couture</li>
@@ -57,10 +57,10 @@ export default function Menu() {
                     <li className="list-group-item">Dresses</li>
                   </Link>
                   <Link
-                    to="/twinningoutfits"
+                    to="/Twinning-outfits,Tie Dye"
                     className="text-decoration-none text-dark"
                   >
-                    <li className="list-group-item">Twinning Outfits</li>
+                    <li className="list-group-item">Twinning Outfits / Tie Dye</li>
                   </Link>
                 </ul>
               </div>

@@ -134,7 +134,7 @@ const Footer = () => {
               to="mailto:theresalebazaar@gmail.com"
               className="text-decoration-none text-dark"
             >
-              theresalebazaar
+              Innovative Strides LLC
             </Link>
           </p>
           <p>

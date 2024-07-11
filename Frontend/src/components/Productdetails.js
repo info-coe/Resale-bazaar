@@ -282,6 +282,7 @@ export default function Productdetails() {
   //     console.error('Error updating like count:', error);
   //   }
   // };
+  // console.error('Error updating like count:', error);
 
   return (
     <div className="fullscreen">

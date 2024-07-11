@@ -908,11 +908,11 @@ app.post('/addproducts', upload.array('media', 11), (req, res) => {
 //                        image = ?
 //                        WHERE id = ?`;
 
-//     const values = [
-//       name, price, description, location, color, alteration, size, measurements,
-//       condition, age, quantity, occasion, material, brand, type, style, fit, length, season, notes,
-//       JSON.stringify(updatedImages), id
-//     ];
+    // const values = [
+    //   name, price, description, location, color, alteration, size, measurements,
+    //   condition, age, quantity, occasion, material, brand, type, style, fit, length, season, notes,
+    //   JSON.stringify(updatedImages), id
+    // ];
 
 //     // Execute the SQL query to update product details
 //     db.query(updateSql, values, (err, result) => {
@@ -927,12 +927,16 @@ app.post('/addproducts', upload.array('media', 11), (req, res) => {
 //   });
 // });
 
-app.put('/handleproducts/:id', upload.array('images', 5), (req, res) => {
+app.put('/handleproducts/:id', upload.array('images', 6), (req, res) => {
   const id = req.params.id;
+  // console.log(req.body)
   const {
     name, price, description, location, color, alteration, size, measurements,
-    condition, age, quantity, occasion, material, brand, type, style, fit, length, season, notes
+    condition, age, quantity, occasion, material, brand, type, style, fit, length, season, notes,accepted_by_admin
   } = req.body;
+
+  // const adminAcceptRequest= req.body.adminAccept;
+  // console.log(adminAcceptRequest)
 
   const deletedImages = JSON.parse(req.body.deletedImages || '[]');
 
@@ -967,16 +971,15 @@ app.put('/handleproducts/:id', upload.array('images', 5), (req, res) => {
     const updateSql = `UPDATE products SET 
                        name = ?, price = ?, description = ?, location = ?, color = ?, alteration = ?, 
                        size = ?, measurements = ?, \`condition\` = ?, age = ?, quantity = ?, occasion = ?, 
-                       material = ?, brand = ?, type = ?, style = ?, fit = ?, length = ?, season = ?, notes = ?, 
+                       material = ?, brand = ?, type = ?, style = ?, fit = ?, length = ?, season = ?, notes = ?, accepted_by_admin= ?,
                        image = ?
                        WHERE id = ?`;
 
-    const values = [
-      name || '', price || 0, description || '', location || '', color || '', alteration || '',
-      size || '', measurements || '', condition || '', age || '', quantity || 0, occasion || '',
-      material || '', brand || '', type || '', style || '', fit || '', length || '', season || '', notes || '',
-      JSON.stringify(updatedImages), id
-    ];
+                       const values = [
+                        name, price, description, location, color, alteration, size, measurements,
+                        condition, age, quantity, occasion, material, brand, type, style, fit, length, season,notes, accepted_by_admin, 
+                        JSON.stringify(updatedImages), id
+                      ];
 
     // Execute the SQL query to update product details
     db.query(updateSql, values, (err, result) => {
