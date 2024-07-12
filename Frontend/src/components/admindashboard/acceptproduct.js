@@ -70,7 +70,8 @@ export default function Acceptproduct() {
       fit: initialData.fit,
       length:initialData.length,
       notes:initialData.notes,
-      image: parsedImage
+      image: parsedImage,
+       accepted_by_admin: "false"
     });
     setSizes(getSizesForProductType(initialData.product_type));
   };
