@@ -10,7 +10,7 @@ export default function Selleraccount() {
   const { user } = useData();
   // console.log(user)
   const [sellers, setSellers] = useState([]);
-
+console.log(sellers)
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/selleraccount`)

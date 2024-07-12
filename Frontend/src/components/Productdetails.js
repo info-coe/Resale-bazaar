@@ -40,6 +40,7 @@ export default function Productdetails() {
   const location = useLocation();
   const { productdetails, admin } = location.state || {};
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userdetails, setUserDetails] = useState([]);
   // const [offerAlert,setOfferAlert]=useState(null)
 
   const navigate = useNavigate();
@@ -197,7 +198,7 @@ export default function Productdetails() {
     }
   };
 
-  const [userdetails, setUserDetails] = useState([]);
+ 
 
   // sessionStorage.getItem("user-token")===null ? alert('Please Login') : "#exampleModal";
   //Offer
@@ -283,7 +284,7 @@ export default function Productdetails() {
   //   }
   // };
   // console.error('Error updating like count:', error);
-
+console.log(userdetails)
   return (
     <div className="fullscreen">
       <MyNavbar />
@@ -910,10 +911,10 @@ export default function Productdetails() {
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
                       &nbsp;
-                      {user.shopname === "" || null || undefined
+                      {user.shopname == null || undefined||""
                         ? user.name
                         : user.shopname}
-                    </p>
+                    </p>    
                     <button
                       className="btn btn-outline-primary"
                       onClick={() => handleViewProfile(user.userId)}
