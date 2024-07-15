@@ -675,7 +675,7 @@ console.log(userdetails)
                                       />
                                       <span style={{ fontSize: "0.75rem" }}>
                                         {/* Enter Your Offer */}
-                                        {add == 0 ? (
+                                        {add === 0 ? (
                                           <span style={{ color: "red" }}>
                                             Please Select Any One Off
                                           </span>
