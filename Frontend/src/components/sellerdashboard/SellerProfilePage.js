@@ -155,26 +155,26 @@ const SellerProfile = () => {
   <div className="modal-dialog">
     <div className="modal-content">
       <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 className="modal-title" id="exampleModalLabel">Contact Seller</h5>
         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">
         <form>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">Name</label>
-            <input type="text" className="form-control" id="name" value={name} onChange={handleInputChange} />
+            <input type="text" className="form-control" id="name" value={name} onChange={handleInputChange} placeholder='Enter Your Name'/>
           </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email</label>
-            <input type="email" className="form-control" id="email" value={email} onChange={handleInputChange} />
+            <input type="email" className="form-control" id="email" value={email} onChange={handleInputChange} placeholder='Enter Your Email'/>
           </div>
           <div className="mb-3">
             <label htmlFor="phone" className="form-label">Phone</label>
-            <input type="text" className="form-control" id="phone" value={phone} onChange={handleInputChange} />
+            <input type="text" className="form-control" id="phone" value={phone} onChange={handleInputChange} placeholder='Enter Your Phone Number'/>
           </div>
           <div className="mb-3">
             <label htmlFor="comment" className="form-label">Comment</label>
-            <textarea  type="text" className="form-control" id="comment" value={comment} onChange={handleInputChange} />
+            <textarea  type="text" className="form-control" id="comment" value={comment} onChange={handleInputChange} placeholder='Enter Comment'/>
           </div>
         </form>
       </div>
@@ -184,7 +184,7 @@ const SellerProfile = () => {
       </div>
     </div>
   </div>
-</div>
+      </div>
 
       <Footer/>
     </>

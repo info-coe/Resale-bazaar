@@ -6,6 +6,11 @@ body {
   overflow-y: scroll !important;
   
 }
+body.modal-open {
+  overflow: hidden;
+  padding-right: 0 !important;
+}
+
 .RBlogo{
   width: 112px;
 }
