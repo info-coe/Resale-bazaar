@@ -143,7 +143,7 @@ const Footer = () => {
               to="https://infomericainc.com/"
               className="text-decoration-none text-danger"
             > */}
-              Innovative Strides LLC{" "}
+             <span className="text-danger"> Innovative Strides LLC{" "}</span>
             {/* </Link>{" "} */}
             All rights reserved.
           </p>

@@ -299,12 +299,24 @@ const handleKeyPress = (event) => {
 
 
                     <li className="p-1">
-                      <Link
-                        to="/customerinfo"
+                      {user.email !== "admin@admin" ? (
+ <Link
+ to="/customerinfo"
+ className="text-decoration-none text-dark ps-3"
+>
+ <i className="bi bi-person-fill-gear"></i> My Account
+</Link>
+                      ):(
+                        <Link
+                        to="/changepassword"
                         className="text-decoration-none text-dark ps-3"
                       >
                         <i className="bi bi-person-fill-gear"></i> My Account
                       </Link>
+                      )}
+                     
+                      
+                      
                     </li>
                     {user.email !== "admin@admin" ? (
                       <>

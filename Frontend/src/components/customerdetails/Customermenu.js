@@ -9,27 +9,34 @@ export default function Customermenu() {
       </div>
       <div className="customermenu">
         <ul className="list-group">
-          <NavLink
-            to="/customerinfo"
-            className="text-decoration-none list-unstyled"
-          >
-            <li className="p-2">
-              <i className="bi bi-caret-right-square-fill"></i> Customer Info
-            </li>
-          </NavLink>
-          <NavLink
-            to="/addresses"
-            className="text-decoration-none list-unstyled"
-          >
-            <li className="p-2">
-              <i className="bi bi-caret-right-square-fill"></i> Addresses
-            </li>
-          </NavLink>
-          <NavLink to="/orders" className="text-decoration-none list-unstyled">
-            <li className="p-2">
-              <i className="bi bi-caret-right-square-fill"></i> Orders
-            </li>
-          </NavLink>
+          {sessionStorage.getItem("token") === "admin" ? 
+          (null)
+           : (
+            <>
+            <NavLink
+              to="/customerinfo"
+              className="text-decoration-none list-unstyled"
+            >
+              <li className="p-2">
+                <i className="bi bi-caret-right-square-fill"></i> Customer Info
+              </li>
+            </NavLink>
+            <NavLink
+              to="/addresses"
+              className="text-decoration-none list-unstyled"
+            >
+              <li className="p-2">
+                <i className="bi bi-caret-right-square-fill"></i> Addresses
+              </li>
+            </NavLink>
+            <NavLink to="/orders" className="text-decoration-none list-unstyled">
+              <li className="p-2">
+                <i className="bi bi-caret-right-square-fill"></i> Orders
+              </li>
+            </NavLink>
+              </>
+          )}
+         
           <NavLink
             to="/changepassword"
             className="text-decoration-none list-unstyled"
