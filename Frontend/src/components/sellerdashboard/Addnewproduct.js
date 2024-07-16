@@ -243,9 +243,11 @@ export default function Addnewproduct() {
     if (values.producttype === "women") {
       updatedValues.size = "NA";
       updatedValues.alteration = "NA";
-      updatedValues.material = "NA";
-      updatedValues.measurements = "NA";
+      // updatedValues.material = "NA";
       updatedValues.source = "NA";
+    }
+    if(values.category === "Sarees"){
+      updatedValues.measurements = "NA";
     }
     if (values.producttype === "kids") {
       updatedValues.source = "NA";
@@ -304,20 +306,20 @@ export default function Addnewproduct() {
     "Occasion",
     "Type",
     "Brand",
-    "Style",
+    // "Style",
     "Season",
-    "Fit",
+    // "Fit",
     "Length",
     // Add more attribute options here
   ];
   const placeholderValues = {
-    Occasion: "Enter Occasion (eg. Function,Party)",
-    Type: "Enter Type",
+    Occasion: "Function, Party, Birthdays",
+    Type: "Designer, Homemade, Repaired",
     Brand: "Enter Brand Name",
-    Style: "Enter Style",
-    Season: "Enter Season (eg. Summer,Winter)",
-    Fit: "Enter Fit",
-    Length: "Enter Length",
+    // Style: "Enter Style",
+    Season: "Summer, Winter, Spring",
+    // Fit: "Enter Fit",
+    Length: "In Meters",
     // Add more placeholder values here for additional attributes
   };
 
@@ -407,6 +409,7 @@ export default function Addnewproduct() {
       <div
         className="card d-flex justify-content-center align-items-center bg-light"
         style={{ height: "140px" }}
+        title="Accepts only MP4, WEBM, AVI, MOV formats"
       >
         {media.video ? (
           <>
@@ -438,7 +441,7 @@ export default function Addnewproduct() {
             <input
               id="addVideoInput"
               type="file"
-              accept="video/mp4, video/webm"
+              accept="video/mp4, video/webm , video/avi, video/mov, video/quicktime"
               onChange={(e) => handleAddMediaChange(e, "video")}
               style={{ display: "none" }}
             />
@@ -684,7 +687,7 @@ export default function Addnewproduct() {
                             </div>
                           </div>
                         )}
-                      {values.producttype !== "women" && (
+                      {/* {values.producttype !== "women" && (
                         <div className="mb-3">
                           <label
                             htmlFor="measurements"
@@ -706,9 +709,32 @@ export default function Addnewproduct() {
                             <span className="text-danger fs-4"> &nbsp;*</span>
                           </div>
                         </div>
-                      )}
+                      )} */}
+                      { values.category !== "Sarees" && (
+    <div className="mb-3">
+        <label htmlFor="measurements" className="form-label fw-bolder">
+            Measurements
+        </label>
+        <div className="d-flex">
+            <input
+                type="number"
+                className="form-control"
+                id="measurements"
+                name="measurements"
+                placeholder="In Inches "
+                value={values.measurements}
+                onChange={handleInput}
+                min={1}
+                required
+            />
+            <span className="text-danger fs-4"> &nbsp;*</span>
+        </div>
+    </div>
+)}
+
                       {values.producttype !== "jewellery" &&
-                        values.producttype !== "women" && (
+                        // values.producttype !== "women" &&
+                         (
                           <div className="mb-3">
                             <label
                               htmlFor="material"
@@ -730,6 +756,7 @@ export default function Addnewproduct() {
                                 <option value="NA">NA</option>
                                 <option value="Silk">Silk</option>
                                 <option value="Cotton">Cotton</option>
+                                <option value="Pattu">Pattu</option>
                                 <option value="Crepe">Crepe</option>
                                 <option value="Net">Net</option>
                                 <option value="Georgette">Georgette</option>
@@ -816,7 +843,7 @@ export default function Addnewproduct() {
 
                       <div className="mb-3">
                         <label htmlFor="age" className="form-label fw-bolder">
-                          Age
+                          Style
                         </label>
                         <div className="d-flex">
                           <select
@@ -827,7 +854,7 @@ export default function Addnewproduct() {
                             onChange={handleInput}
                             required
                           >
-                            <option value="">Select Age</option>
+                            <option value="">Select Style</option>
                             <option value="NA">NA</option>
                             <option value="Modern">Modern</option>
                             <option value="00s">00s</option>
@@ -841,7 +868,7 @@ export default function Addnewproduct() {
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
                       </div>
-                      <div className="mb-3">
+                      {/* <div className="mb-3">
                         <label
                           htmlFor="quantity"
                           className="form-label fw-bolder"
@@ -865,7 +892,28 @@ export default function Addnewproduct() {
                           </select>
                           <span className="text-danger fs-4"> &nbsp;*</span>
                         </div>
-                      </div>
+                      </div> */}
+                      <div className="mb-3">
+    <label htmlFor="quantity" className="form-label fw-bolder">
+        Quantity
+    </label>
+    <div className="d-flex">
+        <input
+            type="number"
+            className="form-control"
+            id="quantity"
+            name="quantity"
+            placeholder="Enter Quantity"
+            value={values.quantity}
+            onChange={handleInput}
+            min="1"
+            max="99"
+            required
+        />
+        <span className="text-danger fs-4"> &nbsp;*</span>
+    </div>
+</div>
+
                       <div className="mb-3">
                         <label htmlFor="price" className="form-label fw-bolder">
                           Price
@@ -876,7 +924,7 @@ export default function Addnewproduct() {
                             className="form-control"
                             id="price"
                             name="price"
-                            placeholder="Ex: &#36;100"
+                            placeholder="&#36;"
                             value={values.price}
                             onChange={handleInput}
                             min="1"
@@ -905,13 +953,13 @@ export default function Addnewproduct() {
                         </div>
                       </div>
 
-                      {customAttributes.map((attribute) => (
+                      {/* {customAttributes.map((attribute) => (
                         <div key={attribute.name} className="mb-3">
                           <label
                             htmlFor={attribute.name}
                             className="form-label"
                           >
-                            {attribute.name}
+                            <b>{attribute.name}</b>
                           </label>
                           <input
                             type="text"
@@ -924,9 +972,25 @@ export default function Addnewproduct() {
                             }
                           />
                         </div>
-                      ))}
+                      ))} */}
+                      {customAttributes.map((attribute) => (
+    <div key={attribute.name} className="mb-3">
+        <label htmlFor={attribute.name} className="form-label">
+            <b>{attribute.name}</b>
+        </label>
+        <input
+            type={attribute.name === "Length" ? "number" : "text"}
+            className="form-control"
+            id={attribute.name}
+            placeholder={placeholderValues[attribute.name]}
+            value={attribute.value}
+            onChange={(event) => handleInputChange(event, attribute.name)}
+            min={attribute.name === "Length" ? "1" : undefined}
+        />
+    </div>
+))}
 
-                      <div className="mb-3">
+                      {/* <div className="mb-3">
                         <button
                           type="button"
                           className="btn btn-primary mb-3"
@@ -993,7 +1057,63 @@ export default function Addnewproduct() {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
+                      <div className="mb-3">
+    <button
+        type="button"
+        className="btn btn-primary mb-3"
+        onClick={handleAddAttribute}
+    >
+        Add Custom Attribute
+    </button>
+    <div className="modal" style={{ display: showModal ? "block" : "none" }}>
+        <div className="modal-dialog">
+            <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title">Select Custom Attributes</h5>
+                    <button
+                        type="button"
+                        className="btn-close"
+                        onClick={() => setShowModal(false)}
+                    ></button>
+                </div>
+                <div className="modal-body">
+                    {attributeOptions.map((option) => (
+                        <div key={option} className="form-check">
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                id={option}
+                                checked={selectedAttributes.includes(option)}
+                                onChange={() => handleCheckboxChange(option)}
+                            />
+                            <label className="form-check-label" htmlFor={option}>
+                                {option}
+                            </label>
+                        </div>
+                    ))}
+                </div>
+                <div className="modal-footer">
+                    <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => setShowModal(false)}
+                    >
+                        Close
+                    </button>
+                    <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleModalSubmit}
+                        disabled={selectedAttributes.length === 0}
+                    >
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
                       <div className="text-center">
                         <button

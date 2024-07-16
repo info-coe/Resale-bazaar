@@ -11,7 +11,7 @@ import Filter from "./filter";
 
 const NecklacesChains = () => {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
 

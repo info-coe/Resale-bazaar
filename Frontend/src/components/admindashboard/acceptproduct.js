@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default function Acceptproduct() {
   // eslint-disable-next-line no-unused-vars
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -237,7 +237,7 @@ export default function Acceptproduct() {
 
   const getMediaType = (url) => {
     const extension = url.split('.').pop().toLowerCase();
-    if (["mp4", "webm", "avi"].includes(extension)) {
+    if (["mp4", "webm", "avi","mov", "quicktime"].includes(extension)) {
       return 'video';
     }
     return 'image';

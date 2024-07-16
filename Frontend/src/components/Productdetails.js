@@ -117,7 +117,7 @@ export default function Productdetails() {
 
   const updateProductDetailsImg = (product, index) => {
     const extension = product.split(".").pop().toLowerCase();
-    if (["mp4", "webm", "avi"].includes(extension)) {
+    if (["mp4", "webm", "avi" ,"mov", "quicktime"].includes(extension)) {
       productDetailsImgRef.current.innerHTML = `
         <video
           src=${product}
@@ -354,7 +354,7 @@ console.log(userdetails)
                       position: "relative",
                     }}
                   >
-                    {["mp4", "webm", "avi"].includes(
+                    {["mp4", "webm", "avi","mov", "quicktime"].includes(
                       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`
                         .split(".")
                         .pop()
@@ -454,7 +454,7 @@ console.log(userdetails)
             {productdetails.measurements !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
-                  <b>Measurements</b>
+                  <b>Measurements (Inches)</b>
                 </p>
                 <p className=" col-md-8 col-lg-10">
                   : {productdetails.measurements}
@@ -530,7 +530,7 @@ console.log(userdetails)
               productdetails.length !== "NA" && (
                 <div className="d-flex col-md-9">
                   <p className=" col-md-4 col-lg-5">
-                    <b>Length</b>
+                    <b>Length (Meters)</b>
                   </p>
                   <p className=" col-md-8 col-lg-10">
                     : {productdetails.length}
@@ -560,7 +560,7 @@ console.log(userdetails)
             {productdetails.age !== "NA" && (
               <div className="d-flex col-md-9">
                 <p className=" col-md-4 col-lg-5">
-                  <b>Age</b>
+                  <b>Style</b>
                 </p>
                 <p className=" col-md-8  col-lg-10">: {productdetails.age}</p>
               </div>
@@ -571,20 +571,27 @@ console.log(userdetails)
               </p>
               <p className=" col-md-8 col-lg-10">: {id}</p>
             </div>
+            <div className="d-flex col-md-9">
+              <p className=" col-md-4 col-lg-5">
+                <b>QTY</b>
+              </p>
+              <p className=" col-md-8 col-lg-10">: {productdetails.quantity}</p>
+            </div>
 
             <p className="text-success fs-4">
               <b>&#36;{productdetails.price}.00</b>
             </p>
+           
             {productdetails.quantity > 0 ? (
               admin !== "admin" ? (
                 <>
                   <div className="">
-                    <div className="d-flex">
+                    {/* <div className="d-flex">
                       <> QTY </>: &nbsp;
                       <select className="form-select" style={{ width: "90px" }}>
                         <option value={1}>1</option>
                       </select>
-                    </div>
+                    </div> */}
                     <div className="container">
                       {sessionStorage.getItem("token") === "admin" ? null : (
                         <div className="row ">

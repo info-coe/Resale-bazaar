@@ -15,7 +15,7 @@ import Ringsimg from "../../images/ring.jpg";
 
 const Jewelryallcollection = () => {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
 

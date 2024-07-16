@@ -83,7 +83,7 @@ const Checkout = () => {
   };
 
   const validateBillingAddress = () => {
-    const PINCODE_PATTERN = /^[0-9]{6}$/;
+    const PINCODE_PATTERN = /^[0-9]{5}$/;
 
     return (
       fields.country.trim() !== "" &&
@@ -96,6 +96,7 @@ const Checkout = () => {
   };
   const validateShippingAddress = () => {
     // If the selected option is "new", validate the new fields
+    const PINCODE_PATTERN = /^[0-9]{5}$/;
     if (selectedOption === "new") {
       if (
         !newFields.country ||
@@ -103,7 +104,7 @@ const Checkout = () => {
         !newFields.city ||
         !newFields.address1 ||
         !newFields.address2 ||
-        !newFields.pincode
+        ! PINCODE_PATTERN.test(newFields.pincode.trim()) 
       ) {
         return false;
       }
@@ -541,8 +542,8 @@ const Checkout = () => {
                       placeholder="Pincode"
                       name="pincode"
                       value={fields.pincode}
-                      pattern="[0-9]{6}"
-                      title="Please enter exactly 6 digits"
+                      pattern="[0-9]{5}"
+                      title="Please enter exactly 5 digits"
                       onChange={handleInputChange}
                       required
                     />
@@ -691,7 +692,7 @@ const Checkout = () => {
                           name="address2"
                           value={newFields.address2}
                           onChange={handleInputChange1}
-                          required
+                          // required
                         />
                       </div>
                       <div className="col-md-6">
@@ -702,6 +703,8 @@ const Checkout = () => {
                           name="pincode"
                           value={newFields.pincode}
                           onChange={handleInputChange1}
+                           pattern="[0-9]{5}"
+                           title="Please enter exactly 5 digits"
                           required
                         />
                       </div>
@@ -773,7 +776,7 @@ const Checkout = () => {
                           />
                         </td>
                         <td className="text-secondary">{product.name}</td>
-                        <td>{product.price}</td>
+                        <td> &#36;{product.price}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -969,7 +972,7 @@ const Checkout = () => {
                           />
                         </td>
                         <td className="text-secondary">{product.name}</td>
-                        <td>{product.price}</td>
+                        <td>&#36;{product.price}</td>
                       </tr>
                     ))}
                   </tbody>

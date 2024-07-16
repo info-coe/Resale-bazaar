@@ -27,10 +27,10 @@ const Filterdisplaynav = (props) => {
             onChange={handleRowsChange}
             value={pageSize}
           >
-            <option value="3">3</option>
-            <option value="6">6</option>
-            <option value="8">8</option>
-            <option value="16">16</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="25">25</option>
           </select>
         </div>
       </nav>

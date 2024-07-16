@@ -6,7 +6,7 @@ import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
 
 export default function Sellerproducts() {
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -310,7 +310,7 @@ export default function Sellerproducts() {
 
   const getMediaType = (url) => {
     const extension = url.split('.').pop().toLowerCase();
-    if (["mp4", "webm", "avi"].includes(extension)) {
+    if (["mp4", "webm", "avi","mov", "quicktime"].includes(extension)) {
       return 'video';
     }
     return 'image';

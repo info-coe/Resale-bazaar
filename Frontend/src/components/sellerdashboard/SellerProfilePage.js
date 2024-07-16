@@ -117,7 +117,7 @@ const SellerProfile = () => {
       <div className="container mt-5">
         <div className="row">
           <div className="">
-            <h3 className="mb-4">Products by {sellerDetails.name}</h3>
+            <h4 className="mb-4"><span style={{fontSize:"22px"}}>Products by</span> <span className='text-secondary' style={{fontStyle:"italic"}}>{sellerDetails.shopname==null||undefined||''?sellerDetails.name:sellerDetails.shopname}</span></h4>
             {loading ? (
               <p>Loading...</p>
             ) : sellerProducts.length === 0 ? (
@@ -161,19 +161,19 @@ const SellerProfile = () => {
       <div className="modal-body">
         <form>
           <div className="mb-3">
-            <label htmlFor="name" className="form-label">Name</label>
+            <label htmlFor="name" className="form-label fw-bold">Name</label>
             <input type="text" className="form-control" id="name" value={name} onChange={handleInputChange} placeholder='Enter Your Name'/>
           </div>
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label fw-bold">Email</label>
             <input type="email" className="form-control" id="email" value={email} onChange={handleInputChange} placeholder='Enter Your Email'/>
           </div>
           <div className="mb-3">
-            <label htmlFor="phone" className="form-label">Phone</label>
+            <label htmlFor="phone" className="form-label fw-bold">Phone</label>
             <input type="text" className="form-control" id="phone" value={phone} onChange={handleInputChange} placeholder='Enter Your Phone Number'/>
           </div>
           <div className="mb-3">
-            <label htmlFor="comment" className="form-label">Comment</label>
+            <label htmlFor="comment" className="form-label fw-bold">Comment</label>
             <textarea  type="text" className="form-control" id="comment" value={comment} onChange={handleInputChange} placeholder='Enter Comment'/>
           </div>
         </form>

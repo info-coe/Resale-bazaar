@@ -10,7 +10,7 @@ const Filter = ({ products, onFilter }) => {
   const [selectedColor, setSelectedColor] = useState("");
 
 
-  // const materials = ["Silk", "Cotton", "Crepe", "Net", "Georgette", "Rayon", "Polyester", "Wool", "Linen", "Nylon", "Denim", "Leather", "Velvet", "Spandex (Elastane)"];
+  const materials = ["Silk", "Cotton", "Pattu" ,"Crepe", "Net", "Georgette", "Rayon", "Polyester", "Wool", "Linen", "Nylon", "Denim", "Leather", "Velvet", "Spandex (Elastane)"];
   const colors = [
     { name: "Red", code: "#ff0000" },
     { name: "Blue", code: "#0000ff" },
@@ -51,11 +51,11 @@ const Filter = ({ products, onFilter }) => {
   //   sessionStorage.setItem("women_selectedSize", newSize);
   // };
 
-  // const handleMaterialSelect = (material) => {
-  //   const newMaterial = selectedMaterial === material ? "" : material; // Toggle selection
-  //   setSelectedMaterial(newMaterial);
-  //   sessionStorage.setItem("women_selectedMaterial", newMaterial);
-  // };
+  const handleMaterialSelect = (material) => {
+    const newMaterial = selectedMaterial === material ? "" : material; // Toggle selection
+    setSelectedMaterial(newMaterial);
+    sessionStorage.setItem("women_selectedMaterial", newMaterial);
+  };
 
 
   const handlePriceRangeSelect = (priceRange) => {
@@ -122,7 +122,7 @@ const handleFilteredProducts = (filtered) => {
             ))}
           </div> */}
          
-          {/* <div className="mt-4">
+          <div className="mt-4">
       <h1 style={{fontSize:'20px'}}>Material</h1>
       
       <div className="d-flex flex-wrap align-items-start">
@@ -141,7 +141,7 @@ const handleFilteredProducts = (filtered) => {
   ))}
       </div>
 
-          </div> */}
+          </div>
 
           <div className="mt-4">
             <h1 style={{fontSize:'20px'}}>Price</h1>
