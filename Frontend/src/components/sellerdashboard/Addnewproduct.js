@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,  useRef } from "react";
 import axios from "axios";
 import MyNavbar from "../navbar";
 import Footer from "../footer";
@@ -115,52 +115,138 @@ export default function Addnewproduct() {
     setErrors(newErrors);
   };
 
+   // Create refs for each input element
+   const productnameInputRef = useRef(null);
+   const productdescriptionInputRef = useRef(null);
+   const colorInputRef = useRef(null);
+   const locationInputRef = useRef(null);
+   const notesInputRef = useRef(null);
 
+   const OccasionInputRef = useRef(null);
+   const TypeInputRef = useRef(null);
+   const BrandInputRef = useRef(null);
+   const SeasonInputRef = useRef(null);
+   const LengthInputRef = useRef(null);
+   
+
+   // Capitalization functions
+   const capitalizeWords = (str) => {
+    return str
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
+  const capitalizeFirstLetterOnly = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+   
+
+  // const handleInput = (event) => {
+  //   const { name, value } = event.target;
+
+  //   // Capitalize the first letter of each word in the input string
+  //   const capitalizeWords = (str) => {
+  //     return str
+  //       .split(" ")
+  //       .map((word) => {
+  //         return word.charAt(0).toUpperCase() + word.slice(1);
+  //       })
+  //       .join(" ");
+  //   };
+
+  //   const capitalizedValue = capitalizeWords(value);
+
+  //   setValues((prevValues) => ({
+  //     ...prevValues,
+  //     [name]: capitalizedValue,
+  //   }));
+
+  //   handleKeyup(event, capitalizedValue);
+  // };
   const handleInput = (event) => {
-    const { name, value } = event.target;
+    const { name, value, selectionStart, selectionEnd } = event.target;
 
-    // Capitalize the first letter of each word in the input string
-    const capitalizeWords = (str) => {
-      return str
-        .split(" ")
-        .map((word) => {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        })
-        .join(" ");
-    };
+    // Determine the capitalization rule based on the field name
+    let processedValue;
+    if (["productdescription", "notes"].includes(name)) {
+      // For productdescription and notes, capitalize only the first letter
+      processedValue = capitalizeFirstLetterOnly(value);
+    } else if (["productname", "color", "location"].includes(name)) {
+      // For productname, color, and location, capitalize the first letter of each word
+      processedValue = capitalizeWords(value);
+    } else {
+      // For other fields, just use the value as-is
+      processedValue = value;
+    }
 
-    const capitalizedValue = capitalizeWords(value);
-
+    // Update the state with the processed value
     setValues((prevValues) => ({
       ...prevValues,
-      [name]: capitalizedValue,
+      [name]: processedValue,
     }));
 
-    handleKeyup(event, capitalizedValue);
+    // Restore cursor position
+    requestAnimationFrame(() => {
+      if (name === "productname" && productnameInputRef.current) {
+        productnameInputRef.current.setSelectionRange(selectionStart, selectionEnd);
+      } else if (name === "productdescription" && productdescriptionInputRef.current) {
+        productdescriptionInputRef.current.setSelectionRange(selectionStart, selectionEnd);
+      } else if (name === "color" && colorInputRef.current) {
+        colorInputRef.current.setSelectionRange(selectionStart, selectionEnd);
+      } else if (name === "location" && locationInputRef.current) {
+        locationInputRef.current.setSelectionRange(selectionStart, selectionEnd);
+      } else if (name === "notes" && notesInputRef.current) {
+        notesInputRef.current.setSelectionRange(selectionStart, selectionEnd);
+      }
+    });
   };
 
+  // Map attribute names to their corresponding refs
+  // Refs for each attribute input
+  const attributeRefs = {
+    Occasion: useRef(null),
+    Type: useRef(null),
+    Brand: useRef(null),
+    Season: useRef(null),
+    Length: useRef(null),
+  };
 
-  const handleInputChange = (event, attribute) => {
-    const value = event.target.value;
+   // Handle input change
+  const handleInputChange = (event, attribute, ref) => {
+    const { value, selectionStart, selectionEnd, type } = event.target;
 
-    // Capitalize the first letter of each word in the input string
-    const capitalizeWords = (str) => {
-      return str
-        .split(" ")
-        .map((word) => {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        })
-        .join(" ");
-    };
+    let processedValue;
+    if (attribute === 'Length') {
+      // For 'Length', use value as is (numeric input)
+      processedValue = value;
+    } else {
+      // For other attributes, apply capitalization rules
+      processedValue = capitalizeWords(value);
+    }
 
-    const capitalizedValue = capitalizeWords(value);
-
-    setCustomAttributes(
-      customAttributes.map((item) =>
-        item.name === attribute ? { ...item, value: capitalizedValue } : item
+    // Update the state with new value
+    setCustomAttributes((prevAttributes) =>
+      prevAttributes.map((item) =>
+        item.name === attribute ? { ...item, value: processedValue } : item
       )
     );
+
+    // Restore cursor position
+    if (type !== 'number') {
+      requestAnimationFrame(() => {
+        if (ref.current) {
+          ref.current.setSelectionRange(selectionStart, selectionEnd);
+        }
+      });
+    }
   };
+  
+  
 
   const handleProducttype = (event) => {
     setValues((prev) => ({
@@ -195,14 +281,13 @@ export default function Addnewproduct() {
     }
   };
 
-  const handleCheckboxChange = (attribute) => {
-    if (selectedAttributes.includes(attribute)) {
-      setSelectedAttributes(
-        selectedAttributes.filter((item) => item !== attribute)
-      );
-    } else {
-      setSelectedAttributes([...selectedAttributes, attribute]);
-    }
+  // Handle checkbox changes in modal
+  const handleCheckboxChange = (option) => {
+    setSelectedAttributes((prev) =>
+      prev.includes(option)
+        ? prev.filter((attr) => attr !== option)
+        : [...prev, option]
+    );
   };
 
   const handleAddAttribute = () => {
@@ -529,6 +614,7 @@ export default function Addnewproduct() {
                             name="productname"
                             placeholder="Product Name"
                             value={values.productname}
+                            ref={productnameInputRef}
                             onChange={(e) => {
                               handleInput(e);
                               handleKeyup(e);
@@ -584,6 +670,7 @@ export default function Addnewproduct() {
                             placeholder="Product Description"
                             value={values.productdescription}
                             onChange={handleInput}
+                            ref={productdescriptionInputRef}
                             required
                           ></textarea>
                           <span className="text-danger fs-4"> &nbsp;*</span>
@@ -603,6 +690,7 @@ export default function Addnewproduct() {
                             placeholder="Color"
                             value={values.color}
                             onChange={handleInput}
+                            ref={colorInputRef}
                             required
                           />
                           <span className="text-danger fs-4"> &nbsp;*</span>
@@ -624,6 +712,7 @@ export default function Addnewproduct() {
                             name="location"
                             placeholder="Location"
                             value={values.location}
+                            ref={locationInputRef}
                             onChange={handleInput}
                             required
                           />
@@ -768,7 +857,7 @@ export default function Addnewproduct() {
                                 <option value="Denim">Denim</option>
                                 <option value="Leather">Leather</option>
                                 <option value="Velvet">Velvet</option>
-                                <option value="Spandex (Elastane)">
+                                <option value="Spandex Elastane">
                                   Spandex (Elastane)
                                 </option>
                               </select>
@@ -947,6 +1036,7 @@ export default function Addnewproduct() {
                             placeholder="Notes (Optional)"
                             value={values.notes}
                             onChange={handleInput}
+                            ref={notesInputRef}
                             // required
                           ></textarea>
                           {/* <span className="text-danger fs-4"> &nbsp;*</span> */}
@@ -973,22 +1063,24 @@ export default function Addnewproduct() {
                           />
                         </div>
                       ))} */}
-                      {customAttributes.map((attribute) => (
-    <div key={attribute.name} className="mb-3">
-        <label htmlFor={attribute.name} className="form-label">
+                     {customAttributes.map((attribute) => (
+        <div key={attribute.name} className="mb-3">
+          <label htmlFor={attribute.name} className="form-label">
             <b>{attribute.name}</b>
-        </label>
-        <input
+          </label>
+          <input
             type={attribute.name === "Length" ? "number" : "text"}
             className="form-control"
             id={attribute.name}
+            name={attribute.name}
             placeholder={placeholderValues[attribute.name]}
             value={attribute.value}
-            onChange={(event) => handleInputChange(event, attribute.name)}
+            onChange={(e) => handleInputChange(e, attribute.name, attributeRefs[attribute.name])}
+            ref={attributeRefs[attribute.name]}
             min={attribute.name === "Length" ? "1" : undefined}
-        />
-    </div>
-))}
+          />
+        </div>
+      ))}
 
                       {/* <div className="mb-3">
                         <button

@@ -31,15 +31,17 @@ const ContactSeller = () => {
     <div className="fullscreen">
     <MyNavbar/>
     <main>
-    <div className="col-lg-12 p-lg-4 p-2 text-center">
+    <div className="col-lg-12 p-lg-4 p-2 table-responsive">
             
-              <table className="table table-hover">
+              <table 
+               id="dynamic-table"
+              className="table table-hover table-striped">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Comment</th>
+                    <th style={{minWidth:"250px"}}>Name</th>
+                    <th style={{minWidth:"250px"}}>Email</th>
+                    <th style={{minWidth:"250px"}}>Phone</th>
+                    <th style={{minWidth:"300px", maxWidth:"400px"}}>Comment</th>
                   </tr>
                 </thead>
 
