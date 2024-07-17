@@ -54,7 +54,7 @@ export default function Productdetails() {
       sessionStorage.getItem("user-token") !== null && setIsLoggedIn(true);
     }
   }, []);
-
+  console.log(add);
   const AmountChange = (e) => {
     setAdd(e);
   };
@@ -117,7 +117,7 @@ export default function Productdetails() {
 
   const updateProductDetailsImg = (product, index) => {
     const extension = product.split(".").pop().toLowerCase();
-    if (["mp4", "webm", "avi" ,"mov", "quicktime"].includes(extension)) {
+    if (["mp4", "webm", "avi", "mov", "quicktime"].includes(extension)) {
       productDetailsImgRef.current.innerHTML = `
         <video
           src=${product}
@@ -174,13 +174,13 @@ export default function Productdetails() {
   };
   const datta = JSON.parse(productdetails.image);
   const firstImage = datta[0];
-
+   console.log(add.length);
   const handleOffer = () => {
-    if (add === "0.00" || undefined) {
+    if (add === "0.00" || add.length==0) {
+      console.log('success')
       return null;
     } else {
-      setSuccess(true);
-
+      setSuccess(true)
       axios
         .post(
           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`,
@@ -198,11 +198,8 @@ export default function Productdetails() {
     }
   };
 
- 
-
   // sessionStorage.getItem("user-token")===null ? alert('Please Login') : "#exampleModal";
   //Offer
-
 
   const filte = offer.filter(
     (cur) =>
@@ -223,6 +220,7 @@ export default function Productdetails() {
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
+          console.log(res)
           // Filter user details where user_id === productdetails.seller_id
           // const filteredUserDetails = res.data.filter(
           const filteredUserDetails = res.data.filter(
@@ -237,7 +235,7 @@ export default function Productdetails() {
             shopname: item.shopname,
             //Add more fields as needed
           }));
-          // Set filtered user details to state
+          // console.log(userDetails)
           setUserDetails(userDetails);
         }
       })
@@ -252,7 +250,7 @@ export default function Productdetails() {
         }
       })
       .catch((error) => console.log(error));
-  }, [offer,handleOffer, productdetails.seller_id]);
+  }, [offer, handleOffer, productdetails.seller_id]);
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
     // Navigate to seller profile page with sellerId as a parameter
@@ -284,7 +282,7 @@ export default function Productdetails() {
   //   }
   // };
   // console.error('Error updating like count:', error);
-console.log(userdetails)
+  // console.log(userdetails);
   return (
     <div className="fullscreen">
       <MyNavbar />
@@ -354,7 +352,7 @@ console.log(userdetails)
                       position: "relative",
                     }}
                   >
-                    {["mp4", "webm", "avi","mov", "quicktime"].includes(
+                    {["mp4", "webm", "avi", "mov", "quicktime"].includes(
                       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${product}`
                         .split(".")
                         .pop()
@@ -581,7 +579,7 @@ console.log(userdetails)
             <p className="text-success fs-4">
               <b>&#36;{productdetails.price}.00</b>
             </p>
-           
+
             {productdetails.quantity > 0 ? (
               admin !== "admin" ? (
                 <>
@@ -682,7 +680,7 @@ console.log(userdetails)
                                       />
                                       <span style={{ fontSize: "0.75rem" }}>
                                         {/* Enter Your Offer */}
-                                        {add === 0 ? (
+                                        {add == 0 ? (
                                           <span style={{ color: "red" }}>
                                             Please Select Any One Off
                                           </span>
@@ -708,11 +706,11 @@ console.log(userdetails)
                                             />
                                           </div>
 
-                                          <div className="col-auto">
+                                          {/* <div className="col-auto">
                                             <i style={{ fontSize: "0.75rem" }}>
                                               &#36; 6.29 shipping
                                             </i>
-                                          </div>
+                                          </div> */}
                                         </div>
                                       </div>
 
@@ -739,14 +737,14 @@ console.log(userdetails)
                                             20% Off
                                           </span>
                                           <button
-                                          onClick={()=>setOfferAmout('20%')}
+                                            onClick={() => setOfferAmout("20%")}
                                             type="button"
                                             value="34.00"
                                             className="btn border-secondary p-3 w-100"
                                             style={{
                                               paddingTop: "2rem",
                                               backgroundColor:
-                                               offerAmout === "20%"
+                                                offerAmout === "20%"
                                                   ? "rgba(38, 109, 28, 0.19)"
                                                   : null,
                                             }}
@@ -782,13 +780,13 @@ console.log(userdetails)
                                             15% Off
                                           </span>
                                           <button
-                                           onClick={()=>setOfferAmout('15%')}
+                                            onClick={() => setOfferAmout("15%")}
                                             type="button"
                                             className="btn border-secondary p-3 w-100"
                                             style={{
                                               paddingTop: "2rem",
                                               backgroundColor:
-                                                 offerAmout === "15%"
+                                                offerAmout === "15%"
                                                   ? "rgba(38, 109, 28, 0.19)"
                                                   : null,
                                             }}
@@ -823,13 +821,13 @@ console.log(userdetails)
                                             10% Off
                                           </span>
                                           <button
-                                           onClick={()=>setOfferAmout('10%')}
+                                            onClick={() => setOfferAmout("10%")}
                                             type="button"
                                             className="btn border-secondary p-3 w-100"
                                             style={{
                                               paddingTop: "2rem",
                                               backgroundColor:
-                                                 offerAmout === "10%"
+                                                offerAmout === "10%"
                                                   ? "rgba(38, 109, 28, 0.19)"
                                                   : null,
                                             }}
@@ -918,10 +916,10 @@ console.log(userdetails)
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
                       &nbsp;
-                      {user.shopname == null || undefined||""
+                      {user.shopname == null || undefined || ""
                         ? user.name
                         : user.shopname}
-                    </p>    
+                    </p>
                     <button
                       className="btn btn-outline-primary"
                       onClick={() => handleViewProfile(user.userId)}

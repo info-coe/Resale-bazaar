@@ -21,7 +21,7 @@ const Register = () => {
   const [error, setError] = useState("");
   const [userdetails, setUserDetails] = useState([]);
   const navigate = useNavigate();
-
+  const [shopNameFilter, setShopNameFilter] = useState([]);
   const handleInput = (event) => {
     setValues((prev) => ({
       ...prev,
@@ -29,12 +29,12 @@ const Register = () => {
     }));
     // console.log(CryptoJS.MD5(event.target.value).toString())
   };
-
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
+          setShopNameFilter(res.data);
           const userDetails = res.data.map((item) => ({
             email: item.email,
             phone: item.phone,
@@ -45,12 +45,13 @@ const Register = () => {
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+ 
   const handleSubmit = (event) => {
     event.preventDefault();
     const { email, phone, password } = values;
-
-    if (userdetails.some((user) => user.email === email)) {
+    if (values.shopname && shopNameFilter.some((user) => user.shopname === values.shopname)) {
+      setError("This ShopName already exist");
+    } else if (userdetails.some((user) => user.email === email)) {
       setError("This Email already Registered");
     } else if (userdetails.some((user) => user.phone.toString() === phone)) {
       setError("Phone number already exists");
@@ -153,8 +154,18 @@ const Register = () => {
         .catch((err) => console.log(err));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    axios
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+      .then((res) => {
+        if (res.data !== "Fail" && res.data !== "Error") {
+          console.log(res);
+        }
+      })
+
+      .catch((err) => console.log(err));
   }, [user]);
-//eslint-disable-next-line no-unused-vars
+  //eslint-disable-next-line no-unused-vars
   const logOut = () => {
     googleLogout();
     setProfile(null);

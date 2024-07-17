@@ -20,7 +20,9 @@ import Jewelryallcollection from "./components/jewelry/Jewelryallcollection";
 
 
 
-import Login from "./components/login";
+// import Login from "./components/login";
+
+
 import Register from "./components/register";
 import Customerinfo from "./components/customerdetails/customerinfo";
 import Addresses from "./components/customerdetails/addresses";
@@ -58,7 +60,7 @@ import SellerProfile from "./components/sellerdashboard/SellerProfilePage";
 import Scrolltotop from "./components/Scrolltotop";
 import ContactSeller from "./components/sellerdashboard/ContactSeller";
 import ReviewRatings from "./components/customerdetails/reviewsRatings";
-
+const Login=React.lazy(()=>import ('./components/login'))
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -75,8 +77,6 @@ function App() {
     checkUserToken();
   }, [isUserLoggedIn]);
 
-
-
   return (
     <>
       <BrowserRouter basename="Resale-bazaar">
@@ -84,7 +84,8 @@ function App() {
         <Routes>
           {/* Login routes */}
           <Route path="register" element={<Register />}></Route>
-          <Route path="login" element={<Login />}></Route>
+          {/* <Route path="login" element={<Login />}></Route> */}
+          <Route path="login" element={<Login/>}></Route>
           <Route path="acceptproduct" element={<Acceptproduct/>}></Route>
           <Route path="checkoutpage" element={<Checkout/>}></Route>
       
