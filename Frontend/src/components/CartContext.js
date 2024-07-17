@@ -26,31 +26,56 @@ export const CartProvider = ({ children }) => {
     sessionStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
-  const addToCart = (product,from) => {
-    const isProductInCart = cartItems.some(item => item.product_id === product.product_id);
-    const userProduct=product.seller_id.toString()===sessionStorage.getItem('user-token')
-    if (isProductInCart) {
-      alert("Product already exists in the cart");
-    }
-    else if(userProduct){
-      alert('You are the seller of this product')
-    }
-    else{
-      axios
-      .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`, {product,from})
-      .then((response) => {
-        setCartItems((prevItems) => [...prevItems, { ...product }]);
-      })
-      .catch((error) => {
-        console.error("Error adding to cart:", error);
-      });
-    alert("Product added to cart");
-    window.location.reload(false);
-    }
+  // const addToCart = (product,from) => {
+  //   const isProductInCart = cartItems.some(item => item.product_id === product.product_id);
+  //   const userProduct=product.seller_id.toString()===sessionStorage.getItem('user-token')
+  //   if (isProductInCart) {
+  //     alert("Product already exists in the cart");
+  //   }
+  //   else if(userProduct){
+  //     alert('You are the seller of this product')
+  //   }
+  //   else{
+  //     axios
+  //     .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`, {product,from})
+  //     .then((response) => {
+  //       setCartItems((prevItems) => [...prevItems, { ...product }]);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error adding to cart:", error);
+  //     });
+  //   alert("Product added to cart");
+  //   window.location.reload(false);
+  //   }
    
 
+  // };
+  const addToCart = (product, from) => {
+    const isProductInCart = cartItems.some(item => item.product_id === product.product_id);
+    const userProduct = product.seller_id.toString() === sessionStorage.getItem('user-token');
+  
+    if (isProductInCart) {
+      alert("Product already exists in the cart");
+    } else if (userProduct) {
+      alert('You are the seller of this product');
+    } else {
+      // Set the default quantity to 1
+      const productWithQuantity = { ...product, quantity: 1 };
+  
+      axios
+        .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`, { product: productWithQuantity, from })
+        .then((response) => {
+          setCartItems((prevItems) => [...prevItems, productWithQuantity]);
+        })
+        .catch((error) => {
+          console.error("Error adding to cart:", error);
+        });
+  
+      alert("Product added to cart");
+      window.location.reload(false);
+    }
   };
-
+  
   const removeFromCart = (productId) => {
     axios
       .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}`)
@@ -65,7 +90,14 @@ export const CartProvider = ({ children }) => {
         console.error("Error removing product from cart:", error);
       });
   };
-
+  const updateCartItemQuantity = (productId, newQuantity) => {
+    setCartItems(prevItems => {
+      return prevItems.map(item =>
+        item.id === productId ? { ...item, quantity: newQuantity } : item
+      );
+    });
+  };
+  
   const incrementQuantity = (index) => {
     const updatedCartItems = [...cartItems];
     updatedCartItems[index].quantity++;
@@ -82,7 +114,7 @@ export const CartProvider = ({ children }) => {
 
   const calculateTotalPrice = () => {
     return cartItems.reduce(
-      (total, item) => total + item.price,
+      (total, item) => total + item.price * item.quantity,
       0
     );
   };
@@ -181,7 +213,8 @@ export const CartProvider = ({ children }) => {
         shippingAddressData,
         setShippingAddressData,
         billingAddressData,
-        setBillingAddressData
+        setBillingAddressData,
+        updateCartItemQuantity
       }}
     >
       {children}

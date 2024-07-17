@@ -40,7 +40,7 @@ export default function Orders() {
       });
   }, []);
   const userId = parseInt(sessionStorage.getItem("user-token"));
-
+ console.log(orders)
   const filteredProducts = allProducts
     .filter((product) =>
       orders.some(
@@ -51,6 +51,7 @@ export default function Orders() {
       const relatedOrder = orders.find(
         (order) => order.buyer_id === userId && order.product_id === product.id
       );
+      console.log(relatedOrder)
       return {
         ...product,
         order_id: relatedOrder.order_id,
@@ -59,9 +60,9 @@ export default function Orders() {
         shipped_date: relatedOrder.shipped_date,
         delivered_date: relatedOrder.delivered_date,
         buyer_id :relatedOrder.buyer_id,
+        order_quantity :relatedOrder.order_quantity
       };
     });
-
 
   const cancelClick = (id, updatedQuantity) => {
     const confirmation = window.confirm(
@@ -99,7 +100,6 @@ export default function Orders() {
       window.location.reload(false);
     }
   };
-
   return (
     <div className="fullscreen">
       <MyNavbar />
@@ -145,7 +145,7 @@ export default function Orders() {
                           {product.name}
                         </td>
                         <td className="pt-3" style={{ minWidth: "100px" }}>
-                          &#36; {product.price}
+                          &#36; {product.price * product.order_quantity}
                         </td>
                         <td className="pt-3" style={{ minWidth: "100px" }}>
                           {product.delivered_date === null ? (
@@ -154,7 +154,7 @@ export default function Orders() {
                               onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation(); // Prevent Link click event
-                                cancelClick(product.id, product.quantity + 1);
+                                cancelClick(product.id, product.quantity + product.order_quantity);
                               }}
                             >
                               Cancel

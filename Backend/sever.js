@@ -925,8 +925,46 @@ app.delete("/handleproducts/:id", (req, res) => {
   });
 });
 
+// app.post("/addcart", (req, res) => {
+//   // const productData = req.body;
+//   var productid;
+//   if (req.body.from === "wish") {
+//     productid = req.body.product.product_id;
+//   } else {
+//     productid = req.body.product.id;
+//   }
+
+//   const sql = addToCartQuery;
+//   const data = [
+//     productid,
+//     req.body.product.product_type,
+//     req.body.product.category,
+//     req.body.product.name,
+//     req.body.product.image,
+//     req.body.product.description,
+//     req.body.product.location,
+//     req.body.product.color,
+//     req.body.product.alteration,
+//     req.body.product.size,
+//     req.body.product.measurements,
+//     req.body.product.worn,
+//     req.body.product.quantity,
+//     req.body.product.price,
+//     req.body.product.accepted_by_admin,
+//     req.body.product.seller_id,
+//     req.body.product.userid,
+//   ];
+//   db.query(sql, [data], (err, result) => {
+//     console.log(err);
+//     if (err) {
+//       console.error("Error inserting data:", err);
+//       return res.status(500).send("Error adding product");
+//     }
+//     console.log("Product added successfully");
+//     res.send("Product added successfully");
+//   });
+// });
 app.post("/addcart", (req, res) => {
-  // const productData = req.body;
   var productid;
   if (req.body.from === "wish") {
     productid = req.body.product.product_id;
@@ -934,7 +972,7 @@ app.post("/addcart", (req, res) => {
     productid = req.body.product.id;
   }
 
-  const sql = addToCartQuery;
+  const sql = addToCartQuery; // Ensure this query is set up to handle the new quantity
   const data = [
     productid,
     req.body.product.product_type,
@@ -948,14 +986,14 @@ app.post("/addcart", (req, res) => {
     req.body.product.size,
     req.body.product.measurements,
     req.body.product.worn,
+    req.body.product.quantity, // Make sure quantity is included
     req.body.product.price,
     req.body.product.accepted_by_admin,
     req.body.product.seller_id,
     req.body.product.userid,
   ];
-
+  
   db.query(sql, [data], (err, result) => {
-    console.log(err);
     if (err) {
       console.error("Error inserting data:", err);
       return res.status(500).send("Error adding product");
@@ -1242,11 +1280,11 @@ app.delete('/saveShippingAddress/:id', (req, res) => {
 app.post("/updatepayment", (req, res) => {
   const payment_status = req.body.payment_status;
   const token = parseInt(req.body.token); // Ensure that token is parsed as an integer
-  const { shipment_id, order_id, ordered_date, shipped_date, delivered_date } = req.body;
+  const { shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity } = req.body;
 
   // Insert into orders table
   const insertOrderSql = paymentStatusQuery;
-  db.query(insertOrderSql, [req.body.product_id, payment_status, token, shipment_id, order_id, ordered_date, shipped_date, delivered_date], (err, result) => {
+  db.query(insertOrderSql, [req.body.product_id, payment_status, token, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity], (err, result) => {
     if (err) {
       console.error("Error inserting into orders table:", err);
       return res.status(500).json({ error: "Error updating payment status" });
@@ -1298,7 +1336,23 @@ app.put('/:productId/allproducts', (req, res) => {
     return res.status(200).json({ message: 'Like count updated successfully' });
   });
 });
+app.put('/:productId/updateQuantityAndPrice', (req, res) => {
+  const productId = req.params.productId;
+  const { quantity} = req.body; // Assuming quantity and price are sent in the request body
+  console.log(req.body)
+  // Update quantity and price in your database
+  const sql = 'UPDATE cart SET quantity = ? WHERE id = ?';
+  const values = [quantity,productId];
 
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('Error updating quantity and price:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    console.log('Quantity and price updated successfully');
+    return res.status(200).json({ message: 'Quantity and price updated successfully' });
+  });
+});
 
 app.post('/reviews', upload.array('images', 5), (req, res) => {
   const { rating, description, title ,sellerId ,buyerId} = req.body;
@@ -1325,6 +1379,9 @@ app.post('/reviews', upload.array('images', 5), (req, res) => {
   return res.status(500).json({ message: "Internal Server Error" });
 }
 });
+
+
+
 
 
 
@@ -1364,6 +1421,8 @@ app.get('/shipmentjoin', (req, res) => {
 
 
 
+
+
 // payment
 // Replace these with your PayPal Sandbox API credentials
 paypal.configure({
@@ -1376,7 +1435,7 @@ app.post("/createPayment", (req, res) => {
   const cartItems = req.body.cartItems;
   const items = cartItems.map((item) => ({
     name: item.name,
-    amount: item.price,
+    amount: item.price * item.quantity,
     currency: "USD",
   }));
   const create_payment_json = {
@@ -1397,7 +1456,7 @@ app.post("/createPayment", (req, res) => {
         amount: {
           currency: "USD",
           total: cartItems
-            .reduce((sum, item) => sum + item.price, 0)
+            .reduce((sum, item) => sum + item.price * item.quantity, 0)
             .toFixed(2),
         },
         description: "Purchase from Shopping Cart.",
@@ -1444,7 +1503,7 @@ app.get("/success", (req, res) => {
         res.status(500).send("Error executing payment");
       } else {
 
-        res.redirect(`${process.env.REACT_APP_HOST}3000/Resale-bazaar/finalcheckoutpage`);
+        res.redirect(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/finalcheckoutpage`);
       }
     }
   );
@@ -1452,7 +1511,7 @@ app.get("/success", (req, res) => {
 
 app.get("/cancel", (req, res) => {
 
-  res.redirect(`${process.env.REACT_APP_HOST}3000/Resale-bazaar/`);
+  res.redirect(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/`);
 });
 
 app.listen(process.env.REACT_APP_PORT, () => {

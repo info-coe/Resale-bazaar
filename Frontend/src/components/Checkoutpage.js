@@ -762,6 +762,7 @@ const Checkout = () => {
                     <tr>
                       <th>Product Image</th>
                       <th>Product Name</th>
+                      <th>Product Quantity</th>
                       <th>Total Price</th>
                     </tr>
                   </thead>
@@ -776,7 +777,8 @@ const Checkout = () => {
                           />
                         </td>
                         <td className="text-secondary">{product.name}</td>
-                        <td> &#36;{product.price}</td>
+                        <td>{product.quantity}</td>
+                        <td> &#36;{product.price * product.quantity}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -958,6 +960,7 @@ const Checkout = () => {
                     <tr>
                       <th>Product Image</th>
                       <th>Product Name</th>
+                      <th>Product Quantity</th>
                       <th>Total Price</th>
                     </tr>
                   </thead>
@@ -972,7 +975,8 @@ const Checkout = () => {
                           />
                         </td>
                         <td className="text-secondary">{product.name}</td>
-                        <td>&#36;{product.price}</td>
+                        <td>{product.quantity}</td>
+                        <td>&#36;{product.price * product.quantity}</td>
                       </tr>
                     ))}
                   </tbody>

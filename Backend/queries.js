@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS register (
     user_id INT NOT NULL AUTO_INCREMENT,
     firstname VARCHAR(60) NOT NULL,
     lastname VARCHAR(60) NOT NULL,
-    shopname VARCHAR(90) NULL,
+     shopname VARCHAR(90) NULL,
     phone BIGINT(10) NOT NULL,
     email VARCHAR(60) NOT NULL,
     password VARCHAR(60) NOT NULL,
@@ -111,6 +111,7 @@ const ordersproducts = `
     ordered_date DATE NULL,
     shipped_date DATE NULL,
     delivered_date DATE NULL,
+    quantity INT NULL,
     UNIQUE INDEX id_UNIQUE (id ASC));
 `
 
@@ -245,7 +246,7 @@ const retrievingKidsProductsQuery = "select * from products WHERE `product_type`
 const retrievingJewelleryProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const retrievingBooksProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, quantity, price, notes, material, occasion, type, brand, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, \`condition\`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
+const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, \`condition\`,`quantity`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
 const retrievingCartItemsQuery = "select * from cart";
 const updateCartItemsQuery = "UPDATE cart SET userid = ? WHERE id = ?";
 const deleteCartItemsQuery = "DELETE FROM cart WHERE id = ?";
@@ -259,7 +260,7 @@ const addBillingAddress = `INSERT INTO billing_address (firstname, lastname, ema
 const addShippingAddress = `INSERT INTO shipping_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 const updateShippingAddress = `UPDATE shipping_address SET firstname = ?, lastname = ?, email = ?, country = ?, state = ?, city = ?, address1 = ?, address2 = ?, pincode = ?, phone = ? WHERE id = ?`;
 const deleteShippingAddress = "DELETE FROM shipping_address WHERE id = ?"
-const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buyer_id, shipment_id, order_id, ordered_date, shipped_date, delivered_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buyer_id, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
 const deleteProductsQuery = "DELETE FROM  products WHERE id=?";
 const deletecartitemQuery = "DELETE FROM cart WHERE userid = ? AND EXISTS (SELECT 1 FROM orders WHERE buyer_id = ?)"
 const getbillingAddress= "Select * from billing_address"

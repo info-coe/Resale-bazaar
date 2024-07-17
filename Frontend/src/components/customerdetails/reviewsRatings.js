@@ -82,7 +82,7 @@ function ReviewRatings() {
   
     try {
       //eslint-disable-next-line no-unused-vars
-      const response = await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/reviews`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/reviews`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -98,7 +98,7 @@ function ReviewRatings() {
       });
       alert('Review added successfully');
       window.location.reload(false)
-      window.location.href = `${process.env.REACT_APP_HOST}3000/Resale-bazaar`;
+      window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar`;
 
     } catch (error) {
       console.error('Error adding review:', error);
