@@ -92,7 +92,8 @@ CREATE TABLE IF NOT EXISTS cart (
     alteration VARCHAR(45) NOT NULL,
     size VARCHAR(45) NOT NULL,
     measurements TINYTEXT NOT NULL,
-  \`condition\` VARCHAR(255) NULL,     
+  \`condition\` VARCHAR(255) NULL,  
+     quantity INT NOT NULL,   
     price INT NOT NULL,
     accepted_by_admin VARCHAR(60) NOT NULL,
     seller_id INT NULL,
@@ -111,7 +112,7 @@ const ordersproducts = `
     ordered_date DATE NULL,
     shipped_date DATE NULL,
     delivered_date DATE NULL,
-    quantity INT NULL,
+    order_quantity INT NULL,
     UNIQUE INDEX id_UNIQUE (id ASC));
 `
 
