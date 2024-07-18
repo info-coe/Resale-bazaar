@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS cart (
     size VARCHAR(45) NOT NULL,
     measurements TINYTEXT NOT NULL,
   \`condition\` VARCHAR(255) NULL,  
-     quantity INT NOT NULL,   
+    quantity INT NOT NULL,   
     price INT NOT NULL,
     accepted_by_admin VARCHAR(60) NOT NULL,
     seller_id INT NULL,
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS contactseller (
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   phone BIGINT(10) NOT NULL,
-  comment VARCHAR(255)NOT NULL
+  comment LONGTEXT NULL
 );
 `
 const ReviewsQuery = `
