@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import MyNavbar from '../navbar';
 import Footer from '../footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Scrolltotopbtn from '../Scrolltotopbutton';
 
 const SellerProfile = () => {
   const { sellerId } = useParams();
@@ -133,7 +134,7 @@ const SellerProfile = () => {
                   <i className="bi bi-person-circle fs-1"></i>&nbsp;{sellerDetails.shopname == null || undefined || '' ? sellerDetails.name : sellerDetails.shopname}
                 </h2>
                 <button className="btn btn-primary ms-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Contact Seller
+                  Contact to Seller
                 </button>
               </div>
             </div>
@@ -181,7 +182,7 @@ const SellerProfile = () => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Contact Seller</h5>
+              <h5 className="modal-title" id="exampleModalLabel">Contact to Seller</h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
@@ -239,7 +240,7 @@ const SellerProfile = () => {
                     onChange={handleInputChange} 
                     placeholder='Enter Comment' 
                     ref={commentInputRef} 
-                    required
+                    // required
                   />
                 </div>
                 <div className="modal-footer">
@@ -253,6 +254,7 @@ const SellerProfile = () => {
       </div>
 
       <Footer />
+      <Scrolltotopbtn/>
     </>
   );
 };

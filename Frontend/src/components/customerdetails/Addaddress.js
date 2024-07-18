@@ -3,6 +3,7 @@ import MyNavbar from "../navbar";
 import Customermenu from "./Customermenu";
 import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 export default function Addaddress() {
   return (
@@ -194,6 +195,7 @@ export default function Addaddress() {
         </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 }

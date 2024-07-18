@@ -6,6 +6,7 @@ import axios from "axios";
 import CryptoJS from "crypto-js";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { useData } from "./CartContext";
+import Scrolltotopbtn from "./Scrolltotopbutton";
 
 const Register = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
@@ -370,6 +371,7 @@ const Register = () => {
         </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 };

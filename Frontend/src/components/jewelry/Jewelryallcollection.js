@@ -12,10 +12,11 @@ import Necklaceimg from "../../images/necklace.webp";
 import Banglesimg from "../../images/bangles.jpg";
 import Earringsimg from "../../images/earrings.jpg";
 import Ringsimg from "../../images/ring.jpg";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Jewelryallcollection = () => {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(24);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -119,7 +120,7 @@ const Jewelryallcollection = () => {
           <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Jewellery Collection"/>
           
         <div className="">
-          <div className="d-md-flex flex-wrap ms-md-2 mt-5">
+          <div className="product-grid container">
             {tableData.length > 0 ? (
               tableData.map((product, index) => (
                 <Product
@@ -145,6 +146,7 @@ const Jewelryallcollection = () => {
       </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 };

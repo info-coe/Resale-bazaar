@@ -2,6 +2,7 @@ import React, { useState,  useRef } from "react";
 import axios from "axios";
 import MyNavbar from "../navbar";
 import Footer from "../footer";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 export default function Addnewproduct() {
   const [categories, setCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
@@ -60,10 +61,30 @@ export default function Addnewproduct() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if there are no errors
   };
+  // const handleAddMediaChange = (e, type) => {
+  //   const files = Array.from(e.target.files);
+  //   const newMedia = { ...media };
+
+  //   if (type === "images") {
+  //     files.forEach((file) => {
+  //       const nextAvailableIndex = newMedia.images.findIndex(
+  //         (image) => image === null
+  //       );
+  //       if (nextAvailableIndex !== -1) {
+  //         newMedia.images[nextAvailableIndex] = file;
+  //       }
+  //     });
+  //   } else if (type === "video" && files.length > 0) {
+  //     newMedia.video = files[0];
+  //   }
+
+  //   setMedia(newMedia);
+  // };
   const handleAddMediaChange = (e, type) => {
     const files = Array.from(e.target.files);
     const newMedia = { ...media };
-
+    const newErrors = { ...errors };
+  
     if (type === "images") {
       files.forEach((file) => {
         const nextAvailableIndex = newMedia.images.findIndex(
@@ -74,10 +95,20 @@ export default function Addnewproduct() {
         }
       });
     } else if (type === "video" && files.length > 0) {
-      newMedia.video = files[0];
+      const file = files[0];
+      const maxSizeInBytes = 2.1 * 1024 * 1024; // 2MB in bytes
+      if (file.size > maxSizeInBytes) {
+        newErrors.video = "Video size must be less than 2MB";
+        setErrors(newErrors);
+        return;
+      } else {
+        newMedia.video = file;
+        delete newErrors.video;
+      }
     }
-
+  
     setMedia(newMedia);
+    setErrors(newErrors);
   };
 
   const removeMedia = (type, index) => {
@@ -137,9 +168,9 @@ export default function Addnewproduct() {
       .join(" ");
   };
 
-  const capitalizeFirstLetter = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
+  // const capitalizeFirstLetter = (str) => {
+  //   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  // };
 
   const capitalizeFirstLetterOnly = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -326,16 +357,18 @@ export default function Addnewproduct() {
       updatedValues.source = "NA";
     }
     if (values.producttype === "women") {
-      updatedValues.size = "NA";
+      // updatedValues.size = "NA";
       updatedValues.alteration = "NA";
       // updatedValues.material = "NA";
       updatedValues.source = "NA";
     }
     if(values.category === "Sarees"){
       updatedValues.measurements = "NA";
+      updatedValues.size = "NA";
     }
     if (values.producttype === "kids") {
       updatedValues.source = "NA";
+      updatedValues.age= "NA"
     }
 
     const formData = new FormData();
@@ -409,11 +442,8 @@ export default function Addnewproduct() {
   };
 
   const allDivs = placeholders.map((placeholder, index) => (
-    <div className="col-4 col-md-3  mb-3" key={index}>
-      <div
-        className="card position-relative bg-light"
-        style={{ height: "140px" }}
-      >
+    <div className="col-4 col-md-3 mb-3" key={index}>
+      <div className="card position-relative bg-light" style={{ height: "140px" }}>
         {media.images[index] ? (
           <>
             <img
@@ -461,80 +491,80 @@ export default function Addnewproduct() {
     </div>
   ));
 
-  // Add the addPhoto div if there's space available
-  const nextAvailableIndex = media.images.findIndex((image) => image === null);
-  if (nextAvailableIndex !== -1 && nextAvailableIndex < totalPlaceholders) {
-    allDivs.splice(
-      nextAvailableIndex,
-      0,
-      <div className="col-4 col-md-3 mb-3" key="addPhoto">
-        <div
-          className="card d-flex justify-content-center align-items-center bg-light"
-          style={{ height: "140px" }}
-        >
-          <label className="w-100 text-center" htmlFor="addPhotoInput">
-            <i className="bi bi-camera-fill fs-5"></i>
-            <p>Add a photo</p>
-          </label>
-          <input
-            id="addPhotoInput"
-            type="file"
-            accept="image/jpeg, image/png"
-            multiple
-            onChange={(e) => handleAddMediaChange(e, "images")}
-            style={{ display: "none" }}
-            // required
-          />
-        </div>
-      </div>
-    );
-  }
-  allDivs.push(
-    <div className="col-4 col-md-3 mb-3" key="addVideo">
+ // Add the addPhoto div if there's space available
+const nextAvailableIndex = media.images.findIndex((image) => image === null);
+if (nextAvailableIndex !== -1 && nextAvailableIndex < totalPlaceholders) {
+  allDivs.splice(
+    nextAvailableIndex,
+    0,
+    <div className="col-4 col-md-3 mb-3" key="addPhoto">
       <div
         className="card d-flex justify-content-center align-items-center bg-light"
         style={{ height: "140px" }}
-        title="Accepts only MP4, WEBM, AVI, MOV formats"
       >
-        {media.video ? (
-          <>
-            <video
-              controls
-              src={URL.createObjectURL(media.video)}
-              style={{
-                height: "100%",
-                width: "100%",
-                objectFit: "contain",
-                display: "flex",
-                alignItems: "center",
-              }}
-            />
-            <button
-              type="button"
-              className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
-              style={{ padding: "5px", fontSize: "16px" }}
-              aria-label="Close"
-              onClick={() => removeMedia("video")}
-            ></button>
-          </>
-        ) : (
-          <>
-            <label className="w-100 text-center" htmlFor="addVideoInput">
-              <i className="bi bi-camera-reels-fill fs-5"></i>
-              <p>Add a video</p>
-            </label>
-            <input
-              id="addVideoInput"
-              type="file"
-              accept="video/mp4, video/webm , video/avi, video/mov, video/quicktime"
-              onChange={(e) => handleAddMediaChange(e, "video")}
-              style={{ display: "none" }}
-            />
-          </>
-        )}
+        <label className="w-100 text-center" htmlFor="addPhotoInput">
+          <i className="bi bi-camera-fill fs-5"></i>
+          <p>Add a photo</p>
+        </label>
+        <input
+          id="addPhotoInput"
+          type="file"
+          accept="image/jpeg, image/png"
+          multiple
+          onChange={(e) => handleAddMediaChange(e, "images")}
+          style={{ display: "none" }}
+        />
       </div>
     </div>
   );
+}
+
+allDivs.push(
+  <div className="col-4 col-md-3 mb-3" key="addVideo">
+    <div
+      className="card d-flex justify-content-center align-items-center bg-light"
+      style={{ height: "140px" }}
+      title="Accepts only MP4, WEBM, AVI, MOV formats"
+    >
+      {media.video ? (
+        <>
+          <video
+            controls
+            src={URL.createObjectURL(media.video)}
+            style={{
+              height: "100%",
+              width: "100%",
+              objectFit: "contain",
+              display: "flex",
+              alignItems: "center",
+            }}
+          />
+          <button
+            type="button"
+            className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+            style={{ padding: "5px", fontSize: "16px" }}
+            aria-label="Close"
+            onClick={() => removeMedia("video")}
+          ></button>
+        </>
+      ) : (
+        <>
+          <label className="w-100 text-center" htmlFor="addVideoInput">
+            <i className="bi bi-camera-reels-fill fs-5"></i>
+            <p>Add a video</p>
+          </label>
+          <input
+            id="addVideoInput"
+            type="file"
+            accept="video/mp4, video/webm, video/avi, video/mov"
+            onChange={(e) => handleAddMediaChange(e, "video")}
+            style={{ display: "none" }}
+          />
+        </>
+      )}
+    </div>
+  </div>
+);
   return (
     <div className="fullscreen">
       <MyNavbar />
@@ -653,6 +683,9 @@ export default function Addnewproduct() {
                           {errors.files && (
                             <span className="text-danger">{errors.files}</span>
                           )}
+                           {errors.video && (
+        <span className="text-danger">{errors.video}</span>
+    )}
                         </div>
                       </div>
                       <div className="mb-3">
@@ -746,7 +779,7 @@ export default function Addnewproduct() {
                         </div>
                       )}
                       {values.producttype !== "jewellery" &&
-                        values.producttype !== "women" && (
+                        values.category !== "Sarees" && (
                           <div className="mb-3">
                             <label
                               htmlFor="size"
@@ -930,33 +963,37 @@ export default function Addnewproduct() {
                           </div>
                         )}
 
-                      <div className="mb-3">
-                        <label htmlFor="age" className="form-label fw-bolder">
-                          Style
-                        </label>
-                        <div className="d-flex">
-                          <select
-                            className="form-select"
-                            id="age"
-                            name="age"
-                            value={values.age}
-                            onChange={handleInput}
-                            required
-                          >
-                            <option value="">Select Style</option>
-                            <option value="NA">NA</option>
-                            <option value="Modern">Modern</option>
-                            <option value="00s">00s</option>
-                            <option value="90s">90s</option>
-                            <option value="80s">80s</option>
-                            <option value="80s">80s</option>
-                            <option value="60s">60s</option>
-                            <option value="50s">50s</option>
-                            <option value="Antique">Antique</option>
-                          </select>
-                          <span className="text-danger fs-4"> &nbsp;*</span>
-                        </div>
-                      </div>
+{values.producttype !== "kids" &&(
+ <div className="mb-3">
+ <label htmlFor="age" className="form-label fw-bolder">
+   Style
+ </label>
+ <div className="d-flex">
+   <select
+     className="form-select"
+     id="age"
+     name="age"
+     value={values.age}
+     onChange={handleInput}
+     required
+   >
+     <option value="">Select Style</option>
+     <option value="NA">NA</option>
+     <option value="Modern">Modern</option>
+     <option value="00s">00s</option>
+     <option value="90s">90s</option>
+     <option value="80s">80s</option>
+     <option value="70s">70s</option>
+     <option value="60s">60s</option>
+     <option value="50s">50s</option>
+     <option value="Antique">Antique</option>
+   </select>
+   <span className="text-danger fs-4"> &nbsp;*</span>
+ </div>
+</div>
+)}
+                     
+
                       {/* <div className="mb-3">
                         <label
                           htmlFor="quantity"
@@ -1227,6 +1264,7 @@ export default function Addnewproduct() {
               </div>
             </main>
             <Footer />
+            <Scrolltotopbtn/>
           </div>
         </div>
       </div>

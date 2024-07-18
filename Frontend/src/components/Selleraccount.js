@@ -5,6 +5,7 @@ import MyNavbar from "./navbar";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useData } from "./CartContext";
+import Scrolltotopbtn from "./Scrolltotopbutton";
 
 export default function Selleraccount() {
   const { user } = useData();
@@ -264,6 +265,7 @@ console.log(sellers)
       </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 }

@@ -583,6 +583,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MyNavbar from '../navbar';
 import Footer from '../footer';
+import Scrolltotopbtn from '../Scrolltotopbutton';
 
 const Offers = () => {
     const [offers, setOffers] = useState([]);
@@ -700,6 +701,7 @@ const Offers = () => {
                 </div>
             </main>
             <Footer />
+            <Scrolltotopbtn/>
         </div>
     );
 };

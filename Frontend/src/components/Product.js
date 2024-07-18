@@ -136,7 +136,7 @@ const Product = (props) => {
   return (
     <div className="d-flex justify-content-center">
       <div
-        className="card productcard"
+        className="card productcard product-card"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -168,7 +168,7 @@ const Product = (props) => {
                       className="d-block w-100"
                       controls
                       muted
-                      height="180px"
+                      height="220px"
                       alt={`product-video-${index}`}
                       style={{ objectFit: 'contain' }}
                     >
@@ -184,7 +184,7 @@ const Product = (props) => {
                       src={item}
                       className="d-block w-100"
                       alt={`product-image-${index}`}
-                      style={{ height: "180px", objectFit: "contain" }}
+                      style={{ height: "220px", objectFit: "cover" }}
                     />
                   )}
                 </Carousel.Item>
@@ -193,6 +193,9 @@ const Product = (props) => {
           </div>
         </Link>
         <div className="card-body">
+        {/* <p className="">
+            <span style={{fontSize:"13px"}}>{props.product.name}</span>
+          </p> */}
           <p className="card-text text-success">
             <b>&#36; {props.product.price}.00</b>
           </p>

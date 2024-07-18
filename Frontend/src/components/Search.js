@@ -6,6 +6,7 @@ import axios from 'axios';
 import MyNavbar from './navbar';
 import { useLocation } from 'react-router-dom';
 import Footer from './footer';
+import Scrolltotopbtn from './Scrolltotopbutton';
 
 const Search = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -70,6 +71,7 @@ const Search = () => {
 
       </main>
       <Footer/>
+      <Scrolltotopbtn/>
     </div>
   );
 };

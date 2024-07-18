@@ -11,7 +11,7 @@ const Filterdisplaynav = (props) => {
   };
   return (
     <>
-      <nav className="bg-secondary d-lg-flex justify-content-between text-white d-md-flex justify-content-end ps-lg-3 pe-lg-3 p-2">
+      <nav className="bg-secondary d-lg-flex justify-content-between text-white d-md-flex justify-content-end ps-lg-3 pe-lg-3 p-2 mb-4">
         <div className="d-md-flex">
           <label className="fs-5 pe-4">{name}</label>
           
@@ -27,10 +27,10 @@ const Filterdisplaynav = (props) => {
             onChange={handleRowsChange}
             value={pageSize}
           >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="25">25</option>
+            <option value="4">4</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="24">24</option>
           </select>
         </div>
       </nav>

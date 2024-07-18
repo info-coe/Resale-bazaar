@@ -343,7 +343,7 @@ export default function Sellerproducts() {
                         <th>Product ID</th>
                         <th>Picture</th>
                         <th>Product Name</th>
-                        <th>Price Including Shipping</th>
+                        <th>Price</th>
                         <th>Product Status</th>
                         <th>Edit</th>
                       </tr>

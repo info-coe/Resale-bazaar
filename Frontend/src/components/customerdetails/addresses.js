@@ -4,6 +4,7 @@ import MyNavbar from "../navbar";
 import Customermenu from "./Customermenu";
 import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 export default function Addresses() {
   const [addresses, setAddresses] = useState([]);
@@ -240,6 +241,7 @@ export default function Addresses() {
         </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 }

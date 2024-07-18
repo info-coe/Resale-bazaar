@@ -3,6 +3,7 @@ import MyNavbar from "../navbar";
 import axios from "axios";
 import Footer from "../footer";
 import messageemptyimg from '../../images/messagesempty.png'
+import Scrolltotopbtn from "../Scrolltotopbutton";
 const ContactSeller = () => {
   const [contactData,SetContactData]=useState([])
   const SellerId = parseInt(sessionStorage.getItem("user-token"));
@@ -80,6 +81,7 @@ const ContactSeller = () => {
           </div>
           </main>
           <Footer/>
+          <Scrolltotopbtn/>
     </div>
   )
 };

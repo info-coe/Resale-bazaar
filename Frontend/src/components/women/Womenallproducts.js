@@ -13,10 +13,11 @@ import Product from "../Product";
 import axios from "axios";
 import Pagination from "../pagination";
 import Footer from "../footer";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Womenallproducts = () => {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(24);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -129,7 +130,7 @@ const Womenallproducts = () => {
           <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Womens Fashion" />
          
           <div className="">
-          <div className="d-md-flex flex-wrap ms-md-2 mt-5">
+          {/* <div className="d-md-flex flex-wrap ms-md-2 mt-5">
             {tableData.length > 0 ? (
               tableData.map((product, index) => (
                 <Product product={product} key={index} admin="women" />
@@ -137,7 +138,16 @@ const Womenallproducts = () => {
             ) : (
               <h2 style={{fontSize:"18px"}}>No products to display</h2>
             )}
-          </div>
+          </div> */}
+          <div className="product-grid container">
+          {tableData.length > 0 ? (
+              tableData.map((product, index) => (
+                <Product product={product} key={index} admin="women" />
+              ))
+            ) : (
+              <h2 style={{fontSize:"18px"}}>No products to display</h2>
+            )}
+            </div>
           </div>
           <Pagination
             stateData={filteredProducts}
@@ -150,6 +160,7 @@ const Womenallproducts = () => {
       </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 };

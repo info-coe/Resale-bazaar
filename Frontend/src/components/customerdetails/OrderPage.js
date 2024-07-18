@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import MyNavbar from '../navbar';
 import Footer from '../footer';
+import Scrolltotopbtn from '../Scrolltotopbutton';
 
 const OrderPage = () => {
   const location = useLocation();
@@ -103,6 +104,7 @@ const OrderPage = () => {
       </div>
     </div>
     <Footer/>
+    <Scrolltotopbtn/>
     </>
   );
 };

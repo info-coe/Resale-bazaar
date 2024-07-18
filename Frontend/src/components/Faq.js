@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button } from "react-bootstrap";
 import MyNavbar from "./navbar";
 import Footer from "./footer";
+import Scrolltotopbtn from "./Scrolltotopbutton";
 
 const FAQ = () => {
   const [faqData, setFaqData] = useState([]);
@@ -85,6 +86,7 @@ const FAQ = () => {
         )}
       </div>
       <Footer />
+      <Scrolltotopbtn/>
     </>
   );
 };

@@ -4,6 +4,7 @@ import Sellermenu from "./Sellermenu";
 import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
 import axios from "axios";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 export default function Shipments() {
   // eslint-disable-next-line no-unused-vars
@@ -260,6 +261,7 @@ export default function Shipments() {
               </div>
             </main>
             <Sellerfooter />
+            <Scrolltotopbtn/>
           </div>
         </div>
       </div>

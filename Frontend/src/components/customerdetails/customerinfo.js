@@ -5,6 +5,7 @@ import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
 // import { useData } from "../CartContext";
 import axios from "axios";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 export default function Customerinfo() {
   // const { user,authToken } = useData();
@@ -203,6 +204,7 @@ export default function Customerinfo() {
         </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 }

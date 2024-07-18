@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import Footer from "./footer";
 import MyNavbar from "./navbar";
+import Scrolltotopbtn from "./Scrolltotopbutton";
 
 export default function Forgotpassword() {
   const [values, setValues] = useState({
@@ -170,6 +171,7 @@ export default function Forgotpassword() {
     </div>
     </main>
     <Footer/>
+    <Scrolltotopbtn/>
     </div>
   )
 }

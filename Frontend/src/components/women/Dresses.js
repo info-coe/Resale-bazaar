@@ -8,10 +8,11 @@ import axios from "axios";
 import Product from "../Product";
 import Pagination from "../pagination";
 import Footer from "../footer";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Dresses = () => {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(24);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -69,7 +70,7 @@ const Dresses = () => {
           <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Dresses"/>
 
           <div className="">
-          <div className="d-md-flex flex-wrap ms-md-2 mt-5">
+          <div className="product-grid container">
             {tableData.length > 0 ? (
               tableData.map((product, index) => (
                 <Product
@@ -95,6 +96,7 @@ const Dresses = () => {
       </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 };

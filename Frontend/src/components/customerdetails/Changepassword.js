@@ -4,6 +4,7 @@ import Customermenu from "./Customermenu";
 import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
 import axios from "axios";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 export default function Changepassword() {
 
@@ -182,6 +183,7 @@ export default function Changepassword() {
       </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 }

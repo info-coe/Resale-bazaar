@@ -8,10 +8,11 @@ import axios from "axios";
 import Pagination from "../pagination";
 import Footer from "../footer";
 import Filter from "./filter";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const BraceletsBangles = () => {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(24);
   const [currentPage, setCurrentPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [viewRowIndex, setViewRowIndex] = useState(null);
@@ -66,7 +67,7 @@ const BraceletsBangles = () => {
         <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
           <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Bangles"/>
         <div className="">
-          <div className="d-md-flex flex-wrap ms-md-2 mt-5">
+          <div className="product-grid container">
             {tableData.length > 0 ? (
               tableData.map((product, index) => (
                 <Product
@@ -92,6 +93,7 @@ const BraceletsBangles = () => {
       </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 };

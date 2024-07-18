@@ -5,6 +5,7 @@ import Footer from '../footer';
 import MyNavbar from '../navbar';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import Scrolltotopbtn from '../Scrolltotopbutton';
 
 function ReviewRatings() {
   const location = useLocation();
@@ -177,6 +178,7 @@ function ReviewRatings() {
         </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 }

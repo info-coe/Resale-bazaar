@@ -6,6 +6,7 @@ import axios from "axios";
 import { useData } from "./CartContext";
 import CryptoJS from "crypto-js";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+import Scrolltotopbtn from "./Scrolltotopbutton";
 
 const Login = () => {
   sessionStorage.clear();
@@ -165,7 +166,7 @@ const Login = () => {
           // window.location.reload(false);
         } else {
           alert("Invalid Username or Password");
-          window.location.reload(false);
+          // window.location.reload(false);
         }
       })
       .catch((err) => console.log(err));
@@ -231,6 +232,7 @@ const Login = () => {
         </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 };

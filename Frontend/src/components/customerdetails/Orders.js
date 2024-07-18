@@ -5,6 +5,7 @@ import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 
 export default function Orders() {
   const [allProducts, setAllProducts] = useState([]);
@@ -180,6 +181,7 @@ export default function Orders() {
         </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 }

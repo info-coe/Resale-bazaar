@@ -3,6 +3,7 @@ import Sellernavbar from "./Sellernavbar";
 import Sellermenu from "./Sellermenu";
 import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
+import Scrolltotopbtn from "../Scrolltotopbutton";
 // import { Link } from "react-router-dom";
 
 export default function Sellerorders() {
@@ -192,6 +193,7 @@ export default function Sellerorders() {
               </div>
             </main>
             <Sellerfooter />
+            <Scrolltotopbtn/>
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { useCart } from "./CartContext";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Reviews from "./Reviews";
+import Scrolltotopbtn from "./Scrolltotopbutton";
 
 const responsive = {
   extraLargeDesktop: {
@@ -940,6 +941,7 @@ export default function Productdetails() {
         </div>
       </main>
       <Footer />
+      <Scrolltotopbtn/>
     </div>
   );
 }
