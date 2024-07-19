@@ -107,7 +107,7 @@ const Footer = () => {
                   <i className="bi bi-instagram fs-3 ms-2 me-2"></i>
                 </span>
               </Link>
-              <Link to="https://www.linkedin.com/login" className="text-info">
+              <Link to="https://www.linkedin.com/in/the-resale-bazaar-57756731a/" className="text-info" target="blank">
                 <span style={{ cursor: "pointer" }}>
                   <i className="bi bi-linkedin fs-3 ms-2 me-2"></i>
                 </span>
