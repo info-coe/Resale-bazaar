@@ -356,6 +356,20 @@ app.post("/user", (req, res) => {
   });
 });
 
+app.post("/users", (req, res) => {
+  const sql = "select * from register where user_id = ?"
+  db.query(sql, [parseInt(req.body.sellerID)], (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+        return res.json(data);
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
+
 app.post("/admin", (req, res) => {
   const sql = adminLoginQuery;
   db.query(sql, [req.body.username, req.body.password], (err, data) => {

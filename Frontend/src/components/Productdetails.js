@@ -39,9 +39,9 @@ export default function Productdetails() {
   const [offer, setOffer] = useState([]);
   const { id } = useParams();
   const location = useLocation();
-  const { productdetails, admin } = location.state || {};
+  const { productdetails, admin , userDetails} = location.state || {};
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userdetails, setUserDetails] = useState([]);
+  // const [userdetails, setUserDetails] = useState([]);
   // const [offerAlert,setOfferAlert]=useState(null)
 
   const navigate = useNavigate();
@@ -217,30 +217,7 @@ export default function Productdetails() {
   });
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
-      .then((res) => {
-        if (res.data !== "Fail" && res.data !== "Error") {
-          console.log(res)
-          // Filter user details where user_id === productdetails.seller_id
-          // const filteredUserDetails = res.data.filter(
-          const filteredUserDetails = res.data.filter(
-            (item) => item.user_id === productdetails.seller_id
-          );
-          // Map filtered details to desired structure
-          const userDetails = filteredUserDetails.map((item) => ({
-            userId: item.user_id,
-            email: item.email,
-            phone: item.phone,
-            name: item.firstname + " " + item.lastname,
-            shopname: item.shopname,
-            //Add more fields as needed
-          }));
-          // console.log(userDetails)
-          setUserDetails(userDetails);
-        }
-      })
-      .catch((err) => console.log(err));
+     
     axios
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`
@@ -255,7 +232,9 @@ export default function Productdetails() {
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
     // Navigate to seller profile page with sellerId as a parameter
-    navigates(`/sellerprofile/${sellerId}`);
+    // navigates(`/sellerprofile/${sellerId}`, {state:{userDetails}});
+    navigates(`/sellerprofile/${sellerId}`,{state:{userDetails}});
+
   };
 
   // const toggleLike = async (productId, sellerId) => {
@@ -912,7 +891,7 @@ export default function Productdetails() {
 
             <div className="col-12 col-md-7 mt-3">
               <div className="user-details border shadow-sm p-3 bg-body rounded">
-                {userdetails.map((user) => (
+                {userDetails.map((user) => (
                   <div className="d-flex justify-content-between m-2">
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
@@ -935,7 +914,7 @@ export default function Productdetails() {
                   <b>Notes:</b> {productdetails.notes}
                 </div>
               )}
-              <Reviews userDetails={userdetails} />
+              <Reviews userDetails={userDetails} />
             </div>
           </div>
         </div>

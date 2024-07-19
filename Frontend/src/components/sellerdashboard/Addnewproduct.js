@@ -98,7 +98,7 @@ export default function Addnewproduct() {
       const file = files[0];
       const maxSizeInBytes = 2.1 * 1024 * 1024; // 2MB in bytes
       if (file.size > maxSizeInBytes) {
-        newErrors.video = "Video size must be less than 2MB";
+        newErrors.video = "Video size must be less than 2MB or equal to 2MB";
         setErrors(newErrors);
         return;
       } else {
@@ -681,10 +681,10 @@ allDivs.push(
                             </symbol>
                           </svg>
                           {errors.files && (
-                            <span className="text-danger">{errors.files}</span>
+                            <p className="text-danger">{errors.files}</p>
                           )}
                            {errors.video && (
-        <span className="text-danger">{errors.video}</span>
+        <p className="text-danger">{errors.video}</p>
     )}
                         </div>
                       </div>

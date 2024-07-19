@@ -92,7 +92,7 @@ body.modal-open {
   font-size: 4em;
 } */
 
-.carousel-indicators [data-bs-target] {
+.carouselcomponentdiv .carousel-indicators [data-bs-target] {
   border-radius: 100%;
   width: 10px;
   height: 10px;
@@ -181,9 +181,9 @@ body.modal-open {
 /* .Productsgap{
   row-gap:"3rem"
 } */
-.productcard .card-body {
+/* .productcard .card-body {
   height: 75px;
-}
+} */
 .productimgback{
   background-color: rgb(249, 244, 244)
 }
@@ -818,3 +818,14 @@ cursor: pointer;
 }
 /* scroll to top button code end */
 
+
+.productimgback .carousel-indicators [data-bs-target] {
+  width: 7px; 
+  height: 7px; 
+  margin-right: 5px; 
+  border-radius: 50%; 
+}
+
+.productimgback .carousel-indicators .active {
+  background-color: red;
+}
