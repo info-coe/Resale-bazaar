@@ -4,7 +4,7 @@ import Adminpagination from "./Adminpagination";
 import Adminfooter from "./Adminfooter";
 import Adminnavbar from "./Adminnavbar";
 import Adminmenu from "./Adminmenu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Acceptproduct() {
   // eslint-disable-next-line no-unused-vars
@@ -213,6 +213,31 @@ export default function Acceptproduct() {
       .catch((err) => console.log(err));
   }, []);
 
+  const [userDetails, setUserDetails] = useState([]);
+  const navigates = useNavigate();
+const handleviewdata =(sellerID,id,item)=>{
+  axios
+  .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/users`,{sellerID:sellerID})
+  .then((res) => {
+    if (res.data !== "Fail" && res.data !== "Error") {
+      const userDetails = res.data.map((item) => ({
+        userId: item.user_id,
+        email: item.email,
+        phone: item.phone,
+        name: item.firstname + " " + item.lastname,
+        shopname: item.shopname,
+        // Add more fields as needed
+      }));
+      setUserDetails(userDetails);
+      navigates(`${/product/ + id}`,{state:{ productdetails: item, admin: "admin" ,userDetails: userDetails}});
+
+    }
+  })
+  .catch((error) => {
+    console.error("Error fetching seller details:", error);
+  });
+}
+   
 
   useEffect(() => {
     setCurrentPage(1);
@@ -373,8 +398,9 @@ export default function Acceptproduct() {
                             <td>
                               {" "}
                               <Link           
-                                to={"/product/" + item.id}
-                                state={{ productdetails: item, admin: "admin" }}
+                                // to={"/product/" + item.id}
+                                // state={{ productdetails: item, admin: "admin" }}
+                                onClick={()=>handleviewdata(item.seller_id,item.id,item)}
                               >
                                 <div className="text-center" style={{width:"100px",height:"100px"}}>
                                 <img
@@ -404,10 +430,14 @@ export default function Acceptproduct() {
                                   Edit
                                 </button>{" "}
                               <Link           
-                                to={"/product/" + item.id}
-                                state={{ productdetails: item, admin: "admin" }}
+                                // to={"/product/" + item.id}
+                                // state={{ productdetails: item, admin: "admin" ,userDetails: userDetails}}
+
                               >
-                                <button className="btn btn-secondary m-1">
+                                <button className="btn btn-secondary m-1"
+                               onClick={()=>handleviewdata(item.seller_id,item.id,item)}
+
+                                >
                                   View
                                 </button>
                               </Link>

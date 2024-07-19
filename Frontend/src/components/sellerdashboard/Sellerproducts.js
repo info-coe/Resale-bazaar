@@ -201,17 +201,53 @@ export default function Sellerproducts() {
   };
   
 
+  // const handleImageChange = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   const validFiles = files.filter(file => file.type.startsWith('image/') || file.type.startsWith('video/'));
+  //   const newFiles = validFiles.map((file) => ({
+  //     file,
+  //     preview: URL.createObjectURL(file),
+  //     type: file.type.startsWith('image/') ? 'image' : 'video'
+  //   }));
+
+  //   const newImages = [...formData.image, ...newFiles];
+
+  //   if (newImages.length > 6) {
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       image: "You can only upload up to 6 images or videos.",
+  //     }));
+  //     return;
+  //   }
+
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     image: newImages,
+  //   }));
+  // };
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const validFiles = files.filter(file => file.type.startsWith('image/') || file.type.startsWith('video/'));
+    
+    // Check for video file size
+    const oversizedVideos = validFiles.filter(file => file.type.startsWith('video/') && file.size > 2.1 * 1024 * 1024);
+    if (oversizedVideos.length > 0) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        image: "Video files must be less than 2MB or equal to 2 MB.",
+      }));
+      return;
+    }
+  
     const newFiles = validFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
       type: file.type.startsWith('image/') ? 'image' : 'video'
     }));
-
+  
     const newImages = [...formData.image, ...newFiles];
-
+  
     if (newImages.length > 6) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -219,13 +255,12 @@ export default function Sellerproducts() {
       }));
       return;
     }
-
+  
     setFormData((prevData) => ({
       ...prevData,
       image: newImages,
     }));
   };
-
   
   const handleDeleteImage = (index) => {
     const updatedImages = [...formData.image];

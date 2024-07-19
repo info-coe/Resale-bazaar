@@ -39,9 +39,9 @@ export default function Productdetails() {
   const [offer, setOffer] = useState([]);
   const { id } = useParams();
   const location = useLocation();
-  const { productdetails, admin , userDetails} = location.state || {};
+  const { productdetails, admin , userDetails } = location.state || {};
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [userdetails, setUserDetails] = useState([]);
+  // const [userdetails, setUserDetails] = useState([]);s
   // const [offerAlert,setOfferAlert]=useState(null)
 
   const navigate = useNavigate();

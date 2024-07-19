@@ -386,9 +386,6 @@ const Product = (props) => {
       .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/users`,{sellerID:props.product.seller_id})
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
-          // const filteredUserDetails = res.data.filter(
-          //   (item) => item.user_id === props.product.seller_id
-          // );
           const userDetails = res.data.map((item) => ({
             userId: item.user_id,
             email: item.email,
@@ -467,7 +464,7 @@ const Product = (props) => {
       <div className="card productcard product-card">
         <Link
           to={"/product/" + props.product.id}
-          state={{ productdetails: props.product, admin: props.admin , userDetails:userDetails }}
+          state={{ productdetails: props.product, admin: props.admin , userDetails: userDetails }}
         >
           <div
             className="text-center productimgback"
