@@ -845,7 +845,7 @@ export default function Sellerproducts() {
                       </div>
                     </div>
                   )}
-                  {formData.occasion !== "NA" && formData.occasion !== null && (
+                  {/* {formData.occasion !== "NA" && formData.occasion !== null && ( */}
                     <div className="mb-3">
                       <label htmlFor="productOccasion" className="form-label fw-bolder">
                         Occasion
@@ -861,8 +861,8 @@ export default function Sellerproducts() {
                         // required
                       />
                     </div>
-                  )}
-                  {formData.type !== "NA" && formData.type !== null && (
+                  {/* )} */}
+                  {/* {formData.type !== "NA" && formData.type !== null && ( */}
                     <div className="mb-3">
                       <label htmlFor="productType" className="form-label fw-bolder">
                         Type
@@ -878,8 +878,8 @@ export default function Sellerproducts() {
                         // required
                       />
                     </div>
-                  )}
-                  {formData.brand !== "NA" && formData.brand !== null  && (
+                  {/* )} */}
+                  {/* {formData.brand !== "NA" && formData.brand !== null  && ( */}
                     <div className="mb-3">
                       <label htmlFor="productBrand" className="form-label fw-bolder">
                         Brand
@@ -895,9 +895,9 @@ export default function Sellerproducts() {
                         // required
                       />
                     </div>
-                  )}
-                  {formData.style !== "NA" && formData.style !== null && (
-                    <div className="mb-3">
+                  {/* )} */}
+                  {/* {formData.style !== "NA" && formData.style !== null && ( */}
+                    {/* <div className="mb-3">
                       <label htmlFor="productStyle" className="form-label fw-bolder">
                         Style
                       </label>
@@ -911,9 +911,9 @@ export default function Sellerproducts() {
                         onChange={handleChange}
                         // required
                       />
-                    </div>
-                  )}
-                  {formData.season !== "NA" && formData.season !== null && (
+                    </div> */}
+                  {/* )} */}
+                  {/* {formData.season !== "NA" && formData.season !== null && ( */}
                     <div className="mb-3">
                       <label htmlFor="productSeason" className="form-label fw-bolder">
                         Season
@@ -929,9 +929,9 @@ export default function Sellerproducts() {
                         // required
                       />
                     </div>
-                  )}
-                  {formData.fit !== "NA" && formData.fit !== null && (
-                    <div className="mb-3">
+                  {/* )} */}
+                  {/* {formData.fit !== "NA" && formData.fit !== null && ( */}
+                    {/* <div className="mb-3">
                       <label htmlFor="productFit" className="form-label fw-bolder">
                         Fit
                       </label>
@@ -945,9 +945,9 @@ export default function Sellerproducts() {
                         onChange={handleChange}
                         // required
                       />
-                    </div>
-                  )}
-                  {formData.length !== "NA" && formData.length !== null && (
+                    </div> */}
+                  {/* )} */}
+                  {/* {formData.length !== "NA" && formData.length !== null && ( */}
                     <div className="mb-3">
                       <label htmlFor="productLength" className="form-label fw-bolder">
                         Length
@@ -963,7 +963,7 @@ export default function Sellerproducts() {
                         // required
                       />
                     </div>
-                  )}
+                  {/* )} */}
                   {formData.notes !== "" && formData.notes !==null &&  (
                     <div className="mb-3">
                     <label htmlFor="ProductNotes" className="form-label fw-bolder">
