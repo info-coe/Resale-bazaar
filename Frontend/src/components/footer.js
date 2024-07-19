@@ -97,12 +97,12 @@ const Footer = () => {
           <div className="col-md-2 ">
             <h5 className="mb-4 mt-4">Follow Us</h5>
             <div>
-              <Link to="https://www.facebook.com/" className="text-primary">
+              <Link to="https://www.facebook.com/profile.php?id=61561740383274" className="text-primary" target="blank">
                 <span style={{ cursor: "pointer" }}>
                   <i className="bi bi-facebook fs-3 ms-2 me-2"></i>
                 </span>
               </Link>
-              <Link to="https://www.instagram.com/accounts/login/" className="text-danger">
+              <Link to="https://www.instagram.com/resalebazaar2024/" className="text-danger" target="blank">
                 <span style={{ cursor: "pointer" }}>
                   <i className="bi bi-instagram fs-3 ms-2 me-2"></i>
                 </span>
