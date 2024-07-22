@@ -82,11 +82,10 @@ const {
   LikesQuery,
   removeLikeQuery,
   addLikeQuery,
-<<<<<<< Updated upstream
+
   LikecountQuery,
   checkLikeQuery
-=======
->>>>>>> Stashed changes
+
 } = require("./queries");
 const cors = require("cors");
 const multer = require("multer");
