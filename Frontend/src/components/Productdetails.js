@@ -39,7 +39,7 @@ export default function Productdetails() {
   const [offer, setOffer] = useState([]);
   const { id } = useParams();
   const location = useLocation();
-  const { productdetails, admin, userDetails  } = location.state || {};
+  const { productdetails, admin, userDetails } = location.state || {};
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userdetails, setUserDetails] = useState([]);
   // const [offerAlert,setOfferAlert]=useState(null)
@@ -107,7 +107,7 @@ export default function Productdetails() {
       navigate("/login");
     }
   };
-  const [liked, setLiked] = useState(0);
+  const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   // const [currentProduct, setCurrentProduct] = useState(productdetails);
   const productDetailsImgRef = useRef(null);
@@ -175,13 +175,13 @@ export default function Productdetails() {
   };
   const datta = JSON.parse(productdetails.image);
   const firstImage = datta[0];
-   console.log(add.length);
+  console.log(add.length);
   const handleOffer = () => {
-    if (add === "0.00" || add.length==0) {
-      console.log('success')
+    if (add === "0.00" || add.length == 0) {
+      console.log("success");
       return null;
     } else {
-      setSuccess(true)
+      setSuccess(true);
       axios
         .post(
           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`,
@@ -221,7 +221,7 @@ export default function Productdetails() {
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
-          console.log(res)
+          console.log(res);
           // Filter user details where user_id === productdetails.seller_id
           // const filteredUserDetails = res.data.filter(
           const filteredUserDetails = res.data.filter(
@@ -255,7 +255,7 @@ export default function Productdetails() {
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
     // Navigate to seller profile page with sellerId as a parameter
-    navigates(`/sellerprofile/${sellerId}`,{state:{userDetails}});
+    navigates(`/sellerprofile/${sellerId}`, { state: { userDetails } });
   };
 
   // const toggleLike = async (productId, sellerId) => {
@@ -291,65 +291,74 @@ export default function Productdetails() {
 
   const fetchLikeCount = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productdetails.id}/likes`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productdetails.id}/likes`
+      );
       setLikeCount(response.data.likeCount);
     } catch (error) {
-      console.error('Error fetching like count:', error);
+      console.error("Error fetching like count:", error);
     }
   };
 
   const checkIfLiked = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productdetails.id}/likes/user`, {
-        params: { userId: sessionStorage.getItem('user-token') }
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productdetails.id}/likes/user`,
+        {
+          params: { userId: sessionStorage.getItem("user-token") },
+        }
+      );
       setLiked(response.data.liked);
     } catch (error) {
-      console.error('Error checking if liked:', error);
+      console.error("Error checking if liked:", error);
     }
   };
 
   const toggleLike = async (productId) => {
     if (!isLoggedIn) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
       let newLikeCount = likeCount;
-      let action = '';
+      let action = "";
 
       if (liked) {
         // Unlike the product
         newLikeCount -= 1;
-        await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}/likes`, {
-          like_userID: sessionStorage.getItem('user-token'),
-          likes: newLikeCount,
-          action: 'unliked'
-        });
-        action = 'unliked';
+        await axios.post(
+          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}/likes`,
+          {
+            like_userID: sessionStorage.getItem("user-token"),
+            likes: newLikeCount,
+            action: "unliked",
+          }
+        );
+        action = "unliked";
       } else {
         // Like the product
         newLikeCount += 1;
-        await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}/likes`, {
-          like_userID: sessionStorage.getItem('user-token'),
-          likes: newLikeCount,
-          action: 'liked'
-        });
-        action = 'liked';
+        await axios.post(
+          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}/likes`,
+          {
+            like_userID: sessionStorage.getItem("user-token"),
+            likes: newLikeCount,
+            action: "liked",
+          }
+        );
+        action = "liked";
       }
 
       setLiked(!liked);
       setLikeCount(newLikeCount);
       console.log(`Product ${action} successfully.`);
     } catch (error) {
-      console.error('Error toggling like:', error);
-      alert('Failed to update like status. Please try again later.');
+      console.error("Error toggling like:", error);
+      alert("Failed to update like status. Please try again later.");
     }
   };
 
-  
-  
   return (
     <div className="fullscreen">
       <MyNavbar />
@@ -388,16 +397,18 @@ export default function Productdetails() {
                 className="productdetailsimg"
               />
             </div>
-            <div>
-              <div className="ms-5 d-flex gap-2">
-            <div className="heart-icon" onClick={()=>toggleLike(productdetails.id)} style={{ fontSize: '1.5rem', color: liked ? 'red' : 'grey', cursor: 'pointer' }}>
-      <i className="bi bi-heart-fill"></i>
-      <span className="like-count mt-2" style={{ fontSize: '1rem', color: 'black' }}>
-        {likeCount} likes
-      </span>
-    </div>
+
+            <div className="ps-5 ps-md-3 ms-md-4 mt-3">
+              <svg
+                className={`heart ${liked ? "liked" : ""}`}
+                viewBox="0 0 24 24"
+                onClick={() => toggleLike(productdetails.id)}
+              >
+                <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
+              </svg>
+              <span className="like-count">{likeCount} likes</span>
             </div>
-            </div>
+
             <div className="ms-auto me-auto">
               <Carousel
                 responsive={responsive}
@@ -1007,7 +1018,7 @@ export default function Productdetails() {
         </div>
       </main>
       <Footer />
-      <Scrolltotopbtn/>
+      <Scrolltotopbtn />
     </div>
   );
 }

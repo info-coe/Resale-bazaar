@@ -1,8 +1,8 @@
 import React from "react";
 import visa from "../images/visa.webp";
-import mastercard from "../images/mastercard.png";
-import paypal from "../images/paypal.webp";
-import discover from "../images/discover.jpg";
+import mastercard from "../images/mastercard-icon.png";
+import paypal from "../images/Paypal_logo.png";
+import stripe from "../images/stripe.webp";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -117,10 +117,10 @@ const Footer = () => {
           <div className="col-md-2">
             <h5 className="mb-4 mt-4 ">Payment Methods</h5>
             <div className="d-flex flex-wrap">
-              <img src={visa} alt="visa card" className="paymentcards" />
-              <img src={mastercard} alt="visa card" className="paymentcards" />
-              <img src={paypal} alt="visa card" className="paymentcards" />
-              <img src={discover} alt="visa card" className="paymentcards" />
+              <img src={visa} alt="visa card" className="paymentcards" style={{objectFit:"contain"}}/>
+              <img src={mastercard} alt="visa card" className="paymentcards" style={{objectFit:"contain"}}/>
+              <img src={paypal} alt="visa card" className="paymentcards" style={{objectFit:"contain"}}/>
+              <img src={stripe} alt="Stripe card" className="paymentcards" style={{objectFit:"contain"}}/>
             </div>
           </div>
         </div>
