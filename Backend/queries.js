@@ -230,7 +230,15 @@ CREATE TABLE IF NOT EXISTS review (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 ` 
+const LikesQuery = `
+  CREATE TABLE IF NOT EXISTS likes (
+  id SERIAL PRIMARY KEY,   
+  likes INT NOT NULL,
+  like_user_id INT NOT NULL,
+  like_product_id INT NOT NULL
+);
 
+`
 const loginCheckQuery = "SELECT * FROM register WHERE `email` = ? AND `password` = ?";
 const adminLoginQuery = "SELECT * FROM admin WHERE `email` = ? AND `password` = ?";
 const retrievingUsersQuery = "SELECT * FROM register";
@@ -289,7 +297,10 @@ const offergetQuery = `SELECT * FROM products INNER JOIN  offered_products ON of
 const fetchFindImagesQuery='SELECT image FROM products WHERE id = ?'
 const productsUpdateQuery=`UPDATE products SET name = ?, price = ?, description = ?, location = ?, color = ?, alteration = ?, size = ?, measurements = ?, \`condition\` = ?, age = ?, quantity = ?, occasion = ?,  material = ?, brand = ?, type = ?, style = ?, fit = ?, length = ?, season = ?, notes = ?, accepted_by_admin= ?, image = ? WHERE id = ?`
 // const cartpaymentupdateQuery = "UPDATE cart SET payment_status = ?, buyer_id = ? WHERE id = ?";
-
+const addLikeQuery = 'INSERT INTO likes (like_product_id, like_user_id, likes) VALUES (?, ?, ?)';
+const removeLikeQuery = 'DELETE FROM likes WHERE like_product_id = ? AND like_user_id = ?';
+const LikecountQuery = 'SELECT COUNT(*) AS likeCount FROM likes WHERE like_product_id = ?';
+const checkLikeQuery = 'SELECT * FROM likes WHERE like_product_id = ? AND like_user_id = ?';
 
 module.exports = {
   createAdminTableQuery,
@@ -364,5 +375,10 @@ module.exports = {
   shipmentRetrivingJoinQuery,
   offergetQuery,
   fetchFindImagesQuery,
-  productsUpdateQuery
+  productsUpdateQuery,
+  LikesQuery,
+  addLikeQuery,
+  removeLikeQuery,
+  LikecountQuery,
+  checkLikeQuery
 };

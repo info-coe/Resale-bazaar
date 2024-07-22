@@ -75,7 +75,10 @@ const {
   shipmentRetrivingJoinQuery,
   offergetQuery,
   fetchFindImagesQuery,
-  productsUpdateQuery
+  productsUpdateQuery,
+  LikesQuery,
+  removeLikeQuery,
+  addLikeQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
@@ -295,7 +298,10 @@ db.query(createDatabaseQuery, (err) => {
                               if (err) throw err;
                             db.query(ReviewsQuery, (err) => {
                               if (err) throw err;
-                              console.log("Database and tables created successfully");                            
+                              db.query(LikesQuery, (err) => {
+                                if (err) throw err;
+                                console.log("Database and tables created successfully");                            
+                              });                     
                             });
                           });
                           });
@@ -356,20 +362,6 @@ app.post("/user", (req, res) => {
   });
 });
 
-app.post("/users", (req, res) => {
-  const sql = "select * from register where user_id = ?"
-  db.query(sql, [parseInt(req.body.sellerID)], (err, data) => {
-    if (err) {
-      return res.json("Error");
-    }
-    if (data.length > 0) {
-        return res.json(data);
-    } else {
-      return res.json("Fail");
-    }
-  });
-});
-
 app.post("/admin", (req, res) => {
   const sql = adminLoginQuery;
   db.query(sql, [req.body.username, req.body.password], (err, data) => {
@@ -412,6 +404,19 @@ app.get("/user", (req, res) => {
     }
     if (data.length > 0) {
       return res.json(data);
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
+app.post("/users", (req, res) => {
+  const sql = "select * from register where user_id = ?"
+  db.query(sql, [parseInt(req.body.sellerID)], (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+        return res.json(data);
     } else {
       return res.json("Fail");
     }
@@ -1333,23 +1338,7 @@ app.get("/updatepayment", (req, res) => {
   });
 });
 
-app.put('/:productId/allproducts', (req, res) => {
-  const productId = req.params.productId;
-  const { likeCount } = req.body; // Assuming likeCount is sent in the request body
 
-  // Update like count in your database
-  const sql = 'UPDATE products SET likes = ? WHERE id = ?';
-  const values = [likeCount, productId];
-
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error('Error updating like count:', err);
-      return res.status(500).json({ error: 'Internal server error' });
-    }
-    console.log('Like count updated successfully');
-    return res.status(200).json({ message: 'Like count updated successfully' });
-  });
-});
 app.put('/:productId/updateQuantityAndPrice', (req, res) => {
   const productId = req.params.productId;
   const { quantity} = req.body; // Assuming quantity and price are sent in the request body
@@ -1431,7 +1420,106 @@ app.get('/shipmentjoin', (req, res) => {
     }
   });
 });
+// app.post('/products/:productId/likes', (req, res) => {
+//   const { productId } = req.params;
+//   const { like_userID, likes, action } = req.body;
 
+//   if (action === 'liked') {
+//     // Add the like
+//     db.query(
+//       'INSERT INTO likes (like_product_id, like_user_id, likes) VALUES (?, ?, ?)',
+//       [productId, like_userID, likes],
+//       (insertErr, insertResults) => {
+//         if (insertErr) {
+//           console.error('Error adding like:', insertErr);
+//           return res.status(500).json({ error: 'Server error' });
+//         }
+//         res.json({ action: 'liked', likeCount: likes });
+//       }
+//     );
+//   } else if (action === 'unliked') {
+//     // Remove the like
+//     db.query(
+//       'DELETE FROM likes WHERE like_product_id = ? AND like_user_id = ?',
+//       [productId, like_userID],
+//       (delErr, delResults) => {
+//         if (delErr) {
+//           console.error('Error removing like:', delErr);
+//           return res.status(500).json({ error: 'Server error' });
+//         }
+//         res.json({ action: 'unliked', likeCount: likes });
+//       }
+//     );
+//   }
+// });
+app.post('/products/:productId/likes', (req, res) => {
+  const { productId } = req.params;
+  const { like_userID, likes, action } = req.body;
+
+  const sql = addLikeQuery;
+  const sql2 = removeLikeQuery;
+
+  if (action === 'liked') {
+    // Add the like
+    db.query(
+      sql,
+      [productId, like_userID, likes],
+      (insertErr, insertResults) => {
+        if (insertErr) {
+          console.error('Error adding like:', insertErr);
+          return res.status(500).json({ error: 'Server error' });
+        }
+        res.json({ action: 'liked', likeCount: likes });
+      }
+    );
+  } else if (action === 'unliked') {
+    // Remove the like
+    db.query(
+      sql2,
+      [productId, like_userID],
+      (delErr, delResults) => {
+        if (delErr) {
+          console.error('Error removing like:', delErr);
+          return res.status(500).json({ error: 'Server error' });
+        }
+        res.json({ action: 'unliked', likeCount: likes });
+      }
+    );
+  }
+});
+
+app.get('/products/:productId/likes', (req, res) => {
+  const { productId } = req.params;
+  const sql = LikecountQuery;
+
+  db.query(sql, [productId], (err, result) => {
+    if (err) {
+      console.error('Error fetching like count:', err);
+      return res.status(500).send('Error fetching like count');
+    }
+    const likeCount = result[0].likeCount;
+    res.json({ likeCount });
+  });
+});
+
+
+app.get('/products/:productId/likes/user', (req, res) => {
+  const { productId } = req.params;
+  const { userId } = req.query;
+     const sql = checkLikeQuery;
+  db.query(
+    sql,
+    [productId, userId],
+    (err, results) => {
+      if (err) {
+        console.error('Error checking if liked:', err);
+        return res.status(500).send('Error checking like status');
+      }
+      const liked = results.length > 0;
+      res.json({ liked });
+    }
+  );
+});
 
 
 

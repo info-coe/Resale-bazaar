@@ -39,9 +39,9 @@ export default function Productdetails() {
   const [offer, setOffer] = useState([]);
   const { id } = useParams();
   const location = useLocation();
-  const { productdetails, admin , userDetails } = location.state || {};
+  const { productdetails, admin, userDetails  } = location.state || {};
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [userdetails, setUserDetails] = useState([]);s
+  const [userdetails, setUserDetails] = useState([]);
   // const [offerAlert,setOfferAlert]=useState(null)
 
   const navigate = useNavigate();
@@ -107,8 +107,8 @@ export default function Productdetails() {
       navigate("/login");
     }
   };
-  // const [liked, setLiked] = useState(productdetails.liked);
-  // const [likeCount, setLikeCount] = useState(productdetails.likes);
+  const [liked, setLiked] = useState(0);
+  const [likeCount, setLikeCount] = useState(0);
   // const [currentProduct, setCurrentProduct] = useState(productdetails);
   const productDetailsImgRef = useRef(null);
   const activeSubimageRef = useRef(null);
@@ -217,7 +217,30 @@ export default function Productdetails() {
   });
 
   useEffect(() => {
-     
+    axios
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+      .then((res) => {
+        if (res.data !== "Fail" && res.data !== "Error") {
+          console.log(res)
+          // Filter user details where user_id === productdetails.seller_id
+          // const filteredUserDetails = res.data.filter(
+          const filteredUserDetails = res.data.filter(
+            (item) => item.user_id === productdetails.seller_id
+          );
+          // Map filtered details to desired structure
+          const userDetails = filteredUserDetails.map((item) => ({
+            userId: item.user_id,
+            email: item.email,
+            phone: item.phone,
+            name: item.firstname + " " + item.lastname,
+            shopname: item.shopname,
+            //Add more fields as needed
+          }));
+          // console.log(userDetails)
+          setUserDetails(userDetails);
+        }
+      })
+      .catch((err) => console.log(err));
     axios
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`
@@ -232,9 +255,7 @@ export default function Productdetails() {
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
     // Navigate to seller profile page with sellerId as a parameter
-    // navigates(`/sellerprofile/${sellerId}`, {state:{userDetails}});
     navigates(`/sellerprofile/${sellerId}`,{state:{userDetails}});
-
   };
 
   // const toggleLike = async (productId, sellerId) => {
@@ -263,6 +284,72 @@ export default function Productdetails() {
   // };
   // console.error('Error updating like count:', error);
   // console.log(userdetails);
+  useEffect(() => {
+    fetchLikeCount();
+    checkIfLiked();
+  }, []);
+
+  const fetchLikeCount = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productdetails.id}/likes`);
+      setLikeCount(response.data.likeCount);
+    } catch (error) {
+      console.error('Error fetching like count:', error);
+    }
+  };
+
+  const checkIfLiked = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productdetails.id}/likes/user`, {
+        params: { userId: sessionStorage.getItem('user-token') }
+      });
+      setLiked(response.data.liked);
+    } catch (error) {
+      console.error('Error checking if liked:', error);
+    }
+  };
+
+  const toggleLike = async (productId) => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      let newLikeCount = likeCount;
+      let action = '';
+
+      if (liked) {
+        // Unlike the product
+        newLikeCount -= 1;
+        await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}/likes`, {
+          like_userID: sessionStorage.getItem('user-token'),
+          likes: newLikeCount,
+          action: 'unliked'
+        });
+        action = 'unliked';
+      } else {
+        // Like the product
+        newLikeCount += 1;
+        await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}/likes`, {
+          like_userID: sessionStorage.getItem('user-token'),
+          likes: newLikeCount,
+          action: 'liked'
+        });
+        action = 'liked';
+      }
+
+      setLiked(!liked);
+      setLikeCount(newLikeCount);
+      console.log(`Product ${action} successfully.`);
+    } catch (error) {
+      console.error('Error toggling like:', error);
+      alert('Failed to update like status. Please try again later.');
+    }
+  };
+
+  
+  
   return (
     <div className="fullscreen">
       <MyNavbar />
@@ -302,14 +389,14 @@ export default function Productdetails() {
               />
             </div>
             <div>
-              {/* <div className="ms-5 d-flex gap-2">
-            <div className="heart-icon" onClick={()=>toggleLike(productdetails.id, productdetails.seller_id)} style={{ fontSize: '1.5rem', color: liked ? 'red' : 'grey', cursor: 'pointer' }}>
+              <div className="ms-5 d-flex gap-2">
+            <div className="heart-icon" onClick={()=>toggleLike(productdetails.id)} style={{ fontSize: '1.5rem', color: liked ? 'red' : 'grey', cursor: 'pointer' }}>
       <i className="bi bi-heart-fill"></i>
       <span className="like-count mt-2" style={{ fontSize: '1rem', color: 'black' }}>
         {likeCount} likes
       </span>
     </div>
-            </div> */}
+            </div>
             </div>
             <div className="ms-auto me-auto">
               <Carousel
@@ -891,7 +978,7 @@ export default function Productdetails() {
 
             <div className="col-12 col-md-7 mt-3">
               <div className="user-details border shadow-sm p-3 bg-body rounded">
-                {userDetails.map((user) => (
+                {userdetails.map((user) => (
                   <div className="d-flex justify-content-between m-2">
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
@@ -914,7 +1001,7 @@ export default function Productdetails() {
                   <b>Notes:</b> {productdetails.notes}
                 </div>
               )}
-              <Reviews userDetails={userDetails} />
+              <Reviews userDetails={userdetails} />
             </div>
           </div>
         </div>
