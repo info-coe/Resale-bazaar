@@ -78,7 +78,9 @@ const {
   productsUpdateQuery,
   LikesQuery,
   removeLikeQuery,
-  addLikeQuery
+  addLikeQuery,
+  LikecountQuery,
+  checkLikeQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require('multer');
