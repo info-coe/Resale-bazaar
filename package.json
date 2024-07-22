@@ -10,5 +10,10 @@
     "start": "npm-run-all --parallel start:backend start:frontend",
     "start:backend": "cd Backend && npm start",
     "start:frontend": "cd Frontend && npm start"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.51.11",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-loading-skeleton": "^3.4.0"
   }
 }

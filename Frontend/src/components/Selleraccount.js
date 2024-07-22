@@ -24,7 +24,7 @@ console.log(sellers)
             return null;
           });
         }
-      })
+      })  
       .catch((err) => {
         console.log(err);
       });

@@ -250,9 +250,17 @@ const adminAcceptedProductsQuery = "select * from products WHERE `accepted_by_ad
 const adminApprovalQuery = "UPDATE products SET accepted_by_admin = ? WHERE id = ?";
 const adminRejectionQuery = "UPDATE products SET rejection_reason = ? WHERE id = ?";
 const retrievingAllProductsQuery = "select * from products WHERE `accepted_by_admin` = (?)";
-const retrievingWomenProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
-const retrievingKidsProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
-const retrievingJewelleryProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
+const retrievingWomenProductsQuery = "SELECT * FROM products WHERE `category` =(?)AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
+const retrievingWomenProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
+// const retrievingKidsProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
+const retrievingKidsProductsQuery = "SELECT * FROM products WHERE `category` =(?)AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
+const retrievingKidsProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
+// const retrievingKidsProductsQueryAll = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
+// const retrievingKidsProductsQuery = "SELECT * FROM products WHERE `product_type` =(?)AND `accepted_by_admin` = (?)";
+
+const retrievingJewelleryProductsQuery = "SELECT * FROM products WHERE `category` =(?)AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
+const retrievingJewelleryProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
+
 const retrievingBooksProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, quantity, price, notes, material, occasion, type, brand, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, \`condition\`,`quantity`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
@@ -328,8 +336,11 @@ module.exports = {
   adminRejectionQuery,
   retrievingAllProductsQuery,
   retrievingWomenProductsQuery,
+  retrievingWomenProductsQueryAll,
   retrievingKidsProductsQuery,
+  retrievingKidsProductsQueryAll,
   retrievingJewelleryProductsQuery,
+  retrievingJewelleryProductsQueryAll,
   retrievingBooksProductsQuery,
   addProductsQuery,
   deleteProductsQuery,

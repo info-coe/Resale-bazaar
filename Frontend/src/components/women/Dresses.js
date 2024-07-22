@@ -6,99 +6,227 @@ import Filter from "./filter";
 import Filterdisplaynav from "../filterdisplaynav";
 import axios from "axios";
 import Product from "../Product";
-import Pagination from "../pagination";
-import Footer from "../footer";
+import InfiniteScroll from "react-infinite-scroll-component";
+// import Footer from "../footer";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Dresses = () => {
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(24);
-  const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
-  // eslint-disable-next-line no-unused-vars
-  const [viewRowIndex, setViewRowIndex] = useState(null);
-  
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(0);
+  const pageSize = 8;
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/women`)
-      .then((res) => {
-        if (res.data !== "Fail" && res.data !== "Error") {
-          const filteredProducts = res.data.filter(
-            (item) => item.category === "Dresses"
-          );
-          setProducts(filteredProducts);
-          setFilteredProducts(filteredProducts);
+    fetchProducts(page);
+  }, [page]);
+
+  const fetchProducts = async (pageNum) => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/women?limit=${pageSize}&page=${pageNum}&category=Dresses`
+      );
+
+      if (res.data !== "Fail" && res.data !== "Error") {
+        // Filter the products by category "Dresses"
+        const filterProducts = res.data;
+
+        // Get the IDs of the currently loaded products to avoid duplicates
+        const existingProductIds = new Set(
+          products.map((product) => product.id)
+        );
+
+        // Filter new products to remove duplicates
+        const newProducts = filterProducts.filter(
+          (product) => !existingProductIds.has(product.id)
+        );
+
+        if (newProducts.length > 0) {
+          // Update products and filteredProducts state
+          setProducts((prevProducts) => [...prevProducts, ...newProducts]);
+          setFilteredProducts((prevProducts) => [
+            ...prevProducts,
+            ...newProducts,
+          ]);
         }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-  useEffect(() => {
-    setCurrentPage(1);
-    setViewRowIndex(null);
-  }, [pageSize]);
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const tableData = filteredProducts.slice(startIndex, endIndex);
+        // Check if there are more products to load
+        if (filterProducts.length < pageSize) {
+          setHasMore(false);
+        }
+      } else {
+        setHasMore(false); // Stop fetching if an error response is returned
+      }
+    } catch (err) {
+      console.log(err);
+      setHasMore(false); // Stop fetching if there's an error
+    }
+  };
 
   const handleFilter = (filteredProducts) => {
     setFilteredProducts(filteredProducts);
   };
+
   return (
     <div className="fullscreen">
       <MyNavbar />
       <main>
-      <nav className="p-2 ps-lg-5 pe-lg-5">
-        <Link to="/" className="text-decoration-none text-dark">
-          <i className="bi bi-house-fill"></i>
-        </Link>
-        &nbsp; /{" "}
-        <Link to="/women" className="text-decoration-none text-dark">
-          Women
-        </Link>{" "}
-        /&nbsp; Dresses
-      </nav>
-      <div className="d-lg-flex justify-content-around p-2 ps-lg-5 pe-lg-5">
-        <div className="col-lg-2 col-xs-12 col-md-12">
-          <Menu />
-          <Filter products={products} onFilter={handleFilter} />
-        </div>
-
-        <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
-          <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Dresses"/>
-
-          <div className="">
-          <div className="product-grid container">
-            {tableData.length > 0 ? (
-              tableData.map((product, index) => (
-                <Product
-                  product={product}
-                  key={index}
-                  rendercomp="dresses"
-                  type="women"
-                />
-              ))
-            ) : (
-              <h1 style={{fontSize:"18px"}}>No products to display</h1>
-            )}
+        <nav className="p-2 ps-lg-5 pe-lg-5">
+          <Link to="/" className="text-decoration-none text-dark">
+            <i className="bi bi-house-fill"></i>
+          </Link>
+          &nbsp; /{" "}
+          <Link to="/women" className="text-decoration-none text-dark">
+            Women
+          </Link>{" "}
+          /&nbsp; Dresses
+        </nav>
+        <div className="d-lg-flex justify-content-around p-2 ps-lg-5 pe-lg-5">
+          <div className="col-lg-2 col-xs-12 col-md-12">
+            <Menu />
+            <Filter products={products} onFilter={handleFilter} />
           </div>
+
+          <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
+            <Filterdisplaynav
+              pageSize={pageSize}
+              setPageSize={() => {}}
+              productName="Dresses"
+            />
+
+            <InfiniteScroll
+              dataLength={filteredProducts.length}
+              next={() => setPage((prevPage) => prevPage + 1)}
+              hasMore={hasMore}
+              loader={<h4>Loading...</h4>}
+              endMessage={<p>No more products to display</p>}
+            >
+              <div className="product-grid container">
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((product, index) => (
+                    <Product
+                      product={product}
+                      key={index}
+                      rendercomp="dresses"
+                      type="women"
+                    />
+                  ))
+                ) : (
+                  <h1 style={{ fontSize: "18px" }}>No products to display</h1>
+                )}
+              </div>
+            </InfiniteScroll>
           </div>
-          <Pagination
-            stateData={filteredProducts}
-            pageSize={pageSize}
-            setViewRowIndex={setViewRowIndex}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
         </div>
-      </div>
       </main>
-      <Footer />
-      <Scrolltotopbtn/>
+      {/* <Footer /> */}
+      <Scrolltotopbtn />
     </div>
   );
 };
 
 export default Dresses;
+
+// import React, { useEffect, useState } from "react";
+// import MyNavbar from "../navbar";
+// import Menu from "../menu";
+// import { Link } from "react-router-dom";
+// import Filter from "./filter";
+// import Filterdisplaynav from "../filterdisplaynav";
+// import axios from "axios";
+// import Product from "../Product";
+// import Pagination from "../pagination";
+// import Footer from "../footer";
+// import Scrolltotopbtn from "../Scrolltotopbutton";
+
+// const Dresses = () => {
+//   const [products, setProducts] = useState([]);
+//   const [pageSize, setPageSize] = useState(24);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [filteredProducts, setFilteredProducts] = useState([]);
+
+//   // eslint-disable-next-line no-unused-vars
+//   const [viewRowIndex, setViewRowIndex] = useState(null);
+
+//   useEffect(() => {
+//     axios
+//       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/women`)
+//       .then((res) => {
+//         if (res.data !== "Fail" && res.data !== "Error") {
+//           const filteredProducts = res.data.filter(
+//             (item) => item.category === "Dresses"
+//           );
+//           setProducts(filteredProducts);
+//           setFilteredProducts(filteredProducts);
+//         }
+//       })
+//       .catch((err) => console.log(err));
+//   }, []);
+//   useEffect(() => {
+//     setCurrentPage(1);
+//     setViewRowIndex(null);
+//   }, [pageSize]);
+
+//   const startIndex = (currentPage - 1) * pageSize;
+//   const endIndex = startIndex + pageSize;
+//   const tableData = filteredProducts.slice(startIndex, endIndex);
+
+//   const handleFilter = (filteredProducts) => {
+//     setFilteredProducts(filteredProducts);
+//   };
+//   return (
+//     <div className="fullscreen">
+//       <MyNavbar />
+//       <main>
+//       <nav className="p-2 ps-lg-5 pe-lg-5">
+//         <Link to="/" className="text-decoration-none text-dark">
+//           <i className="bi bi-house-fill"></i>
+//         </Link>
+//         &nbsp; /{" "}
+//         <Link to="/women" className="text-decoration-none text-dark">
+//           Women
+//         </Link>{" "}
+//         /&nbsp; Dresses
+//       </nav>
+//       <div className="d-lg-flex justify-content-around p-2 ps-lg-5 pe-lg-5">
+//         <div className="col-lg-2 col-xs-12 col-md-12">
+//           <Menu />
+//           <Filter products={products} onFilter={handleFilter} />
+//         </div>
+
+//         <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
+//           <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Dresses"/>
+
+//           <div className="">
+//           <div className="product-grid container">
+//             {tableData.length > 0 ? (
+//               tableData.map((product, index) => (
+//                 <Product
+//                   product={product}
+//                   key={index}
+//                   rendercomp="dresses"
+//                   type="women"
+//                 />
+//               ))
+//             ) : (
+//               <h1 style={{fontSize:"18px"}}>No products to display</h1>
+//             )}
+//           </div>
+//           </div>
+//           <Pagination
+//             stateData={filteredProducts}
+//             pageSize={pageSize}
+//             setViewRowIndex={setViewRowIndex}
+//             currentPage={currentPage}
+//             setCurrentPage={setCurrentPage}
+//           />
+//         </div>
+//       </div>
+//       </main>
+//       <Footer />
+//       <Scrolltotopbtn/>
+//     </div>
+//   );
+// };
+
+// export default Dresses;

@@ -4,7 +4,7 @@ const Filterdisplaynav = (props) => {
   const pageSize = props.pageSize;
   const setPageSize = props.setPageSize;
   const name=props.productName;
-
+console.log(pageSize)
   const handleRowsChange = (e) => {
     const rows = parseInt(e.target.value);
     setPageSize(rows);
@@ -16,7 +16,7 @@ const Filterdisplaynav = (props) => {
           <label className="fs-5 pe-4">{name}</label>
           
         </div>
-        <div className="d-md-flex">
+        {/* <div className="d-md-flex">
           <label className="fs-5 pe-4">Display</label>
          
           <select
@@ -32,7 +32,7 @@ const Filterdisplaynav = (props) => {
             <option value="12">12</option>
             <option value="24">24</option>
           </select>
-        </div>
+        </div> */}
       </nav>
     </>
   );

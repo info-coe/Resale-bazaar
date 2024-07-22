@@ -1,5 +1,5 @@
 const express = require("express");
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 const db = require("./db");
 const paypal = require("paypal-rest-sdk");
 const {
@@ -28,8 +28,11 @@ const {
   adminRejectionQuery,
   retrievingAllProductsQuery,
   retrievingWomenProductsQuery,
+  retrievingWomenProductsQueryAll,
   retrievingKidsProductsQuery,
+  retrievingKidsProductsQueryAll,
   retrievingJewelleryProductsQuery,
+  retrievingJewelleryProductsQueryAll,
   retrievingBooksProductsQuery,
   addProductsQuery,
   deleteProductsQuery,
@@ -79,20 +82,23 @@ const {
   LikesQuery,
   removeLikeQuery,
   addLikeQuery,
+<<<<<<< Updated upstream
   LikecountQuery,
   checkLikeQuery
+=======
+>>>>>>> Stashed changes
 } = require("./queries");
 const cors = require("cors");
-const multer = require('multer');
-const multerS3 = require('multer-s3');
-const path = require('path');
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+const path = require("path");
 const app = express();
 app.use(cors("*"));
 app.use(express.json());
-app.use(express.static('public'));
-const secretKey = 'yourSecretKey';
-const { v4: uuidv4 } = require('uuid');
-const AWS = require('aws-sdk');
+app.use(express.static("public"));
+const secretKey = "yourSecretKey";
+const { v4: uuidv4 } = require("uuid");
+const AWS = require("aws-sdk");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const { Upload } = require("@aws-sdk/lib-storage");
 
@@ -100,8 +106,8 @@ const s3 = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-  }
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
 });
 
 // Define storage for multer
@@ -142,9 +148,11 @@ const upload = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: function (req, file, cb) {
-      const filename = `${file.originalname.split('.')[0]}_${uuidv4()}.${file.mimetype.split('/')[1]}`;
+      const filename = `${file.originalname.split(".")[0]}_${uuidv4()}.${
+        file.mimetype.split("/")[1]
+      }`;
       cb(null, filename);
-    }
+    },
   }),
 });
 // app.post('/upload', upload.array('images', 3), async (req, res) => {
@@ -164,48 +172,52 @@ const upload = multer({
 // CORS middleware
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
 app.use(express.json());
 
-let refreshTokens = []
+let refreshTokens = [];
 
-app.post('/token', (req, res) => {
-  const refreshToken = req.body.token
-  if (refreshToken == null) return res.sendStatus(401)
-  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
+app.post("/token", (req, res) => {
+  const refreshToken = req.body.token;
+  if (refreshToken == null) return res.sendStatus(401);
+  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403)
-    const accessToken = generateAccessToken({ name: user.name })
-    res.json({ accessToken: accessToken })
-  })
-})
+    if (err) return res.sendStatus(403);
+    const accessToken = generateAccessToken({ name: user.name });
+    res.json({ accessToken: accessToken });
+  });
+});
 
-app.delete('/logout', (req, res) => {
-  const tokenToDelete = req.headers['token'];
-  refreshTokens = refreshTokens.filter(token => token !== tokenToDelete)
-  res.sendStatus(204)
-})
+app.delete("/logout", (req, res) => {
+  const tokenToDelete = req.headers["token"];
+  refreshTokens = refreshTokens.filter((token) => token !== tokenToDelete);
+  res.sendStatus(204);
+});
 
 function generateAccessToken({ user }) {
-  return jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' })
+  return jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "24h",
+  });
 }
 
 function authenticateToken(req, res, next) {
-
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-  if (token == null) return res.sendStatus(401)
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    console.log(err)
-    if (err) return res.sendStatus(403)
+    console.log(err);
+    if (err) return res.sendStatus(403);
     console.log(req.user, user);
-    req.user = user
-    next()
-  })
+    req.user = user;
+    next();
+  });
 }
 
 var nodemailer = require("nodemailer");
@@ -298,14 +310,16 @@ db.query(createDatabaseQuery, (err) => {
                             if (err) throw err;
                             db.query(ContactData, (err) => {
                               if (err) throw err;
-                            db.query(ReviewsQuery, (err) => {
-                              if (err) throw err;
-                              db.query(LikesQuery, (err) => {
+                              db.query(ReviewsQuery, (err) => {
                                 if (err) throw err;
-                                console.log("Database and tables created successfully");                            
-                              });                     
+                                db.query(LikesQuery, (err) => {
+                                  if (err) throw err;
+                                  console.log(
+                                    "Database and tables created successfully"
+                                  );
+                                });
+                              });
                             });
-                          });
                           });
                         });
                       });
@@ -412,13 +426,13 @@ app.get("/user", (req, res) => {
   });
 });
 app.post("/users", (req, res) => {
-  const sql = "select * from register where user_id = ?"
+  const sql = "select * from register where user_id = ?";
   db.query(sql, [parseInt(req.body.sellerID)], (err, data) => {
     if (err) {
       return res.json("Error");
     }
     if (data.length > 0) {
-        return res.json(data);
+      return res.json(data);
     } else {
       return res.json("Fail");
     }
@@ -452,15 +466,20 @@ app.post("/offers/:offerId/reject", (req, res) => {
 
 app.post("/offeredproducts", (req, res) => {
   const sql = offeredProductsQuery;
-  const { product_id, offered_buyer_id, offered_price, product_status } = req.body;
-  db.query(sql, [product_id, offered_buyer_id, offered_price, product_status], (err, data) => {
-    if (err) {
-      console.log(err);
-      return res.json("Error");
+  const { product_id, offered_buyer_id, offered_price, product_status } =
+    req.body;
+  db.query(
+    sql,
+    [product_id, offered_buyer_id, offered_price, product_status],
+    (err, data) => {
+      if (err) {
+        console.log(err);
+        return res.json("Error");
+      }
+      console.log("data added successfully");
+      return res.json(data);
     }
-    console.log("data added successfully");
-    return res.json(data);
-  });
+  );
 });
 
 app.get("/offeredproducts", (req, res) => {
@@ -479,7 +498,7 @@ app.get("/offeredproducts", (req, res) => {
 
 app.post("/contactseller", (req, res) => {
   const { name, email, phone, user_id, comment } = req.body; // Destructure values from req.body
-  const sql = AddContactSellerQuery
+  const sql = AddContactSellerQuery;
   const values = [name, email, phone, user_id, comment];
 
   db.query(sql, values, (err, result) => {
@@ -489,7 +508,9 @@ app.post("/contactseller", (req, res) => {
     }
 
     console.log("Data added successfully");
-    return res.status(200).json({ message: "Data added successfully", data: result });
+    return res
+      .status(200)
+      .json({ message: "Data added successfully", data: result });
   });
 });
 
@@ -625,7 +646,6 @@ app.post("/adminrejection", (req, res) => {
   });
 });
 
-
 // all products
 app.get("/allproducts", (req, res) => {
   const sql = retrievingAllProductsQuery;
@@ -646,7 +666,6 @@ app.get("/allproducts", (req, res) => {
 app.get("/sellerproducts", (req, res) => {
   const sql = retrievingSellerProductsQuery;
 
-
   db.query(sql, (err, data) => {
     if (err) {
       return res.json("Error");
@@ -662,7 +681,6 @@ app.get("/sellerproducts", (req, res) => {
 app.get("/sellerproductsoffers", (req, res) => {
   const sql = offergetQuery;
 
-
   db.query(sql, (err, data) => {
     if (err) {
       return res.json("Error");
@@ -676,12 +694,14 @@ app.get("/sellerproductsoffers", (req, res) => {
 });
 // women
 app.get("/women", (req, res) => {
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
   const sql = retrievingWomenProductsQuery;
 
-  const type = "women";
+  const type = req.query.category;
   const accepted = "true";
 
-  db.query(sql, [type, accepted], (err, data) => {
+  db.query(sql, [type, accepted, limit, page], (err, data) => {
     if (err) {
       return res.json("Error");
     }
@@ -692,15 +712,90 @@ app.get("/women", (req, res) => {
     }
   });
 });
+//womenall
+app.get("/womenall", (req, res) => {
+  //  console.log(req)
 
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+  const sql = retrievingKidsProductsQueryAll;
+
+  const type = req.query.category;
+  const accepted = "true";
+  console.log(type);
+
+  db.query(sql, [type, accepted, limit, page], (err, data) => {
+    // console.log(res.json(data))
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+      // console.log(res.json(data))
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
 //kids
 app.get("/kids", (req, res) => {
+  //  console.log(req)
+
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
   const sql = retrievingKidsProductsQuery;
 
-  const type = "kids";
+  const type = req.query.category;
   const accepted = "true";
 
-  db.query(sql, [type, accepted], (err, data) => {
+  db.query(sql, [type, accepted, limit, page], (err, data) => {
+    // console.log(res.json(data))
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+      // console.log(res.json(data))
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
+//kidsAll
+app.get("/kidsall", (req, res) => {
+  //  console.log(req)
+
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+  const sql = retrievingKidsProductsQueryAll;
+
+  const type = req.query.category;
+  const accepted = "true";
+  console.log(type);
+
+  db.query(sql, [type, accepted, limit, page], (err, data) => {
+    // console.log(res.json(data))
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+      // console.log(res.json(data))
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
+//jewellery
+app.get("/jewellery", (req, res) => {
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+  const sql = retrievingJewelleryProductsQuery;
+
+  const type = req.query.category;
+  const accepted = "true";
+
+  db.query(sql, [type, accepted, limit, page], (err, data) => {
     if (err) {
       return res.json("Error");
     }
@@ -712,24 +807,30 @@ app.get("/kids", (req, res) => {
   });
 });
 //jewellery
-app.get("/jewellery", (req, res) => {
-  const sql = retrievingJewelleryProductsQuery;
+app.get("/jewelleryall", (req, res) => {
+  //  console.log(req)
 
-  const type = "jewellery";
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+  const sql = retrievingJewelleryProductsQueryAll;
+
+  const type = req.query.category;
   const accepted = "true";
+  console.log(type);
 
-  db.query(sql, [type, accepted], (err, data) => {
+  db.query(sql, [type, accepted, limit, page], (err, data) => {
+    // console.log(res.json(data))
     if (err) {
       return res.json("Error");
     }
     if (data.length > 0) {
       return res.json(data);
+      // console.log(res.json(data))
     } else {
       return res.json("Fail");
     }
   });
 });
-
 ///books
 app.get("/books", (req, res) => {
   const sql = retrievingBooksProductsQuery;
@@ -752,14 +853,21 @@ app.get("/books", (req, res) => {
 app.post("/updateproducts", (req, res) => {
   const { product_id, quantity } = req.body;
 
-  // Perform the update operation in the database 
+  // Perform the update operation in the database
   const sql = updateProductQtyQuery;
   db.query(sql, [quantity, product_id], (err, result) => {
     if (err) {
       console.log("Error updating product quantity:", err);
-      return res.status(500).json({ success: false, error: "Failed to update product quantity" });
+      return res
+        .status(500)
+        .json({ success: false, error: "Failed to update product quantity" });
     }
-    return res.status(200).json({ success: true, message: "Product quantity updated successfully" });
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "Product quantity updated successfully",
+      });
   });
 });
 
@@ -801,17 +909,23 @@ app.post("/updateOrder", (req, res) => {
       console.error("Error updating order:", err);
       return res.status(500).json({ error: "Error updating order" });
     }
-    return res.json({ success: true, message: "Order updated successfully", result });
+    return res.json({
+      success: true,
+      message: "Order updated successfully",
+      result,
+    });
   });
 });
 
 // add products
-app.post('/addproducts', upload.array('media', 11), (req, res) => {
+app.post("/addproducts", upload.array("media", 11), (req, res) => {
   try {
-    const mediaFiles = req.files.map(file => {
-      const urlParts = file.location.split('/');
-      const bucketName = urlParts[2].split('.')[0];
-      return `https://${bucketName}.s3.amazonaws.com/${urlParts.slice(3).join('/')}`;
+    const mediaFiles = req.files.map((file) => {
+      const urlParts = file.location.split("/");
+      const bucketName = urlParts[2].split(".")[0];
+      return `https://${bucketName}.s3.amazonaws.com/${urlParts
+        .slice(3)
+        .join("/")}`;
     });
 
     const { allMedia, ...productDetails } = req.body;
@@ -843,13 +957,15 @@ app.post('/addproducts', upload.array('media', 11), (req, res) => {
       productDetails.Fit,
       productDetails.Length,
       productDetails.accepted_by_admin,
-      productDetails.seller_id
+      productDetails.seller_id,
     ];
 
     db.query(sql, values, (err, result) => {
       if (err) {
         console.error("Error while inserting product:", err);
-        return res.status(500).json({ message: "Error while inserting product" });
+        return res
+          .status(500)
+          .json({ message: "Error while inserting product" });
       }
       console.log("Product inserted successfully");
       return res.status(200).json({ message: "Product inserted successfully" });
@@ -860,30 +976,46 @@ app.post('/addproducts', upload.array('media', 11), (req, res) => {
   }
 });
 
-
-
-
-app.put('/handleproducts/:id', upload.array('images', 6), (req, res) => {
+app.put("/handleproducts/:id", upload.array("images", 6), (req, res) => {
   const id = req.params.id;
   // console.log(req.body)
   const {
-    name, price, description, location, color, alteration, size, measurements,
-    condition, age, quantity, occasion, material, brand, type, style, fit, length, season, notes,accepted_by_admin
+    name,
+    price,
+    description,
+    location,
+    color,
+    alteration,
+    size,
+    measurements,
+    condition,
+    age,
+    quantity,
+    occasion,
+    material,
+    brand,
+    type,
+    style,
+    fit,
+    length,
+    season,
+    notes,
+    accepted_by_admin,
   } = req.body;
 
   // const adminAcceptRequest= req.body.adminAccept;
   // console.log(adminAcceptRequest)
 
-  const deletedImages = JSON.parse(req.body.deletedImages || '[]');
+  const deletedImages = JSON.parse(req.body.deletedImages || "[]");
 
   // Fetch existing images from the database
   const fetchSql = fetchFindImagesQuery;
   db.query(fetchSql, [id], (err, result) => {
     if (err) {
-      console.error('Error fetching existing images:', err);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error("Error fetching existing images:", err);
+      return res.status(500).json({ error: "Internal server error" });
     }
-    
+
     // Parse existing images
     let existingImages = [];
     if (result.length > 0 && result[0].image) {
@@ -891,14 +1023,18 @@ app.put('/handleproducts/:id', upload.array('images', 6), (req, res) => {
     }
 
     // Handle uploaded images
-    const newImages = req.files.map(file => {
-      const urlParts = file.location.split('/');
-      const bucketName = urlParts[2].split('.')[0];
-      return `https://${bucketName}.s3.amazonaws.com/${urlParts.slice(3).join('/')}`;
+    const newImages = req.files.map((file) => {
+      const urlParts = file.location.split("/");
+      const bucketName = urlParts[2].split(".")[0];
+      return `https://${bucketName}.s3.amazonaws.com/${urlParts
+        .slice(3)
+        .join("/")}`;
     });
 
     // Filter out deleted images from existing images
-    let updatedImages = existingImages.filter(image => !deletedImages.includes(image));
+    let updatedImages = existingImages.filter(
+      (image) => !deletedImages.includes(image)
+    );
 
     // Combine existing images with new images
     updatedImages = [...updatedImages, ...newImages];
@@ -906,26 +1042,44 @@ app.put('/handleproducts/:id', upload.array('images', 6), (req, res) => {
     // Construct your SQL query for updating product details
     const updateSql = productsUpdateQuery;
 
-                       const values = [
-                        name, price, description, location, color, alteration, size, measurements,
-                        condition, age, quantity, occasion, material, brand, type, style, fit, length, season,notes, accepted_by_admin, 
-                        JSON.stringify(updatedImages), id
-                      ];
+    const values = [
+      name,
+      price,
+      description,
+      location,
+      color,
+      alteration,
+      size,
+      measurements,
+      condition,
+      age,
+      quantity,
+      occasion,
+      material,
+      brand,
+      type,
+      style,
+      fit,
+      length,
+      season,
+      notes,
+      accepted_by_admin,
+      JSON.stringify(updatedImages),
+      id,
+    ];
 
     // Execute the SQL query to update product details
     db.query(updateSql, values, (err, result) => {
       if (err) {
-        console.error('Error updating product:', err);
-        return res.status(500).json({ error: 'Internal server error' });
+        console.error("Error updating product:", err);
+        return res.status(500).json({ error: "Internal server error" });
       }
 
-      console.log('Product updated successfully');
-      return res.status(200).json({ message: 'Product updated successfully' });
+      console.log("Product updated successfully");
+      return res.status(200).json({ message: "Product updated successfully" });
     });
   });
 });
-
-
 
 app.delete("/handleproducts/:id", (req, res) => {
   const productId = req.params.id;
@@ -1013,7 +1167,7 @@ app.post("/addcart", (req, res) => {
     req.body.product.seller_id,
     req.body.product.userid,
   ];
-  
+
   db.query(sql, [data], (err, result) => {
     if (err) {
       console.error("Error inserting data:", err);
@@ -1025,7 +1179,7 @@ app.post("/addcart", (req, res) => {
 });
 
 app.get("/addcart", (req, res) => {
-  const sql = retrievingCartItemsQuery
+  const sql = retrievingCartItemsQuery;
   db.query(sql, (err, data) => {
     if (err) {
       return res.json("Error");
@@ -1050,7 +1204,7 @@ app.post("/editcart", (req, res) => {
   const sql = updateCartItemsQuery;
 
   // Loop through each cart item and update the userid
-  cartItems.forEach(cartItem => {
+  cartItems.forEach((cartItem) => {
     const itemId = cartItem.id;
 
     db.query(sql, [token, itemId], (err, result) => {
@@ -1196,26 +1350,49 @@ app.post("/contact", (req, res) => {
 });
 
 app.post("/saveBillingAddress", (req, res) => {
-  const { firstname, lastname, email, country, state, city, address1, address2, pincode, phone } = req.body.billingAddress;
-  const token = req.body.token
+  const {
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone,
+  } = req.body.billingAddress;
+  const token = req.body.token;
 
   const sql = addBillingAddress;
 
-  const values = [firstname, lastname, email, country, state, city, address1, address2, pincode, phone, token];
+  const values = [
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone,
+    token,
+  ];
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error("Error saving billing address:", err);
       return res.status(500).json({ error: "Internal server error" });
     }
     console.log("Billing address saved successfully");
-    return res.status(200).json({ message: "Billing address saved successfully" });
+    return res
+      .status(200)
+      .json({ message: "Billing address saved successfully" });
   });
 });
 
 app.get("/saveBillingAddress", (req, res) => {
   const sql = getbillingAddress;
-
-
 
   db.query(sql, (err, data) => {
     if (err) {
@@ -1229,15 +1406,36 @@ app.get("/saveBillingAddress", (req, res) => {
   });
 });
 
-
-
 app.post("/saveShippingAddress", (req, res) => {
-  const { firstname, lastname, email, country, state, city, address1, address2, pincode, phone } = req.body.shippingAddress;
-  const token = req.body.token
+  const {
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone,
+  } = req.body.shippingAddress;
+  const token = req.body.token;
   // Assuming the token contains the user ID
 
   const sql = addShippingAddress;
-  const values = [firstname, lastname, email, country, state, city, address1, address2, pincode, phone, token];
+  const values = [
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone,
+    token,
+  ];
 
   db.query(sql, values, (err, result) => {
     if (err) {
@@ -1245,12 +1443,11 @@ app.post("/saveShippingAddress", (req, res) => {
       return res.status(500).json({ error: "Internal server error" });
     }
     console.log("Shipping address saved successfully");
-    return res.status(200).json({ message: "Shipping address saved successfully" });
+    return res
+      .status(200)
+      .json({ message: "Shipping address saved successfully" });
   });
 });
-
-
-
 
 app.get("/saveShippingAddress", (req, res) => {
   const sql = getshippingAddress;
@@ -1267,62 +1464,116 @@ app.get("/saveShippingAddress", (req, res) => {
   });
 });
 
-app.put('/saveShippingAddress/:id', (req, res) => {
+app.put("/saveShippingAddress/:id", (req, res) => {
   const id = req.params.id;
-  const { firstname, lastname, email, country, state, city, address1, address2, pincode, phone } = req.body;
+  const {
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone,
+  } = req.body;
 
   const sql = updateShippingAddress;
-  const values = [firstname, lastname, email, country, state, city, address1, address2, pincode, phone, id];
+  const values = [
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone,
+    id,
+  ];
 
   db.query(sql, values, (err, result) => {
     if (err) {
-      console.error('Error updating shipping address:', err);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error("Error updating shipping address:", err);
+      return res.status(500).json({ error: "Internal server error" });
     }
-    console.log('Shipping address updated successfully');
-    return res.status(200).json({ message: 'Shipping address updated successfully' });
+    console.log("Shipping address updated successfully");
+    return res
+      .status(200)
+      .json({ message: "Shipping address updated successfully" });
   });
 });
 
-app.delete('/saveShippingAddress/:id', (req, res) => {
+app.delete("/saveShippingAddress/:id", (req, res) => {
   const id = req.params.id;
   const sql = deleteShippingAddress;
 
   db.query(sql, [id], (err, result) => {
     if (err) {
-      console.error('Error deleting shipping address:', err);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error("Error deleting shipping address:", err);
+      return res.status(500).json({ error: "Internal server error" });
     }
-    console.log('Shipping address deleted successfully');
-    return res.status(200).json({ message: 'Shipping address deleted successfully' });
+    console.log("Shipping address deleted successfully");
+    return res
+      .status(200)
+      .json({ message: "Shipping address deleted successfully" });
   });
 });
 
 app.post("/updatepayment", (req, res) => {
   const payment_status = req.body.payment_status;
   const token = parseInt(req.body.token); // Ensure that token is parsed as an integer
-  const { shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity } = req.body;
+  const {
+    shipment_id,
+    order_id,
+    ordered_date,
+    shipped_date,
+    delivered_date,
+    order_quantity,
+  } = req.body;
 
   // Insert into orders table
   const insertOrderSql = paymentStatusQuery;
-  db.query(insertOrderSql, [req.body.product_id, payment_status, token, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity], (err, result) => {
-    if (err) {
-      console.error("Error inserting into orders table:", err);
-      return res.status(500).json({ error: "Error updating payment status" });
-    }
-    console.log("Payment status updated successfully for product with ID:");
-
-    // Delete entries from cart table where userid matches buyer_id in orders table
-    const deleteCartSql = deletecartitemQuery;
-    db.query(deleteCartSql, [token, token], (err, deleteResult) => {
+  db.query(
+    insertOrderSql,
+    [
+      req.body.product_id,
+      payment_status,
+      token,
+      shipment_id,
+      order_id,
+      ordered_date,
+      shipped_date,
+      delivered_date,
+      order_quantity,
+    ],
+    (err, result) => {
       if (err) {
-        console.error("Error deleting from cart table:", err);
-        return res.status(500).json({ error: "Error deleting cart items" });
+        console.error("Error inserting into orders table:", err);
+        return res.status(500).json({ error: "Error updating payment status" });
       }
-      console.log("Cart items removed successfully");
-      return res.status(200).json({ success: true, message: "Payment status updated and corresponding cart items deleted successfully" });
-    });
-  });
+      console.log("Payment status updated successfully for product with ID:");
+
+      // Delete entries from cart table where userid matches buyer_id in orders table
+      const deleteCartSql = deletecartitemQuery;
+      db.query(deleteCartSql, [token, token], (err, deleteResult) => {
+        if (err) {
+          console.error("Error deleting from cart table:", err);
+          return res.status(500).json({ error: "Error deleting cart items" });
+        }
+        console.log("Cart items removed successfully");
+        return res
+          .status(200)
+          .json({
+            success: true,
+            message:
+              "Payment status updated and corresponding cart items deleted successfully",
+          });
+      });
+    }
+  );
 });
 
 app.get("/updatepayment", (req, res) => {
@@ -1340,67 +1591,81 @@ app.get("/updatepayment", (req, res) => {
   });
 });
 
-
-app.put('/:productId/updateQuantityAndPrice', (req, res) => {
+app.put("/:productId/updateQuantityAndPrice", (req, res) => {
   const productId = req.params.productId;
-  const { quantity} = req.body; // Assuming quantity and price are sent in the request body
-  console.log(req.body)
+  const { quantity } = req.body; // Assuming quantity and price are sent in the request body
+  console.log(req.body);
   // Update quantity and price in your database
-  const sql = 'UPDATE cart SET quantity = ? WHERE id = ?';
-  const values = [quantity,productId];
+  const sql = "UPDATE cart SET quantity = ? WHERE id = ?";
+  const values = [quantity, productId];
 
   db.query(sql, values, (err, result) => {
     if (err) {
-      console.error('Error updating quantity and price:', err);
-      return res.status(500).json({ error: 'Internal server error' });
+      console.error("Error updating quantity and price:", err);
+      return res.status(500).json({ error: "Internal server error" });
     }
-    console.log('Quantity and price updated successfully');
-    return res.status(200).json({ message: 'Quantity and price updated successfully' });
+    console.log("Quantity and price updated successfully");
+    return res
+      .status(200)
+      .json({ message: "Quantity and price updated successfully" });
   });
 });
 
-app.post('/reviews', upload.array('images', 5), (req, res) => {
-  const { rating, description, title ,sellerId ,buyerId} = req.body;
+app.post("/reviews", upload.array("images", 5), (req, res) => {
+  const { rating, description, title, sellerId, buyerId } = req.body;
   // const images = req.files.map(file => file.filename); // Extract filenames from the uploaded files
   try {
-    const mediaFiles = req.files.map(file => {
-      const urlParts = file.location.split('/');
-      const bucketName = urlParts[2].split('.')[0];
-      return `https://${bucketName}.s3.amazonaws.com/${urlParts.slice(3).join('/')}`;
+    const mediaFiles = req.files.map((file) => {
+      const urlParts = file.location.split("/");
+      const bucketName = urlParts[2].split(".")[0];
+      return `https://${bucketName}.s3.amazonaws.com/${urlParts
+        .slice(3)
+        .join("/")}`;
     });
-  const createdAt = new Date(); 
-  const updatedAt = new Date();
-  const query = addReviewsQuery;
-  db.query(query, [rating, description, title, JSON.stringify(mediaFiles),sellerId,buyerId,createdAt, updatedAt], (err, result) => {
-    if (err) {
-      console.error('Error inserting review:', err);
-      res.status(500).send({ message: 'Error inserting review' });
-      return;
-    }
-    res.send({ message: 'Review added successfully', reviewId: result.insertId });
-  });
-} catch (error) {
-  console.error("Error in /reviews route:", error);
-  return res.status(500).json({ message: "Internal Server Error" });
-}
+    const createdAt = new Date();
+    const updatedAt = new Date();
+    const query = addReviewsQuery;
+    db.query(
+      query,
+      [
+        rating,
+        description,
+        title,
+        JSON.stringify(mediaFiles),
+        sellerId,
+        buyerId,
+        createdAt,
+        updatedAt,
+      ],
+      (err, result) => {
+        if (err) {
+          console.error("Error inserting review:", err);
+          res.status(500).send({ message: "Error inserting review" });
+          return;
+        }
+        res.send({
+          message: "Review added successfully",
+          reviewId: result.insertId,
+        });
+      }
+    );
+  } catch (error) {
+    console.error("Error in /reviews route:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
-
-
-
-
-
-app.get('/reviews', (req, res) => {
+app.get("/reviews", (req, res) => {
   const query = reviewsRetrivingJoinQuery;
 
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error fetching reviews:', err);
-      res.status(500).send({ message: 'Error fetching reviews' });
+      console.error("Error fetching reviews:", err);
+      res.status(500).send({ message: "Error fetching reviews" });
       return;
     }
 
-    const reviews = results.map(review => ({
+    const reviews = results.map((review) => ({
       ...review,
       images: JSON.parse(review.images),
     }));
@@ -1408,7 +1673,7 @@ app.get('/reviews', (req, res) => {
     res.send(reviews);
   });
 });
-app.get('/shipmentjoin', (req, res) => {
+app.get("/shipmentjoin", (req, res) => {
   const query = shipmentRetrivingJoinQuery;
 
   db.query(query, (err, data) => {
@@ -1454,78 +1719,65 @@ app.get('/shipmentjoin', (req, res) => {
 //     );
 //   }
 // });
-app.post('/products/:productId/likes', (req, res) => {
+app.post("/products/:productId/likes", (req, res) => {
   const { productId } = req.params;
   const { like_userID, likes, action } = req.body;
 
   const sql = addLikeQuery;
   const sql2 = removeLikeQuery;
 
-  if (action === 'liked') {
+  if (action === "liked") {
     // Add the like
     db.query(
       sql,
       [productId, like_userID, likes],
       (insertErr, insertResults) => {
         if (insertErr) {
-          console.error('Error adding like:', insertErr);
-          return res.status(500).json({ error: 'Server error' });
+          console.error("Error adding like:", insertErr);
+          return res.status(500).json({ error: "Server error" });
         }
-        res.json({ action: 'liked', likeCount: likes });
+        res.json({ action: "liked", likeCount: likes });
       }
     );
-  } else if (action === 'unliked') {
+  } else if (action === "unliked") {
     // Remove the like
-    db.query(
-      sql2,
-      [productId, like_userID],
-      (delErr, delResults) => {
-        if (delErr) {
-          console.error('Error removing like:', delErr);
-          return res.status(500).json({ error: 'Server error' });
-        }
-        res.json({ action: 'unliked', likeCount: likes });
+    db.query(sql2, [productId, like_userID], (delErr, delResults) => {
+      if (delErr) {
+        console.error("Error removing like:", delErr);
+        return res.status(500).json({ error: "Server error" });
       }
-    );
+      res.json({ action: "unliked", likeCount: likes });
+    });
   }
 });
 
-app.get('/products/:productId/likes', (req, res) => {
+app.get("/products/:productId/likes", (req, res) => {
   const { productId } = req.params;
   const sql = LikecountQuery;
 
   db.query(sql, [productId], (err, result) => {
     if (err) {
-      console.error('Error fetching like count:', err);
-      return res.status(500).send('Error fetching like count');
+      console.error("Error fetching like count:", err);
+      return res.status(500).send("Error fetching like count");
     }
     const likeCount = result[0].likeCount;
     res.json({ likeCount });
   });
 });
 
-
-app.get('/products/:productId/likes/user', (req, res) => {
+app.get("/products/:productId/likes/user", (req, res) => {
   const { productId } = req.params;
   const { userId } = req.query;
-     const sql = checkLikeQuery;
-  db.query(
-    sql,
-    [productId, userId],
-    (err, results) => {
-      if (err) {
-        console.error('Error checking if liked:', err);
-        return res.status(500).send('Error checking like status');
-      }
-      const liked = results.length > 0;
-      res.json({ liked });
+  const sql = checkLikeQuery;
+  db.query(sql, [productId, userId], (err, results) => {
+    if (err) {
+      console.error("Error checking if liked:", err);
+      return res.status(500).send("Error checking like status");
     }
-  );
+    const liked = results.length > 0;
+    res.json({ liked });
+  });
 });
-
-
-
-
 
 // payment
 // Replace these with your PayPal Sandbox API credentials
@@ -1606,16 +1858,18 @@ app.get("/success", (req, res) => {
         );
         res.status(500).send("Error executing payment");
       } else {
-
-        res.redirect(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/finalcheckoutpage`);
+        res.redirect(
+          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/finalcheckoutpage`
+        );
       }
     }
   );
 });
 
 app.get("/cancel", (req, res) => {
-
-  res.redirect(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/`);
+  res.redirect(
+    `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/`
+  );
 });
 
 app.listen(process.env.REACT_APP_PORT, () => {
