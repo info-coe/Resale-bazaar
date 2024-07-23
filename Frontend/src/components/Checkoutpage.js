@@ -238,6 +238,7 @@ const Checkout = () => {
         console.log(
           "Skipping Axios POST requests for shipping and billing addresses"
         );
+        setDisabled(false);
       } else {
         if (skipShippingAddress) {
           shippingAddressData = fields;
