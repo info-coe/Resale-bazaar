@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const db = require("./db");
 const paypal = require("paypal-rest-sdk");
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 const {
   createDatabaseQuery,
   createAdminTableQuery,
@@ -1869,6 +1870,33 @@ app.get("/cancel", (req, res) => {
     `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/`
   );
 });
+
+// Stripe payment gateway
+app.post("/paymentStripe", async(req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: req.body.cartItems.map(item => {
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: item.name,
+            },
+            unit_amount: item.price*100,
+          },
+          quantity: item.quantity,
+        }
+      }),
+      success_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/finalcheckoutpage`,
+      cancel_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/`,
+    })
+    res.json({ url: session.url })
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
+})
 
 app.listen(process.env.REACT_APP_PORT, () => {
   console.log("listening");
