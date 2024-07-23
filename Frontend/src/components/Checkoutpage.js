@@ -1105,6 +1105,7 @@ const Checkout = () => {
                   <button
                     className="btn btn-secondary me-2"
                     onClick={handleBack}
+                    disabled={disabled}
                   >
                     <i className="bi bi-arrow-left-square"></i> Back
                   </button>

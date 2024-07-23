@@ -251,7 +251,7 @@ app.post("/sendotp", (req, res) => {
   var mailOptions = {
     from: process.env.REACT_APP_FROMMAIL,
     to: `${email}`,
-    subject: "Verification mail to register for The Resale Bazaar fashion",
+    subject: "Verification mail from The Resale Bazaar",
     generateTextFromHTML: true,
     html: `<b>Hello user, Please use this otp ${otp} for verification</b>`,
   };
