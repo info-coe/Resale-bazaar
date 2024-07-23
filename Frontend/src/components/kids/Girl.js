@@ -6,17 +6,17 @@ import Filter from "./filter";
 import Filterdisplaynav from "../filterdisplaynav";
 import Product from "../Product";
 import axios from "axios";
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from "react-infinite-scroll-component";
 // import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Boy = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(0);
-  const pageSize=8
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
 
-  console.log(filteredProducts)
+  console.log(filteredProducts);
   useEffect(() => {
     fetchProducts(page);
   }, [page]);
@@ -26,21 +26,28 @@ const Boy = () => {
       const res = await axios.get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/kids?limit=${pageSize}&page=${pageNum}&category=Girl`
       );
-console.log(res.data  )
+      console.log(res.data);
       if (res.data !== "Fail" && res.data !== "Error") {
         // Filter the products by category "Boy"
-        const filterProducts = res.data
+        const filterProducts = res.data;
 
         // Get the IDs of the currently loaded products to avoid duplicates
-        const existingProductIds = new Set(products.map(product => product.id));
-        
+        const existingProductIds = new Set(
+          products.map((product) => product.id)
+        );
+
         // Filter new products to remove duplicates
-        const newProducts = filterProducts.filter(product => !existingProductIds.has(product.id));
+        const newProducts = filterProducts.filter(
+          (product) => !existingProductIds.has(product.id)
+        );
 
         if (newProducts.length > 0) {
           // Update products and filteredProducts state
           setProducts((prevProducts) => [...prevProducts, ...newProducts]);
-          setFilteredProducts((prevProducts) => [...prevProducts, ...newProducts]);
+          setFilteredProducts((prevProducts) => [
+            ...prevProducts,
+            ...newProducts,
+          ]);
         }
 
         // Check if there are more products to load
@@ -81,15 +88,19 @@ console.log(res.data  )
           </div>
 
           <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
-            <Filterdisplaynav pageSize={pageSize} setPageSize={() => {}} productName="Boys Fashion"/>
+            <Filterdisplaynav
+              pageSize={pageSize}
+              setPageSize={() => {}}
+              productName="Boys Fashion"
+            />
 
-              <InfiniteScroll
-                dataLength={filteredProducts.length}
-                next={() => setPage((prevPage) => prevPage + 1)}
-                hasMore={hasMore}
-                loader={<h4>Loading...</h4>}
-                endMessage={<p>No more products to display</p>}
-              >
+            <InfiniteScroll
+              dataLength={filteredProducts.length}
+              next={() => setPage((prevPage) => prevPage + 1)}
+              hasMore={hasMore}
+              loader={<h4>Loading...</h4>}
+              endMessage={<p>No more products to display</p>}
+            >
               <div className="product-grid container">
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
@@ -101,7 +112,7 @@ console.log(res.data  )
                     />
                   ))
                 ) : (
-                  <h1 style={{fontSize:"18px"}}>No products to display</h1>
+                  <h1 style={{ fontSize: "18px" }}>No products to display</h1>
                 )}
               </div>
             </InfiniteScroll>
@@ -115,7 +126,6 @@ console.log(res.data  )
 };
 
 export default Boy;
-
 
 // import React, { useEffect, useState } from "react";
 // import MyNavbar from "../navbar";
