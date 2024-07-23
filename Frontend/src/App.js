@@ -59,7 +59,6 @@ import ContactSeller from "./components/sellerdashboard/ContactSeller";
 import ReviewRatings from "./components/customerdetails/reviewsRatings";
 
 import Scrolltotop from "./components/Scrolltotop";
-import RequestCancelPage from "./components/customerdetails/RequestCancelPage";
 import CancelOrder from "./components/customerdetails/CancelOrder";
 // const Home = React.lazy(() => import("./components/home"));
 // const Womenallproducts = React.lazy(() =>
@@ -318,16 +317,33 @@ function App() {
             <Route path="forgotpassword" element={<Forgotpassword />}></Route>
             <Route path="*" element={<Notfound />}></Route>
             <Route path="/search" element={<Search />} />
-            <Route path="/orderpage" element={<OrderPage />} />
-            <Route path="/requestcancelpage" element={<RequestCancelPage />} />
-            <Route path="/cancelorder" element={<CancelOrder />} />
+            <Route path="/orderpage" element={
+              <ProtectedRoute>
+              {isUserLoggedIn && <OrderPage />}
+            </ProtectedRoute>
+            } />
+            <Route path="/cancelorder" element={
+                              <ProtectedRoute>
+                              {isUserLoggedIn && <CancelOrder />}
+                            </ProtectedRoute>
+              
+              } />
 
             <Route
               path="/sellerprofile/:sellerId"
               element={<SellerProfile />}
             />
-            <Route path="/contactseller" element={<ContactSeller />} />
-            <Route path="/feedback" element={<ReviewRatings />} />
+            <Route path="/contactseller" element={
+              <ProtectedRoute>
+              {isUserLoggedIn &&  <ContactSeller />}
+            </ProtectedRoute>
+             
+              } />
+            <Route path="/feedback" element={
+               <ProtectedRoute>
+               {isUserLoggedIn && <ReviewRatings />}
+             </ProtectedRoute>
+              } />
           </Routes>
         {/* </React.Suspense> */}
       </BrowserRouter>
