@@ -113,6 +113,10 @@ const ordersproducts = `
     shipped_date DATE NULL,
     delivered_date DATE NULL,
     order_quantity INT NULL,
+    order_status VARCHAR(255)NOT NULL,
+    order_amount INT  NULL,
+    refundable_amount INT NULL,
+    cancel_reason MEDIUMTEXT NULL,
     UNIQUE INDEX id_UNIQUE (id ASC));
 `
 
@@ -277,9 +281,10 @@ const addBillingAddress = `INSERT INTO billing_address (firstname, lastname, ema
 const addShippingAddress = `INSERT INTO shipping_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 const updateShippingAddress = `UPDATE shipping_address SET firstname = ?, lastname = ?, email = ?, country = ?, state = ?, city = ?, address1 = ?, address2 = ?, pincode = ?, phone = ? WHERE id = ?`;
 const deleteShippingAddress = "DELETE FROM shipping_address WHERE id = ?"
-const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buyer_id, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
+const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buyer_id, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity,order_status,order_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 const deleteProductsQuery = "DELETE FROM  products WHERE id=?";
 const deletecartitemQuery = "DELETE FROM cart WHERE userid = ? AND EXISTS (SELECT 1 FROM orders WHERE buyer_id = ?)"
+const cancelorderitemQuery = "UPDATE orders SET order_status = ?, refundable_amount = ?, cancel_reason = ?  WHERE order_id = ?"
 const getbillingAddress= "Select * from billing_address"
 const getshippingAddress= "Select * from shipping_address"
 const retrievingAdminQuery = "SELECT * FROM admin";
@@ -391,5 +396,6 @@ module.exports = {
   addLikeQuery,
   removeLikeQuery,
   LikecountQuery,
-  checkLikeQuery
+  checkLikeQuery,
+  cancelorderitemQuery
 };

@@ -2,6 +2,8 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const db = require("./db");
 const paypal = require("paypal-rest-sdk");
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
+
 const {
   createDatabaseQuery,
   createAdminTableQuery,
@@ -84,7 +86,8 @@ const {
   addLikeQuery,
 
   LikecountQuery,
-  checkLikeQuery
+  checkLikeQuery,
+  cancelorderitemQuery
 
 } = require("./queries");
 const cors = require("cors");
@@ -693,14 +696,13 @@ app.get("/sellerproductsoffers", (req, res) => {
 });
 // women
 app.get("/women", (req, res) => {
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  const sql = retrievingWomenProductsQuery;
-
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 8; // Default to 8 if not provided
+  const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
-
-  db.query(sql, [type, accepted, limit, page], (err, data) => {
+  const sql = retrievingWomenProductsQuery;
+  db.query(sql, [type, accepted, offset, page], (err, data) => {
     if (err) {
       return res.json("Error");
     }
@@ -715,22 +717,19 @@ app.get("/women", (req, res) => {
 app.get("/womenall", (req, res) => {
   //  console.log(req)
 
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  const sql = retrievingKidsProductsQueryAll;
-
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 8; // Default to 8 if not provided
+  const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
-  console.log(type);
-
-  db.query(sql, [type, accepted, limit, page], (err, data) => {
-    // console.log(res.json(data))
+  const sql = retrievingKidsProductsQueryAll;
+  // console.log(type);
+  db.query(sql, [type, accepted, offset, page], (err, data) => {
     if (err) {
       return res.json("Error");
     }
     if (data.length > 0) {
       return res.json(data);
-      // console.log(res.json(data))
     } else {
       return res.json("Fail");
     }
@@ -738,23 +737,19 @@ app.get("/womenall", (req, res) => {
 });
 //kids
 app.get("/kids", (req, res) => {
-  //  console.log(req)
-
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  const sql = retrievingKidsProductsQuery;
-
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 8; // Default to 8 if not provided
+  const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
+  const sql = retrievingKidsProductsQuery;
 
-  db.query(sql, [type, accepted, limit, page], (err, data) => {
-    // console.log(res.json(data))
+  db.query(sql, [type, accepted, offset, page], (err, data) => {
     if (err) {
       return res.json("Error");
     }
     if (data.length > 0) {
       return res.json(data);
-      // console.log(res.json(data))
     } else {
       return res.json("Fail");
     }
@@ -763,23 +758,19 @@ app.get("/kids", (req, res) => {
 //kidsAll
 app.get("/kidsall", (req, res) => {
   //  console.log(req)
-
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  const sql = retrievingKidsProductsQueryAll;
-
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 8; // Default to 8 if not provided
+  const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
-  console.log(type);
+  const sql = retrievingKidsProductsQueryAll;
 
-  db.query(sql, [type, accepted, limit, page], (err, data) => {
-    // console.log(res.json(data))
+  db.query(sql, [type, accepted, offset, page], (err, data) => {
     if (err) {
       return res.json("Error");
     }
     if (data.length > 0) {
       return res.json(data);
-      // console.log(res.json(data))
     } else {
       return res.json("Fail");
     }
@@ -787,15 +778,16 @@ app.get("/kidsall", (req, res) => {
 });
 //jewellery
 app.get("/jewellery", (req, res) => {
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  const sql = retrievingJewelleryProductsQuery;
-
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 8; // Default to 8 if not provided
+  const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
-
-  db.query(sql, [type, accepted, limit, page], (err, data) => {
+  // const offset = (page - 1) * limit;
+  const sql = retrievingJewelleryProductsQuery;
+  db.query(sql, [type, accepted, limit, offset], (err, data) => {
     if (err) {
+      console.error(err); // Log the error for debugging
       return res.json("Error");
     }
     if (data.length > 0) {
@@ -809,22 +801,20 @@ app.get("/jewellery", (req, res) => {
 app.get("/jewelleryall", (req, res) => {
   //  console.log(req)
 
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-  const sql = retrievingJewelleryProductsQueryAll;
-
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 8; // Default to 8 if not provided
+  const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
-  console.log(type);
-
-  db.query(sql, [type, accepted, limit, page], (err, data) => {
-    // console.log(res.json(data))
+  // const offset = (page - 1) * limit;
+  const sql = retrievingJewelleryProductsQueryAll;
+  db.query(sql, [type, accepted, limit, offset], (err, data) => {
     if (err) {
+      console.error(err); // Log the error for debugging
       return res.json("Error");
     }
     if (data.length > 0) {
       return res.json(data);
-      // console.log(res.json(data))
     } else {
       return res.json("Fail");
     }
@@ -1237,23 +1227,21 @@ app.delete("/products/:id", (req, res) => {
     res.status(200).send("Product deleted successfully");
   });
 });
-app.delete("/updateorders/:id", (req, res) => {
+app.put("/updateorders/:id", (req, res) => {
   const productId = req.params.id;
-  const orderId = req.body.orderid;
+  const { order_status ,refundable_amount, cancel_reason } = req.body.data;
+  const query = cancelorderitemQuery;
 
-  // Construct the DELETE SQL query
-  const query = deleteOrderItemsQuery;
-
-  // Execute the query with the provided product ID
-  db.query(query, [productId, orderId], (error, results) => {
+  // Execute the query with the provided product ID and order ID
+  db.query(query, [order_status , refundable_amount, cancel_reason, productId], (error, results) => {
     if (error) {
-      console.error("Error deleting product: " + error.message);
-      res.status(500).send("Error deleting product");
+      console.error("Error updating order: " + error.message);
+      res.status(500).send("Error updating order");
       return;
     }
 
-    console.log("Product deleted successfully");
-    res.status(200).send("Product deleted successfully");
+    console.log("Order status updated successfully");
+    res.status(200).send("Order status updated successfully");
   });
 });
 
@@ -1531,6 +1519,8 @@ app.post("/updatepayment", (req, res) => {
     shipped_date,
     delivered_date,
     order_quantity,
+    order_status,
+    order_amount,
   } = req.body;
 
   // Insert into orders table
@@ -1547,6 +1537,8 @@ app.post("/updatepayment", (req, res) => {
       shipped_date,
       delivered_date,
       order_quantity,
+      order_status,
+      order_amount,
     ],
     (err, result) => {
       if (err) {
@@ -1870,6 +1862,33 @@ app.get("/cancel", (req, res) => {
     `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/`
   );
 });
+
+// Stripe payment gateway
+app.post("/paymentStripe", async(req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: req.body.cartItems.map(item => {
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: item.name,
+            },
+            unit_amount: item.price*100,
+          },
+          quantity: item.quantity,
+        }
+      }),
+      success_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/finalcheckoutpage`,
+      cancel_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/`,
+    })
+    res.json({ url: session.url })
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
+})
 
 app.listen(process.env.REACT_APP_PORT, () => {
   console.log("listening");
