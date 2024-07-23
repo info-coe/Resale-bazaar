@@ -4,7 +4,7 @@ import Customermenu from "./Customermenu";
 import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 
 export default function Orders() {
@@ -41,7 +41,7 @@ export default function Orders() {
       });
   }, []);
   const userId = parseInt(sessionStorage.getItem("user-token"));
- console.log(orders)
+//  console.log(orders)
   const filteredProducts = allProducts
     .filter((product) =>
       orders.some(
@@ -52,7 +52,7 @@ export default function Orders() {
       const relatedOrder = orders.find(
         (order) => order.buyer_id === userId && order.product_id === product.id
       );
-      console.log(relatedOrder)
+      // console.log(relatedOrder)
       return {
         ...product,
         order_id: relatedOrder.order_id,
@@ -61,45 +61,66 @@ export default function Orders() {
         shipped_date: relatedOrder.shipped_date,
         delivered_date: relatedOrder.delivered_date,
         buyer_id :relatedOrder.buyer_id,
-        order_quantity :relatedOrder.order_quantity
+        order_quantity :relatedOrder.order_quantity,
+        order_status : relatedOrder.order_status
       };
     });
 
-  const cancelClick = (id, updatedQuantity) => {
-    const confirmation = window.confirm(
-      "Are you sure you want to cancel the order?"
-    );
-    if (confirmation) {
-      // If user confirms, proceed with the Axios requests
-      axios
-        .post(
-          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateproducts`,
-          {
-            product_id: parseInt(id),
-            quantity: updatedQuantity,
-          }
-        )
-        .then((response) => {
-          // Handle response if needed
-        })
-        .catch((error) => {
-          console.error("Error updating product quantity:", error);
-        });
-      axios
-        .delete(
-          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateorders/${id}`,
-          {
-            data: { orderid: userId }, // Send data in the request body
-          }
-        )
-        .then((response) => {
-          console.log("Product removed from orders:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error removing product from orders:", error);
-        });
-      window.location.reload(false);
+  // const cancelClick = (product) => {
+  //   if (product.shipped_date) {
+  //     alert("You cannot cancel this product as it has already been shipped.");
+  //     return;
+  //   }
+  //   const confirmation = window.confirm(
+  //     "Are you sure you want to cancel the order?"
+  //   );
+  //   if (confirmation) {
+  //     // If user confirms, proceed with the Axios requests
+  //     axios
+  //       .post(
+  //         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateproducts`,
+  //         {
+  //           product_id: parseInt(product.id),
+  //           quantity: product.quantity + product.order_quantity
+           
+  //         }
+  //       )
+  //       .then((response) => {
+  //         // Handle response if needed
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error updating product quantity:", error);
+  //       });
+  //     axios
+  //       .put(
+  //         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateorders/${product.id}`,
+  //         {
+  //           data: { order_status:"cancelled",
+  //             order_amount:product.price * product.order_quantity
+  //           },
+  //         }
+  //       )
+  //       .then((response) => {
+  //         console.log("Product removed from orders:", response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error removing product from orders:", error);
+  //       });
+  //     window.location.reload(false);
+  //   }
+  // };
+  const navigate = useNavigate(); // Hook to navigate programmatically
+
+  const cancelClick = (product) => {
+    
+    // Check if the product has been shipped
+    if (product.shipped_date) {
+      alert("You cannot cancel this product as it has already been shipped.");
+      return;
     }
+  
+    // Navigate to the request cancel page with product details
+    navigate("/cancelorder", { state: { filteredProducts: product } });
   };
   return (
     <div className="fullscreen">
@@ -149,22 +170,30 @@ export default function Orders() {
                           &#36; {product.price * product.order_quantity}
                         </td>
                         <td className="pt-3" style={{ minWidth: "100px" }}>
-                          {product.delivered_date === null ? (
-                            <button
-                              className="btn btn-danger"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation(); // Prevent Link click event
-                                cancelClick(product.id, product.quantity + product.order_quantity);
-                              }}
-                            >
-                              Cancel
-                            </button>
-                          ) : (
-                            <Link to="/feedback"  state={{ filteredProducts: product }} className="text-decoration-none"><i className="bi bi-star-fill"></i>&nbsp; Rate & Review Product</Link>
-                          )}
+  {product.order_status === 'cancelled' ? (
+    <span className="text-danger">Cancelled</span>
+  ) : product.delivered_date === null ? (
+    <button
+      className="btn btn-danger"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation(); // Prevent Link click event
+        cancelClick(product);
+      }}
+    >
+     Order Cancel
+    </button>
+  ) : (
+    <Link 
+      to="/feedback" 
+      state={{ filteredProducts: product }} 
+      className="text-decoration-none"
+    >
+      <i className="bi bi-star-fill"></i>&nbsp; Rate & Review Product
+    </Link>
+  )}
+</td>
 
-                        </td>
                         {/* <td className="pt-3" style={{minWidth:"170px"}}>
                      
                       </td> */}

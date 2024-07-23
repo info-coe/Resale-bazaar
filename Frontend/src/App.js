@@ -59,6 +59,8 @@ import ContactSeller from "./components/sellerdashboard/ContactSeller";
 import ReviewRatings from "./components/customerdetails/reviewsRatings";
 
 import Scrolltotop from "./components/Scrolltotop";
+import RequestCancelPage from "./components/customerdetails/RequestCancelPage";
+import CancelOrder from "./components/customerdetails/CancelOrder";
 // const Home = React.lazy(() => import("./components/home"));
 // const Womenallproducts = React.lazy(() =>
 //   import("./components/women/Womenallproducts")
@@ -317,6 +319,9 @@ function App() {
             <Route path="*" element={<Notfound />}></Route>
             <Route path="/search" element={<Search />} />
             <Route path="/orderpage" element={<OrderPage />} />
+            <Route path="/requestcancelpage" element={<RequestCancelPage />} />
+            <Route path="/cancelorder" element={<CancelOrder />} />
+
             <Route
               path="/sellerprofile/:sellerId"
               element={<SellerProfile />}
