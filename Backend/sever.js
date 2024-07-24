@@ -88,7 +88,8 @@ const {
   checkLikeQuery,
   cancelorderitemQuery,
   updateCartItemsQuantity,
-  updateCartItemsQuantityQuery
+  updateCartItemsQuantityQuery,
+  RefundDetailsQuery
 
 } = require("./queries");
 const cors = require("cors");
@@ -1828,6 +1829,22 @@ app.get("/products/:productId/likes/user", (req, res) => {
     }
     const liked = results.length > 0;
     res.json({ liked });
+  });
+});
+
+
+app.get("/refundproducts", (req, res) => {
+  const query = RefundDetailsQuery;
+
+  db.query(query, (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+    } else {
+      return res.json("Fail");
+    }
   });
 });
 
