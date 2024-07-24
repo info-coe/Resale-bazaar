@@ -93,8 +93,8 @@ const Earrings = () => {
               dataLength={filteredProducts.length}
               next={() => setPage((prevPage) => prevPage + 1)}
               hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
-              endMessage={<p>No more products to display</p>}
+              loader={<div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>}
+              endMessage={<div className="centered-message"><p>No more products to display</p></div>}
             >
               <div className="product-grid container">
                 {filteredProducts.length > 0 ? (

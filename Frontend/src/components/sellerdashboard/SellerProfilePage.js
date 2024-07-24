@@ -1,24 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { Link, useLocation, useParams } from 'react-router-dom';
-import MyNavbar from '../navbar';
-import Footer from '../footer';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Scrolltotopbtn from '../Scrolltotopbutton';
-import Product from '../Product';
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { Link, useLocation, useParams } from "react-router-dom";
+import MyNavbar from "../navbar";
+import Footer from "../footer";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Scrolltotopbtn from "../Scrolltotopbutton";
+import Product from "../Product";
 
 const SellerProfile = () => {
   const { sellerId } = useParams();
-  console.log(sellerId)
+  console.log(sellerId);
   const [sellerProducts, setSellerProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { state } = useLocation();
-  const userDetails = state.userDetails[0]
+  const userDetails = state.userDetails[0];
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    comment: ''
+    name: "",
+    email: "",
+    phone: "",
+    comment: "",
   });
 
   const nameInputRef = useRef(null);
@@ -27,7 +27,7 @@ const SellerProfile = () => {
   const { name, email, phone, comment } = formData;
 
   const capitalizeFirstLetterOfEveryWord = (str) => {
-    return str.replace(/\b\w/g, char => char.toUpperCase());
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
   const capitalizeFirstLetter = (str) => {
@@ -38,22 +38,25 @@ const SellerProfile = () => {
     const { id, value, selectionStart } = e.target;
     let updatedValue = value;
 
-    if (id === 'name') {
+    if (id === "name") {
       updatedValue = capitalizeFirstLetterOfEveryWord(value);
-    } else if (id === 'comment') {
+    } else if (id === "comment") {
       updatedValue = capitalizeFirstLetter(value);
     }
 
     setFormData((prevFormData) => ({ ...prevFormData, [id]: updatedValue }));
 
     // Restore cursor position
-    if (id === 'name') {
+    if (id === "name") {
       requestAnimationFrame(() => {
         nameInputRef.current.setSelectionRange(selectionStart, selectionStart);
       });
-    } else if (id === 'comment') {
+    } else if (id === "comment") {
       requestAnimationFrame(() => {
-        commentInputRef.current.setSelectionRange(selectionStart, selectionStart);
+        commentInputRef.current.setSelectionRange(
+          selectionStart,
+          selectionStart
+        );
       });
     }
   };
@@ -66,33 +69,42 @@ const SellerProfile = () => {
     //   return;
     // }
 
-    axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/contactseller`, {
-      name,
-      email,
-      phone,
-      comment,
-      user_id: sellerId
-    })
-      .then(res => {
-        alert('Data added successfully');
+    axios
+      .post(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/contactseller`,
+        {
+          name,
+          email,
+          phone,
+          comment,
+          user_id: sellerId,
+        }
+      )
+      .then((res) => {
+        alert("Data added successfully");
         // setFormData({ name: '', email: '', phone: '', comment: '' });
-        window.location.reload(false)
-      }).catch(err => {
-        console.error('Error posting data:', err);
+        window.location.reload(false);
+      })
+      .catch((err) => {
+        console.error("Error posting data:", err);
       });
   };
 
   useEffect(() => {
-
-    axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts/`)
-      .then(res => {
+    axios
+      .get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts/`
+      )
+      .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
-          const filteredProducts = res.data.filter(product => product.seller_id.toString() === sellerId);
+          const filteredProducts = res.data.filter(
+            (product) => product.seller_id.toString() === sellerId
+          );
           setSellerProducts(filteredProducts);
         }
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         setLoading(false);
       });
@@ -103,7 +115,12 @@ const SellerProfile = () => {
     const filledStars = Math.floor(rating);
     for (let i = 0; i < 5; i++) {
       stars.push(
-        <i key={i} className={`bi ${i < filledStars ? 'bi-star-fill text-warning' : 'bi-star'} me-1`}></i>
+        <i
+          key={i}
+          className={`bi ${
+            i < filledStars ? "bi-star-fill text-warning" : "bi-star"
+          } me-1`}
+        ></i>
       );
     }
     return stars;
@@ -116,11 +133,18 @@ const SellerProfile = () => {
         <div className="row">
           <div className="col-lg-12">
             <div className="seller-profile-header border">
-              <div className='m-5'>
+              <div className="m-5">
                 <h2 className="seller-name fs-1">
-                  <i className="bi bi-person-circle fs-1"></i>&nbsp;{userDetails.shopname == null || undefined || '' ? userDetails.name : userDetails.shopname}
+                  <i className="bi bi-person-circle fs-1"></i>&nbsp;
+                  {userDetails.shopname == null || undefined || ""
+                    ? userDetails.name
+                    : userDetails.shopname}
                 </h2>
-                <button className="btn btn-primary ms-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button
+                  className="btn btn-primary ms-5"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                >
                   Contact to Seller
                 </button>
               </div>
@@ -131,7 +155,14 @@ const SellerProfile = () => {
       <div className="container mt-5">
         <div className="row">
           <div className="">
-            <h4 className="mb-4"><span style={{ fontSize: "22px" }}>Products by</span> <span className='text-secondary' style={{ fontStyle: "italic" }}>{userDetails.shopname == null || undefined || '' ? userDetails.name : userDetails.shopname}</span></h4>
+            <h4 className="mb-4">
+              <span style={{ fontSize: "22px" }}>Products by</span>{" "}
+              <span className="text-secondary" style={{ fontStyle: "italic" }}>
+                {userDetails.shopname == null || undefined || ""
+                  ? userDetails.name
+                  : userDetails.shopname}
+              </span>
+            </h4>
             {loading ? (
               <p>Loading...</p>
             ) : sellerProducts.length === 0 ? (
@@ -139,8 +170,7 @@ const SellerProfile = () => {
             ) : (
               <div className="product-grid container ">
                 {sellerProducts.map((product, index) => (
-
-<Product key={index} product={product} admin="home" />
+                  <Product key={index} product={product} admin="home" />
                   // <div className="card productcard" key={product.id}>
                   //   <Link to={"/product/" + product.id} state={{ productdetails: product }}>
                   //     <div className="text-center productimgback">
@@ -167,51 +197,69 @@ const SellerProfile = () => {
         </div>
       </div>
 
-      <div className="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div
+        className="modal fade"
+        id="exampleModal"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Contact to Seller</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 className="modal-title" id="exampleModalLabel">
+                Contact to Seller
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label fw-bold">Name</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    id="name" 
-                    value={name} 
-                    onChange={handleInputChange} 
-                    placeholder='Enter Your Name' 
-                    ref={nameInputRef} 
+                  <label htmlFor="name" className="form-label fw-bold">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    value={name}
+                    onChange={handleInputChange}
+                    placeholder="Enter Your Name"
+                    ref={nameInputRef}
                     required
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label fw-bold">Email</label>
-                  <input 
-                    type="email" 
-                    className="form-control" 
-                    id="email" 
+                  <label htmlFor="email" className="form-label fw-bold">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
                     name="email"
-                    value={email} 
-                    onChange={handleInputChange} 
-                    placeholder='Enter Your Email' 
+                    value={email}
+                    onChange={handleInputChange}
+                    placeholder="Enter Your Email"
                     required
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="phone" className="form-label fw-bold">Phone</label>
-                  <input 
-                    type="tel" 
-                    className="form-control" 
+                  <label htmlFor="phone" className="form-label fw-bold">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    className="form-control"
                     id="phone"
-                    name="phone" 
-                    value={phone} 
-                    onChange={handleInputChange} 
-                    placeholder='Enter Your Phone Number' 
+                    name="phone"
+                    value={phone}
+                    onChange={handleInputChange}
+                    placeholder="Enter Your Phone Number"
                     pattern="[0-9]{10}"
                     title="10 digit numeric value only"
                     minLength={10}
@@ -220,21 +268,31 @@ const SellerProfile = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="comment" className="form-label fw-bold">Comment</label>
-                  <textarea 
-                    type="text" 
-                    className="form-control" 
-                    id="comment" 
-                    value={comment} 
-                    onChange={handleInputChange} 
-                    placeholder='Enter Comment' 
-                    ref={commentInputRef} 
+                  <label htmlFor="comment" className="form-label fw-bold">
+                    Comment
+                  </label>
+                  <textarea
+                    type="text"
+                    className="form-control"
+                    id="comment"
+                    value={comment}
+                    onChange={handleInputChange}
+                    placeholder="Enter Comment"
+                    ref={commentInputRef}
                     // required
                   />
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" className="btn btn-primary">Save</button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Save
+                  </button>
                 </div>
               </form>
             </div>
@@ -243,14 +301,12 @@ const SellerProfile = () => {
       </div>
 
       <Footer />
-      <Scrolltotopbtn/>
+      <Scrolltotopbtn />
     </>
   );
 };
 
 export default SellerProfile;
-
-
 
 // // Every word first letter uppercase
 // import React, { useState, useEffect, useRef } from 'react';
@@ -465,9 +521,7 @@ export default SellerProfile;
 
 // export default SellerProfile;
 
-
 // Every word first letter uppercase
-
 
 // import React, { useState, useEffect, useRef } from 'react';
 // import axios from 'axios';
@@ -691,7 +745,7 @@ export default SellerProfile;
 //   const [sellerProducts, setSellerProducts] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const [formData, setFormData] = useState({
-//     // user_id: sellerId, 
+//     // user_id: sellerId,
 //     name: '',
 //     email: '',
 //     phone: '',
@@ -699,11 +753,9 @@ export default SellerProfile;
 //   });
 //   const nameInputRef = useRef(null);
 //   const commentInputRef = useRef(null);
-  
+
 //   const { name, email, phone,comment } = formData;
 
- 
-  
 //   // const handleInputChange = (e) => {
 //   //   setFormData({ ...formData, [e.target.id]: e.target.value });
 //   // };
@@ -741,19 +793,17 @@ export default SellerProfile;
 //       email,
 //       phone,
 //       comment,
-//       user_id: sellerId 
+//       user_id: sellerId
 //     })
 //     .then(res => {
 //       alert('Data added successfully');
-//       setFormData({ name: '', email: '', phone: '', comment: '' }); 
+//       setFormData({ name: '', email: '', phone: '', comment: '' });
 //     }).catch(err => {
 //       console.error('Error posting data:', err);
 //       // Handle error
 //     });
 //   };
 
-  
-  
 //   useEffect(() => {
 //     // Fetch seller details including profile picture URL
 //     axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
@@ -798,7 +848,6 @@ export default SellerProfile;
 //     return stars;
 //   };
 
- 
 //   return (
 //     <>
 //       <MyNavbar/>

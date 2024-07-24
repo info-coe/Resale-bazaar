@@ -869,3 +869,24 @@ body.offcanvas-open {
     transform: scale(1);
   }
 }
+
+/* Infinity scroll loader icon code */
+
+.centered-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Adjust height as needed */
+  text-align: center;
+}
+
+.spin-icon {
+  font-size: 2rem;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
