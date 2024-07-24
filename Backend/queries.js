@@ -319,7 +319,7 @@ const removeLikeQuery = 'DELETE FROM likes WHERE like_product_id = ? AND like_us
 const LikecountQuery = 'SELECT COUNT(*) AS likeCount FROM likes WHERE like_product_id = ?';
 const checkLikeQuery = 'SELECT * FROM likes WHERE like_product_id = ? AND like_user_id = ?';
 
-const RefundDetailsQuery ="SELECT products., orders., register.* FROM products INNER JOIN orders ON products.id = orders.product_id INNER JOIN register ON orders.buyer_id = register.user_id WHERE orders.order_status = 'cancelled'"
+const RefundDetailsQuery ="SELECT products.*, orders.*, register.* FROM products INNER JOIN orders ON products.id = orders.product_id INNER JOIN register ON orders.buyer_id = register.user_id WHERE orders.order_status = 'cancelled'"
 
 module.exports = {
   createAdminTableQuery,
