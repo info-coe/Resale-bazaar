@@ -56,7 +56,7 @@ const Search = () => {
         <h6 className="container mt-3" style={{ fontSize: '20px' }}>Search Results for: "{searchTerm}"</h6>
 
         <div className="d-flex justify-content-center">
-          <div className="d-md-flex flex-wrap gap-4 ms-md-5 me-md-5 mb-4 mt-md-3 mt-3 ms-2 me-2 justify-content-start">
+          <div className="product-grid container ">
             {(filteredProducts.length > 0) ? (
               filteredProducts.map((product, index) => (
                 <div key={index}>

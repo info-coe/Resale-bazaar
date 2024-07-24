@@ -116,7 +116,7 @@
 //           </>
 //         )}
 
-       
+
 //       </main>
 //       <Footer />
 //     </div>
@@ -272,9 +272,9 @@ const Home = () => {
     const screenWidth = window.innerWidth;
 
     if (screenWidth >= 992) {
-      return filteredProducts.slice(0, 12);
+      return filteredProducts.slice(0, 8);
     } else {
-      return filteredProducts.slice(0, 12);
+      return filteredProducts.slice(0, 6);
     }
   };
 
@@ -309,10 +309,10 @@ const Home = () => {
               ))}
             </div>
             <div className=" container d-flex justify-content-end" style={{ padding: "5px 20px 10px 10px" }}>
-                <Link to="/women" className="text-decoration-none">
-                  See all
-                </Link>
-              </div>
+              <Link to="/women" className="text-decoration-none">
+                See all
+              </Link>
+            </div>
           </>
         )}
 
@@ -333,10 +333,10 @@ const Home = () => {
               ))}
             </div>
             <div className=" container d-flex justify-content-end" style={{ padding: "5px 20px 10px 10px" }}>
-                <Link to="/kids" className="text-decoration-none">
-                  See all
-                </Link>
-              </div>
+              <Link to="/kids" className="text-decoration-none">
+                See all
+              </Link>
+            </div>
           </>
         )}
 
@@ -357,16 +357,16 @@ const Home = () => {
               ))}
             </div>
             <div className="container d-flex justify-content-end mb-5" style={{ padding: "5px 20px 10px 10px" }}>
-                <Link to="/jewellery" className="text-decoration-none">
-                  See all
-                </Link>
-              </div>
+              <Link to="/jewellery" className="text-decoration-none">
+                See all
+              </Link>
+            </div>
           </>
         )}
 
       </main>
       <Footer />
-      <Scrolltotopbtn/>
+      <Scrolltotopbtn />
     </div>
   );
 };

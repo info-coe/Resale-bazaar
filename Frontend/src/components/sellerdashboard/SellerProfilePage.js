@@ -6,12 +6,19 @@ import Footer from "../footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 import Product from "../Product";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 
 const SellerProfile = () => {
   const { sellerId } = useParams();
   console.log(sellerId);
-  const [sellerProducts, setSellerProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [sellerProducts, setSellerProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const pageSize = 8;
   const { state } = useLocation();
   const userDetails = state.userDetails[0];
   const [formData, setFormData] = useState({
@@ -21,10 +28,71 @@ const SellerProfile = () => {
     comment: "",
   });
 
+
   const nameInputRef = useRef(null);
   const commentInputRef = useRef(null);
 
   const { name, email, phone, comment } = formData;
+
+
+
+  useEffect(() => {
+    fetchProducts(page);
+  }, [page]);
+
+  const fetchProducts = async (pageNum) => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproductsall?limit=${pageSize}&page=${pageNum}&category=${sellerId}`
+      );
+
+      if (res.data !== "Fail" && res.data !== "Error") {
+        const filterProducts = res.data;
+        console.log(filterProducts)
+        const existingProductIds = new Set(products.map((product) => product.id));
+        const newProducts = filterProducts.filter(
+          (product) => !existingProductIds.has(product.id)
+        );
+
+        if (newProducts.length > 0) {
+          setProducts((prevProducts) => [...prevProducts, ...newProducts]);
+          setFilteredProducts((prevProducts) => [
+            ...prevProducts,
+            ...newProducts,
+          ]);
+        }
+
+        if (filterProducts.length < pageSize) {
+          setHasMore(false);
+        }
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      console.log(err);
+      setHasMore(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts/`
+  //     )
+  //     .then((res) => {
+  //       if (res.data !== "Fail" && res.data !== "Error") {
+  //         const filteredProducts = res.data.filter(
+  //           (product) => product.seller_id.toString() === sellerId
+  //         );
+  //         setSellerProducts(filteredProducts);
+  //       }
+  //       // setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       // setLoading(false);
+  //     });
+  // }, [sellerId]);
 
   const capitalizeFirstLetterOfEveryWord = (str) => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
@@ -90,25 +158,7 @@ const SellerProfile = () => {
       });
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts/`
-      )
-      .then((res) => {
-        if (res.data !== "Fail" && res.data !== "Error") {
-          const filteredProducts = res.data.filter(
-            (product) => product.seller_id.toString() === sellerId
-          );
-          setSellerProducts(filteredProducts);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, [sellerId]);
+
 
   const renderStarRatings = (rating) => {
     const stars = [];
@@ -117,9 +167,8 @@ const SellerProfile = () => {
       stars.push(
         <i
           key={i}
-          className={`bi ${
-            i < filledStars ? "bi-star-fill text-warning" : "bi-star"
-          } me-1`}
+          className={`bi ${i < filledStars ? "bi-star-fill text-warning" : "bi-star"
+            } me-1`}
         ></i>
       );
     }
@@ -163,36 +212,35 @@ const SellerProfile = () => {
                   : userDetails.shopname}
               </span>
             </h4>
-            {loading ? (
-              <p>Loading...</p>
+            {/* {loading ? (
+              <div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>
             ) : sellerProducts.length === 0 ? (
               <p>No products available.</p>
             ) : (
               <div className="product-grid container ">
                 {sellerProducts.map((product, index) => (
                   <Product key={index} product={product} admin="home" />
-                  // <div className="card productcard" key={product.id}>
-                  //   <Link to={"/product/" + product.id} state={{ productdetails: product }}>
-                  //     <div className="text-center productimgback">
-                  //       <img
-                  //         src={`${JSON.parse(product.image)[0]}`}
-                  //         className="card-img-top"
-                  //         alt="product"
-                  //       />
-                  //     </div>
-                  //   </Link>
-                  //   <div className="card-body">
-                  //     <p className="card-text text-success">
-                  //       <b>&#36; {product.price}.00</b>
-                  //     </p>
-                  //     {product.size !== "NA" &&
-                  //       <h6 className="card-text" style={{ lineHeight: "8px" }}>{product.size}</h6>
-                  //     }
-                  //   </div>
-                  // </div>
                 ))}
               </div>
-            )}
+            )} */}
+
+            <InfiniteScroll
+              dataLength={filteredProducts.length}
+              next={() => setPage((prevPage) => prevPage + 1)}
+              hasMore={hasMore}
+              loader={<div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>}
+              endMessage={<div className="centered-message"><p>No more products to display</p></div>}
+            >
+              <div className="product-grid container">
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((product, index) => (
+                    <Product product={product} key={index} admin="women" />
+                  ))
+                ) : (
+                  <h2 style={{ fontSize: "18px" }}>No products to display</h2>
+                )}
+              </div>
+            </InfiniteScroll>
           </div>
         </div>
       </div>
@@ -279,7 +327,7 @@ const SellerProfile = () => {
                     onChange={handleInputChange}
                     placeholder="Enter Comment"
                     ref={commentInputRef}
-                    // required
+                  // required
                   />
                 </div>
                 <div className="modal-footer">

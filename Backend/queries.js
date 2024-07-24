@@ -254,7 +254,9 @@ const addingSellerAccountQuery = "INSERT INTO selleraccount SET ?";
 const adminAcceptedProductsQuery = "select * from products WHERE `accepted_by_admin` = (?)";
 const adminApprovalQuery = "UPDATE products SET accepted_by_admin = ? WHERE id = ?";
 const adminRejectionQuery = "UPDATE products SET rejection_reason = ? WHERE id = ?";
+const retrievingAllProductsQueryAll = "select * from products WHERE `accepted_by_admin` = (?) and `seller_id`=(?) ORDER BY id LIMIT ? OFFSET ?";
 const retrievingAllProductsQuery = "select * from products WHERE `accepted_by_admin` = (?)";
+
 const retrievingWomenProductsQuery = "SELECT * FROM products WHERE `category` =(?)AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
 const retrievingWomenProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
 // const retrievingKidsProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
@@ -342,6 +344,7 @@ module.exports = {
   adminApprovalQuery,
   adminRejectionQuery,
   retrievingAllProductsQuery,
+  retrievingAllProductsQueryAll,
   retrievingWomenProductsQuery,
   retrievingWomenProductsQueryAll,
   retrievingKidsProductsQuery,

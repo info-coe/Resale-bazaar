@@ -28,6 +28,7 @@ const {
   adminApprovalQuery,
   adminRejectionQuery,
   retrievingAllProductsQuery,
+  retrievingAllProductsQueryAll,
   retrievingWomenProductsQuery,
   retrievingWomenProductsQueryAll,
   retrievingKidsProductsQuery,
@@ -150,9 +151,8 @@ const upload = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: function (req, file, cb) {
-      const filename = `${file.originalname.split(".")[0]}_${uuidv4()}.${
-        file.mimetype.split("/")[1]
-      }`;
+      const filename = `${file.originalname.split(".")[0]}_${uuidv4()}.${file.mimetype.split("/")[1]
+        }`;
       cb(null, filename);
     },
   }),
@@ -649,9 +649,34 @@ app.post("/adminrejection", (req, res) => {
 });
 
 // all products
-app.get("/allproducts", (req, res) => {
-  const sql = retrievingAllProductsQuery;
+app.get("/allproductsall", (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 8; // Default to 8 if not provided
+  const offset = (page - 1) * limit;
+  const type = req.query.category;
   const accepted = "true";
+  const sql = retrievingAllProductsQueryAll;
+
+
+
+  db.query(sql, [accepted,type,limit,offset], (err, data) => {
+    if (err) {
+      return res.json("Error");
+    }
+    if (data.length > 0) {
+      return res.json(data);
+    } else {
+      return res.json("Fail");
+    }
+  });
+});
+
+app.get("/allproducts", (req, res) => {
+  
+  const accepted = "true";
+  const sql = retrievingAllProductsQuery;
+
+
 
   db.query(sql, [accepted], (err, data) => {
     if (err) {
@@ -704,8 +729,8 @@ app.get("/women", (req, res) => {
 
   const sql = retrievingWomenProductsQuery;
 
- 
-  db.query(sql,[type, accepted, limit, offset], (err, data) => {
+
+  db.query(sql, [type, accepted, limit, offset], (err, data) => {
     if (err) {
       return res.json("Error");
     }
@@ -726,8 +751,8 @@ app.get("/womenall", (req, res) => {
   const accepted = "true";
   const sql = retrievingKidsProductsQueryAll;
 
-  
-  db.query(sql,[type, accepted, limit, offset], (err, data) => {
+
+  db.query(sql, [type, accepted, limit, offset], (err, data) => {
     // console.log(res.json(data))
     if (err) {
       return res.json("Error");
@@ -774,7 +799,7 @@ app.get("/kidsall", (req, res) => {
   const accepted = "true";
   const sql = retrievingKidsProductsQueryAll;
 
-  db.query(sql,[type, accepted, limit, offset], (err, data) => {
+  db.query(sql, [type, accepted, limit, offset], (err, data) => {
     // console.log(res.json(data))
     if (err) {
       return res.json("Error");
@@ -817,7 +842,7 @@ app.get("/jewelleryall", (req, res) => {
   const type = req.query.category;
   const accepted = "true";
   const sql = retrievingJewelleryProductsQueryAll;
- 
+
 
   db.query(sql, [type, accepted, limit, offset], (err, data) => {
     // console.log(res.json(data))
@@ -1263,11 +1288,11 @@ app.delete("/products/:id", (req, res) => {
 
 app.put("/updateorders/:id", (req, res) => {
   const productId = req.params.id;
-  const { order_status, refundable_amount ,cancel_reason,cancel_comment} = req.body.data;
+  const { order_status, refundable_amount, cancel_reason, cancel_comment } = req.body.data;
 
   const updateOrderStatusQuery = cancelorderitemQuery;
 
-  db.query(updateOrderStatusQuery, [order_status, refundable_amount, cancel_reason,cancel_comment, productId], (error, results) => {
+  db.query(updateOrderStatusQuery, [order_status, refundable_amount, cancel_reason, cancel_comment, productId], (error, results) => {
     if (error) {
       console.error("Error updating order status: " + error.message);
       res.status(500).send("Error updating order status");
@@ -1900,7 +1925,7 @@ app.get("/cancel", (req, res) => {
 });
 
 // Stripe payment gateway
-app.post("/paymentStripe", async(req, res) => {
+app.post("/paymentStripe", async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -1912,7 +1937,7 @@ app.post("/paymentStripe", async(req, res) => {
             product_data: {
               name: item.name,
             },
-            unit_amount: item.price*100,
+            unit_amount: item.price * 100,
           },
           quantity: item.quantity,
         }
