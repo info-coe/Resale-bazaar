@@ -60,6 +60,7 @@ import ReviewRatings from "./components/customerdetails/reviewsRatings";
 
 import Scrolltotop from "./components/Scrolltotop";
 import CancelOrder from "./components/customerdetails/CancelOrder";
+import Refundproducts from "./components/admindashboard/Refundproducts";
 // const Home = React.lazy(() => import("./components/home"));
 // const Womenallproducts = React.lazy(() =>
 //   import("./components/women/Womenallproducts")
@@ -344,6 +345,8 @@ function App() {
                {isUserLoggedIn && <ReviewRatings />}
              </ProtectedRoute>
               } />
+          <Route path="refundsproduct" element={<Refundproducts />}/>
+               
           </Routes>
         {/* </React.Suspense> */}
       </BrowserRouter>
