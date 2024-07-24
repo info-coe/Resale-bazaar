@@ -29,8 +29,8 @@ export default function Adminfooter() {
   return (
     <div className="border">
       <footer className="">
-        <p className="d-md-flex justify-content-between p-1">
-          <span className="fs-6">
+        <p className="d-md-flex justify-content-around text-center p-1">
+          <p className="fs-6">
             Powered by{" "}
             {/* <Link
               to="https://infomericainc.com"
@@ -38,9 +38,9 @@ export default function Adminfooter() {
             > */}
               TheResaleBazaar
             {/* </Link> */}
-          </span>
-          <span>{formatDate(currentDateTime)}</span>
-          <span>{formatTime(currentDateTime)}</span>
+          </p>
+          <p>{formatDate(currentDateTime)}</p>
+          <p>{formatTime(currentDateTime)}</p>
         </p>
       </footer>
     </div>
