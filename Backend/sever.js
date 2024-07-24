@@ -83,9 +83,11 @@ const {
   LikesQuery,
   removeLikeQuery,
   addLikeQuery,
-
   LikecountQuery,
-  checkLikeQuery
+  checkLikeQuery,
+  cancelorderitemQuery,
+  updateCartItemsQuantity,
+  updateCartItemsQuantityQuery
 
 } = require("./queries");
 const cors = require("cors");
@@ -1263,7 +1265,7 @@ app.put("/updateorders/:id", (req, res) => {
   const productId = req.params.id;
   const { order_status, refundable_amount ,cancel_reason,cancel_comment} = req.body.data;
 
-  const updateOrderStatusQuery = `UPDATE orders SET order_status = ?, refundable_amount = ?, cancel_reason = ?,cancel_comment = ? WHERE order_id = ?`;
+  const updateOrderStatusQuery = cancelorderitemQuery;
 
   db.query(updateOrderStatusQuery, [order_status, refundable_amount, cancel_reason,cancel_comment, productId], (error, results) => {
     if (error) {
@@ -1621,7 +1623,7 @@ app.put("/:productId/updateQuantityAndPrice", (req, res) => {
   const { quantity } = req.body; // Assuming quantity and price are sent in the request body
   console.log(req.body);
   // Update quantity and price in your database
-  const sql = "UPDATE cart SET quantity = ? WHERE id = ?";
+  const sql = updateCartItemsQuantityQuery;
   const values = [quantity, productId];
 
   db.query(sql, values, (err, result) => {

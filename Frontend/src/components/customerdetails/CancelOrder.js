@@ -438,11 +438,11 @@ const CancelOrder = () => {
       return;
     }
 
-    const confirmation = window.confirm(
-      "Are you sure you want to cancel the order?"
-    );
-    if (confirmation) {
-      // Update the product quantity
+    // const confirmation = window.confirm(
+    //   "Are you sure you want to cancel the order?"
+    // );
+    // if (confirmation) {
+    //   // Update the product quantity
       axios
         .post(
           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateproducts`,
@@ -476,7 +476,7 @@ const CancelOrder = () => {
         .catch((error) => {
           console.error("Error updating product quantity:", error);
         });
-    }
+    // }
   };
 
   const productImage = product.image ? JSON.parse(product.image) : [];

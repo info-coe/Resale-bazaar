@@ -150,19 +150,28 @@ export default function Orders() {
                   <tbody>
                     {filteredProducts.map((product, index) => (
                       <tr key={index}>
-                        <td style={{ minWidth: "120px" }}>
-                          <Link
-                            to="/orderpage"
-                            state={{ filteredProducts: product }}
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                          >
-                            <img
-                              src={`${JSON.parse(product.image)[0]}`}
-                              alt={product.name}
-                              style={{ maxWidth: "60px", maxHeight: "100px" }}
-                            />
-                          </Link>
-                        </td>
+                       <td style={{ minWidth: "120px" }}>
+  {product.order_status === 'cancelled' ? (
+    <img
+      src={`${product.image ? JSON.parse(product.image)[0] : 'defaultImagePath'}`}
+      alt={product.name}
+      style={{ maxWidth: "60px", maxHeight: "100px" }}
+    />
+  ) : (
+    <Link
+      to="/orderpage"
+      state={{ filteredProducts: product }}
+      style={{ textDecoration: 'none', color: 'inherit' }}
+    >
+      <img
+        src={`${product.image ? JSON.parse(product.image)[0] : 'defaultImagePath'}`}
+        alt={product.name}
+        style={{ maxWidth: "60px", maxHeight: "100px" }}
+      />
+    </Link>
+  )}
+</td>
+
                         <td className="text-secondary pt-3" style={{ minWidth: "170px" }}>
                           {product.name}
                         </td>

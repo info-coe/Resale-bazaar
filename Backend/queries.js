@@ -272,6 +272,7 @@ const addToCartQuery = "INSERT INTO cart (`product_id`, `product_type`, `categor
 const retrievingCartItemsQuery = "select * from cart";
 const updateCartItemsQuery = "UPDATE cart SET userid = ? WHERE id = ?";
 const deleteCartItemsQuery = "DELETE FROM cart WHERE id = ?";
+const updateCartItemsQuantityQuery = "UPDATE cart SET quantity = ? WHERE id = ?"
 const deleteOrderItemsQuery = "DELETE FROM orders WHERE product_id = ? and buyer_id = ?";
 const addToWishlistQuery = "INSERT INTO wish (`product_id`, `product_type`, `category`, `name`, `image`, `description`, `location`, `color`, `alteration`, `size`, `measurements`, \`condition\`, `price`, `accepted_by_admin`, `seller_id`, `userid`) values (?)";
 const retrievingWishlistItemsQuery = "select * from wish";
@@ -285,7 +286,7 @@ const deleteShippingAddress = "DELETE FROM shipping_address WHERE id = ?"
 const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buyer_id, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity,order_status,order_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 const deleteProductsQuery = "DELETE FROM  products WHERE id=?";
 const deletecartitemQuery = "DELETE FROM cart WHERE userid = ? AND EXISTS (SELECT 1 FROM orders WHERE buyer_id = ?)"
-const cancelorderitemQuery = "UPDATE orders SET order_status = ?, refundable_amount = ?, cancel_reason = ?  WHERE order_id = ?"
+const cancelorderitemQuery = `UPDATE orders SET order_status = ?, refundable_amount = ?, cancel_reason = ?,cancel_comment = ? WHERE order_id = ?`;
 const getbillingAddress= "Select * from billing_address"
 const getshippingAddress= "Select * from shipping_address"
 const retrievingAdminQuery = "SELECT * FROM admin";
@@ -398,5 +399,6 @@ module.exports = {
   removeLikeQuery,
   LikecountQuery,
   checkLikeQuery,
-  cancelorderitemQuery
+  cancelorderitemQuery,
+  updateCartItemsQuantityQuery
 };
