@@ -460,7 +460,8 @@ const CancelOrder = () => {
                 data: {
                   order_status: "cancelled",
                   refundable_amount: product.price * product.order_quantity,
-                  cancel_reason: reason
+                  cancel_reason: reason,
+                  cancel_comment:comments
                 }
               }
             )

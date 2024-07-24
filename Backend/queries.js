@@ -117,6 +117,7 @@ const ordersproducts = `
     order_amount INT  NULL,
     refundable_amount INT NULL,
     cancel_reason MEDIUMTEXT NULL,
+    cancel_comment LONGTEXT NULL,
     UNIQUE INDEX id_UNIQUE (id ASC));
 `
 

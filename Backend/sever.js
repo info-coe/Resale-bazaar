@@ -1237,25 +1237,46 @@ app.delete("/products/:id", (req, res) => {
     res.status(200).send("Product deleted successfully");
   });
 });
-app.delete("/updateorders/:id", (req, res) => {
+// app.delete("/updateorders/:id", (req, res) => {
+//   const productId = req.params.id;
+//   const orderId = req.body.orderid;
+
+//   // Construct the DELETE SQL query
+//   const query = deleteOrderItemsQuery;
+
+//   // Execute the query with the provided product ID
+//   db.query(query, [productId, orderId], (error, results) => {
+//     if (error) {
+//       console.error("Error deleting product: " + error.message);
+//       res.status(500).send("Error deleting product");
+//       return;
+//     }
+
+//     console.log("Product deleted successfully");
+//     res.status(200).send("Product deleted successfully");
+//   });
+// });
+
+
+
+app.put("/updateorders/:id", (req, res) => {
   const productId = req.params.id;
-  const orderId = req.body.orderid;
+  const { order_status, refundable_amount ,cancel_reason,cancel_comment} = req.body.data;
 
-  // Construct the DELETE SQL query
-  const query = deleteOrderItemsQuery;
+  const updateOrderStatusQuery = `UPDATE orders SET order_status = ?, refundable_amount = ?, cancel_reason = ?,cancel_comment = ? WHERE order_id = ?`;
 
-  // Execute the query with the provided product ID
-  db.query(query, [productId, orderId], (error, results) => {
+  db.query(updateOrderStatusQuery, [order_status, refundable_amount, cancel_reason,cancel_comment, productId], (error, results) => {
     if (error) {
-      console.error("Error deleting product: " + error.message);
-      res.status(500).send("Error deleting product");
+      console.error("Error updating order status: " + error.message);
+      res.status(500).send("Error updating order status");
       return;
     }
 
-    console.log("Product deleted successfully");
-    res.status(200).send("Product deleted successfully");
+    console.log("Order status updated successfully");
+    res.status(200).send("Order status updated successfully");
   });
 });
+
 
 app.get("/wishlist", (req, res) => {
   const sql = retrievingWishlistItemsQuery;
@@ -1531,6 +1552,9 @@ app.post("/updatepayment", (req, res) => {
     shipped_date,
     delivered_date,
     order_quantity,
+    order_status,
+    order_amount,
+
   } = req.body;
 
   // Insert into orders table
@@ -1547,6 +1571,8 @@ app.post("/updatepayment", (req, res) => {
       shipped_date,
       delivered_date,
       order_quantity,
+      order_status,
+      order_amount,
     ],
     (err, result) => {
       if (err) {
