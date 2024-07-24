@@ -876,7 +876,7 @@ body.offcanvas-open {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px; /* Adjust height as needed */
+  height: 100px;
   text-align: center;
 }
 
