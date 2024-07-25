@@ -30,12 +30,20 @@ const Twinningoutfits = () => {
       if (res.data !== "Fail" && res.data !== "Error") {
         const filterProducts = res.data;
 
-        const existingProductIds = new Set(products.map(product => product.id));
-        const newProducts = filterProducts.filter(product => !existingProductIds.has(product.id));
+        const existingProductIds = new Set(
+          products.map((product) => product.id)
+        );
+        const newProducts = filterProducts.filter(
+          (product) =>
+            !existingProductIds.has(product.id) && product.quantity > 0
+        );
 
         if (newProducts.length > 0) {
           setProducts((prevProducts) => [...prevProducts, ...newProducts]);
-          setFilteredProducts((prevProducts) => [...prevProducts, ...newProducts]);
+          setFilteredProducts((prevProducts) => [
+            ...prevProducts,
+            ...newProducts,
+          ]);
         }
 
         if (filterProducts.length < pageSize) {
@@ -75,14 +83,26 @@ const Twinningoutfits = () => {
           </div>
 
           <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
-            <Filterdisplaynav pageSize={pageSize} setPageSize={() => {}} productName="Twinning Outfits / Tie Dye"/>
+            <Filterdisplaynav
+              pageSize={pageSize}
+              setPageSize={() => {}}
+              productName="Twinning Outfits / Tie Dye"
+            />
 
             <InfiniteScroll
               dataLength={filteredProducts.length}
               next={() => setPage((prevPage) => prevPage + 1)}
               hasMore={hasMore}
-              loader={<div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>}
-              endMessage={<div className="centered-message"><p>No more products to display</p></div>}
+              loader={
+                <div className="centered-message">
+                  <i className="bi bi-arrow-clockwise spin-icon"></i>
+                </div>
+              }
+              endMessage={
+                <div className="centered-message">
+                  <p>No more products to display</p>
+                </div>
+              }
             >
               <div className="product-grid container">
                 {filteredProducts.length > 0 ? (

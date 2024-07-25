@@ -35,9 +35,12 @@ const Womenallproducts = () => {
       if (res.data !== "Fail" && res.data !== "Error") {
         const filterProducts = res.data;
 
-        const existingProductIds = new Set(products.map((product) => product.id));
+        const existingProductIds = new Set(
+          products.map((product) => product.id)
+        );
         const newProducts = filterProducts.filter(
-          (product) => !existingProductIds.has(product.id)
+          (product) =>
+            !existingProductIds.has(product.id) && product.quantity > 0
         );
 
         if (newProducts.length > 0) {
@@ -76,7 +79,10 @@ const Womenallproducts = () => {
         </h1>
         <div className="scroll-container">
           <div className="m-md-4 m-2">
-            <Link to="/High End Couture" className="text-dark text-decoration-none">
+            <Link
+              to="/High End Couture"
+              className="text-dark text-decoration-none"
+            >
               <img
                 src={Highendcoutureimg}
                 alt="high end couture"
@@ -142,14 +148,26 @@ const Womenallproducts = () => {
           </div>
 
           <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
-            <Filterdisplaynav pageSize={pageSize} setPageSize={() => {}} productName="Womens Fashion" />
+            <Filterdisplaynav
+              pageSize={pageSize}
+              setPageSize={() => {}}
+              productName="Womens Fashion"
+            />
 
             <InfiniteScroll
               dataLength={filteredProducts.length}
               next={() => setPage((prevPage) => prevPage + 1)}
               hasMore={hasMore}
-              loader={<div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>}
-              endMessage={<div className="centered-message"><p>No more products to display</p></div>}
+              loader={
+                <div className="centered-message">
+                  <i className="bi bi-arrow-clockwise spin-icon"></i>
+                </div>
+              }
+              endMessage={
+                <div className="centered-message">
+                  <p>No more products to display</p>
+                </div>
+              }
             >
               <div className="product-grid container">
                 {filteredProducts.length > 0 ? (
@@ -302,7 +320,7 @@ export default Womenallproducts;
 
 //         <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
 //           <Filterdisplaynav pageSize={pageSize} setPageSize={setPageSize} productName="Womens Fashion" />
-         
+
 //           <div className="">
 //           {/* <div className="d-md-flex flex-wrap ms-md-2 mt-5">
 //             {tableData.length > 0 ? (

@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import MyNavbar from "../navbar";
 import Menu from "../menu";
@@ -8,7 +6,7 @@ import Filter from "./filter";
 import Filterdisplaynav from "../filterdisplaynav";
 import Product from "../Product";
 import axios from "axios";
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from "react-infinite-scroll-component";
 // import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Boy = () => {
@@ -16,9 +14,9 @@ const Boy = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
-  const pageSize=8
+  const pageSize = 8;
 
-  console.log(filteredProducts)
+  console.log(filteredProducts);
   useEffect(() => {
     fetchProducts(page);
   }, [page]);
@@ -31,18 +29,26 @@ const Boy = () => {
 
       if (res.data !== "Fail" && res.data !== "Error") {
         // Filter the products by category "Boy"
-        const filterProducts = res.data
+        const filterProducts = res.data;
 
         // Get the IDs of the currently loaded products to avoid duplicates
-        const existingProductIds = new Set(products.map(product => product.id));
-        
+        const existingProductIds = new Set(
+          products.map((product) => product.id)
+        );
+
         // Filter new products to remove duplicates
-        const newProducts = filterProducts.filter(product => !existingProductIds.has(product.id));
+        const newProducts = filterProducts.filter(
+          (product) =>
+            !existingProductIds.has(product.id) && product.quantity > 0
+        );
 
         if (newProducts.length > 0) {
           // Update products and filteredProducts state
           setProducts((prevProducts) => [...prevProducts, ...newProducts]);
-          setFilteredProducts((prevProducts) => [...prevProducts, ...newProducts]);
+          setFilteredProducts((prevProducts) => [
+            ...prevProducts,
+            ...newProducts,
+          ]);
         }
 
         // Check if there are more products to load
@@ -83,15 +89,27 @@ const Boy = () => {
           </div>
 
           <div className="col-xs-12 col-md-12 col-lg-10 ps-lg-3">
-            <Filterdisplaynav pageSize={pageSize} setPageSize={() => {}} productName="Boys Fashion"/>
+            <Filterdisplaynav
+              pageSize={pageSize}
+              setPageSize={() => {}}
+              productName="Boys Fashion"
+            />
 
-              <InfiniteScroll
-                dataLength={filteredProducts.length}
-                next={() => setPage((prevPage) => prevPage + 1)}
-                hasMore={hasMore}
-                loader={<div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>}
-                endMessage={<div className="centered-message"><p>No more products to display</p></div>}
-              >
+            <InfiniteScroll
+              dataLength={filteredProducts.length}
+              next={() => setPage((prevPage) => prevPage + 1)}
+              hasMore={hasMore}
+              loader={
+                <div className="centered-message">
+                  <i className="bi bi-arrow-clockwise spin-icon"></i>
+                </div>
+              }
+              endMessage={
+                <div className="centered-message">
+                  <p>No more products to display</p>
+                </div>
+              }
+            >
               <div className="product-grid container">
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
@@ -103,7 +121,7 @@ const Boy = () => {
                     />
                   ))
                 ) : (
-                  <h1 style={{fontSize:"18px"}}>No products to display</h1>
+                  <h1 style={{ fontSize: "18px" }}>No products to display</h1>
                 )}
               </div>
             </InfiniteScroll>
@@ -117,7 +135,6 @@ const Boy = () => {
 };
 
 export default Boy;
-
 
 // import React, { useEffect, useState } from "react";
 // import MyNavbar from "../navbar";
@@ -217,8 +234,6 @@ export default Boy;
 // };
 
 // export default Girl;
-
-
 
 // import React, { useMemo } from "react";
 // import axios from "axios";

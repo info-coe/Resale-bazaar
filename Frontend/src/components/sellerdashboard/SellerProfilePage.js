@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import MyNavbar from "../navbar";
 import Footer from "../footer";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,16 +8,13 @@ import Scrolltotopbtn from "../Scrolltotopbutton";
 import Product from "../Product";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-
 const SellerProfile = () => {
   const { sellerId } = useParams();
-  console.log(sellerId);
-  // const [sellerProducts, setSellerProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  // const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState("all");
   const pageSize = 8;
   const { state } = useLocation();
   const userDetails = state.userDetails[0];
@@ -28,17 +25,18 @@ const SellerProfile = () => {
     comment: "",
   });
 
-
   const nameInputRef = useRef(null);
   const commentInputRef = useRef(null);
 
   const { name, email, phone, comment } = formData;
 
-
-
   useEffect(() => {
     fetchProducts(page);
   }, [page]);
+
+  useEffect(() => {
+    applyFilter(filter);
+  }, [products, filter]);
 
   const fetchProducts = async (pageNum) => {
     try {
@@ -48,8 +46,9 @@ const SellerProfile = () => {
 
       if (res.data !== "Fail" && res.data !== "Error") {
         const filterProducts = res.data;
-        console.log(filterProducts)
-        const existingProductIds = new Set(products.map((product) => product.id));
+        const existingProductIds = new Set(
+          products.map((product) => product.id)
+        );
         const newProducts = filterProducts.filter(
           (product) => !existingProductIds.has(product.id)
         );
@@ -74,25 +73,19 @@ const SellerProfile = () => {
     }
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts/`
-  //     )
-  //     .then((res) => {
-  //       if (res.data !== "Fail" && res.data !== "Error") {
-  //         const filteredProducts = res.data.filter(
-  //           (product) => product.seller_id.toString() === sellerId
-  //         );
-  //         setSellerProducts(filteredProducts);
-  //       }
-  //       // setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       // setLoading(false);
-  //     });
-  // }, [sellerId]);
+  const applyFilter = (filter) => {
+    let updatedProducts = [...products];
+    if (filter === "sold") {
+      updatedProducts = products.filter((product) => product.quantity === 0);
+    } else if (filter === "available") {
+      updatedProducts = products.filter((product) => product.quantity > 0);
+    }
+    setFilteredProducts(updatedProducts);
+  };
+
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+  };
 
   const capitalizeFirstLetterOfEveryWord = (str) => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
@@ -132,11 +125,6 @@ const SellerProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // if (!name || !email || !phone) {
-    //   // alert("Please fill out all required fields");
-    //   return;
-    // }
-
     axios
       .post(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/contactseller`,
@@ -150,15 +138,12 @@ const SellerProfile = () => {
       )
       .then((res) => {
         alert("Data added successfully");
-        // setFormData({ name: '', email: '', phone: '', comment: '' });
         window.location.reload(false);
       })
       .catch((err) => {
         console.error("Error posting data:", err);
       });
   };
-
-
 
   const renderStarRatings = (rating) => {
     const stars = [];
@@ -167,8 +152,9 @@ const SellerProfile = () => {
       stars.push(
         <i
           key={i}
-          className={`bi ${i < filledStars ? "bi-star-fill text-warning" : "bi-star"
-            } me-1`}
+          className={`bi ${
+            i < filledStars ? "bi-star-fill text-warning" : "bi-star"
+          } me-1`}
         ></i>
       );
     }
@@ -203,7 +189,7 @@ const SellerProfile = () => {
       </div>
       <div className="container mt-5">
         <div className="row">
-          <div className="">
+          <div className="col-lg-12">
             <h4 className="mb-4">
               <span style={{ fontSize: "22px" }}>Products by</span>{" "}
               <span className="text-secondary" style={{ fontStyle: "italic" }}>
@@ -212,24 +198,47 @@ const SellerProfile = () => {
                   : userDetails.shopname}
               </span>
             </h4>
-            {/* {loading ? (
-              <div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>
-            ) : sellerProducts.length === 0 ? (
-              <p>No products available.</p>
-            ) : (
-              <div className="product-grid container ">
-                {sellerProducts.map((product, index) => (
-                  <Product key={index} product={product} admin="home" />
-                ))}
-              </div>
-            )} */}
+            <div className="filters mb-4">
+              <button
+                className={`btn btn-outline-primary me-2 ${
+                  filter === "all" ? "active" : ""
+                }`}
+                onClick={() => handleFilterChange("all")}
+              >
+                Show All
+              </button>
+              <button
+                className={`btn btn-outline-primary me-2 ${
+                  filter === "available" ? "active" : ""
+                }`}
+                onClick={() => handleFilterChange("available")}
+              >
+                Available Products
+              </button>
+              <button
+                className={`btn btn-outline-primary ${
+                  filter === "sold" ? "active" : ""
+                }`}
+                onClick={() => handleFilterChange("sold")}
+              >
+                Sold Products
+              </button>
+            </div>
 
             <InfiniteScroll
               dataLength={filteredProducts.length}
               next={() => setPage((prevPage) => prevPage + 1)}
               hasMore={hasMore}
-              loader={<div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>}
-              endMessage={<div className="centered-message"><p>No more products to display</p></div>}
+              loader={
+                <div className="centered-message">
+                  <i className="bi bi-arrow-clockwise spin-icon"></i>
+                </div>
+              }
+              endMessage={
+                <div className="centered-message">
+                  <p>No more products to display</p>
+                </div>
+              }
             >
               <div className="product-grid container">
                 {filteredProducts.length > 0 ? (
@@ -327,7 +336,6 @@ const SellerProfile = () => {
                     onChange={handleInputChange}
                     placeholder="Enter Comment"
                     ref={commentInputRef}
-                  // required
                   />
                 </div>
                 <div className="modal-footer">

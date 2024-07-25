@@ -268,15 +268,28 @@ const Home = () => {
   }, []);
 
   const filterAndSliceProducts = (type) => {
-    const filteredProducts = displayedProducts.filter(item => item.product_type === type).reverse();
+    const filteredProducts = displayedProducts
+      .filter(item => item.product_type === type && item.quantity > 0)
+      .reverse();
     const screenWidth = window.innerWidth;
-
+  
     if (screenWidth >= 992) {
       return filteredProducts.slice(0, 8);
     } else {
       return filteredProducts.slice(0, 6);
     }
   };
+  
+  // const filterAndSliceProducts = (type) => {
+  //   const filteredProducts = displayedProducts.filter(item => item.product_type === type).reverse();
+  //   const screenWidth = window.innerWidth;
+
+  //   if (screenWidth >= 992) {
+  //     return filteredProducts.slice(0, 8);
+  //   } else {
+  //     return filteredProducts.slice(0, 6);
+  //   }
+  // };
 
   const womenProducts = filterAndSliceProducts("women");
   const kidsProducts = filterAndSliceProducts("kids");

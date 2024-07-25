@@ -35,7 +35,7 @@ const Earrings = () => {
         );
 
         const newProducts = filterProducts.filter(
-          (product) => !existingProductIds.has(product.id)
+          (product) => !existingProductIds.has(product.id)&& product.quantity > 0
         );
 
         if (newProducts.length > 0) {
