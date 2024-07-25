@@ -296,6 +296,17 @@ const handleKeyPress = (event) => {
                         </Link>
                       </li>
                     ) : null}
+                    {user.email !== "admin@admin" ? (
+                      <li className="p-1">
+                        <Link
+                          to="/myshop"
+                          className="text-decoration-none text-dark ps-3"
+                        >
+                          <i className="bi bi-shop"></i>{" "}
+                          My Shop
+                        </Link>
+                      </li>
+                    ) : null}
 
 
                     <li className="p-1">
