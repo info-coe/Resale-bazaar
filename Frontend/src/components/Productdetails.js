@@ -55,7 +55,6 @@ export default function Productdetails() {
       sessionStorage.getItem("user-token") !== null && setIsLoggedIn(true);
     }
   }, []);
-  console.log(add);
   const AmountChange = (e) => {
     setAdd(e);
   };
@@ -175,7 +174,6 @@ export default function Productdetails() {
   };
   const datta = JSON.parse(productdetails.image);
   const firstImage = datta[0];
-  console.log(add.length);
   const handleOffer = () => {
     if (add === "0.00" || add.length == 0) {
       console.log("success");
@@ -221,7 +219,6 @@ export default function Productdetails() {
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
-          console.log(res);
           // Filter user details where user_id === productdetails.seller_id
           // const filteredUserDetails = res.data.filter(
           const filteredUserDetails = res.data.filter(
@@ -357,6 +354,10 @@ export default function Productdetails() {
       console.error("Error toggling like:", error);
       alert("Failed to update like status. Please try again later.");
     }
+  };
+
+  const handleGuestCheckout = () => {
+    console.log("Guest Checkout");
   };
 
   return (
@@ -927,7 +928,7 @@ export default function Productdetails() {
                                     className="text-center"
                                     style={{ display: success ? "" : "none" }}
                                   >
-                                    <i class="bi bi-check2-circle text-success fs-1"></i>
+                                    <i className="bi bi-check2-circle text-success fs-1"></i>
                                   </div>
                                   <div className="modal-footer">
                                     {isLoggedIn ? (
@@ -955,8 +956,66 @@ export default function Productdetails() {
                               </div>
                             </div>
                           </div>
+                          {isLoggedIn ? null : (
+                            <div className="col-12 col-md-7 mb-2 mt-2 ">
+                              <button
+                                type="button"
+                                className="btn btn-secondary w-100"
+                                data-bs-toggle="modal"
+                                data-bs-target="#guestcheckoutModal"
+                                // onClick={()=>handleGuestCheckout}
+                              >
+                                <b>Guest Checkout</b>
+                              </button>
+                            </div>
+                          )}
                         </div>
                       )}
+                    </div>
+
+                    {/* <!-- Modal --> */}
+                    <div
+                      className="modal fade"
+                      id="guestcheckoutModal"
+                      tabIndex="-1"
+                      aria-labelledby="guestcheckoutModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h1
+                              className="modal-title fs-5"
+                              id="guestcheckoutModalLabel"
+                            >
+                              Guest Checkout
+                            </h1>
+                            <button
+                              type="button"
+                              className="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div className="modal-body">
+                            <input type="text" placeholder="Your Full Name" required/>
+                            <input type="text" placeholder="Your Full Name" required/>
+                            <input type="email" placeholder="Your Email" required/>
+                          </div>
+                          <div className="modal-footer">
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                            <button type="button" className="btn btn-primary">
+                              Save changes
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
@@ -989,12 +1048,15 @@ export default function Productdetails() {
 
             <div className="col-12 col-md-7 mt-3">
               <div className="user-details border shadow-sm p-3 bg-body rounded">
-                {userdetails.map((user) => (
-                  <div className="d-flex justify-content-between m-2">
+                {userdetails.map((user, index) => (
+                  <div
+                    className="d-flex justify-content-between m-2"
+                    key={index}
+                  >
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
                       &nbsp;
-                      {user.shopname ==""| null || undefined 
+                      {(user.shopname == "") | null || undefined
                         ? user.name
                         : user.shopname}
                     </p>
