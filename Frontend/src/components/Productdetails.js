@@ -998,9 +998,9 @@ export default function Productdetails() {
                             ></button>
                           </div>
                           <div className="modal-body">
-                            <input type="text" placeholder="Your Full Name" required/>
-                            <input type="text" placeholder="Your Full Name" required/>
-                            <input type="email" placeholder="Your Email" required/>
+                            <input type="text" className="form-control m-2" placeholder="Your Full Name" required/>
+                            <input type="text" className="form-control m-2" placeholder="Your Full Name" required/>
+                            <input type="email" className="form-control m-2" placeholder="Email" required/>
                           </div>
                           <div className="modal-footer">
                             <button
