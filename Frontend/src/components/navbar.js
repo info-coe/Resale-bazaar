@@ -11,7 +11,7 @@ import { googleLogout } from "@react-oauth/google";
 
 const MyNavbar = () => {
   const [products, setProducts] = useState([]);
-  const [userId, setUserId] = useState(null);
+  // const [userId, setUserId] = useState(null);
   const { user } = useData();
   const [isRotated, setIsRotated] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +24,7 @@ const MyNavbar = () => {
     setSearchTerm(searchTerm);
     navigate("/search", { state: { termToSearch: searchTerm } });
   };
-  console.log(data.length);
+  // console.log(data.length);
   const {
     cartItems,
     calculateTotalPrice,
@@ -39,6 +39,9 @@ const MyNavbar = () => {
   const handleMoveSelectedToCart = () => {
     moveFromWishlistToCart();
   };
+  const storedObject = sessionStorage.getItem("user-token");
+  const myRetrievedObject = JSON.parse(storedObject);
+  
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
@@ -47,17 +50,17 @@ const MyNavbar = () => {
     } else {
       setIsLoggedIn(false);
     }
-    const storedObject = sessionStorage.getItem("user");
-    if (storedObject) {
-      try {
-        const myRetrievedObject = JSON.parse(storedObject);
-        setUserId(myRetrievedObject.user_id);
-      } catch (error) {
-        console.error("Error parsing JSON:", error);
-      }
-    } else {
-      console.error("No data found in session storage for 'user'");
-    }
+    // const storedObject = sessionStorage.getItem("user");
+    // if (storedObject) {
+    //   try {
+    //     const myRetrievedObject = JSON.parse(storedObject);
+    //     setUserId(myRetrievedObject.user_id);
+    //   } catch (error) {
+    //     console.error("Error parsing JSON:", error);
+    //   }
+    // } else {
+    //   console.error("No data found in session storage for 'user'");
+    // }
   }, [setIsLoggedIn]);
 
   const handlelogout = () => {
@@ -140,7 +143,7 @@ const MyNavbar = () => {
         // console.log(res);
         if (res.data !== "Error" && res.data !== "Fail") {
           const filteredUserDetails = res.data.filter(
-            (item) => item.seller_id === userId
+            (item) => item.seller_id === myRetrievedObject
           );
           if (filteredUserDetails.length > 0) {
             setData(filteredUserDetails);
@@ -150,7 +153,7 @@ const MyNavbar = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     axios

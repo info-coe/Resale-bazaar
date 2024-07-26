@@ -13,29 +13,18 @@ const Myshop = () => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("all");
-  const [userId, setUserId] = useState(null);
+  //   const [userId, setUserId] = useState(null);
   const [shopname, setShopname] = useState(""); // State to store shop name
   const pageSize = 8;
   console.log(shopname);
   // Retrieve user details from session storage
-  useEffect(() => {
-    const storedObject = sessionStorage.getItem("user");
-    if (storedObject) {
-      try {
-        const myRetrievedObject = JSON.parse(storedObject);
-        setUserId(myRetrievedObject.user_id);
-      } catch (error) {
-        console.error("Error parsing JSON:", error);
-      }
-    } else {
-      console.error("No data found in session storage for 'user'");
-    }
-  }, []);
+  const storedObject = sessionStorage.getItem("user-token");
+  const myRetrievedObject = JSON.parse(storedObject);
 
   // Fetch shop details
   useEffect(() => {
     const fetchShopname = async () => {
-      if (!userId) return; // Ensure userId is available before fetching
+      if (!myRetrievedObject) return; // Ensure userId is available before fetching
 
       try {
         const res = await axios.get(
@@ -45,7 +34,7 @@ const Myshop = () => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const filteredUserDetails = res.data.filter(
             //   console.log(item)
-            (item) => item.user_id === userId
+            (item) => item.user_id === myRetrievedObject
           );
           if (filteredUserDetails.length > 0) {
             const userDetail = filteredUserDetails[0];
@@ -67,13 +56,13 @@ const Myshop = () => {
     };
 
     fetchShopname();
-  }, [userId]); // Add userId as a dependency to re-fetch if it changes
+  }, [myRetrievedObject]); // Add userId as a dependency to re-fetch if it changes
 
   useEffect(() => {
-    if (userId) {
+    if (myRetrievedObject) {
       fetchProducts(page);
     }
-  }, [page, userId]);
+  }, [page, myRetrievedObject]);
 
   useEffect(() => {
     applyFilter(filter);
@@ -82,7 +71,7 @@ const Myshop = () => {
   const fetchProducts = async (pageNum) => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproductsall?limit=${pageSize}&page=${pageNum}&category=${userId}`
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproductsall?limit=${pageSize}&page=${pageNum}&category=${myRetrievedObject}`
       );
 
       if (res.data !== "Fail" && res.data !== "Error") {
