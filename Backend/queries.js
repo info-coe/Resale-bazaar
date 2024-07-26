@@ -289,6 +289,26 @@ const GuestShippingAddressQuery = `
 );
 `
 
+const GuestOrderQuery = `
+  CREATE TABLE IF NOT EXISTS Guest_orders (
+    id INT NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    payment_status TINYINT(4) NULL,
+    shipment_id VARCHAR(45) NULL,
+    order_id VARCHAR(45) NULL,
+    ordered_date DATE NULL,
+    shipped_date DATE NULL,
+    delivered_date DATE NULL,
+    order_quantity INT NULL,
+    order_status VARCHAR(255)NOT NULL,
+    order_amount INT  NULL,
+    refundable_amount INT NULL,
+    cancel_reason MEDIUMTEXT NULL,
+    cancel_comment LONGTEXT NULL,
+    UNIQUE INDEX id_UNIQUE (id ASC)
+  );
+`
+
 const loginCheckQuery = "SELECT * FROM register WHERE `email` = ? AND `password` = ?";
 const adminLoginQuery = "SELECT * FROM admin WHERE `email` = ? AND `password` = ?";
 const retrievingUsersQuery = "SELECT * FROM register";
@@ -334,6 +354,7 @@ const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buye
 const deleteProductsQuery = "DELETE FROM  products WHERE id=?";
 const deletecartitemQuery = "DELETE FROM cart WHERE userid = ? AND EXISTS (SELECT 1 FROM orders WHERE buyer_id = ?)"
 const cancelorderitemQuery = `UPDATE orders SET order_status = ?, refundable_amount = ?, cancel_reason = ?,cancel_comment = ? WHERE order_id = ?`;
+const guestpaymentStatusQuery = "INSERT INTO guest_orders (product_id, payment_status, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity,order_status,order_amount) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?)";
 const getbillingAddress= "Select * from billing_address"
 const getshippingAddress= "Select * from shipping_address"
 const retrievingAdminQuery = "SELECT * FROM admin";
@@ -385,6 +406,7 @@ module.exports = {
   GuestCheckoutQuery,
   GuestBillingAddressQuery,
   GuestShippingAddressQuery,
+  GuestOrderQuery,
   loginCheckQuery,
   adminLoginQuery,
   retrievingUsersQuery,
@@ -458,5 +480,6 @@ module.exports = {
   updateCartItemsQuantityQuery,
   RefundDetailsQuery,
   guestShippingAddress,
-  guestBillingAddress
+  guestBillingAddress,
+  guestpaymentStatusQuery
 };

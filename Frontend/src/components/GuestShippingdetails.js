@@ -8,11 +8,12 @@ const GuestShippingdetails = () => {
   const [skipShippingAddress, setSkipShippingAddress] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const location = useLocation();
-  const data = location.state;
+  const data = location.Gueststate;
   const user = data.user;
   const product = [data.product];
   const totalPrice = product[0].price * product[0].quantity;
-
+  sessionStorage.setItem("guest_user", JSON.stringify(user));
+  sessionStorage.setItem("guest_product", JSON.stringify(product));
 
   const [step, setStep] = useState(1);
   const [fields, setFields] = useState({
@@ -164,13 +165,14 @@ const GuestShippingdetails = () => {
           );
         }
 
-    //   const response = await axios.post(
-    //     `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
-    //     {
-    //       product,
-    //     }
-    //   );
-    //   window.location.href = response.data.url;
+      const response = await axios.post(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
+        {
+          product,
+          from : "guestfinalcheckout"
+        }
+      );
+      window.location.href = response.data.url;
     } catch (error) {
       console.error(
         "Error creating payment:",

@@ -64,6 +64,7 @@ import Refundproducts from "./components/admindashboard/Refundproducts";
 import Myshop from "./components/sellerdashboard/Myshop";
 import GuestCheckoutpage from "./components/GuestCheckoutpage";
 import GuestShippingdetails from "./components/GuestShippingdetails";
+import GuestFinalCheckout from "./components/GuestFinalCheckout";
 // const Home = React.lazy(() => import("./components/home"));
 // const Womenallproducts = React.lazy(() =>
 //   import("./components/women/Womenallproducts")
@@ -359,6 +360,7 @@ function App() {
           <Route path="refundsproduct" element={<Refundproducts />}/>
           <Route path="guestcheckout" element={<GuestCheckoutpage/>}/>
           <Route path="guestshipping" element={<GuestShippingdetails/>}/>
+          <Route path="guestfinalcheckout" element={<GuestFinalCheckout />}/>
                
           </Routes>
         {/* </React.Suspense> */}

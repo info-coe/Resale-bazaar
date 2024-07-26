@@ -20,6 +20,7 @@ const {
   GuestCheckoutQuery,
   GuestBillingAddressQuery,
   GuestShippingAddressQuery,
+  GuestOrderQuery,
   loginCheckQuery,
   adminLoginQuery,
   retrievingUsersQuery,
@@ -94,7 +95,8 @@ const {
   updateCartItemsQuantityQuery,
   RefundDetailsQuery,
   guestShippingAddress,
-  guestBillingAddress
+  guestBillingAddress,
+  guestpaymentStatusQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require("multer");
@@ -327,9 +329,12 @@ db.query(createDatabaseQuery, (err) => {
                                       if (err) throw err;
                                       db.query(GuestShippingAddressQuery, (err) => {
                                         if (err) throw err;
-                                        console.log(
-                                          "Database and tables created successfully"
-                                        );
+                                        db.query(GuestOrderQuery, (err) => {
+                                          if (err) throw err;
+                                          console.log(
+                                            "Database and tables created successfully"
+                                          );
+                                        });
                                       });
                                     });
                                   });
@@ -1665,6 +1670,45 @@ app.post("/guestShippingAddress", (req, res) => {
   });
 });
 
+app.post("/guestupdatepayment", (req, res) => {
+  const payment_status = req.body.payment_status;
+  const {
+    shipment_id,
+    order_id,
+    ordered_date,
+    shipped_date,
+    delivered_date,
+    order_quantity,
+    order_status,
+    order_amount
+  } = req.body;
+
+  // Insert into orders table
+  const insertOrderSql = guestpaymentStatusQuery;
+  db.query(
+    insertOrderSql,
+    [
+      req.body.product_id,
+      payment_status,
+      shipment_id,
+      order_id,
+      ordered_date,
+      shipped_date,
+      delivered_date,
+      order_quantity,
+      order_status,
+      order_amount,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting into orders table:", err);
+        return res.status(500).json({ error: "Error updating payment status" });
+      }
+      console.log("Payment status updated successfully for product with ID:");
+    }
+  );
+});
+
 app.post("/updatepayment", (req, res) => {
   const payment_status = req.body.payment_status;
   const token = parseInt(req.body.token); // Ensure that token is parsed as an integer
@@ -2038,11 +2082,13 @@ app.get("/cancel", (req, res) => {
 
 // Stripe payment gateway
 app.post("/paymentStripe", async (req, res) => {
+  const fromPage = req.body.from;
+  const successRedirect = fromPage
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
-      line_items: req.body.cartItems.map(item => {
+      line_items: req.body.product.map(item => {
         return {
           price_data: {
             currency: "usd",
@@ -2054,7 +2100,7 @@ app.post("/paymentStripe", async (req, res) => {
           quantity: item.quantity,
         }
       }),
-      success_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/finalcheckoutpage`,
+      success_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/${successRedirect}`,
       cancel_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/`,
     })
     res.json({ url: session.url })

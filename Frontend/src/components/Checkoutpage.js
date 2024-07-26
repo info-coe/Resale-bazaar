@@ -285,6 +285,7 @@ const Checkout = () => {
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
         {
           cartItems,
+          from : "finalcheckoutpage"
         }
       );
       window.location.href = response.data.url;
@@ -616,7 +617,7 @@ const Checkout = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Pincode"
+                      placeholder="ZIP"
                       name="pincode"
                       value={fields.pincode}
                       pattern="[0-9]{5}"
@@ -777,7 +778,7 @@ const Checkout = () => {
                         <input
                           type="text"
                           className="form-control mb-2"
-                          placeholder="Pincode"
+                          placeholder="ZIP"
                           name="pincode"
                           value={newFields.pincode}
                           onChange={handleInputChange1}
