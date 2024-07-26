@@ -6,12 +6,12 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useData } from "./CartContext";
 import Scrolltotopbtn from "./Scrolltotopbutton";
+import Notification from "./Notification";
 
 export default function Selleraccount() {
   const { user } = useData();
-  // console.log(user)
   const [sellers, setSellers] = useState([]);
-console.log(sellers)
+  const [notification, setNotification] = useState(null);
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/selleraccount`)
@@ -56,11 +56,12 @@ console.log(sellers)
       .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/selleraccount`, values)
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
-          alert("Seller account created successfully");
+          setNotification("Seller account created successfully");
+          setTimeout(() => setNotification(null), 3000);
           navigate("/");
         } else {
-          alert("Registration failed. Please try after sometime");
-          window.location.reload(false);
+          setNotification("Registration failed. Please try after sometime");
+          setTimeout(() => setNotification(null), 3000);
         }
       })
       .catch((err) => console.log(err));
@@ -69,6 +70,7 @@ console.log(sellers)
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
       <main>
       <img
         src="https://www.sme-news.co.uk/wp-content/uploads/2021/05/ecommerce-growth.jpg"

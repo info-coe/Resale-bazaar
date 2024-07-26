@@ -7,9 +7,11 @@ import CryptoJS from "crypto-js";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { useData } from "./CartContext";
 import Scrolltotopbtn from "./Scrolltotopbutton";
+import Notification from "./Notification";
 
 const Register = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
+  const [notification, setNotification] = useState(null);
   const [values, setValues] = useState({
     firstname: "",
     lastname: "",
@@ -122,7 +124,8 @@ const Register = () => {
                         var token = data.user_id;
                         sessionStorage.setItem("token", "user");
                         if (!token) {
-                          alert("Unable to login. Please try after some time.");
+                          setNotification("Unable to login. Please try after some time.");
+                          setTimeout(() => setNotification(null), 3000);
                           return;
                         }
                         sessionStorage.removeItem("user-token");
@@ -137,7 +140,8 @@ const Register = () => {
                   var token = data.user_id;
                   sessionStorage.setItem("token", "user");
                   if (!token) {
-                    alert("Unable to login. Please try after some time.");
+                    setNotification("Unable to login. Please try after some time.");
+                    setTimeout(() => setNotification(null), 3000);
                     return;
                   }
                   sessionStorage.removeItem("user-token");
@@ -146,7 +150,8 @@ const Register = () => {
                   // window.location.reload(false);
                 }
               } else {
-                alert("Invalid Username or Password");
+                setNotification("Invalid Username or Password");
+                setTimeout(() => setNotification(null), 3000);
                 window.location.reload(false);
               }
             })
@@ -175,6 +180,7 @@ const Register = () => {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
       <main>
         <div className="text-center mt-4 mb-4">
           <button onClick={signin} className="btn border">
