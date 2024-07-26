@@ -8,6 +8,7 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   // localStorage.clear();
   // const [authToken, setAuthToken] = useState("");
+  const [notification, setNotification] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [wishItems, setWishItems] = useState([]);
   const [selectedWishlistItems, setSelectedWishlistItems] = useState([]);
@@ -32,13 +33,13 @@ export const CartProvider = ({ children }) => {
     const userProduct = product.seller_id.toString() === sessionStorage.getItem('user-token');
   
     if (isProductInCart) {
-      alert("Product already exists in the cart");
+      setNotification("Product already exists in the cart");
+      setTimeout(() => setNotification(null), 3000);
     } else if (userProduct) {
-      alert('You are the seller of this product');
+      setNotification("You are the seller of this product");
+      setTimeout(() => setNotification(null), 3000);
     } else {
-      // Set the default quantity to 1
       const productWithQuantity = { ...product, quantity: 1 };
-  
       axios
         .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`, { product: productWithQuantity, from })
         .then((response) => {
@@ -47,8 +48,8 @@ export const CartProvider = ({ children }) => {
         .catch((error) => {
           console.error("Error adding to cart:", error);
         });
-  
-      alert("Product added to cart");
+      setNotification("Product added to cart");
+      setTimeout(() => setNotification(null), 3000);
       window.location.reload(false);
     }
   };
@@ -60,8 +61,8 @@ export const CartProvider = ({ children }) => {
         setCartItems((prevItems) =>
           prevItems.filter((item) => item.id !== productId)
         );
-        alert("Product removed from cart:");
-        // console.log("Product removed from cart:");
+        setNotification("Product removed from cart!");
+        setTimeout(() => setNotification(null), 3000);
       })
       .catch((error) => {
         console.error("Error removing product from cart:", error);
@@ -114,7 +115,8 @@ export const CartProvider = ({ children }) => {
   const addToWishlist = (product) => {
     const userProduct=product.seller_id.toString()===sessionStorage.getItem('user-token')
     if(userProduct){
-      alert('You are the seller of this product')
+      setNotification("You are the seller of the product");
+      setTimeout(() => setNotification(null), 3000);
     }else{
       axios
       .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addwishlist`, product)
@@ -125,7 +127,8 @@ export const CartProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error adding to wishlist:", error);
       });
-    alert("Product added to wishlist");
+    setNotification("Product added to wishlist");
+    setTimeout(() => setNotification(null), 3000);
     window.location.reload(false);
     }
 
@@ -172,6 +175,8 @@ export const CartProvider = ({ children }) => {
       value={{
         // authToken,
         // setAuthToken,
+        notification,
+        setNotification,
         user,
         setUserData,
         cartItems,

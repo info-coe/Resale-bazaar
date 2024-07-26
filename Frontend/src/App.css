@@ -895,7 +895,7 @@ body.offcanvas-open {
 /* alert code */
 
 
-/* .alert_modal {
+.alert_modal {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -993,4 +993,3 @@ body.offcanvas-open {
   background: linear-gradient(80deg, #7ED1FF, #484B95);
   color: #484B95;
 }
- */

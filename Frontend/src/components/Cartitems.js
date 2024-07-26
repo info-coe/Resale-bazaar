@@ -7,10 +7,11 @@ import Footer from "./footer";
 import Cartemptyimg from '../images/cartempty.png';
 import axios from 'axios';
 import Scrolltotopbtn from "./Scrolltotopbutton";
+import Notification from "./Notification";
 
 export default function Cartitems() {
   const navigate = useNavigate();
-  const { cartItems, calculateTotalPrice, removeFromCart, updateCartItemQuantity } = useCart();
+  const { cartItems, calculateTotalPrice, removeFromCart, updateCartItemQuantity, notification, setNotification } = useCart();
   const [products, setProducts] = useState([]); // State to hold fetched products
   const [message, setMessage] = useState(''); // State to hold global error message
 
@@ -18,7 +19,6 @@ export default function Cartitems() {
         axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`)
         .then((res)=>{
             if(res.data !== "Fail" && res.data !== "Error" ){
-              console.log(res.data)
               setProducts(res.data); // Assuming response.data contains the product array
             }
         }).catch((error)=>{
@@ -61,6 +61,7 @@ export default function Cartitems() {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
       <main>
         <div className="container p-md-5 pt-4">
          

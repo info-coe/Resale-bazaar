@@ -8,6 +8,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Reviews from "./Reviews";
 import Scrolltotopbtn from "./Scrolltotopbutton";
+import Notification from "./Notification";
 
 const responsive = {
   extraLargeDesktop: {
@@ -78,7 +79,7 @@ export default function Productdetails() {
     window.location.href = "/Resale-bazaar/acceptproduct";
   };
 
-  const { addToCart, addToWishlist, cartItems, wishItems } = useCart();
+  const { addToCart, addToWishlist, cartItems, wishItems, notification, setNotification } = useCart();
 
   const handleAddToCart = () => {
     const isProductInCart = cartItems.some(
@@ -175,7 +176,7 @@ export default function Productdetails() {
   const datta = JSON.parse(productdetails.image);
   const firstImage = datta[0];
   const handleOffer = () => {
-    if (add === "0.00" || add.length == 0) {
+    if (add === "0.00" || add.length === 0) {
       console.log("success");
       return null;
     } else {
@@ -363,6 +364,7 @@ export default function Productdetails() {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
       <main>
         <nav className="p-2 ps-lg-5 pe-lg-5">
           <Link to="/" className="text-decoration-none text-dark">
@@ -759,7 +761,7 @@ export default function Productdetails() {
                                       />
                                       <span style={{ fontSize: "0.75rem" }}>
                                         {/* Enter Your Offer */}
-                                        {add == 0 ? (
+                                        {add === 0 ? (
                                           <span style={{ color: "red" }}>
                                             Please Select Any One Off
                                           </span>
@@ -963,7 +965,6 @@ export default function Productdetails() {
                                 className="btn btn-secondary w-100"
                                 data-bs-toggle="modal"
                                 data-bs-target="#guestcheckoutModal"
-                                // onClick={()=>handleGuestCheckout}
                               >
                                 <b>Guest Checkout</b>
                               </button>
@@ -998,9 +999,33 @@ export default function Productdetails() {
                             ></button>
                           </div>
                           <div className="modal-body">
-                            <input type="text" className="form-control m-2" placeholder="Your Full Name" required/>
-                            <input type="text" className="form-control m-2" placeholder="Your Full Name" required/>
-                            <input type="email" className="form-control m-2" placeholder="Email" required/>
+                            <input
+                              type="text"
+                              className="form-control m-2"
+                              placeholder="First Name"
+                              // onChange={(e) => setGuestName(e.target.value)}
+                              
+                              required
+                            />
+                            <input
+                              type="text"
+                              className="form-control m-2"
+                              placeholder="Last Name"
+                              required
+                            />
+                            <input
+                              type="email"
+                              className="form-control m-2"
+                              placeholder="Email"
+                              required
+                            />
+                            <input
+                              type="tel"
+                              className="form-control m-2"
+                              placeholder="Phone Number"
+                              pattern="[0-9]{10}"
+                              required
+                            />
                           </div>
                           <div className="modal-footer">
                             <button
@@ -1010,7 +1035,11 @@ export default function Productdetails() {
                             >
                               Close
                             </button>
-                            <button type="button" className="btn btn-primary">
+                            <button
+                              type="button"
+                              className="btn btn-primary"
+                              onClick={() => handleGuestCheckout}
+                            >
                               Save changes
                             </button>
                           </div>
@@ -1056,7 +1085,7 @@ export default function Productdetails() {
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
                       &nbsp;
-                      {(user.shopname == "") | null || undefined
+                      {(user.shopname === "") | null || undefined
                         ? user.name
                         : user.shopname}
                     </p>

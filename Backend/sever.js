@@ -17,6 +17,7 @@ const {
   contactinfo,
   addressinfo1,
   addressinfo2,
+  GuestCheckoutQuery,
   loginCheckQuery,
   adminLoginQuery,
   retrievingUsersQuery,
@@ -317,9 +318,12 @@ db.query(createDatabaseQuery, (err) => {
                                 if (err) throw err;
                                 db.query(LikesQuery, (err) => {
                                   if (err) throw err;
-                                  console.log(
-                                    "Database and tables created successfully"
-                                  );
+                                  db.query(GuestCheckoutQuery, (err) => {
+                                    if (err) throw err;
+                                    console.log(
+                                      "Database and tables created successfully"
+                                    );
+                                  });
                                 });
                               });
                             });

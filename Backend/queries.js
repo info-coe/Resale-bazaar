@@ -242,8 +242,21 @@ const LikesQuery = `
   like_user_id INT NOT NULL,
   like_product_id INT NOT NULL
 );
-
 `
+const GuestCheckoutQuery = `
+  CREATE TABLE IF NOT EXISTS guest_checkout (
+  id INT NOT NULL AUTO_INCREMENT,
+  customer_first_name VARCHAR(90) NOT NULL,
+  customer_last_name VARCHAR(90) NOT NULL,
+  email VARCHAR(90) NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL,
+  purchased_amount INT NOT NULL,
+  order_id VARCHAR(90) NOT NULL,
+  shipment_id VARCHAR(90) NOT NULL,
+  PRIMARY KEY (id));
+`
+
 const loginCheckQuery = "SELECT * FROM register WHERE `email` = ? AND `password` = ?";
 const adminLoginQuery = "SELECT * FROM admin WHERE `email` = ? AND `password` = ?";
 const retrievingUsersQuery = "SELECT * FROM register";
@@ -335,6 +348,7 @@ module.exports = {
   contactinfo,
   addressinfo1,
   addressinfo2,
+  GuestCheckoutQuery,
   loginCheckQuery,
   adminLoginQuery,
   retrievingUsersQuery,
