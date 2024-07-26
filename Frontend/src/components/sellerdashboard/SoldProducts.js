@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 import Product from "../Product";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Notification from "../Notification";
 
 
 const SellerProfile = () => {
@@ -21,6 +22,8 @@ const SellerProfile = () => {
   const pageSize = 8;
   const { state } = useLocation();
   const userDetails = state.userDetails[0];
+  const [notification, setNotification] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -149,7 +152,8 @@ const SellerProfile = () => {
         }
       )
       .then((res) => {
-        alert("Data added successfully");
+        setNotification({ message: 'Data added successfully', type: 'success' });
+        setTimeout(() => setNotification(null), 3000);
         // setFormData({ name: '', email: '', phone: '', comment: '' });
         window.location.reload(false);
       })
@@ -178,6 +182,8 @@ const SellerProfile = () => {
   return (
     <>
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <div className="container mt-3">
         <div className="row">
           <div className="col-lg-12">

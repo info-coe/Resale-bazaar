@@ -5,11 +5,14 @@ import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
 import axios from "axios";
 import Scrolltotopbtn from "../Scrolltotopbutton";
+import Notification from "../Notification";
 
 export default function Changepassword() {
 
   const [userdetails,setUserDetails]= useState([])
   const [admindetails,setAdminDetails]=useState([])
+  const [notification, setNotification] = useState(null);
+
 
   const [values,setValues]= useState({
      oldpassword:'',
@@ -79,17 +82,20 @@ export default function Changepassword() {
         }
       
         if (user === "user" && values.oldpassword !== userdetails[0].password) {
-          alert("Old password is incorrect.");
+          setNotification({ message: "Old password is incorrect.", type: 'error' });
+          setTimeout(() => setNotification(null), 3000);
           return;
         }
       
         if (user === "admin" && values.oldpassword !== admindetails[0].password) {
-          alert("Old password is incorrect.");
+          setNotification({ message: "Old password is incorrect.", type: 'error' });
+          setTimeout(() => setNotification(null), 3000);
           return;
         }
       
         if (values.newpassword !== values.confirmpassword) {
-          alert("Password and Confirm Passwords do not match.");
+          setNotification({ message: "Password and Confirm Passwords do not match.", type: 'error' });
+          setTimeout(() => setNotification(null), 3000);
           return;
         }
       
@@ -98,7 +104,8 @@ export default function Changepassword() {
         axios
           .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${url}/`, updatedData)
           .then((res) => {
-            alert(`${user}Password updated successfully`);
+            setNotification({ message: `${user}Password updated successfully`, type: 'success' });
+            setTimeout(() => setNotification(null), 3000);
             window.location.reload(false);
           })
           .catch((error) => {
@@ -112,6 +119,8 @@ export default function Changepassword() {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <main>
       <Customerbanner />
       <div className="d-lg-flex justify-content-around p-2 ps-lg-5 pe-lg-5">

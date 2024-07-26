@@ -124,7 +124,7 @@ const Register = () => {
                         var token = data.user_id;
                         sessionStorage.setItem("token", "user");
                         if (!token) {
-                          setNotification("Unable to login. Please try after some time.");
+                          setNotification({ message:"Unable to login. Please try after some time.", type:'error'});
                           setTimeout(() => setNotification(null), 3000);
                           return;
                         }
@@ -140,7 +140,7 @@ const Register = () => {
                   var token = data.user_id;
                   sessionStorage.setItem("token", "user");
                   if (!token) {
-                    setNotification("Unable to login. Please try after some time.");
+                    setNotification({ message:"Unable to login. Please try after some time." , type:"error"});
                     setTimeout(() => setNotification(null), 3000);
                     return;
                   }
@@ -150,7 +150,7 @@ const Register = () => {
                   // window.location.reload(false);
                 }
               } else {
-                setNotification("Invalid Username or Password");
+                setNotification({ message:"Invalid Username or Password" , type:"error"});
                 setTimeout(() => setNotification(null), 3000);
                 window.location.reload(false);
               }
@@ -180,7 +180,8 @@ const Register = () => {
   return (
     <div className="fullscreen">
       <MyNavbar />
-      {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <main>
         <div className="text-center mt-4 mb-4">
           <button onClick={signin} className="btn border">

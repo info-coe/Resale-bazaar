@@ -4,6 +4,7 @@ import Sellernavbar from "./Sellernavbar";
 import Sellermenu from "./Sellermenu";
 import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
+import Notification from "../Notification";
 
 export default function Sellerproducts() {
   const [pageSize, setPageSize] = useState(25);
@@ -39,6 +40,8 @@ export default function Sellerproducts() {
   const [sizes, setSizes] = useState([]);
   const [deletedImages, setDeletedImages] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [notification, setNotification] = useState(null);
+
 
   const userid = sessionStorage.getItem("user-token");
 
@@ -333,7 +336,8 @@ export default function Sellerproducts() {
         }
       );
 
-      alert('Product updated successfully');
+      setNotification({ message: 'Product updated successfully', type: 'success' });
+      setTimeout(() => setNotification(null), 3000);
       setDeletedImages([]);
       window.location.reload(false); // Reload the page or update state as necessary
     } catch (error) {
@@ -354,6 +358,8 @@ export default function Sellerproducts() {
   return (
     <div className="">
       <Sellernavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <div className="d-md-flex">
         <div className="col-md-2 selleraccordion">
           <Sellermenu />

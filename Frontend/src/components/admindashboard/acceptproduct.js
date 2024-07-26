@@ -5,6 +5,7 @@ import Adminfooter from "./Adminfooter";
 import Adminnavbar from "./Adminnavbar";
 import Adminmenu from "./Adminmenu";
 import { Link, useNavigate } from "react-router-dom";
+import Notification from "../Notification";
 
 export default function Acceptproduct() {
   // eslint-disable-next-line no-unused-vars
@@ -13,6 +14,7 @@ export default function Acceptproduct() {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [notification, setNotification] = useState(null);
 
   const [formData, setFormData] = useState({
     id: null,
@@ -154,9 +156,11 @@ export default function Acceptproduct() {
         }
       );
 
-      alert('Product updated successfully');
+      // alert('Product updated successfully');
+      setNotification({ message: 'Product updated successfully', type: 'success' });
+      setTimeout(() => setNotification(null), 3000);
       setDeletedImages([]);
-      window.location.reload(false); // Reload the page or update state as necessary
+      // window.location.reload(false); // Reload the page or update state as necessary
     } catch (error) {
       console.error('Error updating product:', error);
       setDisabled(false);
@@ -271,6 +275,8 @@ const handleviewdata =(sellerID,id,item)=>{
   return (
     <div className="fullscreen">
       <Adminnavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <div className="d-md-flex">
         <div className="col-md-2 selleraccordion">
           <Adminmenu />

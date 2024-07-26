@@ -403,6 +403,7 @@ import MyNavbar from '../navbar';
 import Footer from '../footer';
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import Notification from '../Notification';
 
 const CancelOrder = () => {
   const location = useLocation();
@@ -410,6 +411,8 @@ const CancelOrder = () => {
   const navigate = useNavigate();
   const [reason, setReason] = useState("");
   const [comments, setComments] = useState("");
+  const [notification, setNotification] = useState(null);
+
 
   useEffect(() => {
     const offcanvasElement = document.getElementById('offcanvasBottom');
@@ -434,7 +437,8 @@ const CancelOrder = () => {
 
   const handleCancelOrder = () => {
     if (!reason) {
-      alert("Please select a reason for cancellation.");
+      setNotification({ message: 'Please select a reason for cancellation.', type: 'error' });
+      setTimeout(() => setNotification(null), 3000);
       return;
     }
 
@@ -466,7 +470,8 @@ const CancelOrder = () => {
               }
             )
             .then(() => {
-              alert("Order cancelled successfully and refund amount sent to you.");
+              setNotification({ message: 'Order cancelled successfully and refund amount sent to you.', type: 'success' });
+              setTimeout(() => setNotification(null), 3000);
               navigate("/orders");
             })
             .catch((error) => {
@@ -484,6 +489,8 @@ const CancelOrder = () => {
   return (
     <div className='fullscreen'>
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <main className='container mt-4'>
         <h6 className='mt-3 mb-3'>Request Cancellation</h6>
         <div className='d-md-flex justify-content-between bg-light p-2 p-md-4 border'>

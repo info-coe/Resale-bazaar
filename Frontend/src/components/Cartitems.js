@@ -61,7 +61,8 @@ export default function Cartitems() {
   return (
     <div className="fullscreen">
       <MyNavbar />
-      {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <main>
         <div className="container p-md-5 pt-4">
          

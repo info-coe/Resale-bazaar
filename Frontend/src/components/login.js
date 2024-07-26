@@ -7,6 +7,7 @@ import { useData } from "./CartContext";
 import CryptoJS from "crypto-js";
 import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import Scrolltotopbtn from "./Scrolltotopbutton";
+import Notification from "./Notification";
 
 const Login = () => {
   sessionStorage.clear();
@@ -29,6 +30,8 @@ const Login = () => {
   const [user, setUser] = useState([]);
   //eslint-disable-next-line no-unused-vars
   const [profile, setProfile] = useState(null);
+  const [notification, setNotification] = useState(null);
+
 
   const signin = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -78,7 +81,8 @@ const Login = () => {
                         var token = data.user_id;
                         sessionStorage.setItem("token", "user");
                         if (!token) {
-                          alert("Unable to login. Please try after some time.");
+                          setNotification({ message: 'Unable to login. Please try after some time.', type: 'error' });
+                          setTimeout(() => setNotification(null), 3000);
                           return;
                         }
                         sessionStorage.removeItem("user-token");
@@ -93,7 +97,8 @@ const Login = () => {
                   var token = data.user_id;
                   sessionStorage.setItem("token", "user");
                   if (!token) {
-                    alert("Unable to login. Please try after some time.");
+                    setNotification({ message: 'Unable to login. Please try after some time.', type: 'error' });
+                    setTimeout(() => setNotification(null), 3000);
                     return;
                   }
                   sessionStorage.removeItem("user-token");
@@ -102,7 +107,8 @@ const Login = () => {
                   // window.location.reload(false);
                 }
               } else {
-                alert("Invalid Username or Password");
+                setNotification({ message: 'Invalid Username or Password', type: 'error' });
+                setTimeout(() => setNotification(null), 3000);
                 window.location.reload(false);
               }
             })
@@ -157,7 +163,8 @@ const Login = () => {
             sessionStorage.setItem("token", "admin");
           }
           if (!token) {
-            alert("Unable to login. Please try after some time.");
+            setNotification({ message: 'Unable to login. Please try after some time.', type: 'error' });
+            setTimeout(() => setNotification(null), 3000);
             return;
           }
           sessionStorage.removeItem("user-token");
@@ -165,7 +172,8 @@ const Login = () => {
           navigate("/");
           // window.location.reload(false);
         } else {
-          alert("Invalid Username or Password");
+          setNotification({ message: 'Invalid Username or Password', type: 'error' });
+          setTimeout(() => setNotification(null), 3000);
           // window.location.reload(false);
         }
       })
@@ -174,6 +182,8 @@ const Login = () => {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <main>
         <div className="text-center mt-4">
           <button onClick={signin} className="btn border">

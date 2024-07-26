@@ -6,10 +6,12 @@ import Customerbanner from "./Customerbanner";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Scrolltotopbtn from "../Scrolltotopbutton";
+import Notification from "../Notification";
 
 export default function Orders() {
   const [allProducts, setAllProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     // Fetch all products
@@ -115,7 +117,8 @@ export default function Orders() {
     
     // Check if the product has been shipped
     if (product.shipped_date) {
-      alert("You cannot cancel this product as it has already been shipped.");
+      setNotification({ message: 'You cannot cancel this product as it has already been shipped.', type: 'error' });
+      setTimeout(() => setNotification(null), 3000);
       return;
     }
   
@@ -125,6 +128,8 @@ export default function Orders() {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <main>
         <Customerbanner />
 

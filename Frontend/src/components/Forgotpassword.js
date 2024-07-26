@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Footer from "./footer";
 import MyNavbar from "./navbar";
 import Scrolltotopbtn from "./Scrolltotopbutton";
+import Notification from "./Notification";
 
 export default function Forgotpassword() {
   const [values, setValues] = useState({
@@ -16,6 +17,7 @@ export default function Forgotpassword() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
   const [usermail, setUsermail] = useState("");
+  const [notification, setNotification] = useState(null);
   const navigate = useNavigate();
 
   var regex = new RegExp("[a-zA-Z0-9]+@[a-z]+.[a-z]{2,3}");
@@ -89,17 +91,20 @@ export default function Forgotpassword() {
         .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateuser`, values)
         .then((res) => {
           if(res.data === "Error"){
-            alert('Password updation Failed');
+            setNotification({ message: 'Password updation Failed', type: 'error' });
+            setTimeout(() => setNotification(null), 3000);
           }
           else{
-            alert("Password Updated successfully");
+            setNotification({ message: 'Password Updated successfully', type: 'success' });
+            setTimeout(() => setNotification(null), 3000);
             navigate("/login")
           }
         })
         .catch((err) => console.log(err));
     }
     else{
-      alert("Passwords did not match")
+      setNotification({ message: 'Passwords did not match', type: 'error' });
+      setTimeout(() => setNotification(null), 3000);
     }
   };
 
@@ -107,6 +112,8 @@ export default function Forgotpassword() {
   return (
     <div className="fullscreen">
     <MyNavbar/>
+    {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
     <main>
     <div className="d-flex justify-content-center">
     <div className="container m-4">

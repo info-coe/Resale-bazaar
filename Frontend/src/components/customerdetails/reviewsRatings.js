@@ -6,6 +6,7 @@ import MyNavbar from '../navbar';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Scrolltotopbtn from '../Scrolltotopbutton';
+import Notification from '../Notification';
 
 function ReviewRatings() {
   const location = useLocation();
@@ -17,6 +18,7 @@ function ReviewRatings() {
   const [activeRating, setActiveRating] = useState(0);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [notification, setNotification] = useState(null);
   const [values, setValues] = useState({
     rating: "",
     description: "",
@@ -97,7 +99,8 @@ function ReviewRatings() {
         buyerId: '', 
         images: [] 
       });
-      alert('Review added successfully');
+      setNotification({ message: 'Review added successfully', type: 'success' });
+      setTimeout(() => setNotification(null), 3000);
       window.location.reload(false)
       window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar`;
 
@@ -110,6 +113,7 @@ function ReviewRatings() {
   return (
     <div className='fullscreen'>
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
       <main>
         <div className='d-flex justify-content-center'>
           <div className="review p-2 col-md-6 col-lg-4 col-12 mt-5">

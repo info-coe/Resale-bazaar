@@ -5,10 +5,12 @@ import Customermenu from "./Customermenu";
 import Footer from "../footer";
 import Customerbanner from "./Customerbanner";
 import Scrolltotopbtn from "../Scrolltotopbutton";
+import Notification from "../Notification";
 
 export default function Addresses() {
   const [addresses, setAddresses] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [notification, setNotification] = useState(null);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -59,7 +61,8 @@ export default function Addresses() {
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveShippingAddress/${addressId}`
       );
       setAddresses(addresses.filter((item) => item.id !== addressId));
-      alert("Address deleted successfully");
+      setNotification({ message: 'Address deleted successfully', type: 'success' });
+      setTimeout(() => setNotification(null), 3000);
     } catch (error) {
       console.error("Error deleting address:", error);
     }
@@ -78,7 +81,8 @@ export default function Addresses() {
         )
       );
       setEditingId(null);
-      alert("Address updated successfully");
+      setNotification({ message: 'Address updated successfully', type: 'success' });
+      setTimeout(() => setNotification(null), 3000);
     } catch (error) {
       console.error("Error updating address:", error);
     }
@@ -91,6 +95,7 @@ export default function Addresses() {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
       <main>
         <Customerbanner />
         <div className="d-lg-flex justify-content-around p-2 ps-lg-5 pe-lg-5">

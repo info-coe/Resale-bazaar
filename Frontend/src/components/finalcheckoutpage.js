@@ -546,6 +546,7 @@ import axios from 'axios';
 export default function Finalcheckoutpage() {
   const [cartItems, setCartItems] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem("user-token");
@@ -587,7 +588,8 @@ export default function Finalcheckoutpage() {
 
     Promise.all(paymentRequests)
       .then(() => {
-        alert("Product Purchased Successfully");
+        setNotification({ message: 'Product Purchased Successfully', type: 'success' });
+        setTimeout(() => setNotification(null), 3000);
         updateProductQuantities(products); // Update product quantities based on purchased items
       })
       .catch((err) => console.log("Error updating payment status:", err));

@@ -33,10 +33,10 @@ export const CartProvider = ({ children }) => {
     const userProduct = product.seller_id.toString() === sessionStorage.getItem('user-token');
   
     if (isProductInCart) {
-      setNotification("Product already exists in the cart");
+      setNotification({message:'Product already exists in the cart' , type: 'error'});
       setTimeout(() => setNotification(null), 3000);
     } else if (userProduct) {
-      setNotification("You are the seller of this product");
+      setNotification({ message:"You are the seller of this product" , type:"error"});
       setTimeout(() => setNotification(null), 3000);
     } else {
       const productWithQuantity = { ...product, quantity: 1 };
@@ -48,9 +48,9 @@ export const CartProvider = ({ children }) => {
         .catch((error) => {
           console.error("Error adding to cart:", error);
         });
-      setNotification("Product added to cart");
+      setNotification({ message:"Product added to cart" , type: 'success'});
       setTimeout(() => setNotification(null), 3000);
-      window.location.reload(false);
+      // window.location.reload(false);
     }
   };
   
@@ -61,7 +61,7 @@ export const CartProvider = ({ children }) => {
         setCartItems((prevItems) =>
           prevItems.filter((item) => item.id !== productId)
         );
-        setNotification("Product removed from cart!");
+        setNotification({ message:"Product removed from cart!" , type:'success'});
         setTimeout(() => setNotification(null), 3000);
       })
       .catch((error) => {
@@ -115,7 +115,7 @@ export const CartProvider = ({ children }) => {
   const addToWishlist = (product) => {
     const userProduct=product.seller_id.toString()===sessionStorage.getItem('user-token')
     if(userProduct){
-      setNotification("You are the seller of the product");
+      setNotification({ message:"You are the seller of the product" , type:"error"});
       setTimeout(() => setNotification(null), 3000);
     }else{
       axios
@@ -127,7 +127,7 @@ export const CartProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error adding to wishlist:", error);
       });
-    setNotification("Product added to wishlist");
+    setNotification({ message:"Product added to wishlist" , type:"success"});
     setTimeout(() => setNotification(null), 3000);
     window.location.reload(false);
     }

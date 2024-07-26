@@ -3,10 +3,13 @@ import axios from "axios";
 import MyNavbar from "../navbar";
 import Footer from "../footer";
 import Scrolltotopbtn from "../Scrolltotopbutton";
+import Notification from "../Notification";
 export default function Addnewproduct() {
   const [categories, setCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [notification, setNotification] = useState(null);
+
 
   const [values, setValues] = useState({
     producttype: "",
@@ -404,18 +407,20 @@ export default function Addnewproduct() {
       );
 
       if (response.data === "Error") {
-        alert(
-          "Error while adding product. Please try again filling all the fields"
-        );
+       
+        setNotification({ message: 'Error while adding product. Please try again filling all the fields', type: 'error' });
+        setTimeout(() => setNotification(null), 3000);
         setDisabled(false); // Re-enable the save button on error
       } else {
        
-        alert("Product added successfully");
+        setNotification({ message: 'Product added successfully', type: 'success' });
+        setTimeout(() => setNotification(null), 3000);
         window.location.reload(false);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while adding the product. Please try again.");
+      setNotification({ message: 'An error occurred while adding the product. Please try again.', type: 'error' });
+      setTimeout(() => setNotification(null), 3000);
       setDisabled(false); // Re-enable the save button on error
     }
   };
@@ -568,6 +573,8 @@ allDivs.push(
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <div className="d-md-flex">
         <div className="col-12">
           <div className="fullscreen2">

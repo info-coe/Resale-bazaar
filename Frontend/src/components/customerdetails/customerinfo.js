@@ -6,10 +6,12 @@ import Customerbanner from "./Customerbanner";
 // import { useData } from "../CartContext";
 import axios from "axios";
 import Scrolltotopbtn from "../Scrolltotopbutton";
+import Notification from "../Notification";
 
 export default function Customerinfo() {
   // const { user,authToken } = useData();
   const [shopNameFilter, setShopNameFilter] = useState([]);
+  const [notification, setNotification] = useState(null);
   const [error, setError] = useState("");
   const [values, setValues] = useState({
     firstname: "",
@@ -68,11 +70,12 @@ export default function Customerinfo() {
         )
         .then((res) => {
           if (res.data === "Error") {
-            alert(
-              "Error while updating profile. Please try again filling all the fields"
-            );
+           
+            setNotification({ message: 'Error while updating profile. Please try again filling all the fields', type: 'error' });
+            setTimeout(() => setNotification(null), 3000);
           } else {
-            alert("Profile updated successfully");
+            setNotification({ message: 'Profile updated successfully', type: 'success' });
+            setTimeout(() => setNotification(null), 3000);
             window.location.reload(false);
           }
         })
@@ -83,6 +86,8 @@ export default function Customerinfo() {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+
       <main>
         <Customerbanner />
         <div className="d-lg-flex justify-content-around p-2 ps-lg-5 pe-lg-5">

@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import Footer from "./footer";
 import axios from "axios";
 import Scrolltotopbtn from "./Scrolltotopbutton";
+import Notification from "./Notification";
 
 export default function Contactus() {
+  const [notification, setNotification] = useState(null);
   const [values,setValues]= useState({
     name:"",
     email:"",
@@ -25,9 +27,11 @@ export default function Contactus() {
     e.preventDefault()
             axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/contact`,values).then((res)=>{
               if(res.data === "Error"){
-                alert("Error while adding product. Please try again filling all the fields");
+                setNotification({ message: 'Error while adding product. Please try again filling all the fields', type: 'error' });
+                setTimeout(() => setNotification(null), 3000);
               }else{
-                alert("contact information successfully added")
+                setNotification({ message: 'contact information successfully added', type: 'success' });
+                setTimeout(() => setNotification(null), 3000);
                 window.location.reload(false)
               }
             }).catch((err)=>{
@@ -38,6 +42,7 @@ export default function Contactus() {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
       <main>
       <img
         src="https://www.lincad.co.uk/wp-content/uploads/2022/08/contact-us-scaled-1.jpg"

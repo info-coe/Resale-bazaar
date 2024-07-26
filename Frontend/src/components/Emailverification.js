@@ -4,10 +4,11 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import MyNavbar from "./navbar";
 import Footer from "./footer";
 import Scrolltotopbtn from "./Scrolltotopbutton";
+import Notification from "./Notification";
 
 export default function Emailverification() {
   const { state } = useLocation();
-
+  const [notification, setNotification] = useState(null);
   const [values, setValues] = useState(state.values);
   const [errorMessage, setErrorMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
@@ -41,7 +42,8 @@ export default function Emailverification() {
               if (res.data === "Error") {
                 setErrorMessage("User Registration Failed");
               } else {
-                alert("New user registered successfully");
+                setNotification({ message: 'New user registered successfully', type: 'success' });
+                setTimeout(() => setNotification(null), 3000);
                 navigate("/");
               }
             })
@@ -76,6 +78,7 @@ export default function Emailverification() {
   return (
     <div className="fullscreen">
       <MyNavbar />
+      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
       <main>
       <div className="d-flex justify-content-center">
         <div className="container m-4">
