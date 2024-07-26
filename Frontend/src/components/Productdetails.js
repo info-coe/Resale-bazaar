@@ -75,18 +75,27 @@ export default function Productdetails() {
       .catch((err) => {
         console.log(err);
       });
-    alert("Product added to the store successfully");
+    setNotification({ message: 'Product added to the store successfully', type: 'success' });
+    setTimeout(() => setNotification(null), 3000);    
     window.location.href = "/Resale-bazaar/acceptproduct";
   };
 
-  const { addToCart, addToWishlist, cartItems, wishItems, notification, setNotification } = useCart();
+  const {
+    addToCart,
+    addToWishlist,
+    cartItems,
+    wishItems,
+    notification,
+    setNotification,
+  } = useCart();
 
   const handleAddToCart = () => {
     const isProductInCart = cartItems.some(
       (item) => item.product_id === productdetails.id
     );
     if (isProductInCart) {
-      alert("Product already exists in the cart");
+      setNotification({ message: 'Product already exists in the cart', type: 'error' });
+      setTimeout(() => setNotification(null), 3000);
     } else if (isLoggedIn) {
       addToCart(productdetails, "main");
     } else {
@@ -99,7 +108,8 @@ export default function Productdetails() {
       (item) => item.product_id === productdetails.id
     );
     if (isProductInWishlist) {
-      alert("Product already exists in the wishlist");
+      setNotification({ message: 'Product already exists in the wishlist', type: 'error' });
+      setTimeout(() => setNotification(null), 3000);
       return; // Exit the function early
     } else if (isLoggedIn) {
       addToWishlist(productdetails);
@@ -350,21 +360,24 @@ export default function Productdetails() {
 
       setLiked(!liked);
       setLikeCount(newLikeCount);
-      console.log(`Product ${action} successfully.`);
+      // console.log(`Product ${action} successfully.`);
     } catch (error) {
       console.error("Error toggling like:", error);
-      alert("Failed to update like status. Please try again later.");
+      setNotification({ message: 'Failed to update like status. Please try again later.', type: 'error' });
+      setTimeout(() => setNotification(null), 3000);
     }
-  };
-
-  const handleGuestCheckout = () => {
-    console.log("Guest Checkout");
   };
 
   return (
     <div className="fullscreen">
       <MyNavbar />
-      {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
       <main>
         <nav className="p-2 ps-lg-5 pe-lg-5">
           <Link to="/" className="text-decoration-none text-dark">
@@ -963,88 +976,19 @@ export default function Productdetails() {
                               <button
                                 type="button"
                                 className="btn btn-secondary w-100"
-                                data-bs-toggle="modal"
-                                data-bs-target="#guestcheckoutModal"
                               >
-                                <b>Guest Checkout</b>
+                                <Link
+                                  to="/guestcheckout"
+                                  className="text-decoration-none text-white"
+                                  state={{ from: productdetails }}
+                                >
+                                  <b>Guest Checkout</b>
+                                </Link>
                               </button>
                             </div>
                           )}
                         </div>
                       )}
-                    </div>
-
-                    {/* <!-- Modal --> */}
-                    <div
-                      className="modal fade"
-                      id="guestcheckoutModal"
-                      tabIndex="-1"
-                      aria-labelledby="guestcheckoutModalLabel"
-                      aria-hidden="true"
-                    >
-                      <div className="modal-dialog">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h1
-                              className="modal-title fs-5"
-                              id="guestcheckoutModalLabel"
-                            >
-                              Guest Checkout
-                            </h1>
-                            <button
-                              type="button"
-                              className="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
-                          <div className="modal-body">
-                            <input
-                              type="text"
-                              className="form-control m-2"
-                              placeholder="First Name"
-                              // onChange={(e) => setGuestName(e.target.value)}
-                              
-                              required
-                            />
-                            <input
-                              type="text"
-                              className="form-control m-2"
-                              placeholder="Last Name"
-                              required
-                            />
-                            <input
-                              type="email"
-                              className="form-control m-2"
-                              placeholder="Email"
-                              required
-                            />
-                            <input
-                              type="tel"
-                              className="form-control m-2"
-                              placeholder="Phone Number"
-                              pattern="[0-9]{10}"
-                              required
-                            />
-                          </div>
-                          <div className="modal-footer">
-                            <button
-                              type="button"
-                              className="btn btn-secondary"
-                              data-bs-dismiss="modal"
-                            >
-                              Close
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-primary"
-                              onClick={() => handleGuestCheckout}
-                            >
-                              Save changes
-                            </button>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </>

@@ -257,6 +257,38 @@ const GuestCheckoutQuery = `
   PRIMARY KEY (id));
 `
 
+const GuestBillingAddressQuery = `
+  CREATE TABLE IF NOT EXISTS guest_billing_address (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  firstname VARCHAR(255) NOT NULL,
+  lastname VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  country VARCHAR(255) NOT NULL,
+  state VARCHAR(255) NOT NULL,
+  city VARCHAR(255) NOT NULL,
+  address1 VARCHAR(255) NOT NULL,
+  address2 VARCHAR(255),
+  pincode VARCHAR(20) NOT NULL,
+  phone VARCHAR(20) NOT NULL
+);
+`
+
+const GuestShippingAddressQuery = `
+  CREATE TABLE IF NOT EXISTS guest_shipping_address (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  firstname VARCHAR(255) NOT NULL,
+  lastname VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  country VARCHAR(255) NOT NULL,
+  state VARCHAR(255) NOT NULL,
+  city VARCHAR(255) NOT NULL,
+  address1 VARCHAR(255) NOT NULL,
+  address2 VARCHAR(255),
+  pincode VARCHAR(20) NOT NULL,
+  phone VARCHAR(20) NOT NULL
+);
+`
+
 const loginCheckQuery = "SELECT * FROM register WHERE `email` = ? AND `password` = ?";
 const adminLoginQuery = "SELECT * FROM admin WHERE `email` = ? AND `password` = ?";
 const retrievingUsersQuery = "SELECT * FROM register";
@@ -333,6 +365,8 @@ const LikecountQuery = 'SELECT COUNT(*) AS likeCount FROM likes WHERE like_produ
 const checkLikeQuery = 'SELECT * FROM likes WHERE like_product_id = ? AND like_user_id = ?';
 
 const RefundDetailsQuery ="SELECT products.*, orders.*, register.* FROM products INNER JOIN orders ON products.id = orders.product_id INNER JOIN register ON orders.buyer_id = register.user_id WHERE orders.order_status = 'cancelled'"
+const guestShippingAddress = `INSERT INTO guest_shipping_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+const guestBillingAddress = `INSERT INTO guest_billing_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
 module.exports = {
   createAdminTableQuery,
@@ -349,6 +383,8 @@ module.exports = {
   addressinfo1,
   addressinfo2,
   GuestCheckoutQuery,
+  GuestBillingAddressQuery,
+  GuestShippingAddressQuery,
   loginCheckQuery,
   adminLoginQuery,
   retrievingUsersQuery,
@@ -420,5 +456,7 @@ module.exports = {
   checkLikeQuery,
   cancelorderitemQuery,
   updateCartItemsQuantityQuery,
-  RefundDetailsQuery
+  RefundDetailsQuery,
+  guestShippingAddress,
+  guestBillingAddress
 };

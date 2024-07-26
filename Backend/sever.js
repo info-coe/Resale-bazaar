@@ -18,6 +18,8 @@ const {
   addressinfo1,
   addressinfo2,
   GuestCheckoutQuery,
+  GuestBillingAddressQuery,
+  GuestShippingAddressQuery,
   loginCheckQuery,
   adminLoginQuery,
   retrievingUsersQuery,
@@ -90,8 +92,9 @@ const {
   cancelorderitemQuery,
   updateCartItemsQuantity,
   updateCartItemsQuantityQuery,
-  RefundDetailsQuery
-
+  RefundDetailsQuery,
+  guestShippingAddress,
+  guestBillingAddress
 } = require("./queries");
 const cors = require("cors");
 const multer = require("multer");
@@ -320,9 +323,15 @@ db.query(createDatabaseQuery, (err) => {
                                   if (err) throw err;
                                   db.query(GuestCheckoutQuery, (err) => {
                                     if (err) throw err;
-                                    console.log(
-                                      "Database and tables created successfully"
-                                    );
+                                    db.query(GuestBillingAddressQuery, (err) => {
+                                      if (err) throw err;
+                                      db.query(GuestShippingAddressQuery, (err) => {
+                                        if (err) throw err;
+                                        console.log(
+                                          "Database and tables created successfully"
+                                        );
+                                      });
+                                    });
                                   });
                                 });
                               });
@@ -1571,6 +1580,88 @@ app.delete("/saveShippingAddress/:id", (req, res) => {
     return res
       .status(200)
       .json({ message: "Shipping address deleted successfully" });
+  });
+});
+
+// Guest Billing Address
+app.post("/guestBillingAddress", (req, res) => {
+  const {
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone,
+  } = req.body.billingAddress;
+
+  const sql = guestBillingAddress;
+
+  const values = [
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone,
+  ];
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error saving billing address:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    console.log("Billing address saved successfully");
+    return res
+      .status(200)
+      .json({ message: "Billing address saved successfully" });
+  });
+});
+
+// Guest shipping Address
+app.post("/guestShippingAddress", (req, res) => {
+  const {
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone,
+  } = req.body.shippingAddress;
+
+  const sql = guestShippingAddress;
+  const values = [
+    firstname,
+    lastname,
+    email,
+    country,
+    state,
+    city,
+    address1,
+    address2,
+    pincode,
+    phone
+  ];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error saving shipping address:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    console.log("Shipping address saved successfully");
+    return res
+      .status(200)
+      .json({ message: "Shipping address saved successfully" });
   });
 });
 

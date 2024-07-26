@@ -62,6 +62,8 @@ import Scrolltotop from "./components/Scrolltotop";
 import CancelOrder from "./components/customerdetails/CancelOrder";
 import Refundproducts from "./components/admindashboard/Refundproducts";
 import Myshop from "./components/sellerdashboard/Myshop";
+import GuestCheckoutpage from "./components/GuestCheckoutpage";
+import GuestShippingdetails from "./components/GuestShippingdetails";
 // const Home = React.lazy(() => import("./components/home"));
 // const Womenallproducts = React.lazy(() =>
 //   import("./components/women/Womenallproducts")
@@ -355,6 +357,8 @@ function App() {
              </ProtectedRoute>
               } />
           <Route path="refundsproduct" element={<Refundproducts />}/>
+          <Route path="guestcheckout" element={<GuestCheckoutpage/>}/>
+          <Route path="guestshipping" element={<GuestShippingdetails/>}/>
                
           </Routes>
         {/* </React.Suspense> */}
