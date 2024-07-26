@@ -470,9 +470,15 @@ const CancelOrder = () => {
               }
             )
             .then(() => {
-              setNotification({ message: 'Order cancelled successfully and refund amount sent to you.', type: 'success' });
-              setTimeout(() => setNotification(null), 3000);
-              navigate("/orders");
+              setNotification({ message: `Order cancelled successfully and refund amount ${product.price * product.order_quantity} will be <br/> reflectedto your account in 3-5 Business Days.`, type: 'success',  isHtml: true });
+              // setTimeout(() => setNotification(null), 3000);
+              // navigate("/orders");
+               // Use a timeout to ensure the notification is visible before navigating
+          setTimeout(() => {
+            setNotification(null);
+            navigate("/orders");
+          }, 3000);
+        // })
             })
             .catch((error) => {
               console.error("Error updating order status:", error);
@@ -564,7 +570,7 @@ const CancelOrder = () => {
           <div className="offcanvas-body">
             If you cancel now, you may not be able to avail deal again. Do you still want to cancel?
             <div>
-              <button className='btn btn-warning m-1 mt-2'>Don't cancel</button>
+              <button className='btn btn-warning m-1 mt-2' type="button"  data-bs-dismiss="offcanvas" aria-label="Close">Don't cancel</button>
               <button className='btn btn-danger m-1 mt-2' onClick={handleCancelOrder}>Cancel Order</button>
             </div>
           </div>
