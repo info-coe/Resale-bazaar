@@ -243,19 +243,6 @@ const LikesQuery = `
   like_product_id INT NOT NULL
 );
 `
-const GuestCheckoutQuery = `
-  CREATE TABLE IF NOT EXISTS guest_checkout (
-  id INT NOT NULL AUTO_INCREMENT,
-  customer_first_name VARCHAR(90) NOT NULL,
-  customer_last_name VARCHAR(90) NOT NULL,
-  email VARCHAR(90) NOT NULL,
-  product_id INT NOT NULL,
-  quantity INT NOT NULL,
-  purchased_amount INT NOT NULL,
-  order_id VARCHAR(90) NOT NULL,
-  shipment_id VARCHAR(90) NOT NULL,
-  PRIMARY KEY (id));
-`
 
 const GuestBillingAddressQuery = `
   CREATE TABLE IF NOT EXISTS guest_billing_address (
@@ -302,9 +289,10 @@ const GuestOrderQuery = `
     order_quantity INT NULL,
     order_status VARCHAR(255)NOT NULL,
     order_amount INT  NULL,
-    refundable_amount INT NULL,
-    cancel_reason MEDIUMTEXT NULL,
-    cancel_comment LONGTEXT NULL,
+    customer_first_name VARCHAR(255) NOT NULL,
+    customer_last_name VARCHAR(255) NOT NULL,
+    customer_email VARCHAR(90) NOT NULL,
+    customer_phone BIGINT(10) NOT NULL,
     UNIQUE INDEX id_UNIQUE (id ASC)
   );
 `
@@ -354,7 +342,7 @@ const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buye
 const deleteProductsQuery = "DELETE FROM  products WHERE id=?";
 const deletecartitemQuery = "DELETE FROM cart WHERE userid = ? AND EXISTS (SELECT 1 FROM orders WHERE buyer_id = ?)"
 const cancelorderitemQuery = `UPDATE orders SET order_status = ?, refundable_amount = ?, cancel_reason = ?,cancel_comment = ? WHERE order_id = ?`;
-const guestpaymentStatusQuery = "INSERT INTO guest_orders (product_id, payment_status, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity,order_status,order_amount) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?)";
+const guestpaymentStatusQuery = "INSERT INTO guest_orders (product_id, payment_status, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity,order_status,order_amount, customer_first_name,customer_last_name,customer_email,customer_phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 const getbillingAddress= "Select * from billing_address"
 const getshippingAddress= "Select * from shipping_address"
 const retrievingAdminQuery = "SELECT * FROM admin";
@@ -403,7 +391,6 @@ module.exports = {
   contactinfo,
   addressinfo1,
   addressinfo2,
-  GuestCheckoutQuery,
   GuestBillingAddressQuery,
   GuestShippingAddressQuery,
   GuestOrderQuery,

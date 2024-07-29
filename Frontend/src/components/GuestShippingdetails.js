@@ -10,7 +10,7 @@ const GuestShippingdetails = () => {
   const location = useLocation();
   const data = location.state;
   const user = data.user;
-  const product = [data.product];
+  const product = data.product;
   const totalPrice = product[0].price * product[0].quantity;
   sessionStorage.setItem("guest_user", JSON.stringify(user));
   sessionStorage.setItem("guest_product", JSON.stringify(product));

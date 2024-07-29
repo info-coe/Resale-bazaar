@@ -17,7 +17,6 @@ const {
   contactinfo,
   addressinfo1,
   addressinfo2,
-  GuestCheckoutQuery,
   GuestBillingAddressQuery,
   GuestShippingAddressQuery,
   GuestOrderQuery,
@@ -323,8 +322,6 @@ db.query(createDatabaseQuery, (err) => {
                                 if (err) throw err;
                                 db.query(LikesQuery, (err) => {
                                   if (err) throw err;
-                                  db.query(GuestCheckoutQuery, (err) => {
-                                    if (err) throw err;
                                     db.query(GuestBillingAddressQuery, (err) => {
                                       if (err) throw err;
                                       db.query(GuestShippingAddressQuery, (err) => {
@@ -335,7 +332,6 @@ db.query(createDatabaseQuery, (err) => {
                                             "Database and tables created successfully"
                                           );
                                         });
-                                      });
                                     });
                                   });
                                 });
@@ -1680,7 +1676,11 @@ app.post("/guestupdatepayment", (req, res) => {
     delivered_date,
     order_quantity,
     order_status,
-    order_amount
+    order_amount,
+    customer_first_name,
+    customer_last_name,
+    customer_email,
+    customer_phone,
   } = req.body;
 
   // Insert into orders table
@@ -1698,6 +1698,10 @@ app.post("/guestupdatepayment", (req, res) => {
       order_quantity,
       order_status,
       order_amount,
+      customer_first_name,
+      customer_last_name,
+      customer_email,
+      customer_phone,
     ],
     (err, result) => {
       if (err) {
