@@ -1666,29 +1666,63 @@ app.post("/guestShippingAddress", (req, res) => {
   });
 });
 
-app.post("/guestupdatepayment", (req, res) => {
-  const payment_status = req.body.payment_status;
-  const {
-    shipment_id,
-    order_id,
-    ordered_date,
-    shipped_date,
-    delivered_date,
-    order_quantity,
-    order_status,
-    order_amount,
-    customer_first_name,
-    customer_last_name,
-    customer_email,
-    customer_phone,
-  } = req.body;
+// app.post("/guestupdatepayment", (req, res) => {
+//   const {
+//     product_id,
+//     payment_status,
+//     shipment_id,
+//     order_id,
+//     ordered_date,
+//     shipped_date,
+//     delivered_date,
+//     order_quantity,
+//     order_status,
+//     order_amount,
+//     customer_first_name,
+//     customer_last_name,
+//     customer_email,
+//     customer_phone,
+//   } = req.body;
 
-  // Insert into orders table
-  const insertOrderSql = guestpaymentStatusQuery;
-  db.query(
-    insertOrderSql,
-    [
-      req.body.product_id,
+//   console.log(product_id, payment_status);
+
+//   // Insert into orders table
+//   const insertOrderSql = guestpaymentStatusQuery;
+//   db.query(
+//     insertOrderSql,
+//     [
+//       product_id,
+//       payment_status,
+//       shipment_id,
+//       order_id,
+//       ordered_date,
+//       shipped_date,
+//       delivered_date,
+//       order_quantity,
+//       order_status,
+//       order_amount,
+//       customer_first_name,
+//       customer_last_name,
+//       customer_email,
+//       customer_phone,
+//     ],
+//     (err, result) => {
+//       if (err) {
+//         console.error("Error inserting into orders table:", err);
+//         return res.status(500).json({ error: "Error updating payment status" });
+//       }
+//       console.log("Payment status updated successfully for product with ID:");
+//     }
+//   );
+// });
+
+app.post("/guestupdatepayment", (req, res) => {
+  // Check if req.body is an array or object
+  const paymentUpdates = Array.isArray(req.body) ? req.body : [req.body];
+  
+  paymentUpdates.forEach((update) => {
+    const {
+      product_id,
       payment_status,
       shipment_id,
       order_id,
@@ -1702,15 +1736,38 @@ app.post("/guestupdatepayment", (req, res) => {
       customer_last_name,
       customer_email,
       customer_phone,
-    ],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting into orders table:", err);
-        return res.status(500).json({ error: "Error updating payment status" });
+    } = update;
+    // Insert into orders table
+    const insertOrderSql = guestpaymentStatusQuery; // Replace with your actual query
+    db.query(
+      insertOrderSql,
+      [
+        product_id,
+        payment_status,
+        shipment_id,
+        order_id,
+        ordered_date,
+        shipped_date,
+        delivered_date,
+        order_quantity,
+        order_status,
+        order_amount,
+        customer_first_name,
+        customer_last_name,
+        customer_email,
+        customer_phone,
+      ],
+      (err, result) => {
+        if (err) {
+          console.error("Error inserting into orders table:", err);
+          return res.status(500).json({ error: "Error updating payment status" });
+        }
+        console.log("Payment status updated successfully for product with ID:", product_id);
       }
-      console.log("Payment status updated successfully for product with ID:");
-    }
-  );
+    );
+  });
+
+  res.status(200).json({ message: 'Payment status updates processed successfully' });
 });
 
 app.post("/updatepayment", (req, res) => {

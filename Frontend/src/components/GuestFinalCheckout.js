@@ -5,66 +5,58 @@ export default function GuestFinalCheckout() {
   const [notification, setNotification] = useState(null);
   const guest_user = JSON.parse(sessionStorage.getItem("guest_user"));
   const guest_product = JSON.parse(sessionStorage.getItem("guest_product"));
-  const [values, setValues] = useState({
-    payment_status: "",
-    product_id: "",
-    shipment_id: "",
-    order_id: "",
-    ordered_date: "",
-    shipped_date: "",
-    delivered_date: "",
-    order_quantity: "",
-    order_status: "",
-    order_amount: "",
-    customer_first_name: "",
-    customer_last_name: "",
-    customer_email: "",
-    customer_phone: "",
-  });
 
   useEffect(() => {
     if (guest_product) {
-      guest_product.map((item) =>
-        setValues({
-          payment_status: true,
-          product_id: item.id,
-          shipment_id: `TRBSID${item.id}${Math.floor(Math.random() * 1000)}`,
-          order_id: `TRBOID${item.id}${Math.floor(Math.random() * 1000)}`,
-          ordered_date: new Date().toLocaleDateString("fr-CA"),
-          shipped_date: null,
-          delivered_date: null,
-          order_quantity: item.quantity,
-          order_status: "purchased",
-          order_amount: item.quantity * item.price,
-          customer_first_name: guest_user.firstname,
-          customer_last_name: guest_user.lastname,
-          customer_email: guest_user.email,
-          customer_phone: guest_user.phone,
-        })
-      );
       updatePaymentStatus(guest_product);
     }
   }, []);
 
-  const updatePaymentStatus = (purchasedItems) => {
-    axios.post(
-      `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/guestupdatepayment`,
-      {values}
-    ).then((res)=>{
-      console.log(res.data);
-    }).catch((err)=>{
-      console.log(err);
-    });
+  const updatePaymentStatus = async (purchasedItems) => {
+    try {
+      // Create the payload for payment status update
+      const paymentRequests = purchasedItems.map(item => ({
+        payment_status: true,
+        product_id: item.id,
+        shipment_id: `TRBSID${item.id}${Math.floor(Math.random() * 1000)}`,
+        order_id: `TRBOID${item.id}${Math.floor(Math.random() * 1000)}`,
+        ordered_date: new Date().toLocaleDateString("fr-CA"),
+        shipped_date: null,
+        delivered_date: null,
+        order_quantity: item.quantity,
+        order_status: "purchased",
+        order_amount: item.quantity * item.price,
+        customer_first_name: guest_user.firstname,
+        customer_last_name: guest_user.lastname,
+        customer_email: guest_user.email,
+        customer_phone: guest_user.phone,
+      }));
 
-    axios
-    .get(
-      `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts`
-    )
-    .then((res) => {
-      if (res.data !== "Fail" && res.data !== "Error") {
-        const updateQuantityRequests = res.data.map((product) => {
+      // Post all payment status updates
+      await axios.post(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/guestupdatepayment`,
+        paymentRequests
+      );
+
+      setNotification({ message: 'Product Purchased Successfully', type: 'success' });
+      setTimeout(() => setNotification(null), 3000);
+
+      await updateProductQuantities(purchasedItems); // Update product quantities based on purchased items
+    } catch (err) {
+      console.log("Error updating payment status:", err);
+    }
+  };
+
+  const updateProductQuantities = async (purchasedItems) => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts`
+      );
+      
+      if (data !== "Fail" && data !== "Error") {
+        const updateQuantityRequests = data.map(product => {
           const orderCount = purchasedItems
-            .filter((item) => item.id === product.id)
+            .filter(item => item.id === product.id)
             .reduce((total, item) => total + item.quantity, 0); // Sum the quantities from the orders
           const updatedQuantity = Math.max(product.quantity - orderCount, 0); // Update product quantity
 
@@ -77,19 +69,13 @@ export default function GuestFinalCheckout() {
           );
         });
 
-        Promise.all(updateQuantityRequests)
-          .then(() => {
-            console.log("Product quantities updated successfully");
-            window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar`;
-          })
-          .catch((error) => {
-            console.error("Error updating product quantity:", error);
-          });
+        await Promise.all(updateQuantityRequests);
+        console.log("Product quantities updated successfully");
+        window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar`;
       }
-    })
-    .catch((error) => {
-      console.log("Error fetching all products:", error);
-    });
+    } catch (error) {
+      console.error("Error updating product quantity:", error);
+    }
   };
 
   return (

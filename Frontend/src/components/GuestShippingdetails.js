@@ -2,7 +2,111 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MyNavbar from "./navbar";
 import axios from "axios";
+import Select from "react-select";
 import { useLocation } from "react-router-dom";
+
+const USA_STATES = [
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "Florida",
+  "Georgia",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Pennsylvania",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming",
+  "Atlantis",
+  "Pacifica",
+  "Cascadia",
+  "Jefferson",
+  "New Caledonia",
+  "Aurelia",
+  "Midgard",
+  "Elysium",
+  "Asgard",
+  "Valhalla",
+  "Nova Terra",
+  "Zion",
+  "Arcadia",
+  "Erewhon",
+  "Narnia",
+  "Gondwana",
+  "Elbonia",
+  "Freedonia",
+  "Wakanda",
+  "Genovia",
+  "Panem",
+  "Sylvania",
+  "Ruritania",
+  "Latveria",
+  "Qumar",
+  "Agrabah",
+  "Eldorado",
+  "Brigadoon",
+  "Gilead",
+  "Narnia",
+  "Avalon",
+  "Hogsmeade",
+  "King's Landing",
+  "Westeros",
+  "Pandora",
+  "Shangri-La",
+  "Mordor",
+  "Oz",
+  "Lilliput",
+  "Brobdingnag",
+  "Laputa",
+  "Blefuscu",
+  "Aztlan",
+  "Hyperborea",
+  "Valinor",
+  "Terra Nova",
+  "Naboo",
+  "Krypton",
+  "Gallifrey",
+  "Arrakis",
+];
 
 const GuestShippingdetails = () => {
   const [skipShippingAddress, setSkipShippingAddress] = useState(false);
@@ -20,7 +124,7 @@ const GuestShippingdetails = () => {
     firstname: user.firstname,
     lastname: user.lastname,
     email: user.email,
-    country: "",
+    country: "United States",
     state: "",
     city: "",
     address1: "",
@@ -32,7 +136,7 @@ const GuestShippingdetails = () => {
     firstname: user.firstname,
     lastname: user.lastname,
     email: user.email,
-    country: "",
+    country: "United States",
     state: "",
     city: "",
     address1: "",
@@ -40,7 +144,13 @@ const GuestShippingdetails = () => {
     pincode: "",
     phone: user.phone,
   });
+  const stateOptions = USA_STATES.map(state => ({ value: state, label: state }));
+
   const [selectedOption, setSelectedOption] = useState("");
+ 
+  const handleChange = (selectedOption) => {
+    setFields({ ...fields, state: selectedOption ? selectedOption.value : '' });
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -128,48 +238,47 @@ const GuestShippingdetails = () => {
       let shippingAddressData = {};
       let billingAddressData = {};
 
-
-        if (skipShippingAddress) {
+      if (skipShippingAddress) {
+        shippingAddressData = fields;
+        billingAddressData = fields;
+      } else {
+        if (selectedOption === "same") {
           shippingAddressData = fields;
           billingAddressData = fields;
         } else {
-          if (selectedOption === "same") {
-            shippingAddressData = fields;
-            billingAddressData = fields;
+          if (selectedOption === "new") {
+            shippingAddressData = newFields;
           } else {
-            if (selectedOption === "new") {
-              shippingAddressData = newFields;
-            } else {
-              shippingAddressData = fields;
-            }
-            billingAddressData = fields;
+            shippingAddressData = fields;
           }
+          billingAddressData = fields;
         }
+      }
 
-        // Send shipping address to backend if it's not null
-        if (shippingAddressData !== null) {
-          await axios.post(
-            `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/guestShippingAddress`,
-            {
-              shippingAddress: shippingAddressData,
-            }
-          );
-        }
+      // Send shipping address to backend if it's not null
+      if (shippingAddressData !== null) {
+        await axios.post(
+          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/guestShippingAddress`,
+          {
+            shippingAddress: shippingAddressData,
+          }
+        );
+      }
 
-        if (billingAddressData !== null) {
-          await axios.post(
-            `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/guestBillingAddress`,
-            {
-              billingAddress: billingAddressData,
-            }
-          );
-        }
+      if (billingAddressData !== null) {
+        await axios.post(
+          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/guestBillingAddress`,
+          {
+            billingAddress: billingAddressData,
+          }
+        );
+      }
 
       const response = await axios.post(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
         {
-          product : product,
-          from : "guestfinalcheckout"
+          product: product,
+          from: "guestfinalcheckout",
         }
       );
       window.location.href = response.data.url;
@@ -260,7 +369,7 @@ const GuestShippingdetails = () => {
                     />
                   </div>
                   <div className="col-md-6">
-                    <input
+                    {/* <input
                       type="text"
                       className="form-control"
                       placeholder="State"
@@ -268,6 +377,14 @@ const GuestShippingdetails = () => {
                       value={fields.state}
                       onChange={handleInputChange}
                       required
+                    /> */}
+                    <Select
+                      options={stateOptions}
+                      value={stateOptions.find(
+                        (option) => option.value === fields.state
+                      )}
+                      onChange={handleChange}
+                      placeholder="Select a state"
                     />
                   </div>
                   <div className="col-md-6">
@@ -306,7 +423,7 @@ const GuestShippingdetails = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Pincode"
+                      placeholder="ZIP code"
                       name="pincode"
                       value={fields.pincode}
                       pattern="[0-9]{5}"
@@ -467,7 +584,7 @@ const GuestShippingdetails = () => {
                         <input
                           type="text"
                           className="form-control mb-2"
-                          placeholder="Pincode"
+                          placeholder="ZIP code"
                           name="pincode"
                           value={newFields.pincode}
                           onChange={handleInputChange1}
@@ -513,7 +630,7 @@ const GuestShippingdetails = () => {
             className="mb-3"
             style={{
               backgroundColor: step === 3 ? "#f0f0f0" : "#708090",
-              padding: "10px"
+              padding: "10px",
             }}
           >
             <h1
@@ -627,24 +744,24 @@ const GuestShippingdetails = () => {
                           <p>{selectedBillingAddress.country}</p>
                         </>
                       ) : ( */}
-                        <>
-                          <p>
-                            {fields.firstname} {fields.lastname}
-                          </p>
-                          <p>
-                            <b>Email:</b> {fields.email}
-                          </p>
-                          <p>
-                            <b>Phone:</b> {fields.phone}
-                          </p>
-                          <p>
-                            {fields.address1} {fields.address2}
-                          </p>
-                          <p>
-                            {fields.city}, {fields.state}, {fields.pincode}
-                          </p>
-                          <p>{fields.country}</p>
-                        </>
+                      <>
+                        <p>
+                          {fields.firstname} {fields.lastname}
+                        </p>
+                        <p>
+                          <b>Email:</b> {fields.email}
+                        </p>
+                        <p>
+                          <b>Phone:</b> {fields.phone}
+                        </p>
+                        <p>
+                          {fields.address1} {fields.address2}
+                        </p>
+                        <p>
+                          {fields.city}, {fields.state}, {fields.pincode}
+                        </p>
+                        <p>{fields.country}</p>
+                      </>
                       {/* )} */}
                     </div>
                   </div>
@@ -698,57 +815,54 @@ const GuestShippingdetails = () => {
                               <p>{selectedShippingAddress.country}</p>
                             </>
                           ) : ( */}
-                            <>
-                              <p>
-                                {selectedOption === "new"
-                                  ? newFields.firstname
-                                  : fields.firstname}{" "}
-                                {selectedOption === "new"
-                                  ? newFields.lastname
-                                  : fields.lastname}
-                              </p>
-                              <p>
-                                Email:{" "}
-                                {selectedOption === "new"
-                                  ? newFields.email
-                                  : fields.email}{" "}
-                              </p>
-                              <p>
-                                Phone:{" "}
-                                {selectedOption === "new"
-                                  ? newFields.phone
-                                  : fields.phone}
-                              </p>
-                              <p>
-                                {selectedOption === "new"
-                                  ? newFields.address1
-                                  : fields.address1}{" "}
-                                {selectedOption === "new"
-                                  ? newFields.address2
-                                  : fields.address2}
-                              </p>
-                              <p>
-                                {selectedOption === "new"
-                                  ? newFields.city
-                                  : fields.city}{" "}
-                                ,
-                                {selectedOption === "new"
-                                  ? newFields.state
-                                  : fields.state}{" "}
-                                ,
-                                {selectedOption === "new"
-                                  ? newFields.pincode
-                                  : fields.pincode}
-                              </p>
-                              <p>
-                                {selectedOption === "new"
-                                  ? newFields.country
-                                  : fields.country}
-                              </p>
-                            </>
-                    {/* //       )}
-                    //     </>
-                    //   )} */}
+                      <>
+                        <p>
+                          {selectedOption === "new"
+                            ? newFields.firstname
+                            : fields.firstname}{" "}
+                          {selectedOption === "new"
+                            ? newFields.lastname
+                            : fields.lastname}
+                        </p>
+                        <p>
+                          Email:{" "}
+                          {selectedOption === "new"
+                            ? newFields.email
+                            : fields.email}{" "}
+                        </p>
+                        <p>
+                          Phone:{" "}
+                          {selectedOption === "new"
+                            ? newFields.phone
+                            : fields.phone}
+                        </p>
+                        <p>
+                          {selectedOption === "new"
+                            ? newFields.address1
+                            : fields.address1}{" "}
+                          {selectedOption === "new"
+                            ? newFields.address2
+                            : fields.address2}
+                        </p>
+                        <p>
+                          {selectedOption === "new"
+                            ? newFields.city
+                            : fields.city}{" "}
+                          ,
+                          {selectedOption === "new"
+                            ? newFields.state
+                            : fields.state}{" "}
+                          ,
+                          {selectedOption === "new"
+                            ? newFields.pincode
+                            : fields.pincode}
+                        </p>
+                        <p>
+                          {selectedOption === "new"
+                            ? newFields.country
+                            : fields.country}
+                        </p>
+                      </>
                     </div>
                   </div>
                 </div>
