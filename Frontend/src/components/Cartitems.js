@@ -13,7 +13,7 @@ export default function Cartitems() {
   const navigate = useNavigate();
   const { cartItems, calculateTotalPrice, removeFromCart, updateCartItemQuantity, notification, setNotification } = useCart();
   const [products, setProducts] = useState([]); // State to hold fetched products
-  const [message, setMessage] = useState(''); // State to hold global error message
+  const [message, setMessage] = useState(''); 
 
   useEffect(() => {
         axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`)
