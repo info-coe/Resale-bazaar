@@ -9,13 +9,23 @@ const Checkout = () => {
   const [skipShippingAddress, setSkipShippingAddress] = useState(false);
   const totalPrice = calculateTotalPrice();
   const [disabled, setDisabled] = useState(false);
-
+  const USA_STATES = [
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
+    "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
+    "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", 
+    "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", 
+    "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", 
+    "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", 
+    "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", 
+    "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", 
+    "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+  ];
   const [step, setStep] = useState(1);
   const [fields, setFields] = useState({
     firstname: user.firstname,
     lastname: user.lastname,
     email: user.email,
-    country: "",
+    country: "USA",
     state: "",
     city: "",
     address1: "",
@@ -27,7 +37,7 @@ const Checkout = () => {
     firstname: user.firstname,
     lastname: user.lastname,
     email: user.email,
-    country: "",
+    country: "USA",
     state: "",
     city: "",
     address1: "",
@@ -571,16 +581,19 @@ const Checkout = () => {
                     />
                   </div>
                   <div className="col-md-6">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="State"
-                      name="state"
-                      value={fields.state}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
+        <select
+          className="form-control"
+          name="state"
+          value={fields.state}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="" disabled>Select a state</option>
+          {USA_STATES.map((state, index) => (
+            <option key={index} value={state}>{state}</option>
+          ))}
+        </select>
+      </div>
                   <div className="col-md-6">
                     <input
                       type="text"
@@ -731,16 +744,19 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-6">
-                        <input
-                          type="text"
-                          className="form-control mb-2"
-                          placeholder="State"
-                          name="state"
-                          value={newFields.state}
-                          onChange={handleInputChange1}
-                          required
-                        />
-                      </div>
+        <select
+          className="form-control"
+          name="state"
+          value={newFields.state}
+          onChange={handleInputChange1}
+          required
+        >
+          <option value="" disabled>Select a state</option>
+          {USA_STATES.map((state, index) => (
+            <option key={index} value={state}>{state}</option>
+          ))}
+        </select>
+      </div>
                       <div className="col-md-6">
                         <input
                           type="text"
