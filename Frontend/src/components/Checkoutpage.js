@@ -15,7 +15,17 @@ const USA_STATES = [
   "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", 
   "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", 
   "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", 
-  "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+  "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
+  "Atlantis", "Pacifica", "Cascadia", "Jefferson", "New Caledonia", 
+  "Aurelia", "Midgard", "Elysium", "Asgard", "Valhalla", 
+  "Nova Terra", "Zion", "Arcadia", "Erewhon", "Narnia", 
+  "Gondwana", "Elbonia", "Freedonia", "Wakanda", "Genovia", 
+  "Panem", "Sylvania", "Ruritania", "Latveria", "Qumar", 
+  "Agrabah", "Eldorado", "Brigadoon", "Gilead", "Narnia", 
+  "Avalon", "Hogsmeade", "King's Landing", "Westeros", "Pandora", 
+  "Shangri-La", "Mordor", "Oz", "Lilliput", "Brobdingnag", 
+  "Laputa", "Blefuscu", "Aztlan", "Hyperborea", "Valinor", 
+  "Terra Nova", "Naboo", "Krypton", "Gallifrey", "Arrakis"
 ];
 
 const Checkout = () => {
@@ -1110,7 +1120,7 @@ const Checkout = () => {
             {step === 3 && !skipShippingAddress && (
         <>
           <div className="mb-3">
-            <label className="form-label">Select Address Option:</label>
+            {/* <label className="form-label">Select Address Option:</label> */}
             <div>
               <div>
               <label>
