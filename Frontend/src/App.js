@@ -65,6 +65,7 @@ import Myshop from "./components/sellerdashboard/Myshop";
 import GuestCheckoutpage from "./components/GuestCheckoutpage";
 import GuestShippingdetails from "./components/GuestShippingdetails";
 import GuestFinalCheckout from "./components/GuestFinalCheckout";
+import GuestMailverification from "./components/GuestMailVerification";
 // const Home = React.lazy(() => import("./components/home"));
 // const Womenallproducts = React.lazy(() =>
 //   import("./components/women/Womenallproducts")
@@ -361,7 +362,7 @@ function App() {
           <Route path="guestcheckout" element={<GuestCheckoutpage/>}/>
           <Route path="guestshipping" element={<GuestShippingdetails/>}/>
           <Route path="guestfinalcheckout" element={<GuestFinalCheckout />}/>
-               
+          <Route path="guestmailverification" element={<GuestMailverification/>}/>
           </Routes>
         {/* </React.Suspense> */}
       </BrowserRouter>

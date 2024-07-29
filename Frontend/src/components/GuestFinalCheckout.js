@@ -82,6 +82,12 @@ export default function GuestFinalCheckout() {
   const guest_user = JSON.stringify(sessionStorage.getItem("guest_user"));
   const guest_product = JSON.parse(sessionStorage.getItem("guest_product"));
 
+  useEffect(() => {
+    if (guest_product) {
+      updatePaymentStatus(guest_product);
+    }
+  }, []);
+
   const updatePaymentStatus = (products) => {
     const paymentRequests = products.map((item) => {
       return axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/guestupdatepayment`, {
@@ -99,7 +105,6 @@ export default function GuestFinalCheckout() {
       });
     });
 
-    console.log(paymentRequests)
     Promise.all(paymentRequests)
       .then(() => {
         setNotification({ message: 'Product Purchased Successfully', type: 'success' });
@@ -125,8 +130,6 @@ export default function GuestFinalCheckout() {
             });
           });
 
-          console.log(updateQuantityRequests);
-
           Promise.all(updateQuantityRequests)
             .then(() => {
               console.log("Product quantities updated successfully");
@@ -141,12 +144,6 @@ export default function GuestFinalCheckout() {
         console.log("Error fetching all products:", error);
       });
   };
-
-  useEffect(() => {
-    if (guest_product) {
-      updatePaymentStatus(guest_product);
-    }
-  }, [guest_product]);
 
   return (
     <div>

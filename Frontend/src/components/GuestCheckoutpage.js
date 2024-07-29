@@ -12,7 +12,22 @@ const GuestCheckoutpage = () => {
   const [products, setProducts] = useState([]); // State to hold fetched products
   const [message, setMessage] = useState(""); // State to hold global error message
 
+  const [userdetails, setUserDetails] = useState([]);
+
   useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+      .then((res) => {
+        if (res.data !== "Fail" && res.data !== "Error") {
+          const userDetails = res.data.map((item) => ({
+            email: item.email,
+            phone: item.phone,
+          }));
+          setUserDetails(userDetails);
+        }
+      })
+      .catch((err) => console.log(err));
+
     axios
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproducts`
@@ -25,6 +40,7 @@ const GuestCheckoutpage = () => {
       .catch((error) => {
         console.error("Error fetching seller products:", error);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [values, setValues] = useState({
@@ -45,15 +61,13 @@ const GuestCheckoutpage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/guestshipping" , { state: {user : values, product: product }})
-    // const { email, phone, password } = values;
-    // if (values.shopname && shopNameFilter.some((user) => user.shopname === values.shopname)) {
-    //   setError("This ShopName already exist");
-    // } else if (userdetails.some((user) => user.email === email)) {
-    //   setError("This Email already Registered");
-    // } else if (userdetails.some((user) => user.phone.toString() === phone)) {
-    //   setError("Phone number already exists");
-    // }
+    navigate("/guestmailverification", { state: { user: values, product: product } });
+    const { email, phone } = values;
+    if (userdetails.some((user) => user.email === email)) {
+      setError("This Email already Registered");
+    } else if (userdetails.some((user) => user.phone.toString() === phone)) {
+      setError("Phone number already exists");
+    }
   };
 
   const handleQuantityChange = (product, newQuantity) => {
@@ -95,7 +109,7 @@ const GuestCheckoutpage = () => {
                     <b>Name</b>: {product.name} <br />
                     <b>Color</b>: {product.color} <br />
                     <div className="d-flex align-items-center">
-                    <b>QTY </b> :&nbsp;
+                      <b>QTY </b> :&nbsp;
                       <button
                         className="btn btn-sm btn-outline-secondary me-2"
                         onClick={() =>
