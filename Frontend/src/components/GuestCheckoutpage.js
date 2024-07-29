@@ -45,7 +45,7 @@ const GuestCheckoutpage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/guestshipping" , { Gueststate: {user : values, product: product }})
+    navigate("/guestshipping" , { state: {user : values, product: product }})
     // const { email, phone, password } = values;
     // if (values.shopname && shopNameFilter.some((user) => user.shopname === values.shopname)) {
     //   setError("This ShopName already exist");

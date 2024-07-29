@@ -8,7 +8,7 @@ const GuestShippingdetails = () => {
   const [skipShippingAddress, setSkipShippingAddress] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const location = useLocation();
-  const data = location.Gueststate;
+  const data = location.state;
   const user = data.user;
   const product = [data.product];
   const totalPrice = product[0].price * product[0].quantity;
@@ -168,7 +168,7 @@ const GuestShippingdetails = () => {
       const response = await axios.post(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
         {
-          product,
+          product : product,
           from : "guestfinalcheckout"
         }
       );

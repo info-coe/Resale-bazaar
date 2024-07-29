@@ -294,7 +294,7 @@ const Checkout = () => {
       const response = await axios.post(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
         {
-          cartItems,
+          product : cartItems,
           from : "finalcheckoutpage"
         }
       );

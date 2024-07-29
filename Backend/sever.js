@@ -2084,11 +2084,12 @@ app.get("/cancel", (req, res) => {
 app.post("/paymentStripe", async (req, res) => {
   const fromPage = req.body.from;
   const successRedirect = fromPage
+  const product = req.body.product;
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
-      line_items: req.body.product.map(item => {
+      line_items: product.map(item => {
         return {
           price_data: {
             currency: "usd",
