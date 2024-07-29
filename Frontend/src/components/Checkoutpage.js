@@ -91,42 +91,79 @@ const Checkout = () => {
   };
 
 
-  const handleContinue = (e) => {
-    e.preventDefault(); 
+  // const handleContinue = (e) => {
+  //   e.preventDefault(); 
   
-    if (step === 2 && skipShippingAddress) {
-      if (validateBillingAddress()) {
-        setStep(step + 2);
-      }
-    } else {
-      if (step === 2) {
-        if (validateBillingAddress()) {
-          if (selectedShippingAddress) {
-            setStep(step + 2);
-          }else{
-            setStep(step + 1);
-          }
+  //   if (step === 2 && skipShippingAddress) {
+  //     if (validateBillingAddress()) {
+  //       setStep(step + 2);
+  //     }
+  //   } else {
+  //     if (step === 2) {
+  //       if (validateBillingAddress()) {
+  //         if (selectedShippingAddress) {
+  //           setStep(step + 2);
+  //         }else{
+  //           setStep(step + 1);
+  //         }
           
-        }
-      } else if (step === 3) {
-        if (!selectedOption) {
-          setErrorMessage("Please select an address option.");
-          return;
-        }
+  //       }
+  //     } else if (step === 3) {
+  //       if (!selectedOption) {
+  //         setErrorMessage("Please select an address option.");
+  //         return;
+  //       }
   
-        if (selectedOption === "new" && !validateShippingAddress()) {
-          return;
-        } else if (selectedOption !== "new" && selectedOption !== "same") {
-          return;
-        }
-        setErrorMessage(""); 
-        setStep(step + 1);
-      } else if (step === 4) {
-        setStep(step + 1);
-      }
+  //       if (selectedOption === "new" && !validateShippingAddress()) {
+  //         return;
+  //       } else if (selectedOption !== "new" && selectedOption !== "same") {
+  //         return;
+  //       }
+  //       setErrorMessage(""); 
+  //       setStep(step + 1);
+  //     } else if (step === 4) {
+  //       setStep(step + 1);
+  //     }
+  //   }
+  // };
+  
+const handleContinue = (e) => {
+  e.preventDefault(); 
+
+  if (step === 2 && skipShippingAddress) {
+    if (validateBillingAddress()) {
+      setStep(step + 2);
     }
-  };
-  
+  } else {
+    if (step === 2) {
+      if (validateBillingAddress()) {
+        if (selectedShippingAddress) {
+          setStep(step + 2);
+        } else {
+          setStep(step + 1);
+        }
+      }
+    } else if (step === 3) {
+      if (!selectedOption) {
+        setErrorMessage("Please select an address option.");
+        return;
+      }
+
+      if (selectedOption === "new" && !validateShippingAddress()) {
+        return;
+      } else if (selectedOption !== "new" && selectedOption !== "same") {
+        return;
+      }
+
+      setErrorMessage(""); 
+      setStep(step + 1);
+    } else if (step === 4) {
+      setStep(step + 1);
+    }
+  }
+};
+
+
 
   const handleBack = () => {
     if (step === 4 && skipShippingAddress) {
@@ -156,7 +193,7 @@ const Checkout = () => {
         !newFields.state ||
         !newFields.city ||
         !newFields.address1 ||
-        !newFields.address2 ||
+        // !newFields.address2 ||
         !PINCODE_PATTERN.test(newFields.pincode.trim())
       ) {
         return false;
@@ -575,10 +612,12 @@ const Checkout = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="ZIP"
+                      placeholder="ZIP Code"
                       name="pincode"
                       value={fields.pincode}
                       pattern="[0-9]{5}"
+                      minLength={5}
+                      maxLength={5}
                       title="Please enter exactly 5 digits"
                       onChange={handleInputChange}
                       required
@@ -624,7 +663,7 @@ const Checkout = () => {
               Shipping Address
             </h1>
            
-            {step === 3 && !skipShippingAddress && (
+            {/* {step === 3 && !skipShippingAddress && (
         <>
           <div className="mb-3">
             <div>
@@ -788,7 +827,176 @@ const Checkout = () => {
             </button>
           </div>
         </>
-      )}
+      )} */}
+      {step === 3 && !skipShippingAddress && (
+  <>
+    <div className="mb-3">
+      <div>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              value="new"
+              checked={selectedOption === "new"}
+              onChange={handleCheckboxChange}
+            />
+            Add New Address
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              value="same"
+              checked={selectedOption === "same"}
+              onChange={handleCheckboxChange}
+            />
+            Use Same as Billing Address
+          </label>
+        </div>
+      </div>
+    </div>
+
+    {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+
+    {selectedOption === "new" && (
+      <>
+        <div className="row g-2">
+          <div className="col-md-6">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Firstname"
+              name="firstname"
+              value={newFields.firstname}
+              onChange={handleInputChange1}
+              required
+            />
+          </div>
+          <div className="col-md-6">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Lastname"
+              name="lastname"
+              value={newFields.lastname}
+              onChange={handleInputChange1}
+              required
+            />
+          </div>
+
+          <div className="col-md-6">
+            <input
+              type="email"
+              className="form-control mb-2"
+              placeholder="Email"
+              name="email"
+              value={newFields.email}
+              onChange={handleInputChange1}
+              required
+            />
+          </div>
+          <div className="col-md-6">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Country"
+              name="country"
+              value={newFields.country}
+              readOnly
+              required
+            />
+          </div>
+
+          <div className="col-md-6">
+            <Select
+              options={stateOptions}
+              value={stateOptions.find(option => option.value === newFields.state)}
+              onChange={(option) => setNewFields({ ...newFields, state: option ? option.value : '' })}
+              placeholder="Select a state"
+            />
+          </div>
+          <div className="col-md-6">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="City"
+              name="city"
+              value={newFields.city}
+              onChange={handleInputChange1}
+              required
+            />
+          </div>
+          <div className="col-md-6">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Address1"
+              name="address1"
+              value={newFields.address1}
+              onChange={handleInputChange1}
+              required
+            />
+          </div>
+          <div className="col-md-6">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Address2"
+              name="address2"
+              value={newFields.address2}
+              onChange={handleInputChange1}
+              // Note: No required attribute here
+            />
+          </div>
+          <div className="col-md-6">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="ZIP Code"
+              name="pincode"
+              value={newFields.pincode}
+              onChange={handleInputChange1}
+              pattern="[0-9]{5}"
+              minLength={5}
+              maxLength={5}
+              title="Please enter exactly 5 digits"
+              required
+            />
+          </div>
+          <div className="col-md-6">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Phone"
+              name="phone"
+              value={newFields.phone}
+              onChange={handleInputChange1}
+              required
+            />
+          </div>
+        </div>
+      </>
+    )}
+
+    {selectedOption === "same" && (
+      <p>Shipping details will be the same as billing address.</p>
+    )}
+
+    <div className="col-12 d-flex justify-content-between p-5">
+      <button className="btn btn-secondary" onClick={handleBack}>
+        <i className="bi bi-arrow-left-square"></i> Back
+      </button>
+      <button
+        className="btn btn-primary me-2"
+        onClick={handleContinue}
+      >
+        <i className="bi bi-arrow-right-square me-1"></i> Continue
+      </button>
+    </div>
+  </>
+)}
+
           </div>
 
           <div
