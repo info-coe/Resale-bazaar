@@ -35,6 +35,7 @@ const GuestCheckoutpage = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           setProducts(res.data); // Assuming response.data contains the product array
+          console.log(products)
         }
       })
       .catch((error) => {
@@ -85,6 +86,7 @@ const GuestCheckoutpage = () => {
       });
     }
   };
+  const productImage = product.image ? JSON.parse(product.image) : [];
 
   return (
     <div className="fullscreen">
@@ -97,7 +99,7 @@ const GuestCheckoutpage = () => {
                 <div className="card-body d-md-flex">
                   <div className="d-flex justify-content-center">
                     <img
-                      src={product.image[0]}
+                      src={productImage[0]}
                       alt="productIMG"
                       width="250"
                       height="250"
