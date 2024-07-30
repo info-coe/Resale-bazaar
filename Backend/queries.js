@@ -73,8 +73,9 @@ CREATE TABLE IF NOT EXISTS products (
     seller_id INT NOT NULL,
     likes BIGINT(10) NULL,
     UNIQUE INDEX id_UNIQUE (id ASC),
-    FOREIGN KEY (seller_id) REFERENCES register(user_id)
-);
+    FOREIGN KEY (seller_id) REFERENCES register(user_id),
+    PRIMARY KEY (id)
+)AUTO_INCREMENT=10001;
 `;
 
 

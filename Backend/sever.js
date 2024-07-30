@@ -287,6 +287,61 @@ app.post("/verify", (req, res) => {
     res.status(500).send("Invalid OTP");
   }
 });
+// const sendPurchaseConfirmationEmail = (email, product_name) => {
+//   const mailOptions = {
+//     from: process.env.REACT_APP_FROMMAIL,
+//     to: email,
+//     subject: "Purchase Confirmation from The Resale Bazaar",
+//     generateTextFromHTML: true,
+//     html: `Thank you for your purchase! Your order is <b>${product_name}</b>.`,
+//   };
+
+//   return smtpTransport.sendMail(mailOptions);
+// };
+// const getUserByEmailToken = (token) => {
+//   return new Promise((resolve, reject) => {
+//     const query = "SELECT email FROM register WHERE user_id = ?";
+//     db.query(query, [token], (error, results) => {
+//       if (error) {
+//         return reject(error);
+//       }
+//       if (results.length === 0) {
+//         return reject(new Error('User not found'));
+//       }
+//       resolve(results[0]);
+//     });
+//   });
+// };
+
+const sendPurchaseConfirmationEmail = (email, subject, message) => {
+  const mailOptions = {
+    from: process.env.REACT_APP_FROMMAIL,
+    to: email,
+    subject: subject,
+    generateTextFromHTML: true,
+    html: message,
+  };
+
+  return smtpTransport.sendMail(mailOptions);
+};
+
+const getUserById = (userId) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT email FROM register WHERE user_id = ?";
+    db.query(query, [userId], (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+      if (results.length === 0) {
+        return reject(new Error('User not found'));
+      }
+      resolve(results[0]);
+    });
+  });
+};
+
+
+
 
 db.query(createDatabaseQuery, (err) => {
   if (err) throw err;
@@ -1770,9 +1825,85 @@ app.post("/guestupdatepayment", (req, res) => {
   res.status(200).json({ message: 'Payment status updates processed successfully' });
 });
 
+// app.post("/updatepayment", (req, res) => {
+//   const payment_status = req.body.payment_status;
+//   const token = parseInt(req.body.token); // Ensure that token is parsed as an integer
+//   const {
+//     shipment_id,
+//     order_id,
+//     ordered_date,
+//     shipped_date,
+//     delivered_date,
+//     order_quantity,
+//     order_status,
+//     order_amount,
+//     product_id,
+//     product_name,
+//     seller_id
+//   } = req.body;
+
+//   // Insert into orders table
+//   const insertOrderSql = paymentStatusQuery;
+//   db.query(
+//     insertOrderSql,
+//     [
+//       product_id,
+//       payment_status,
+//       token,
+//       shipment_id,
+//       order_id,
+//       ordered_date,
+//       shipped_date,
+//       delivered_date,
+//       order_quantity,
+//       order_status,
+//       order_amount,
+//       product_name,
+//       seller_id
+//     ],
+//     async (err, result) => {
+//       if (err) {
+//         console.error("Error inserting into orders table:", err);
+//         return res.status(500).json({ error: "Error updating payment status" });
+//       }
+//       console.log("Payment status updated successfully for product with ID:", product_id);
+
+//       // Delete entries from cart table where userid matches buyer_id in orders table
+//       const deleteCartSql = deletecartitemQuery;
+//       db.query(deleteCartSql, [token, token], async (err, deleteResult) => {
+//         if (err) {
+//           console.error("Error deleting from cart table:", err);
+//           return res.status(500).json({ error: "Error deleting cart items" });
+//         }
+//         console.log("Cart items removed successfully");
+
+//         try {
+//           // Fetch buyer's email from database based on token or user ID
+//           const user = await getUserByEmailToken(token);
+//           const seller = await getUserByEmailToken(token);
+          
+//           const recipientEmail = user.email;
+
+//           // Send purchase confirmation email
+//           await sendPurchaseConfirmationEmail(recipientEmail, product_name);
+//           console.log("Purchase confirmation email sent successfully");
+//         } catch (error) {
+//           console.error("Error sending purchase confirmation email:", error);
+//         }
+
+//         return res.status(200).json({
+//           success: true,
+//           message: "Payment status updated, cart items deleted, and email sent successfully",
+//         });
+//       });
+//     }
+//   );
+// });
+
 app.post("/updatepayment", (req, res) => {
   const payment_status = req.body.payment_status;
   const token = parseInt(req.body.token); // Ensure that token is parsed as an integer
+  console.log(req.body)
   const {
     shipment_id,
     order_id,
@@ -1782,7 +1913,9 @@ app.post("/updatepayment", (req, res) => {
     order_quantity,
     order_status,
     order_amount,
-
+    product_id,
+    product_name,
+    seller_id
   } = req.body;
 
   // Insert into orders table
@@ -1790,7 +1923,7 @@ app.post("/updatepayment", (req, res) => {
   db.query(
     insertOrderSql,
     [
-      req.body.product_id,
+      product_id,
       payment_status,
       token,
       shipment_id,
@@ -1801,33 +1934,62 @@ app.post("/updatepayment", (req, res) => {
       order_quantity,
       order_status,
       order_amount,
+      product_name,
+      seller_id
     ],
-    (err, result) => {
+    async (err, result) => {
       if (err) {
         console.error("Error inserting into orders table:", err);
         return res.status(500).json({ error: "Error updating payment status" });
       }
-      console.log("Payment status updated successfully for product with ID:");
+      console.log("Payment status updated successfully for product with ID:", product_id);
 
       // Delete entries from cart table where userid matches buyer_id in orders table
       const deleteCartSql = deletecartitemQuery;
-      db.query(deleteCartSql, [token, token], (err, deleteResult) => {
+      db.query(deleteCartSql, [token, token], async (err, deleteResult) => {
         if (err) {
           console.error("Error deleting from cart table:", err);
           return res.status(500).json({ error: "Error deleting cart items" });
         }
         console.log("Cart items removed successfully");
-        return res
-          .status(200)
-          .json({
-            success: true,
-            message:
-              "Payment status updated and corresponding cart items deleted successfully",
-          });
+
+        try {
+          // Fetch buyer's email from database based on token or user ID
+          const user = await getUserById(token);
+          // Fetch seller's email based on seller ID
+          const seller = await getUserById(seller_id);
+
+          const buyerEmail = user.email;
+          const sellerEmail = seller.email;
+
+          // Send purchase confirmation email to buyer
+          await sendPurchaseConfirmationEmail(
+            buyerEmail,
+            "Purchase Confirmation from The Resale Bazaar",
+            `Thank you for your purchase! Your order for <b>${product_name}</b> has been placed successfully.`
+          );
+          console.log("Purchase confirmation email sent to buyer successfully");
+
+          // Send product purchased notification email to seller
+          await sendPurchaseConfirmationEmail(
+            sellerEmail,
+            "Your Product Has Been Purchased",
+            `Your product <b>${product_name}</b> has been purchased successfully.`
+          );
+          console.log("Purchase notification email sent to seller successfully");
+        } catch (error) {
+          console.error("Error sending purchase confirmation email:", error);
+        }
+
+        return res.status(200).json({
+          success: true,
+          message: "Payment status updated, cart items deleted, and emails sent successfully",
+        });
       });
     }
   );
 });
+
 
 app.get("/updatepayment", (req, res) => {
   const sql = ordersQuery;

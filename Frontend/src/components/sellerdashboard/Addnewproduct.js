@@ -412,10 +412,11 @@ export default function Addnewproduct() {
         setTimeout(() => setNotification(null), 3000);
         setDisabled(false); // Re-enable the save button on error
       } else {
-       
         setNotification({ message: 'Product added successfully', type: 'success' });
-        setTimeout(() => setNotification(null), 3000);
-        window.location.reload(false);
+        setTimeout(() => {
+          setNotification(null);
+          window.location.reload(false); 
+        }, 1000); 
       }
     } catch (error) {
       console.error("Error:", error);
