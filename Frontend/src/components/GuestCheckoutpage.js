@@ -7,10 +7,12 @@ import axios from "axios";
 
 const GuestCheckoutpage = () => {
   const location = useLocation();
-  const { from } = location.state;
-  const [product, setProduct] = useState(from !== null ? from : {});
-  const [products, setProducts] = useState([]); // State to hold fetched products
-  const [message, setMessage] = useState(""); // State to hold global error message
+  const locationState = location.state || {}; 
+  const from = locationState.from !== null ? locationState.from : {}; 
+  const initialProduct = { ...from, quantity: 1 }; 
+  const [product, setProduct] = useState(initialProduct);
+  const [products, setProducts] = useState([]); 
+  const [message, setMessage] = useState(""); 
 
   const [userdetails, setUserDetails] = useState([]);
 
@@ -131,7 +133,7 @@ const GuestCheckoutpage = () => {
                         +
                       </button>
                     </div>
-                    <b>Price</b>: &#36; {product.price} <br />
+                    <b>Price</b>: &#36; {product.price * product.quantity} <br />
                   </div>
                 </div>
                 {message && (
