@@ -34,6 +34,10 @@ const MyNavbar = () => {
     moveFromWishlistToCart,
     selectedWishlistItems,
     handleCheckboxChange,
+    isLoggedIn,
+    setIsLoggedIn,
+    guest_product,
+    setGuest_product
   } = useCart();
 
   const handleMoveSelectedToCart = () => {
@@ -42,26 +46,25 @@ const MyNavbar = () => {
   const storedObject = sessionStorage.getItem("user-token");
   const myRetrievedObject = JSON.parse(storedObject);
   
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     if (sessionStorage.getItem("token") !== null) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
     }
-    // const storedObject = sessionStorage.getItem("user");
-    // if (storedObject) {
-    //   try {
-    //     const myRetrievedObject = JSON.parse(storedObject);
-    //     setUserId(myRetrievedObject.user_id);
-    //   } catch (error) {
-    //     console.error("Error parsing JSON:", error);
-    //   }
-    // } else {
-    //   console.error("No data found in session storage for 'user'");
-    // }
   }, [setIsLoggedIn]);
+  
+  useEffect(()=>{
+    const updateGuestProduct = () => {
+      const products = JSON.parse(sessionStorage.getItem("guest_products")) || [];
+      setGuest_product(products);
+    };
+    updateGuestProduct();
+    window.addEventListener("storage", updateGuestProduct);
+    return () => {
+      window.removeEventListener("storage", updateGuestProduct);
+    };
+  },[])
 
   const handlelogout = () => {
     sessionStorage.removeItem("user-token");
@@ -95,6 +98,7 @@ const MyNavbar = () => {
   const [sellers, setSellers] = useState([]);
 
   useEffect(() => {
+    setGuest_product(JSON.parse(sessionStorage.getItem("guest_products")) || [])
     axios
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/selleraccount`
@@ -124,7 +128,6 @@ const MyNavbar = () => {
                   (item) =>
                     item.userid.toString() ===
                     sessionStorage.getItem("user-token")
-                  // item.payment_status === null
                 )
               );
           }
@@ -133,7 +136,30 @@ const MyNavbar = () => {
       .catch((error) => {
         console.error("Error fetching cart items:", error);
       });
-    //eslint-disable-next-line react-hooks/exhaustive-deps
+    // axios
+    // .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`)
+    // .then((response) => {
+    //   if (response.data !== "Fail" && response.data !== "Error") {
+    //     if (sessionStorage.getItem("user-token") !== null) {
+    //       sessionStorage.getItem("token") === "user" &&
+    //         setCartItems(
+    //           response.data.filter(
+    //             (item) =>
+    //               item.userid.toString() ===
+    //                 sessionStorage.getItem("user-token")
+    //           )
+    //         );
+    //     } else {
+    //       setCartItems(response.data.filter((item) => item.userid === null));
+    //     }
+    //   } else {
+    //     console.log("No Items in the cart");
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.error("Error fetching cart items:", error);
+    // });
+
     axios
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts`
@@ -161,8 +187,6 @@ const MyNavbar = () => {
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/adminproducts`
       )
       .then((res) => {
-        console.log(res.data);
-
         if (res.data !== "Fail" && res.data !== "Error") {
           setProducts(
             res.data.filter(
@@ -260,7 +284,8 @@ const MyNavbar = () => {
                           className="text-decoration-none text-dark"
                         >
                           <i className="bi bi-cart3 fs-4 position-relative">
-                            {cartItems.length > 0 && (
+                            {isLoggedIn ? ( 
+                            cartItems.length > 0 && (
                               <span
                                 className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
                                 style={{ fontSize: "12px" }}
@@ -270,6 +295,17 @@ const MyNavbar = () => {
                                   unread messages
                                 </span>
                               </span>
+                            )):(
+                              guest_product.length > 0 && (
+                                <span
+                                  className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
+                                  style={{ fontSize: "12px" }}
+                                >
+                                  {guest_product.length}
+                                  <span className="visually-hidden">
+                                    unread messages
+                                  </span>
+                                </span>)
                             )}
                           </i>
                         </Link>

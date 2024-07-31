@@ -41,7 +41,16 @@ export default function Productdetails() {
   const { id } = useParams();
   const location = useLocation();
   const { productdetails, admin, userDetails } = location.state || {};
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {
+    addToCart,
+    addToWishlist,
+    cartItems,
+    wishItems,
+    notification,
+    setNotification,
+    isLoggedIn,
+    setIsLoggedIn,
+  } = useCart();
   const [userdetails, setUserDetails] = useState([]);
   // const [offerAlert,setOfferAlert]=useState(null)
 
@@ -75,31 +84,76 @@ export default function Productdetails() {
       .catch((err) => {
         console.log(err);
       });
-    setNotification({ message: 'Product added to the store successfully', type: 'success' });
-    setTimeout(() => setNotification(null), 3000);    
+    setNotification({
+      message: "Product added to the store successfully",
+      type: "success",
+    });
+    setTimeout(() => setNotification(null), 3000);
     window.location.href = "/Resale-bazaar/acceptproduct";
   };
 
-  const {
-    addToCart,
-    addToWishlist,
-    cartItems,
-    wishItems,
-    notification,
-    setNotification,
-  } = useCart();
+  // const handleAddToCart = () => {
+  //   const isProductInCart = cartItems.some(
+  //     (item) => item.product_id === productdetails.id
+  //   );
+  //   if (isProductInCart) {
+  //     setNotification({ message: 'Product already exists in the cart', type: 'error' });
+  //     setTimeout(() => setNotification(null), 3000);
+  //   } else if (isLoggedIn) {
+  //     addToCart(productdetails, "main");
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // };
+
+  // const handleAddToCart = () => {
+  //   if (cartItems.length > 0) {
+  //     var unique_item = true;
+  //     cartItems.map((item) => {
+  //       if (item.id === productdetails.id) {
+  //         alert("Product already exists in the cart");
+  //         unique_item = false;
+  //         //eslint-disable-next-line array-callback-return
+  //         return;
+  //       }
+  //       return null;
+  //     });
+  //     unique_item && sessionStorage.setItem("guest_product",JSON.stringify(productdetails));
+  //   } else {
+  //     sessionStorage.setItem("guest_product",JSON.stringify(productdetails));
+  //   }
+  // };
 
   const handleAddToCart = () => {
-    const isProductInCart = cartItems.some(
-      (item) => item.product_id === productdetails.id
-    );
-    if (isProductInCart) {
-      setNotification({ message: 'Product already exists in the cart', type: 'error' });
-      setTimeout(() => setNotification(null), 3000);
-    } else if (isLoggedIn) {
-      addToCart(productdetails, "main");
+    if (isLoggedIn) {
+      if (cartItems.length > 0) {
+        var unique_item = true;
+        cartItems.map((item) => {
+          if (item.id === productdetails.id) {
+            alert("Product already exists in the cart");
+            unique_item = false;
+            //eslint-disable-next-line array-callback-return
+            return;
+          }
+          return null;
+        });
+        unique_item && addToCart(productdetails);
+      } else {
+        addToCart(productdetails);
+      }
     } else {
-      navigate("/login");
+      let cartItems =
+        JSON.parse(sessionStorage.getItem("guest_products")) || [];
+      const isProductInCart = cartItems.some(
+        (item) => item.id === productdetails.id
+      );
+
+      if (isProductInCart) {
+        alert("Product already exists in the cart");
+      } else {
+        cartItems.push({...productdetails,quantity:1});
+        sessionStorage.setItem("guest_products", JSON.stringify(cartItems));
+      }
     }
   };
 
@@ -108,7 +162,10 @@ export default function Productdetails() {
       (item) => item.product_id === productdetails.id
     );
     if (isProductInWishlist) {
-      setNotification({ message: 'Product already exists in the wishlist', type: 'error' });
+      setNotification({
+        message: "Product already exists in the wishlist",
+        type: "error",
+      });
       setTimeout(() => setNotification(null), 3000);
       return; // Exit the function early
     } else if (isLoggedIn) {
@@ -363,7 +420,10 @@ export default function Productdetails() {
       // console.log(`Product ${action} successfully.`);
     } catch (error) {
       console.error("Error toggling like:", error);
-      setNotification({ message: 'Failed to update like status. Please try again later.', type: 'error' });
+      setNotification({
+        message: "Failed to update like status. Please try again later.",
+        type: "error",
+      });
       setTimeout(() => setNotification(null), 3000);
     }
   };

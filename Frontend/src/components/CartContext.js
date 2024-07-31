@@ -14,6 +14,8 @@ export const CartProvider = ({ children }) => {
   const [selectedWishlistItems, setSelectedWishlistItems] = useState([]);
   const [shippingAddressData, setShippingAddressData] = useState({});
   const [billingAddressData, setBillingAddressData] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [guest_product, setGuest_product] = useState(JSON.parse(sessionStorage.getItem("guest_products")) || []);
 
   const [user, setUser] = useState(() => {
     const storedUser = JSON.parse(sessionStorage.getItem("user"));
@@ -55,6 +57,7 @@ export const CartProvider = ({ children }) => {
   };
   
   const removeFromCart = (productId) => {
+    if(isLoggedIn){
     axios
       .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}`)
       .then((response) => {
@@ -67,6 +70,13 @@ export const CartProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error removing product from cart:", error);
       });
+    }
+    else{
+      const updated_guest_product = guest_product.filter(item => item.id !== productId);
+      sessionStorage.setItem("guest_products", JSON.stringify(updated_guest_product));
+      setNotification({ message:"Product removed from cart!" , type:'success'});
+      setTimeout(() => setNotification(null), 3000);
+    }
   };
   const updateCartItemQuantity = (productId, newQuantity) => {
     setCartItems(prevItems => {
@@ -91,13 +101,23 @@ export const CartProvider = ({ children }) => {
   };
 
   const calculateTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
+    if(isLoggedIn){
+      return cartItems.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+    }else{
+      return guest_product.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+    }
   };
 
   useEffect(() => {
+    if (sessionStorage.getItem("token") !== "admin") {
+      sessionStorage.getItem("user-token") !== null && setIsLoggedIn(true);
+    }
     axios
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/wishlist`)
       .then((response) => {
@@ -196,7 +216,11 @@ export const CartProvider = ({ children }) => {
         setShippingAddressData,
         billingAddressData,
         setBillingAddressData,
-        updateCartItemQuantity
+        updateCartItemQuantity,
+        guest_product,
+        setGuest_product,
+        isLoggedIn,
+        setIsLoggedIn
       }}
     >
       {children}
