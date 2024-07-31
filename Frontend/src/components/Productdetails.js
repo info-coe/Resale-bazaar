@@ -137,9 +137,9 @@ export default function Productdetails() {
           }
           return null;
         });
-        unique_item && addToCart(productdetails);
+        unique_item && addToCart(productdetails, "main");
       } else {
-        addToCart(productdetails);
+        addToCart(productdetails, "main");
       }
     } else {
       let cartItems =
@@ -153,6 +153,7 @@ export default function Productdetails() {
       } else {
         cartItems.push({...productdetails,quantity:1});
         sessionStorage.setItem("guest_products", JSON.stringify(cartItems));
+        window.location.reload(false);
       }
     }
   };
@@ -1031,22 +1032,6 @@ export default function Productdetails() {
                               </div>
                             </div>
                           </div>
-                          {isLoggedIn ? null : (
-                            <div className="col-12 col-md-7 mb-2 mt-2 ">
-                              <button
-                                type="button"
-                                className="btn btn-secondary w-100"
-                              >
-                                <Link
-                                  to="/guestcheckout"
-                                  className="text-decoration-none text-white"
-                                  state={{ from: productdetails }}
-                                >
-                                  <b>Guest Checkout</b>
-                                </Link>
-                              </button>
-                            </div>
-                          )}
                         </div>
                       )}
                     </div>

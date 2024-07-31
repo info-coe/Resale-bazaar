@@ -35,7 +35,7 @@ export default function Cartitems() {
     return () => {
       window.removeEventListener("storage", updateGuestProduct);
     };
-  },[])
+  },[setGuest_product])
 
   useEffect(() => {
     if (sessionStorage.getItem("token") !== "admin") {
@@ -53,10 +53,10 @@ export default function Cartitems() {
       .catch((error) => {
         console.error("Error fetching seller products:", error);
       });
-  }, []);
+  }, [setIsLoggedIn]);
 
   const checkout = () => {
-    if (sessionStorage.getItem("token") !== null) {
+    if (sessionStorage.getItem("token") !== "admin" && isLoggedIn) {
       const updateRequests = cartItems.map((product) => {
         const quantity = product.quantity;
         return axios.put(
@@ -80,6 +80,10 @@ export default function Cartitems() {
       navigate("/login");
     }
   };
+
+  const guestCheckout = () => {
+    navigate("/guestcheckout")
+  }
 
   const handleQuantityChange = (product, newQuantity) => {
     if (isLoggedIn) {
@@ -117,6 +121,7 @@ export default function Cartitems() {
             JSON.stringify(guest_product)
           );
           console.log("Product updated successfully");
+          window.location.reload(false);
         } else {
           console.log("Product not found in the cart");
         }
@@ -300,18 +305,28 @@ export default function Cartitems() {
             <div className="alert alert-warning">{message}</div>
           </div>
         )}
-        <div className="container mt-2">
-          <div className="d-flex flex-wrap gap-3 float-end me-2">
-            <p className="mt-1">
+        <div className="container">
+        <p className="mt-1 text-end me-2">
               <b>Total Price: &#36; {totalPrice}</b>
             </p>
+          <div className="d-flex flex-wrap gap-3 float-end me-2">
+            {!isLoggedIn && 
             <button
               type="button"
               className="btn btn-primary mb-5"
-              disabled={cartItems.length === 0}
+              // disabled={cartItems.length === 0}
+              onClick={guestCheckout}
+            >
+              Guest Checkout
+            </button>
+            }
+            <button
+              type="button"
+              className="btn btn-primary mb-5"
+              // disabled={cartItems.length === 0}
               onClick={checkout}
             >
-              Checkout
+              Member Checkout
             </button>
           </div>
         </div>

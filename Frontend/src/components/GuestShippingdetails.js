@@ -114,10 +114,9 @@ const GuestShippingdetails = () => {
   const location = useLocation();
   const data = location.state;
   const user = data.user;
-  const product = data.product;
+  const product = JSON.parse(sessionStorage.getItem("guest_products")) || [];
   const totalPrice = product[0].price * product[0].quantity;
   sessionStorage.setItem("guest_user", JSON.stringify(user));
-  sessionStorage.setItem("guest_product", JSON.stringify(product));
 
   const [step, setStep] = useState(1);
   const [fields, setFields] = useState({

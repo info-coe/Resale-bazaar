@@ -4,7 +4,7 @@ import axios from "axios";
 export default function GuestFinalCheckout() {
   const [notification, setNotification] = useState(null);
   const guest_user = JSON.parse(sessionStorage.getItem("guest_user"));
-  const guest_product = JSON.parse(sessionStorage.getItem("guest_product"));
+  const guest_product = JSON.parse(sessionStorage.getItem("guest_products"));
 
   useEffect(() => {
     if (guest_product) {
@@ -30,6 +30,8 @@ export default function GuestFinalCheckout() {
         customer_last_name: guest_user.lastname,
         customer_email: guest_user.email,
         customer_phone: guest_user.phone,
+        product_name : item.name,
+        seller_ID : item.seller_id
       }));
 
       // Post all payment status updates
@@ -71,6 +73,8 @@ export default function GuestFinalCheckout() {
 
         await Promise.all(updateQuantityRequests);
         console.log("Product quantities updated successfully");
+        sessionStorage.removeItem("guest_products");
+        sessionStorage.removeItem("guest_user");
         window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar`;
       }
     } catch (error) {

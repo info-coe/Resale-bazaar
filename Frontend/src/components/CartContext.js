@@ -76,6 +76,7 @@ export const CartProvider = ({ children }) => {
       sessionStorage.setItem("guest_products", JSON.stringify(updated_guest_product));
       setNotification({ message:"Product removed from cart!" , type:'success'});
       setTimeout(() => setNotification(null), 3000);
+      window.location.reload(false);
     }
   };
   const updateCartItemQuantity = (productId, newQuantity) => {

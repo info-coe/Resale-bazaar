@@ -69,6 +69,7 @@ const MyNavbar = () => {
   const handlelogout = () => {
     sessionStorage.removeItem("user-token");
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
     googleLogout();
     // setIsAuthenticated(false);
     axios

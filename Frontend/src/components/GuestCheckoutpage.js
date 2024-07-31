@@ -64,7 +64,7 @@ const GuestCheckoutpage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    navigate("/guestmailverification", { state: { user: values, product: product } });
+    navigate("/guestmailverification", { state: { user: values } });
     const { email, phone } = values;
     if (userdetails.some((user) => user.email === email)) {
       setError("This Email already Registered");
@@ -95,7 +95,7 @@ const GuestCheckoutpage = () => {
       <MyNavbar />
       <main>
         <div className="">
-          <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">
+          {/* <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">
             <div className="col-md-6">
               <div className="card bg-white shadow mb-3">
                 <div className="card-body d-md-flex">
@@ -143,7 +143,7 @@ const GuestCheckoutpage = () => {
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="mb-4">
             <form method="post" onSubmit={handleSubmit}>
               <div className="">

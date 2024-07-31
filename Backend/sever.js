@@ -1791,6 +1791,8 @@ app.post("/guestupdatepayment", (req, res) => {
       customer_last_name,
       customer_email,
       customer_phone,
+      product_name,
+      seller_ID,
     } = update;
     // Insert into orders table
     const insertOrderSql = guestpaymentStatusQuery; // Replace with your actual query
@@ -1812,12 +1814,39 @@ app.post("/guestupdatepayment", (req, res) => {
         customer_email,
         customer_phone,
       ],
-      (err, result) => {
+      async (err, result) => {
         if (err) {
           console.error("Error inserting into orders table:", err);
           return res.status(500).json({ error: "Error updating payment status" });
         }
         console.log("Payment status updated successfully for product with ID:", product_id);
+        try {
+          // Fetch buyer's email from database based on token or user ID
+          // const user = await getUserById(token);
+          // Fetch seller's email based on seller ID
+          const seller = await getUserById(seller_ID);
+
+          const buyerEmail = customer_email;
+          const sellerEmail = seller.email;
+
+          // Send purchase confirmation email to buyer
+          await sendPurchaseConfirmationEmail(
+            buyerEmail,
+            "Purchase Confirmation from The Resale Bazaar",
+            `Thank you for your purchase! Your order for <b>${product_name}</b> has been placed successfully.`
+          );
+          console.log("Purchase confirmation email sent to buyer successfully");
+
+          // Send product purchased notification email to seller
+          await sendPurchaseConfirmationEmail(
+            sellerEmail,
+            "Your Product Has Been Purchased",
+            `Your product <b>${product_name}</b> has been purchased successfully.`
+          );
+          console.log("Purchase notification email sent to seller successfully");
+        } catch (error) {
+          console.error("Error sending purchase confirmation email:", error);
+        }
       }
     );
   });

@@ -10,7 +10,7 @@ import Scrolltotopbtn from "./Scrolltotopbutton";
 import Notification from "./Notification";
 
 const Login = () => {
-  sessionStorage.clear();
+  // sessionStorage.clear();
   // useEffect(()=>{
   //   axios
   //   .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/`)
@@ -21,7 +21,7 @@ const Login = () => {
   //     console.log("Error fetching data:", error);
   //   });
   // },[]);
-  const { setUserData, cartItems } = useData();
+  const { setUserData, cartItems, guest_product, addToCart } = useData();
   // eslint-disable-next-line no-unused-vars
   const [values, setValues] = useState({
     username: "",
@@ -169,13 +169,11 @@ const Login = () => {
           }
           sessionStorage.removeItem("user-token");
           sessionStorage.setItem("user-token", token);
-          axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/editcart`, {cartItems, token})
-          .then((res)=>{
-            console.log(res)
-          })
-          .catch((err)=>{
-            console.log(err)
+          guest_product.map((item)=>{
+            item.userid=token;
+            addToCart(item, "main")
           });
+          sessionStorage.removeItem("guest_products")
           navigate("/");
           // window.location.reload(false);
         } else {
