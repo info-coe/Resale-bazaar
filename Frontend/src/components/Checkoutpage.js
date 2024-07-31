@@ -3,30 +3,110 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import MyNavbar from "./navbar";
 import { useCart } from "./CartContext";
 import axios from "axios";
-import Select from 'react-select';
+import Select from "react-select";
 import Notification from "./Notification";
 
-
 const USA_STATES = [
-  "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
-  "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 
-  "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", 
-  "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", 
-  "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", 
-  "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", 
-  "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", 
-  "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", 
-  "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming",
-  "Atlantis", "Pacifica", "Cascadia", "Jefferson", "New Caledonia", 
-  "Aurelia", "Midgard", "Elysium", "Asgard", "Valhalla", 
-  "Nova Terra", "Zion", "Arcadia", "Erewhon", "Narnia", 
-  "Gondwana", "Elbonia", "Freedonia", "Wakanda", "Genovia", 
-  "Panem", "Sylvania", "Ruritania", "Latveria", "Qumar", 
-  "Agrabah", "Eldorado", "Brigadoon", "Gilead", "Narnia", 
-  "Avalon", "Hogsmeade", "King's Landing", "Westeros", "Pandora", 
-  "Shangri-La", "Mordor", "Oz", "Lilliput", "Brobdingnag", 
-  "Laputa", "Blefuscu", "Aztlan", "Hyperborea", "Valinor", 
-  "Terra Nova", "Naboo", "Krypton", "Gallifrey", "Arrakis"
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "Florida",
+  "Georgia",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Pennsylvania",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming",
+  "Atlantis",
+  "Pacifica",
+  "Cascadia",
+  "Jefferson",
+  "New Caledonia",
+  "Aurelia",
+  "Midgard",
+  "Elysium",
+  "Asgard",
+  "Valhalla",
+  "Nova Terra",
+  "Zion",
+  "Arcadia",
+  "Erewhon",
+  "Narnia",
+  "Gondwana",
+  "Elbonia",
+  "Freedonia",
+  "Wakanda",
+  "Genovia",
+  "Panem",
+  "Sylvania",
+  "Ruritania",
+  "Latveria",
+  "Qumar",
+  "Agrabah",
+  "Eldorado",
+  "Brigadoon",
+  "Gilead",
+  "Narnia",
+  "Avalon",
+  "Hogsmeade",
+  "King's Landing",
+  "Westeros",
+  "Pandora",
+  "Shangri-La",
+  "Mordor",
+  "Oz",
+  "Lilliput",
+  "Brobdingnag",
+  "Laputa",
+  "Blefuscu",
+  "Aztlan",
+  "Hyperborea",
+  "Valinor",
+  "Terra Nova",
+  "Naboo",
+  "Krypton",
+  "Gallifrey",
+  "Arrakis",
 ];
 
 const Checkout = () => {
@@ -62,18 +142,23 @@ const Checkout = () => {
     phone: user.phone,
   });
 
-  const stateOptions = USA_STATES.map(state => ({ value: state, label: state }));
+  const stateOptions = USA_STATES.map((state) => ({
+    value: state,
+    label: state,
+  }));
 
   const [selectedOption, setSelectedOption] = useState("");
- 
+
   const handleChange = (selectedOption) => {
-    setFields({ ...fields, state: selectedOption ? selectedOption.value : '' });
+    setFields({ ...fields, state: selectedOption ? selectedOption.value : "" });
   };
 
   const handleChange1 = (selectedOption) => {
-    setNewFields({ ...newFields, state: selectedOption ? selectedOption.value : '' });
+    setNewFields({
+      ...newFields,
+      state: selectedOption ? selectedOption.value : "",
+    });
   };
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -84,86 +169,65 @@ const Checkout = () => {
     const { name, value } = e.target;
     setNewFields({ ...newFields, [name]: value });
   };
- 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setSelectedOption(checked ? value : '');
-  };
 
-
-  // const handleContinue = (e) => {
-  //   e.preventDefault(); 
-  
-  //   if (step === 2 && skipShippingAddress) {
-  //     if (validateBillingAddress()) {
-  //       setStep(step + 2);
-  //     }
+  // const handleCheckboxChange = (e) => {
+  //   const { value, checked } = e.target;
+  //   setSelectedOption(checked ? value : "");
+  //   if (checked && selectedBillingAddress) {
+  //     setSelectedShippingAddress(selectedBillingAddress);
   //   } else {
-  //     if (step === 2) {
-  //       if (validateBillingAddress()) {
-  //         if (selectedShippingAddress) {
-  //           setStep(step + 2);
-  //         }else{
-  //           setStep(step + 1);
-  //         }
-          
-  //       }
-  //     } else if (step === 3) {
-  //       if (!selectedOption) {
-  //         setErrorMessage("Please select an address option.");
-  //         return;
-  //       }
-  
-  //       if (selectedOption === "new" && !validateShippingAddress()) {
-  //         return;
-  //       } else if (selectedOption !== "new" && selectedOption !== "same") {
-  //         return;
-  //       }
-  //       setErrorMessage(""); 
-  //       setStep(step + 1);
-  //     } else if (step === 4) {
-  //       setStep(step + 1);
-  //     }
+  //     setSelectedShippingAddress(null);
   //   }
   // };
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setSelectedOption(checked ? value : "same"); // Update the selected option
   
-const handleContinue = (e) => {
-  e.preventDefault(); 
-
-  if (step === 2 && skipShippingAddress) {
-    if (validateBillingAddress()) {
-      setStep(step + 2);
+    if (value === "same" && checked) {
+      // Set shipping address to match billing address if "same" is selected
+      if (selectedBillingAddress) {
+        setSelectedShippingAddress(selectedBillingAddress);
+      }
+    } else if (value === "new" && checked) {
+      // Handle new address input if "new" is selected
+      setSelectedShippingAddress(null);
     }
-  } else {
-    if (step === 2) {
+  };
+  
+  const handleContinue = (e) => {
+    e.preventDefault();
+
+    if (step === 2 && skipShippingAddress) {
       if (validateBillingAddress()) {
-        if (selectedShippingAddress) {
-          setStep(step + 2);
-        } else {
-          setStep(step + 1);
+        setStep(step + 2);
+      }
+    } else {
+      if (step === 2) {
+        if (validateBillingAddress()) {
+          if (selectedShippingAddress) {
+            setStep(step + 2);
+          } else {
+            setStep(step + 1);
+          }
         }
-      }
-    } else if (step === 3) {
-      if (!selectedOption) {
-        setErrorMessage("Please select an address option.");
-        return;
-      }
+      } else if (step === 3) {
+        if (!selectedOption) {
+          setErrorMessage("Please select an address option.");
+          return;
+        }
 
-      if (selectedOption === "new" && !validateShippingAddress()) {
-        return;
-      } else if (selectedOption !== "new" && selectedOption !== "same") {
-        return;
+        if (selectedOption === "new" && !validateShippingAddress()) {
+          return;
+        } else if (selectedOption !== "new" && selectedOption !== "same") {
+          return;
+        }
+        setErrorMessage("");
+        setStep(step + 1);
+      } else if (step === 4) {
+        setStep(step + 1);
       }
-
-      setErrorMessage(""); 
-      setStep(step + 1);
-    } else if (step === 4) {
-      setStep(step + 1);
     }
-  }
-};
-
-
+  };
 
   const handleBack = () => {
     if (step === 4 && skipShippingAddress) {
@@ -193,7 +257,7 @@ const handleContinue = (e) => {
         !newFields.state ||
         !newFields.city ||
         !newFields.address1 ||
-        // !newFields.address2 ||
+        !newFields.address2 ||
         !PINCODE_PATTERN.test(newFields.pincode.trim())
       ) {
         return false;
@@ -207,74 +271,178 @@ const handleContinue = (e) => {
     setSkipShippingAddress(e.target.checked);
   };
 
+  // const createPayment = async () => {
+  //   setDisabled(true);
+  //   try {
+  //     let shippingAddressData = {};
+  //     let billingAddressData = {};
+
+  //     if (selectedBillingAddress && selectedShippingAddress) {
+  //       console.log(
+  //         "Skipping Axios POST requests for shipping and billing addresses"
+  //       );
+  //       setDisabled(false);
+  //     } else {
+  //       if (skipShippingAddress) {
+  //         shippingAddressData = fields;
+  //         billingAddressData = fields;
+  //       } else {
+  //         if (selectedOption === "same") {
+  //           shippingAddressData = fields;
+  //           billingAddressData = fields;
+  //         } else {
+  //           if (selectedOption === "new") {
+  //             shippingAddressData = newFields;
+  //           } else {
+  //             shippingAddressData = fields;
+  //           }
+  //           billingAddressData = fields;
+  //         }
+  //       }
+
+  //       // Send shipping address to backend if it's not null
+  //       if (shippingAddressData !== null && !selectedShippingAddress) {
+  //         const token = sessionStorage.getItem("user-token");
+  //         await axios.post(
+  //           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveShippingAddress`,
+  //           {
+  //             shippingAddress: shippingAddressData,
+  //             token: token,
+  //           }
+  //         );
+  //       }
+
+  //       if (
+  //         billingAddressData !== null &&
+  //         (!selectedBillingAddress || selectedOption === "new")
+  //       ) {
+  //         const token = sessionStorage.getItem("user-token");
+  //         await axios.post(
+  //           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveBillingAddress`,
+  //           {
+  //             billingAddress: billingAddressData,
+  //             token: token,
+  //           }
+  //         );
+  //       }
+  //     }
+
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
+  //       {
+  //         product: cartItems,
+  //         from: "finalcheckoutpage",
+  //       }
+  //     );
+  //     window.location.href = response.data.url;
+  //   } catch (error) {
+  //     console.error(
+  //       "Error creating payment:",
+  //       error.response ? error.response.data : error.message
+  //     );
+  //   }
+  // };
   const createPayment = async () => {
     setDisabled(true);
     try {
-      let shippingAddressData = {};
-      let billingAddressData = {};
+        let shippingAddressData = {};
+        let billingAddressData = {};
 
-      if (selectedBillingAddress && selectedShippingAddress) {
-        console.log(
-          "Skipping Axios POST requests for shipping and billing addresses"
-        );
-        setDisabled(false);
-      } else {
-        if (skipShippingAddress) {
-          shippingAddressData = fields;
-          billingAddressData = fields;
-        } else {
-          if (selectedOption === "same") {
-            shippingAddressData = fields;
-            billingAddressData = fields;
-          } else {
+        // Case 1: Both selectedBillingAddress and selectedShippingAddress are present
+        if (selectedBillingAddress && selectedShippingAddress) {
+            console.log("Skipping Axios POST requests for shipping and billing addresses");
+            setDisabled(false);
+        } else if (selectedBillingAddress && !selectedShippingAddress) {
+            // Case 2: Only selectedBillingAddress is present and a new billing address is selected
             if (selectedOption === "new") {
-              shippingAddressData = newFields;
+                shippingAddressData = newFields;
             } else {
-              shippingAddressData = fields;
+                shippingAddressData = fields;
             }
-            billingAddressData = fields;
-          }
+            // Post shipping address
+            const token = sessionStorage.getItem("user-token");
+            await axios.post(
+                `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveShippingAddress`,
+                {
+                    shippingAddress: shippingAddressData,
+                    token: token,
+                }
+            );
+        } else if (!selectedBillingAddress && selectedShippingAddress) {
+            // Case 3: Only selectedShippingAddress is present and a new billing address is selected
+            if (selectedOption === "new") {
+                billingAddressData = newFields;
+            } else {
+                billingAddressData = fields;
+            }
+            // Post billing address
+            const token = sessionStorage.getItem("user-token");
+            await axios.post(
+                `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveBillingAddress`,
+                {
+                    billingAddress: billingAddressData,
+                    token: token,
+                }
+            );
+        } else {
+            // General case: Handling skipShippingAddress and same option
+            if (skipShippingAddress) {
+                shippingAddressData = fields;
+                billingAddressData = fields;
+            } else {
+                if (selectedOption === "same") {
+                    shippingAddressData = fields;
+                    billingAddressData = fields;
+                } else {
+                    if (selectedOption === "new") {
+                        shippingAddressData = newFields;
+                    } else {
+                        shippingAddressData = fields;
+                    }
+                    billingAddressData = fields;
+                }
+            }
+
+            // Post shipping address if not null and not already selected
+            if (shippingAddressData !== null && !selectedShippingAddress) {
+                const token = sessionStorage.getItem("user-token");
+                await axios.post(
+                    `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveShippingAddress`,
+                    {
+                        shippingAddress: shippingAddressData,
+                        token: token,
+                    }
+                );
+            }
+
+            // Post billing address if not null and not already selected
+            if (billingAddressData !== null && (!selectedBillingAddress || selectedOption === "new")) {
+                const token = sessionStorage.getItem("user-token");
+                await axios.post(
+                    `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveBillingAddress`,
+                    {
+                        billingAddress: billingAddressData,
+                        token: token,
+                    }
+                );
+            }
         }
 
-        // Send shipping address to backend if it's not null
-        if (shippingAddressData !== null) {
-          const token = sessionStorage.getItem("user-token");
-          await axios.post(
-            `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveShippingAddress`,
+        const response = await axios.post(
+            `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
             {
-              shippingAddress: shippingAddressData,
-              token: token,
+                product: cartItems,
+                from: "finalcheckoutpage",
             }
-          );
-        }
-
-        if (billingAddressData !== null) {
-          const token = sessionStorage.getItem("user-token");
-          await axios.post(
-            `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveBillingAddress`,
-            {
-              billingAddress: billingAddressData,
-              token: token,
-            }
-          );
-        }
-      }
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
-        {
-          product : cartItems,
-          from : "finalcheckoutpage"
-        }
-      );
-      window.location.href = response.data.url;
+        );
+        window.location.href = response.data.url;
     } catch (error) {
-      console.error(
-        "Error creating payment:",
-        error.response ? error.response.data : error.message
-      );
+        console.error(
+            "Error creating payment:",
+            error.response ? error.response.data : error.message
+        );
     }
-  };
+};
 
   const [shippingaddress, setShippingAddress] = useState([]);
 
@@ -299,7 +467,7 @@ const handleContinue = (e) => {
   useEffect(() => {
     axios
       .get(
-        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveShippingAddress`
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveBillingAddress`
       )
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
@@ -325,25 +493,22 @@ const handleContinue = (e) => {
     setSelectedBillingAddress(address);
   };
 
- 
   const handleClick = () => {
     if (selectedShippingAddress && selectedBillingAddress) {
       setStep(5);
-    } 
-    else if (selectedShippingAddress) {
+    } else if (selectedShippingAddress) {
       setStep(2);
-    } 
-    else if (selectedBillingAddress) {
+    } else if (selectedBillingAddress) {
       setStep(3);
-    } 
-    else {
-      setNotification({ message: 'You need to select at least one address.', type: 'error' });
+    } else {
+      setNotification({
+        message: "You need to select at least one address.",
+        type: "error",
+      });
       setTimeout(() => setNotification(null), 3000);
     }
   };
-  
 
- 
   const handleDivClick = (addressType, index) => {
     if (addressType === "shipping") {
       handleSelectShippingAddress(shippingaddress[index]);
@@ -352,19 +517,29 @@ const handleContinue = (e) => {
     }
   };
 
-  
   useEffect(() => {
-  if (shippingaddress.length > 0) {
-    setStep(1); 
-  } else {
-    setStep(2); 
-  }
-}, [shippingaddress]);
+    if (shippingaddress.length > 0) {
+      setStep(1);
+    } else {
+      setStep(2);
+    }
+  }, [shippingaddress]);
+  useEffect(() => {
+    if (selectedBillingAddress && skipShippingAddress) {
+      setSelectedShippingAddress(selectedBillingAddress);
+    }
+  }, [selectedBillingAddress, skipShippingAddress]);
 
   return (
     <>
       <MyNavbar />
-      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
       <div className="container mt-5">
         <form>
           <div
@@ -508,17 +683,20 @@ const handleContinue = (e) => {
             </h1>
             {step === 2 && (
               <>
-                <div className="mb-3">
-                  <input
-                    type="checkbox"
-                    checked={skipShippingAddress}
-                    onChange={handleSkipShippingChange}
-                    className="me-1"
-                  />
-                  <label>
-                    <strong>Ship to the same Address</strong>
-                  </label>
-                </div>
+                {!selectedShippingAddress ? (
+                  <div className="mb-3">
+                    <input
+                      type="checkbox"
+                      checked={skipShippingAddress}
+                      onChange={handleSkipShippingChange}
+                      className="me-1"
+                    />
+                    <label>
+                      <strong>Ship to the same Address</strong>
+                    </label>
+                  </div>
+                ) : null}
+
                 <div className="row g-2">
                   <div className="col-md-6">
                     <input
@@ -569,13 +747,15 @@ const handleContinue = (e) => {
                     />
                   </div>
                   <div className="col-md-6">
-        <Select
-          options={stateOptions}
-          value={stateOptions.find(option => option.value === fields.state)}
-          onChange={handleChange}
-          placeholder="Select a state"
-        />
-      </div>
+                    <Select
+                      options={stateOptions}
+                      value={stateOptions.find(
+                        (option) => option.value === fields.state
+                      )}
+                      onChange={handleChange}
+                      placeholder="Select a state"
+                    />
+                  </div>
                   <div className="col-md-6">
                     <input
                       type="text"
@@ -612,12 +792,10 @@ const handleContinue = (e) => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="ZIP Code"
+                      placeholder="ZIP"
                       name="pincode"
                       value={fields.pincode}
                       pattern="[0-9]{5}"
-                      minLength={5}
-                      maxLength={5}
                       title="Please enter exactly 5 digits"
                       onChange={handleInputChange}
                       required
@@ -662,341 +840,181 @@ const handleContinue = (e) => {
             >
               Shipping Address
             </h1>
-           
-            {/* {step === 3 && !skipShippingAddress && (
-        <>
-          <div className="mb-3">
-            <div>
-              <div>
-              <label>
-                <input
-                  type="checkbox"
-                  value="new"
-                  checked={selectedOption === "new"}
-                  onChange={handleCheckboxChange}
-                />
-                Add New Address
-              </label>
-              </div>
-              <div>
-              <label>
-                <input
-                  type="checkbox"
-                  value="same"
-                  checked={selectedOption === "same"}
-                  onChange={handleCheckboxChange}
-                />
-                Use Same as Billing Address
-              </label>
-              </div>
-            </div>
-          </div>
 
-          {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-
-          {selectedOption === "new" && (
-            <>
-              <div className="row g-2">
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="Firstname"
-                    name="firstname"
-                    value={newFields.firstname}
-                    onChange={handleInputChange1}
-                    required
-                  />
-                </div>
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="Lastname"
-                    name="lastname"
-                    value={newFields.lastname}
-                    onChange={handleInputChange1}
-                    required
-                  />
+            {step === 3 && !skipShippingAddress && (
+              <>
+                <div className="mb-3">
+                  <div>
+                    <div>
+                      <label>
+                        <input
+                          type="checkbox"
+                          value="new"
+                          checked={selectedOption === "new"}
+                          onChange={handleCheckboxChange}
+                        />
+                        Add New Address
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        <input
+                          type="checkbox"
+                          value="same"
+                          checked={selectedOption === "same"}
+                          onChange={handleCheckboxChange}
+                        />
+                        Use Same as Billing Address
+                      </label>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="col-md-6">
-                  <input
-                    type="email"
-                    className="form-control mb-2"
-                    placeholder="Email"
-                    name="email"
-                    value={newFields.email}
-                    onChange={handleInputChange1}
-                    required
-                  />
+                {errorMessage && (
+                  <div className="alert alert-danger">{errorMessage}</div>
+                )}
+
+                {selectedOption === "new" && (
+                  <>
+                    <div className="row g-2">
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          placeholder="Firstname"
+                          name="firstname"
+                          value={newFields.firstname}
+                          onChange={handleInputChange1}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          placeholder="Lastname"
+                          name="lastname"
+                          value={newFields.lastname}
+                          onChange={handleInputChange1}
+                          required
+                        />
+                      </div>
+
+                      <div className="col-md-6">
+                        <input
+                          type="email"
+                          className="form-control mb-2"
+                          placeholder="Email"
+                          name="email"
+                          value={newFields.email}
+                          onChange={handleInputChange1}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          placeholder="Country"
+                          name="country"
+                          value={newFields.country}
+                          readOnly
+                          required
+                        />
+                      </div>
+
+                      <div className="col-md-6">
+                        <Select
+                          options={stateOptions}
+                          value={stateOptions.find(
+                            (option) => option.value === newFields.state
+                          )}
+                          onChange={(option) =>
+                            setNewFields({
+                              ...newFields,
+                              state: option ? option.value : "",
+                            })
+                          }
+                          placeholder="Select a state"
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          placeholder="City"
+                          name="city"
+                          value={newFields.city}
+                          onChange={handleInputChange1}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          placeholder="Address1"
+                          name="address1"
+                          value={newFields.address1}
+                          onChange={handleInputChange1}
+                          required
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          placeholder="Address2"
+                          name="address2"
+                          value={newFields.address2}
+                          onChange={handleInputChange1}
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          placeholder="ZIP"
+                          name="pincode"
+                          value={newFields.pincode}
+                          onChange={handleInputChange1}
+                          pattern="[0-9]{5}"
+                          title="Please enter exactly 5 digits"
+                          required
+                        />
+                      </div>
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control mb-2"
+                          placeholder="Phone"
+                          name="phone"
+                          value={newFields.phone}
+                          onChange={handleInputChange1}
+                          required
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {selectedOption === "same" && (
+                  <p>Shipping details will be the same as billing address.</p>
+                )}
+
+                <div className="col-12 d-flex justify-content-between p-5">
+                  <button className="btn btn-secondary" onClick={handleBack}>
+                    <i className="bi bi-arrow-left-square"></i> Back
+                  </button>
+                  <button
+                    className="btn btn-primary me-2"
+                    onClick={handleContinue}
+                  >
+                    <i className="bi bi-arrow-right-square me-1"></i> Continue
+                  </button>
                 </div>
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="Country"
-                    name="country"
-                    value={newFields.country}
-                    readOnly
-                    required
-                  />
-                </div>
-
-                <div className="col-md-6">
-                  <Select
-                    options={stateOptions}
-                    value={stateOptions.find(option => option.value === newFields.state)}
-                    onChange={(option) => setNewFields({ ...newFields, state: option ? option.value : '' })}
-                    placeholder="Select a state"
-                  />
-                </div>
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="City"
-                    name="city"
-                    value={newFields.city}
-                    onChange={handleInputChange1}
-                    required
-                  />
-                </div>
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="Address1"
-                    name="address1"
-                    value={newFields.address1}
-                    onChange={handleInputChange1}
-                    required
-                  />
-                </div>
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="Address2"
-                    name="address2"
-                    value={newFields.address2}
-                    onChange={handleInputChange1}
-                  />
-                </div>
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="ZIP"
-                    name="pincode"
-                    value={newFields.pincode}
-                    onChange={handleInputChange1}
-                    pattern="[0-9]{5}"
-                    title="Please enter exactly 5 digits"
-                    required
-                  />
-                </div>
-                <div className="col-md-6">
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="Phone"
-                    name="phone"
-                    value={newFields.phone}
-                    onChange={handleInputChange1}
-                    required
-                  />
-                </div>
-              </div>
-            </>
-          )}
-
-          {selectedOption === "same" && (
-            <p>Shipping details will be the same as billing address.</p>
-          )}
-
-          <div className="col-12 d-flex justify-content-between p-5">
-            <button className="btn btn-secondary" onClick={handleBack}>
-              <i className="bi bi-arrow-left-square"></i> Back
-            </button>
-            <button
-              className="btn btn-primary me-2"
-              onClick={handleContinue}
-            >
-              <i className="bi bi-arrow-right-square me-1"></i> Continue
-            </button>
-          </div>
-        </>
-      )} */}
-      {step === 3 && !skipShippingAddress && (
-  <>
-    <div className="mb-3">
-      <div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              value="new"
-              checked={selectedOption === "new"}
-              onChange={handleCheckboxChange}
-            />
-            Add New Address
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              value="same"
-              checked={selectedOption === "same"}
-              onChange={handleCheckboxChange}
-            />
-            Use Same as Billing Address
-          </label>
-        </div>
-      </div>
-    </div>
-
-    {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-
-    {selectedOption === "new" && (
-      <>
-        <div className="row g-2">
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Firstname"
-              name="firstname"
-              value={newFields.firstname}
-              onChange={handleInputChange1}
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Lastname"
-              name="lastname"
-              value={newFields.lastname}
-              onChange={handleInputChange1}
-              required
-            />
-          </div>
-
-          <div className="col-md-6">
-            <input
-              type="email"
-              className="form-control mb-2"
-              placeholder="Email"
-              name="email"
-              value={newFields.email}
-              onChange={handleInputChange1}
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Country"
-              name="country"
-              value={newFields.country}
-              readOnly
-              required
-            />
-          </div>
-
-          <div className="col-md-6">
-            <Select
-              options={stateOptions}
-              value={stateOptions.find(option => option.value === newFields.state)}
-              onChange={(option) => setNewFields({ ...newFields, state: option ? option.value : '' })}
-              placeholder="Select a state"
-            />
-          </div>
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="City"
-              name="city"
-              value={newFields.city}
-              onChange={handleInputChange1}
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Address1"
-              name="address1"
-              value={newFields.address1}
-              onChange={handleInputChange1}
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Address2"
-              name="address2"
-              value={newFields.address2}
-              onChange={handleInputChange1}
-              // Note: No required attribute here
-            />
-          </div>
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="ZIP Code"
-              name="pincode"
-              value={newFields.pincode}
-              onChange={handleInputChange1}
-              pattern="[0-9]{5}"
-              minLength={5}
-              maxLength={5}
-              title="Please enter exactly 5 digits"
-              required
-            />
-          </div>
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Phone"
-              name="phone"
-              value={newFields.phone}
-              onChange={handleInputChange1}
-              required
-            />
-          </div>
-        </div>
-      </>
-    )}
-
-    {selectedOption === "same" && (
-      <p>Shipping details will be the same as billing address.</p>
-    )}
-
-    <div className="col-12 d-flex justify-content-between p-5">
-      <button className="btn btn-secondary" onClick={handleBack}>
-        <i className="bi bi-arrow-left-square"></i> Back
-      </button>
-      <button
-        className="btn btn-primary me-2"
-        onClick={handleContinue}
-      >
-        <i className="bi bi-arrow-right-square me-1"></i> Continue
-      </button>
-    </div>
-  </>
-)}
-
+              </>
+            )}
           </div>
 
           <div
@@ -1118,7 +1136,7 @@ const handleContinue = (e) => {
                         </>
                       ) : (
                         <>
-                          <p>
+                          <p className="fw-bold">
                             {fields.firstname} {fields.lastname}
                           </p>
                           <p>
@@ -1148,7 +1166,7 @@ const handleContinue = (e) => {
                           <p className="fw-bold">
                             {fields.firstname} {fields.lastname}
                           </p>
-                          <p>
+                          <p >
                             <b>Email:</b> {fields.email}
                           </p>
                           <p>
@@ -1166,7 +1184,7 @@ const handleContinue = (e) => {
                         <>
                           {selectedShippingAddress ? (
                             <>
-                              <p>
+                              <p className="fw-bold">
                                 {selectedShippingAddress.firstname}{" "}
                                 {selectedShippingAddress.lastname}
                               </p>
@@ -1189,7 +1207,7 @@ const handleContinue = (e) => {
                             </>
                           ) : (
                             <>
-                              <p>
+                              <p className="fw-bold">
                                 {selectedOption === "new"
                                   ? newFields.firstname
                                   : fields.firstname}{" "}
@@ -1198,13 +1216,13 @@ const handleContinue = (e) => {
                                   : fields.lastname}
                               </p>
                               <p>
-                                Email:{" "}
+                                <b>Email:{" "}</b>
                                 {selectedOption === "new"
                                   ? newFields.email
                                   : fields.email}{" "}
                               </p>
                               <p>
-                                Phone:{" "}
+                              <b> Phone:{" "}</b>
                                 {selectedOption === "new"
                                   ? newFields.phone
                                   : fields.phone}
@@ -1294,7 +1312,7 @@ const handleContinue = (e) => {
                     type="button"
                     className="btn btn-primary"
                     onClick={createPayment}
-                    disabled={disabled} 
+                    disabled={disabled}
                   >
                     <i className="bi bi-bag-check-fill me-1"></i>Checkout
                   </button>
