@@ -162,8 +162,8 @@ const GuestCheckoutpage = () => {
                       name="firstname"
                       onChange={handleInput}
                       placeholder="Enter First Name"
-                      pattern="[A-Z][a-z]*\s*\w*"
-                      title="First letter should be uppercase, remaining letters are lowercase. No special characters"
+                      // pattern="[A-Z][a-z]*\s*\w*"
+                      // title="First letter should be uppercase, remaining letters are lowercase. No special characters"
                       required
                     />
                     <span className="text-danger fs-4"> &nbsp;*</span>
@@ -184,8 +184,8 @@ const GuestCheckoutpage = () => {
                       name="lastname"
                       onChange={handleInput}
                       placeholder="Enter Last Name"
-                      pattern="[A-Z][a-z]*\s*\w*"
-                      title="First letter should be uppercase, remaining letters are lowercase. No special characters"
+                      // pattern="[A-Z][a-z]*\s*\w*"
+                      // title="First letter should be uppercase, remaining letters are lowercase. No special characters"
                       required
                     />
                     <span className="text-danger fs-4"> &nbsp;*</span>

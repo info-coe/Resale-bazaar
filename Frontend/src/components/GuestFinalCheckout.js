@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Notification from "./Notification";
 
 export default function GuestFinalCheckout() {
   const [notification, setNotification] = useState(null);
@@ -46,6 +47,7 @@ export default function GuestFinalCheckout() {
       await updateProductQuantities(purchasedItems); // Update product quantities based on purchased items
     } catch (err) {
       console.log("Error updating payment status:", err);
+      setNotification({ message: 'Error updating payment status', type: 'error' });
     }
   };
 
@@ -75,7 +77,7 @@ export default function GuestFinalCheckout() {
         console.log("Product quantities updated successfully");
         sessionStorage.removeItem("guest_products");
         sessionStorage.removeItem("guest_user");
-        window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar`;
+        window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/`;
       }
     } catch (error) {
       console.error("Error updating product quantity:", error);
@@ -83,8 +85,33 @@ export default function GuestFinalCheckout() {
   };
 
   return (
-    <div>
-      {notification ? <div>{notification.message}</div> : <div>Loading...</div>}
-    </div>
+    // <div>
+    //   {notification ? <div>{notification.message}</div> : <div>Loading...</div>}
+    // </div>
+    <>
+<div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh' }}>
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
+     
+      <div className="waviy">
+        <span style={{ '--i': 1 }}>L</span>
+        <span style={{ '--i': 2 }}>o</span>
+        <span style={{ '--i': 3 }}>a</span>
+        <span style={{ '--i': 4 }}>d</span>
+        <span style={{ '--i': 5 }}>i</span>
+        <span style={{ '--i': 6 }}>n</span>
+        <span style={{ '--i': 7 }}>g</span>
+        <span style={{ '--i': 8 }}>.</span>
+        <span style={{ '--i': 9 }}>.</span>
+        <span style={{ '--i': 10 }}>.</span>
+      </div>
+</div>
+
+</>
   );
 }

@@ -132,7 +132,8 @@ export default function Productdetails() {
         var unique_item = true;
         cartItems.map((item) => {
           if (item.id === productdetails.id) {
-            alert("Product already exists in the cart");
+            setNotification({ message: 'Product already exists in the cart', type: 'error' });
+            setTimeout(() => setNotification(null), 3000);
             unique_item = false;
             //eslint-disable-next-line array-callback-return
             return;
@@ -151,7 +152,8 @@ export default function Productdetails() {
       );
 
       if (isProductInCart) {
-        alert("Product already exists in the cart");
+        setNotification({ message: 'Product already exists in the cart', type: 'error' });
+        setTimeout(() => setNotification(null), 3000);
       } else {
         cartItems.push({ ...productdetails, quantity: 1 });
         sessionStorage.setItem("guest_products", JSON.stringify(cartItems));

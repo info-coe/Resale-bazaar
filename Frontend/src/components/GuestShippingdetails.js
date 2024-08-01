@@ -117,6 +117,7 @@ const GuestShippingdetails = () => {
   const product = JSON.parse(sessionStorage.getItem("guest_products")) || [];
   const totalPrice = product[0].price * product[0].quantity;
   sessionStorage.setItem("guest_user", JSON.stringify(user));
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [step, setStep] = useState(1);
   const [fields, setFields] = useState({
@@ -161,11 +162,26 @@ const GuestShippingdetails = () => {
     setNewFields({ ...newFields, [name]: value });
   };
 
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setSelectedOption(checked ? value : "same"); // Update the selected option
+  
+    // if (value === "same" && checked) {
+    //   // Set shipping address to match billing address if "same" is selected
+    //   if (selectedBillingAddress) {
+    //     setSelectedShippingAddress(selectedBillingAddress);
+    //   }
+    // } else if (value === "new" && checked) {
+    //   // Handle new address input if "new" is selected
+    //   setSelectedShippingAddress(null);
+    // }
+  };
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
-  const handleContinue = () => {
+  const handleContinue = (e) => {
+    e.preventDefault();
     if (step === 1 && skipShippingAddress) {
       if (validateBillingAddress()) {
         setStep(step + 2);
@@ -176,6 +192,10 @@ const GuestShippingdetails = () => {
           setStep(step + 1);
         }
       } else if (step === 2) {
+        if (!selectedOption) {
+          setErrorMessage("Please select an address option.");
+          return;
+        }
         if (selectedOption === "new" && !validateShippingAddress()) {
           return;
         } else if (selectedOption !== "new" && selectedOption !== "same") {
@@ -190,7 +210,7 @@ const GuestShippingdetails = () => {
 
   const handleBack = () => {
     if (step === 4 && skipShippingAddress) {
-      setStep(2);
+      setStep(1);
     } else {
       setStep(step - 1);
     }
@@ -217,7 +237,7 @@ const GuestShippingdetails = () => {
         !newFields.state ||
         !newFields.city ||
         !newFields.address1 ||
-        !newFields.address2 ||
+        // !newFields.address2 ||
         !PINCODE_PATTERN.test(newFields.pincode.trim())
       ) {
         return false;
@@ -297,13 +317,13 @@ const GuestShippingdetails = () => {
           <div
             className="mb-3"
             style={{
-              backgroundColor: step === 1 ? "#f0f0f0" : "#708090",
+              backgroundColor: step === 1 ? "#f8f9f9" : "#e5e7e9",
               padding: "10px",
             }}
           >
             <h1
               style={{
-                color: step === 1 ? "black" : "white",
+                color: step === 1 ? "black" : "black",
                 fontSize: "20px",
               }}
             >
@@ -458,13 +478,13 @@ const GuestShippingdetails = () => {
             className="mb-3"
             style={{
               backgroundColor:
-                step === 2 && !skipShippingAddress ? "#f0f0f0" : "#708090",
+                step === 2 && !skipShippingAddress ? "#f8f9f9" : "#e5e7e9",
               padding: "10px",
             }}
           >
             <h1
               style={{
-                color: step === 2 ? "black" : "white",
+                color: step === 2 ? "black" : "black",
                 fontSize: "20px",
               }}
             >
@@ -472,7 +492,7 @@ const GuestShippingdetails = () => {
             </h1>
             {step === 2 && !skipShippingAddress && (
               <>
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label className="form-label">Select Address Option:</label>
                   <select
                     className="form-select"
@@ -484,7 +504,37 @@ const GuestShippingdetails = () => {
                     <option value="new">Add New Address</option>
                     <option value="same">Use Same as Billing Address</option>
                   </select>
+                </div> */}
+                 <div className="mb-3">
+                  <div>
+                    <div>
+                      <label>
+                        <input
+                          type="checkbox"
+                          value="new"
+                          checked={selectedOption === "new"}
+                          onChange={handleCheckboxChange}
+                        />
+                        Add New Address
+                      </label>
+                    </div>
+                    <div>
+                      <label>
+                        <input
+                          type="checkbox"
+                          value="same"
+                          checked={selectedOption === "same"}
+                          onChange={handleCheckboxChange}
+                        />
+                        Use Same as Billing Address
+                      </label>
+                    </div>
+                  </div>
                 </div>
+
+                {errorMessage && (
+                  <div className="alert alert-danger">{errorMessage}</div>
+                )}
 
                 {selectedOption === "new" && (
                   <>
@@ -536,14 +586,18 @@ const GuestShippingdetails = () => {
                       </div>
 
                       <div className="col-md-6">
-                        <input
-                          type="text"
-                          className="form-control mb-2"
-                          placeholder="State"
-                          name="state"
-                          value={newFields.state}
-                          onChange={handleInputChange1}
-                          required
+                      <Select
+                          options={stateOptions}
+                          value={stateOptions.find(
+                            (option) => option.value === newFields.state
+                          )}
+                          onChange={(option) =>
+                            setNewFields({
+                              ...newFields,
+                              state: option ? option.value : "",
+                            })
+                          }
+                          placeholder="Select a state"
                         />
                       </div>
                       <div className="col-md-6">
@@ -628,13 +682,13 @@ const GuestShippingdetails = () => {
           <div
             className="mb-3"
             style={{
-              backgroundColor: step === 3 ? "#f0f0f0" : "#708090",
+              backgroundColor: step === 3 ? "#f8f9f9" : "#e5e7e9",
               padding: "10px",
             }}
           >
             <h1
               style={{
-                color: step === 3 ? "black" : "white",
+                color: step === 3 ? "black" : "black",
                 fontSize: "20px",
               }}
             >
@@ -698,13 +752,13 @@ const GuestShippingdetails = () => {
           <div
             className="mb-3"
             style={{
-              backgroundColor: step === 4 ? "#f0f0f0" : "#708090",
+              backgroundColor: step === 4 ? "#f8f9f9" : "#e5e7e9",
               padding: "10px",
             }}
           >
             <h1
               style={{
-                color: step === 4 ? "black" : "white",
+                color: step === 4 ? "black" : "black",
                 fontSize: "20px",
               }}
             >

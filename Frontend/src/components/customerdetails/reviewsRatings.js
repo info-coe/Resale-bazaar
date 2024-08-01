@@ -102,7 +102,7 @@ function ReviewRatings() {
       setNotification({ message: 'Review added successfully', type: 'success' });
       setTimeout(() => setNotification(null), 3000);
       window.location.reload(false)
-      window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar`;
+      window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/`;
 
     } catch (error) {
       console.error('Error adding review:', error);

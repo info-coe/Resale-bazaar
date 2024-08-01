@@ -2353,8 +2353,8 @@ app.post("/paymentStripe", async (req, res) => {
           quantity: item.quantity,
         }
       }),
-      success_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/${successRedirect}`,
-      cancel_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/Resale-bazaar/`,
+      success_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/${successRedirect}`,
+      cancel_url: `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/`,
     })
     res.json({ url: session.url })
   } catch (e) {

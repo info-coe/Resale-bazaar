@@ -257,7 +257,7 @@ const Checkout = () => {
         !newFields.state ||
         !newFields.city ||
         !newFields.address1 ||
-        !newFields.address2 ||
+        // !newFields.address2 ||
         !PINCODE_PATTERN.test(newFields.pincode.trim())
       ) {
         return false;
@@ -545,13 +545,13 @@ const Checkout = () => {
           <div
             className="mb-3 p-2"
             style={{
-              backgroundColor: step === 1 ? "#f0f0f0" : "#708090",
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              backgroundColor: step === 1 ? "#f8f9f9" : "#e5e7e9 ",
+              // boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
             }}
           >
             <h1
               style={{
-                color: step === 1 ? "black" : "white",
+                color: step === 1 ? "black" : "black",
                 fontSize: "20px",
               }}
             >
@@ -669,13 +669,13 @@ const Checkout = () => {
           <div
             className="mb-3"
             style={{
-              backgroundColor: step === 2 ? "#f0f0f0" : "#708090",
+              backgroundColor: step === 2 ? "#f8f9f9" : "#e5e7e9 ",
               padding: "10px",
             }}
           >
             <h1
               style={{
-                color: step === 2 ? "black" : "white",
+                color: step === 2 ? "black" : "black",
                 fontSize: "20px",
               }}
             >
@@ -792,7 +792,7 @@ const Checkout = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="ZIP"
+                      placeholder="ZIP Code"
                       name="pincode"
                       value={fields.pincode}
                       pattern="[0-9]{5}"
@@ -828,13 +828,13 @@ const Checkout = () => {
             className="mb-3"
             style={{
               backgroundColor:
-                step === 3 && !skipShippingAddress ? "#f0f0f0" : "#708090",
+                step === 3 && !skipShippingAddress ? "#f8f9f9" : "#e5e7e9",
               padding: "10px",
             }}
           >
             <h1
               style={{
-                color: step === 3 ? "black" : "white",
+                color: step === 3 ? "black" : "black",
                 fontSize: "20px",
               }}
             >
@@ -974,7 +974,7 @@ const Checkout = () => {
                         <input
                           type="text"
                           className="form-control mb-2"
-                          placeholder="ZIP"
+                          placeholder="ZIP Code"
                           name="pincode"
                           value={newFields.pincode}
                           onChange={handleInputChange1}
@@ -1020,13 +1020,13 @@ const Checkout = () => {
           <div
             className="mb-3"
             style={{
-              backgroundColor: step === 4 ? "#f0f0f0" : "#708090",
+              backgroundColor: step === 4 ? "#f8f9f9" : "#e5e7e9",
               padding: "10px",
             }}
           >
             <h1
               style={{
-                color: step === 4 ? "black" : "white",
+                color: step === 4 ? "black" : "black",
                 fontSize: "20px",
               }}
             >
@@ -1090,13 +1090,13 @@ const Checkout = () => {
           <div
             className="mb-3"
             style={{
-              backgroundColor: step === 5 ? "#f0f0f0" : "#708090",
+              backgroundColor: step === 5 ? "#f8f9f9" : "#e5e7e9 ",
               padding: "10px",
             }}
           >
             <h1
               style={{
-                color: step === 5 ? "black" : "white",
+                color: step === 5 ? "black" : "black",
                 fontSize: "20px",
               }}
             >
