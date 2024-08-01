@@ -1,7 +1,6 @@
 {
   "name": "resale-bazaar",
   "version": "0.1.0",
-  "homepage": "https://info-coe.github.io/Resale-bazaar",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
