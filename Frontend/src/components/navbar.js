@@ -30,6 +30,7 @@ const MyNavbar = () => {
     calculateTotalPrice,
     setCartItems,
     wishItems,
+    setWishItems,
     removeFromWishlist,
     moveFromWishlistToCart,
     selectedWishlistItems,
@@ -39,7 +40,7 @@ const MyNavbar = () => {
     guest_product,
     setGuest_product
   } = useCart();
-
+  console.log(wishItems)
   const handleMoveSelectedToCart = () => {
     moveFromWishlistToCart();
   };
@@ -136,6 +137,23 @@ const MyNavbar = () => {
       })
       .catch((error) => {
         console.error("Error fetching cart items:", error);
+      });
+      axios
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/wishlist`)
+      .then((response) => {
+        if (response.data !== "Fail" && response.data !== "Error") {
+              setWishItems(
+                response.data.filter(
+                  (item) =>
+                    item.userid.toString() ===
+                    sessionStorage.getItem("user-token")
+                )
+              );
+          }
+        
+      })
+      .catch((error) => {
+        console.error("Error fetching wishlist items:", error);
       });
     // axios
     // .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`)

@@ -119,18 +119,20 @@ export const CartProvider = ({ children }) => {
     if (sessionStorage.getItem("token") !== "admin") {
       sessionStorage.getItem("user-token") !== null && setIsLoggedIn(true);
     }
-    axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/wishlist`)
-      .then((response) => {
-        if (response.data !== "Fail" && response.data !== "Error") {
-          if (Array.isArray(response.data)) {
-            setWishItems(response.data);
-          }
-        } 
-      })
-      .catch((error) => {
-        console.error("Error fetching wishlist items:", error);
-      });
+    // axios
+    //   .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/wishlist`)
+    //   .then((response) => {
+    //     if (response.data !== "Fail" && response.data !== "Error") {
+    //       if (Array.isArray(response.data)) {
+    //         setWishItems(response.data.filter((item)=>(
+    //            item.userid.toString()===sessionStorage.getItem('user-token')
+    //         )));
+    //       }
+    //     } 
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching wishlist items:", error);
+    //   });
   }, []);
 
   const addToWishlist = (product) => {
@@ -221,7 +223,8 @@ export const CartProvider = ({ children }) => {
         guest_product,
         setGuest_product,
         isLoggedIn,
-        setIsLoggedIn
+        setIsLoggedIn,
+        setWishItems
       }}
     >
       {children}
