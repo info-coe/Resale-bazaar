@@ -178,7 +178,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter basename="Resale-bazaar">
+      <BrowserRouter >
         <Scrolltotop />
         {/* <React.Suspense fallback={<div>Loading...</div>}> */}
           <Routes>
