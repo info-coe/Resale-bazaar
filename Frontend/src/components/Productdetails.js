@@ -41,6 +41,7 @@ export default function Productdetails() {
   const { id } = useParams();
   const location = useLocation();
   const { productdetails, admin, userDetails } = location.state || {};
+ 
   const {
     addToCart,
     addToWishlist,
@@ -52,6 +53,7 @@ export default function Productdetails() {
     setIsLoggedIn,
   } = useCart();
   const [userdetails, setUserDetails] = useState([]);
+
   // const [offerAlert,setOfferAlert]=useState(null)
 
   const navigate = useNavigate();
@@ -151,7 +153,7 @@ export default function Productdetails() {
       if (isProductInCart) {
         alert("Product already exists in the cart");
       } else {
-        cartItems.push({...productdetails,quantity:1});
+        cartItems.push({ ...productdetails, quantity: 1 });
         sessionStorage.setItem("guest_products", JSON.stringify(cartItems));
         window.location.reload(false);
       }
@@ -183,7 +185,8 @@ export default function Productdetails() {
   const carouselRef = useRef(null);
   // eslint-disable-next-line no-unused-vars
   const [currentSlide, setCurrentSlide] = useState(0);
-
+ 
+  
   const updateProductDetailsImg = (product, index) => {
     const extension = product.split(".").pop().toLowerCase();
     if (["mp4", "webm", "avi", "mov", "quicktime"].includes(extension)) {
@@ -245,7 +248,6 @@ export default function Productdetails() {
   const firstImage = datta[0];
   const handleOffer = () => {
     if (add === "0.00" || add.length === 0) {
-      console.log("success");
       return null;
     } else {
       setSuccess(true);
@@ -262,7 +264,7 @@ export default function Productdetails() {
         .then((res) => {
           console.log(res);
         })
-        .catch((err) => console.log(err));
+        .catch((err) =>console.log(err));
     }
   };
 
@@ -278,8 +280,9 @@ export default function Productdetails() {
     return (
       curr.offered_buyer_id ===
         parseInt(sessionStorage.getItem("user-token")) &&
-      curr.product_id === productdetails.id
-      // curr.product_status === "Accepted"
+      curr.product_id === productdetails.id &&
+      curr.product_status === "Accepted"
+      // && curr.offered_buyer_id!==sessionStorage.getItem("user-token")
     );
   });
 
@@ -311,7 +314,9 @@ export default function Productdetails() {
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`
       )
+
       .then((e) => {
+        // console.log(e.data);
         if (e.data !== "Fail" && e.data !== "Error") {
           setOffer(e.data);
         }
@@ -784,6 +789,21 @@ export default function Productdetails() {
                                   <b>MAKE OFFER</b>
                                 </button>
                               </div>
+                            ) : productdetails.seller_id ==
+                              sessionStorage.getItem("user-token") ? (
+                              <button
+                                onClick={() =>setNotification({
+                                    message:
+                                      "This Product Belongs to You",
+                                    type: "error",
+                                  })
+                                }
+                                type="button"
+                                className="btn mb-2 btn-outline-secondary w-100"
+                               
+                              >
+                                <b>MAKE OFFER</b>
+                              </button>
                             ) : (
                               <button
                                 type="button"
@@ -835,7 +855,7 @@ export default function Productdetails() {
                                       />
                                       <span style={{ fontSize: "0.75rem" }}>
                                         {/* Enter Your Offer */}
-                                        {add === 0 ? (
+                                        {add === "0.00" || add.length == 0 ? (
                                           <span style={{ color: "red" }}>
                                             Please Select Any One Off
                                           </span>
@@ -899,7 +919,8 @@ export default function Productdetails() {
                                             style={{
                                               paddingTop: "2rem",
                                               backgroundColor:
-                                                offerAmout === "20%"
+                                                offerAmout === "20%" &&
+                                                add.length !== 0
                                                   ? "rgba(38, 109, 28, 0.19)"
                                                   : null,
                                             }}
