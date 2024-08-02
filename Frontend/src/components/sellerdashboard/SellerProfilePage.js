@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MyNavbar from "../navbar";
 import Footer from "../footer";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -17,16 +17,18 @@ const SellerProfile = () => {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("all");
   const pageSize = 8;
-  const { state } = useLocation();
-  const userDetails = state.userDetails[0];
+  // const { state } = useLocation();
+  // const userDetails = state.userDetails[0];
+  // console.log(sellerId);
   const [notification, setNotification] = useState(null);
+  const [sellerDetails, setSellerDetails] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     comment: "",
   });
-
+  // console.log(sellerDetails);
   const nameInputRef = useRef(null);
   const commentInputRef = useRef(null);
 
@@ -39,6 +41,37 @@ const SellerProfile = () => {
   useEffect(() => {
     applyFilter(filter);
   }, [products, filter]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+      .then((res) => {
+        if (res.data !== "Fail" && res.data !== "Error") {
+          // Filter user details where user_id === productdetails.seller_id
+          // const filteredUserDetails = res.data.filter(
+          // console.log(res.data)
+          // console.log(sellerId)
+          const filteredUserDetails = res.data.filter(
+            (item) => item.user_id == sellerId
+          );
+
+          console.log(filteredUserDetails);
+          // Map filtered details to desired structure
+          const userDetails = filteredUserDetails.map((item) => ({
+            userId: item.user_id,
+            email: item.email,
+            phone: item.phone,
+            name: item.firstname + " " + item.lastname,
+            shopname: item.shopname,
+            //Add more fields as needed
+          }));
+
+          // console.log(userDetails[0].userId)
+          setSellerDetails(userDetails);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const fetchProducts = async (pageNum) => {
     try {
@@ -139,7 +172,10 @@ const SellerProfile = () => {
         }
       )
       .then((res) => {
-        setNotification({ message: 'Data added successfully', type: 'success' });
+        setNotification({
+          message: "Data added successfully",
+          type: "success",
+        });
         setTimeout(() => setNotification(null), 3000);
         window.location.reload(false);
       })
@@ -163,11 +199,17 @@ const SellerProfile = () => {
     }
     return stars;
   };
-
+  // console.log(sellerDetails.phone)
   return (
     <>
       <MyNavbar />
-      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
       <div className="container mt-3">
         <div className="row">
           <div className="col-lg-12">
@@ -175,9 +217,12 @@ const SellerProfile = () => {
               <div className="m-5">
                 <h2 className="seller-name fs-1">
                   <i className="bi bi-person-circle fs-1"></i>&nbsp;
-                  {userDetails.shopname == null || undefined || ""
-                    ? userDetails.name
-                    : userDetails.shopname}
+                  {sellerDetails.length > 0 &&
+                    (sellerDetails[0].shopname === "" ||
+                    sellerDetails[0].shopname === null ||
+                    sellerDetails[0].shopname === undefined
+                      ? sellerDetails[0].name
+                      : sellerDetails[0].shopname)}
                 </h2>
                 <button
                   className="btn btn-primary ms-5"
@@ -197,9 +242,12 @@ const SellerProfile = () => {
             <h4 className="mb-4">
               <span style={{ fontSize: "22px" }}>Products by</span>{" "}
               <span className="text-secondary" style={{ fontStyle: "italic" }}>
-                {userDetails.shopname == null || undefined || ""
-                  ? userDetails.name
-                  : userDetails.shopname}
+                {sellerDetails.length > 0 &&
+                  (sellerDetails[0].shopname === "" ||
+                  sellerDetails[0].shopname === null ||
+                  sellerDetails[0].shopname === undefined
+                    ? sellerDetails[0].name
+                    : sellerDetails[0].shopname)}
               </span>
             </h4>
             <div className="filters mb-4">
@@ -440,37 +488,24 @@ export default SellerProfile;
 //       });
 //   };
 
-//   useEffect(() => {
-//     axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
-//       .then(res => {
-//         if (res.data !== "Fail" && res.data !== "Error") {
-//           const user = res.data.find(item => item.user_id.toString() === sellerId);
-//           if (user) {
-//             setSellerDetails({
-//               userId: user.user_id,
-//               email: user.email,
-//               phone: user.phone,
-//               name: `${user.firstname} ${user.lastname}`,
-//               shopname: user.shopname
-//             });
-//           }
+// useEffect(() => {
+//   axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+//     .then(res => {
+//       if (res.data !== "Fail" && res.data !== "Error") {
+//         const user = res.data.find(item => item.user_id.toString() === sellerId);
+//         if (user) {
+//           setSellerDetails({
+//             userId: user.user_id,
+//             email: user.email,
+//             phone: user.phone,
+//             name: `${user.firstname} ${user.lastname}`,
+//             shopname: user.shopname
+//           });
 //         }
-//       })
-//       .catch(err => console.log(err));
-
-//     axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts/`)
-//       .then(res => {
-//         if (res.data !== "Fail" && res.data !== "Error") {
-//           const filteredProducts = res.data.filter(product => product.seller_id.toString() === sellerId);
-//           setSellerProducts(filteredProducts);
-//         }
-//         setLoading(false);
-//       })
-//       .catch(err => {
-//         console.log(err);
-//         setLoading(false);
-//       });
-//   }, [sellerId]);
+//       }
+//     })
+//     .catch(err => console.log(err))
+// }, []);
 
 //   const renderStarRatings = (rating) => {
 //     const stars = [];

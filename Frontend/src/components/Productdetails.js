@@ -41,7 +41,7 @@ export default function Productdetails() {
   const { id } = useParams();
   const location = useLocation();
   const { productdetails, admin, userDetails } = location.state || {};
- 
+
   const {
     addToCart,
     addToWishlist,
@@ -132,7 +132,10 @@ export default function Productdetails() {
         var unique_item = true;
         cartItems.map((item) => {
           if (item.id === productdetails.id) {
-            setNotification({ message: 'Product already exists in the cart', type: 'error' });
+            setNotification({
+              message: "Product already exists in the cart",
+              type: "error",
+            });
             setTimeout(() => setNotification(null), 3000);
             unique_item = false;
             //eslint-disable-next-line array-callback-return
@@ -152,7 +155,10 @@ export default function Productdetails() {
       );
 
       if (isProductInCart) {
-        setNotification({ message: 'Product already exists in the cart', type: 'error' });
+        setNotification({
+          message: "Product already exists in the cart",
+          type: "error",
+        });
         setTimeout(() => setNotification(null), 3000);
       } else {
         cartItems.push({ ...productdetails, quantity: 1 });
@@ -187,8 +193,7 @@ export default function Productdetails() {
   const carouselRef = useRef(null);
   // eslint-disable-next-line no-unused-vars
   const [currentSlide, setCurrentSlide] = useState(0);
- 
-  
+
   const updateProductDetailsImg = (product, index) => {
     const extension = product.split(".").pop().toLowerCase();
     if (["mp4", "webm", "avi", "mov", "quicktime"].includes(extension)) {
@@ -266,7 +271,7 @@ export default function Productdetails() {
         .then((res) => {
           console.log(res);
         })
-        .catch((err) =>console.log(err));
+        .catch((err) => console.log(err));
     }
   };
 
@@ -325,6 +330,7 @@ export default function Productdetails() {
       })
       .catch((error) => console.log(error));
   }, [offer, handleOffer, productdetails.seller_id]);
+
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
     // Navigate to seller profile page with sellerId as a parameter
@@ -794,15 +800,14 @@ export default function Productdetails() {
                             ) : productdetails.seller_id ==
                               sessionStorage.getItem("user-token") ? (
                               <button
-                                onClick={() =>setNotification({
-                                    message:
-                                      "This Product Belongs to You",
+                                onClick={() =>
+                                  setNotification({
+                                    message: "This Product Belongs to You",
                                     type: "error",
                                   })
                                 }
                                 type="button"
                                 className="btn mb-2 btn-outline-secondary w-100"
-                               
                               >
                                 <b>MAKE OFFER</b>
                               </button>
@@ -1097,7 +1102,7 @@ export default function Productdetails() {
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
                       &nbsp;
-                      {(user.shopname === "") | null || undefined
+                      {user.shopname === "" || null || undefined
                         ? user.name
                         : user.shopname}
                     </p>
