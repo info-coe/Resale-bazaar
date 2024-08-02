@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Menu() {
   return (
     <>
-      <div className="bg-secondary text-white text-center p-2 fs-4">
+      <div className="filterdisplaynav text-center p-2 fs-4">
         <h1 className="fs-4">Categories</h1>
       </div>
       <div className="mb-4 menumain">

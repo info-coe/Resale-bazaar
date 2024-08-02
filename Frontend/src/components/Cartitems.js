@@ -148,12 +148,12 @@ export default function Cartitems() {
             <table className="table table-hover">
               <thead>
                 <tr className="">
-                  <th className="bg-secondary text-white">#</th>
-                  <th className="bg-secondary text-white">Product Image</th>
-                  <th className="bg-secondary text-white">Product Name</th>
-                  <th className="bg-secondary text-white">Price</th>
-                  <th className="bg-secondary text-white">Quantity</th>
-                  <th className="bg-secondary text-white">Total</th>
+                  <th className="bg-light">#</th>
+                  <th className="bg-light">Product Image</th>
+                  <th className="bg-light">Product Name</th>
+                  <th className="bg-light">Price</th>
+                  <th className="bg-light">Quantity</th>
+                  <th className="bg-light">Total</th>
                 </tr>
               </thead>
               <tbody>

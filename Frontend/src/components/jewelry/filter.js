@@ -78,7 +78,7 @@ useEffect(() => {
 
   return (
     <div className="card mt-4 mb-5">
-      <div className="card-header bg-secondary text-white p-3 fs-5">
+      <div className="card-header filterdisplaynav p-3 fs-5">
         <i className="bi bi-sort-down-alt pe-3"></i>
         Filter
       </div>

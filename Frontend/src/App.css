@@ -205,7 +205,7 @@ body.modal-open {
 }
 
 .menumain .accordion {
-  --bs-accordion-btn-bg: rgb(233, 236, 229);
+  --bs-accordion-btn-bg: rgb(248, 248, 248);
   --bs-accordion-btn-color: #100f10;
   --bs-accordion-active-bg: rgb(246, 250, 241);
   --bs-accordion-active-color: #100f10;
@@ -1060,3 +1060,6 @@ body {
 
 /* Loading code end */
 
+.filterdisplaynav{
+  background-color: #e5e7e9;
+}
