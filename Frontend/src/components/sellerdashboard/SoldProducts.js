@@ -12,7 +12,6 @@ import Notification from "../Notification";
 
 const SellerProfile = () => {
   const { sellerId } = useParams();
-  console.log(sellerId);
   // const [sellerProducts, setSellerProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -77,25 +76,7 @@ const SellerProfile = () => {
     }
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/allproducts/`
-  //     )
-  //     .then((res) => {
-  //       if (res.data !== "Fail" && res.data !== "Error") {
-  //         const filteredProducts = res.data.filter(
-  //           (product) => product.seller_id.toString() === sellerId
-  //         );
-  //         setSellerProducts(filteredProducts);
-  //       }
-  //       // setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       // setLoading(false);
-  //     });
-  // }, [sellerId]);
+ 
 
   const capitalizeFirstLetterOfEveryWord = (str) => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
@@ -135,10 +116,7 @@ const SellerProfile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // if (!name || !email || !phone) {
-    //   // alert("Please fill out all required fields");
-    //   return;
-    // }
+
 
     axios
       .post(
@@ -153,9 +131,10 @@ const SellerProfile = () => {
       )
       .then((res) => {
         setNotification({ message: 'Data added successfully', type: 'success' });
-        setTimeout(() => setNotification(null), 3000);
-        // setFormData({ name: '', email: '', phone: '', comment: '' });
+        setTimeout(() => {setNotification(null);
         window.location.reload(false);
+          
+        },3000);
       })
       .catch((err) => {
         console.error("Error posting data:", err);
@@ -164,20 +143,7 @@ const SellerProfile = () => {
 
 
 
-  const renderStarRatings = (rating) => {
-    const stars = [];
-    const filledStars = Math.floor(rating);
-    for (let i = 0; i < 5; i++) {
-      stars.push(
-        <i
-          key={i}
-          className={`bi ${i < filledStars ? "bi-star-fill text-warning" : "bi-star"
-            } me-1`}
-        ></i>
-      );
-    }
-    return stars;
-  };
+  
 
   return (
     <>

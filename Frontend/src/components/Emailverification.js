@@ -9,7 +9,7 @@ import Notification from "./Notification";
 export default function Emailverification() {
   const { state } = useLocation();
   const [notification, setNotification] = useState(null);
-  const [values, setValues] = useState(state.values);
+  const [values, setValues] = useState(state?.values || null);
   const [errorMessage, setErrorMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   const [showVerification, setShowVerification] = useState(false);
@@ -29,7 +29,7 @@ export default function Emailverification() {
     const otp = document.querySelector(".otp_num").value;
     axios
       .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/verify`, {
-        email: values.email,
+        email: values?.email || "",
         otp: otp,
       })
       .then((res) => {
@@ -94,14 +94,14 @@ export default function Emailverification() {
                 type="email"
                 name="email"
                 className="form-control"
-                value={values.email}
+                value={values?.email || ""}
                 onChange={handleChange}
                 style={{width:"280px"}}
                 disabled
               />
             </div>
             <div className="col-auto mt-2 mb-2">
-              <button className="btn btn-primary" onClick={sendOTP}  disabled={otpSent}>
+              <button className="btn btn-primary" onClick={sendOTP}  disabled={otpSent || values === null}>
                 Send OTP
               </button>
             </div>

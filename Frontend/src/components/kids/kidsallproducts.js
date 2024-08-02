@@ -6,6 +6,8 @@ import Filter from "./filter";
 import Filterdisplaynav from "../filterdisplaynav";
 import Product from "../Product";
 import axios from "axios";
+import Girlimg from "../../images/girl.webp";
+import Boyimg from "../../images/boy.webp";
 import InfiniteScroll from "react-infinite-scroll-component";
 // import Scrolltotopbtn from "../Scrolltotopbutton";
 
@@ -16,7 +18,6 @@ const Kidsallproducts = () => {
   const [page, setPage] = useState(1);
   const pageSize = 8;
 
-  console.log(filteredProducts);
   useEffect(() => {
     fetchProducts(page);
   }, [page]);
@@ -71,6 +72,38 @@ const Kidsallproducts = () => {
     <div className="fullscreen">
       <MyNavbar />
       <main>
+      <h1
+        className="ps-lg-5 ps-2 text-center mt-2"
+        style={{ textShadow: "2px 3px 2px gray" , fontSize:"28px" }}
+      >
+        Kids Zone
+      </h1>
+      <div className="d-flex flex-wrap justify-content-center text-center">
+        <div className="m-md-4 m-2 ">
+          <Link to="/girl" className="text-dark text-decoration-none">
+            <img
+              src={Girlimg}
+              width="130px"
+              height="130px"
+              alt="high end couture"
+              className=" rounded-circle womenallimgs"
+            />
+            <p>Girl</p>
+          </Link>
+        </div>
+        <div className="m-md-4 m-2 ">
+          <Link to="/boy" className="text-dark text-decoration-none">
+            <img
+              src={Boyimg}
+              width="130px"
+              height="130px"
+              alt="sarees"
+              className=" rounded-circle womenallimgs"
+            />
+            <p>Boy</p>
+          </Link>
+        </div>
+      </div>
         <nav className="p-2 ps-lg-5 pe-lg-5">
           <Link to="/" className="text-decoration-none text-dark">
             <i className="bi bi-house-fill"></i>
@@ -79,7 +112,7 @@ const Kidsallproducts = () => {
           <Link to="/kids" className="text-decoration-none text-dark">
             Kids
           </Link>{" "}
-          /All
+       
         </nav>
         <div className="d-lg-flex justify-content-around p-2 ps-lg-5 pe-lg-5">
           <div className="col-lg-2 col-xs-12 col-md-12">

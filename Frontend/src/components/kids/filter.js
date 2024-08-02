@@ -124,9 +124,9 @@ const handleFilteredProducts = (filtered) => {
       <h1 style={{fontSize:'20px'}}>Material</h1>
      
       <div className="d-flex flex-wrap align-items-start">
-  {materials.map((material) => (
+  {materials.map((material , index) => (
     <button
-      key={material}
+      key={index}
       className={`btn border m-1 ${selectedMaterial === material ? "active" : ""}`}
       style={{
         border: selectedMaterial === material ? "1px solid black" : "", 
@@ -188,8 +188,8 @@ const handleFilteredProducts = (filtered) => {
           <div className="mt-4">
   <h1 style={{fontSize:'20px'}}>Color</h1>
   <div className="d-flex flex-row flex-wrap align-items-start">
-    {colors.map((color) => (
-      <div className="d-flex flex-column text-center position-relative">
+    {colors.map((color , index) => (
+      <div className="d-flex flex-column text-center position-relative" key={index}>
         <button
           key={color.name}
           className={`btn ${selectedColor === color.name ? "active" : ""}`}

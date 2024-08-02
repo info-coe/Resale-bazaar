@@ -105,30 +105,15 @@ const handleFilteredProducts = (filtered) => {
           Filter
         </div>
         <div className="card-body">
-          {/* <h1 style={{fontSize:'20px'}}>Size</h1>
-          <div className="d-flex flex-wrap">
-            {["XS", "S", "M", "L", "XL"].map((size) => (
-              <button
-                key={size}
-                className={`btn border m-1  ${selectedSize === size ? "active" : ""}`}
-                style={{
-                border: selectedSize === size ? "1px solid black" : "", 
-                backgroundColor: selectedSize === size ? "lightGrey" : "" 
-              }}
-                onClick={() => handleSizeSelect(size)}
-              >
-                {size}
-              </button>
-            ))}
-          </div> */}
+        
          
           <div className="mt-4">
       <h1 style={{fontSize:'20px'}}>Material</h1>
       
       <div className="d-flex flex-wrap align-items-start">
-  {materials.map((material) => (
+  {materials.map((material , index) => (
     <button
-      key={material}
+      key={index}
       className={`btn border m-1 ${selectedMaterial === material ? "active" : ""}`}
       style={{
         border: selectedMaterial === material ? "1px solid black" : "", 
@@ -193,8 +178,8 @@ const handleFilteredProducts = (filtered) => {
 <div className="mt-4">
   <h1 style={{fontSize:'20px'}}>Color</h1>
   <div className="d-flex flex-row flex-wrap align-items-start">
-    {colors.map((color) => (
-      <div className="d-flex flex-column text-center position-relative">
+    {colors.map((color , index) => (
+      <div className="d-flex flex-column text-center position-relative" key={index}>
         <button
           key={color.name}
           className={`btn ${selectedColor === color.name ? "active" : ""}`}

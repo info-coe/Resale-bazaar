@@ -47,7 +47,6 @@ export default function Changepassword() {
         .then((res) => {
           if (res.data !== "Fail" && res.data !== "Error") {
             setAdminDetails(res.data)
-            console.log(res.data)
           }
         })
         .catch((error) => {

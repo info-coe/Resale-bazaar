@@ -204,31 +204,6 @@ export default function Sellerproducts() {
   };
   
 
-  // const handleImageChange = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   const validFiles = files.filter(file => file.type.startsWith('image/') || file.type.startsWith('video/'));
-  //   const newFiles = validFiles.map((file) => ({
-  //     file,
-  //     preview: URL.createObjectURL(file),
-  //     type: file.type.startsWith('image/') ? 'image' : 'video'
-  //   }));
-
-  //   const newImages = [...formData.image, ...newFiles];
-
-  //   if (newImages.length > 6) {
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       image: "You can only upload up to 6 images or videos.",
-  //     }));
-  //     return;
-  //   }
-
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     image: newImages,
-  //   }));
-  // };
-
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const validFiles = files.filter(file => file.type.startsWith('image/') || file.type.startsWith('video/'));

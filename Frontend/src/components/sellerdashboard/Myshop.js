@@ -16,7 +16,6 @@ const Myshop = () => {
   //   const [userId, setUserId] = useState(null);
   const [shopname, setShopname] = useState(""); // State to store shop name
   const pageSize = 8;
-  console.log(shopname);
   // Retrieve user details from session storage
   const storedObject = sessionStorage.getItem("user-token");
   const myRetrievedObject = JSON.parse(storedObject);
@@ -30,7 +29,6 @@ const Myshop = () => {
         const res = await axios.get(
           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`
         );
-        console.log(res.data);
         if (res.data !== "Fail" && res.data !== "Error") {
           const filteredUserDetails = res.data.filter(
             //   console.log(item)

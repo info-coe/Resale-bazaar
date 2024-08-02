@@ -16,7 +16,6 @@ const Boy = () => {
   const [page, setPage] = useState(1);
   const pageSize = 8;
 
-  console.log(filteredProducts);
   useEffect(() => {
     fetchProducts(page);
   }, [page]);
@@ -26,7 +25,6 @@ const Boy = () => {
       const res = await axios.get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/kids?limit=${pageSize}&page=${pageNum}&category=Girl`
       );
-      console.log(res.data);
       if (res.data !== "Fail" && res.data !== "Error") {
         // Filter the products by category "Boy"
         const filterProducts = res.data;
@@ -91,7 +89,7 @@ const Boy = () => {
             <Filterdisplaynav
               pageSize={pageSize}
               setPageSize={() => {}}
-              productName="Boys Fashion"
+              productName="Girls Fashion"
             />
 
             <InfiniteScroll

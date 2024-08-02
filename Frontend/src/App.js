@@ -37,7 +37,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Notfound from "./Notfound";
 import Addnewproduct from "./components/sellerdashboard/Addnewproduct";
 import Shipments from "./components/sellerdashboard/Shipments";
-import Sellerorders from "./components/sellerdashboard/Sellerorders";
 import Sellerproducts from "./components/sellerdashboard/Sellerproducts";
 import Acceptproduct from "./components/admindashboard/acceptproduct";
 import Checkout from "./components/Checkoutpage";
@@ -66,100 +65,7 @@ import GuestCheckoutpage from "./components/GuestCheckoutpage";
 import GuestShippingdetails from "./components/GuestShippingdetails";
 import GuestFinalCheckout from "./components/GuestFinalCheckout";
 import GuestMailverification from "./components/GuestMailVerification";
-// const Home = React.lazy(() => import("./components/home"));
-// const Womenallproducts = React.lazy(() =>
-//   import("./components/women/Womenallproducts")
-// );
-// const Highendcouture = React.lazy(() =>
-//   import("./components/women/Highendcouture")
-// );
-// const Sarees = React.lazy(() => import("./components/women/Sarees"));
-// const Lehenga = React.lazy(() => import("./components/women/Lehenga"));
-// const Dresses = React.lazy(() => import("./components/women/Dresses"));
-// const Twinningoutfits = React.lazy(() =>
-//   import("./components/women/Twinningoutfits")
-// );
 
-// const Kidsallproducts = React.lazy(() =>
-//   import("./components/kids/kidsallproducts")
-// );
-// const Girl = React.lazy(() => import("./components/kids/Girl"));
-// const Boy = React.lazy(() => import("./components/kids/Boy"));
-
-// const Jewelryallcollection = React.lazy(() =>
-//   import("./components/jewelry/Jewelryallcollection")
-// );
-
-// const Login = React.lazy(() => import("./components/login"));
-// const Register = React.lazy(() => import("./components/register"));
-// const Customerinfo = React.lazy(() =>
-//   import("./components/customerdetails/customerinfo")
-// );
-// const ProtectedRoute = React.lazy(() => import("./components/ProtectedRoute"));
-// const Addresses = React.lazy(() =>
-//   import("./components/customerdetails/addresses")
-// );
-// const Addaddress = React.lazy(() =>
-//   import("./components/customerdetails/Addaddress")
-// );
-// const Orders = React.lazy(() => import("./components/customerdetails/Orders"));
-// const Changepassword = React.lazy(() =>
-//   import("./components/customerdetails/Changepassword")
-// );
-// const Productdetails = React.lazy(() => import("./components/Productdetails"));
-// const Aboutus = React.lazy(() => import("./components/Aboutus"));
-// const Contactus = React.lazy(() => import("./components/Contactus"));
-// const Selleraccount = React.lazy(() => import("./components/Selleraccount"));
-// const FAQ = React.lazy(() => import("./components/Faq"));
-// const Emailverification = React.lazy(() =>
-//   import("./components/Emailverification")
-// );
-// const Notfound = React.lazy(() => import("./Notfound"));
-// const Addnewproduct = React.lazy(() =>
-//   import("./components/sellerdashboard/Addnewproduct")
-// );
-// const Shipments = React.lazy(() =>
-//   import("./components/sellerdashboard/Shipments")
-// );
-// const Sellerorders = React.lazy(() =>
-//   import("./components/sellerdashboard/Sellerorders")
-// );
-// const Sellerproducts = React.lazy(() =>
-//   import("./components/sellerdashboard/Sellerproducts")
-// );
-// const Acceptproduct = React.lazy(() =>
-//   import("./components/admindashboard/acceptproduct")
-// );
-// const Checkout = React.lazy(() => import("./components/Checkoutpage"));
-// const Finalcheckoutpage = React.lazy(() =>
-//   import("./components/finalcheckoutpage")
-// );
-// const Cartitems = React.lazy(() => import("./components/Cartitems"));
-// const Forgotpassword = React.lazy(() => import("./components/Forgotpassword"));
-// const NecklacesChains = React.lazy(() =>
-//   import("./components/jewelry/NecklacesChains")
-// );
-// const BraceletsBangles = React.lazy(() =>
-//   import("./components/jewelry/BraceletsBangles")
-// );
-// const Earrings = React.lazy(() => import("./components/jewelry/Earrings"));
-// const Rings = React.lazy(() => import("./components/jewelry/Rings"));
-// const Offers = React.lazy(() => import("./components/sellerdashboard/Offers"));
-// const Search = React.lazy(() => import("./components/Search"));
-// const OrderPage = React.lazy(() =>
-//   import("./components/customerdetails/OrderPage")
-// );
-// const SellerProfile = React.lazy(() =>
-//   import("./components/sellerdashboard/SellerProfilePage")
-// );
-// const ContactSeller = React.lazy(() =>
-//   import("./components/sellerdashboard/ContactSeller")
-// );
-// const ReviewRatings = React.lazy(() =>
-//   import("./components/customerdetails/reviewsRatings")
-// );
-
-//ProtectedRoute
 
 function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -295,14 +201,7 @@ function App() {
                 </ProtectedRoute>
               }
             ></Route>
-            <Route
-              path="sellerorders"
-              element={
-                <ProtectedRoute>
-                  {isUserLoggedIn && <Sellerorders />}
-                </ProtectedRoute>
-              }
-            ></Route>
+ 
             <Route
               path="sellerproducts"
               element={

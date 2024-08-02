@@ -11,9 +11,7 @@ import kidstablet from "../images/RB-slide2.JPEG";
 import jewellerydesktop from "../images/RB-slide4.jpg";
 import jewellerymobile from "../images/RB-slide4.jpg";
 import jewellerytablet from "../images/RB-slide4.jpg";
-// import booksdesktop from "../images/RB-Books-banner.jpg";
-// import booksmobile from "../images/RB-Books-banner.jpg";
-// import bookstablet from "../images/RB-Books-banner.jpg";
+
 
 function CarouselComponent() {
   const windowWidth = window.innerWidth;
@@ -34,7 +32,6 @@ function CarouselComponent() {
       </div>
       
       <Carousel.Caption>
-        {/* <h5 className='bannerHead' >Womens Fashion</h5> */}
       </Carousel.Caption>
     </Carousel.Item>
     <Carousel.Item>
@@ -48,7 +45,6 @@ function CarouselComponent() {
       </div>
 
       <Carousel.Caption>
-        {/* <h5 className='bannerHead' >Kids Fashion</h5> */}
       </Carousel.Caption>
     </Carousel.Item>
     <Carousel.Item>
@@ -63,26 +59,10 @@ function CarouselComponent() {
       </div>
 
       <Carousel.Caption>
-        {/* <h5 className='bannerHead' >Jewellery</h5> */}
        
       </Carousel.Caption>
     </Carousel.Item>
-    {/* <Carousel.Item>
-    <div className='image-container'>
-
-            <img
-              className="d-block"
-              style={{ width: "100%", height: "100%", objectFit: "cover",backgroundRepeat:"no-repeat"}}
-              src={isMobile ? booksmobile : (isTablet ? bookstablet : booksdesktop)}
-              alt="First slide"
-            />
-      </div>
-
-      <Carousel.Caption>
-        <h5 className='bannerHead' >Books Collection</h5>
-       
-      </Carousel.Caption>
-    </Carousel.Item> */}
+    
   </Carousel>
   </div>
   )

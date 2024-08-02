@@ -131,8 +131,8 @@ useEffect(() => {
         <div className="mt-4">
   <h1 style={{fontSize:'20px'}}>Color</h1>
   <div className="d-flex flex-row flex-wrap align-items-start">
-    {colors.map((color) => (
-      <div className="d-flex flex-column text-center position-relative">
+    {colors.map((color, index) => (
+      <div className="d-flex flex-column text-center position-relative" key={index}>
         <button
           key={color.name}
           className={`btn ${selectedColor === color.name ? "active" : ""}`}

@@ -153,12 +153,7 @@ const Checkout = () => {
     setFields({ ...fields, state: selectedOption ? selectedOption.value : "" });
   };
 
-  const handleChange1 = (selectedOption) => {
-    setNewFields({
-      ...newFields,
-      state: selectedOption ? selectedOption.value : "",
-    });
-  };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -170,15 +165,7 @@ const Checkout = () => {
     setNewFields({ ...newFields, [name]: value });
   };
 
-  // const handleCheckboxChange = (e) => {
-  //   const { value, checked } = e.target;
-  //   setSelectedOption(checked ? value : "");
-  //   if (checked && selectedBillingAddress) {
-  //     setSelectedShippingAddress(selectedBillingAddress);
-  //   } else {
-  //     setSelectedShippingAddress(null);
-  //   }
-  // };
+
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     setSelectedOption(checked ? value : "same"); // Update the selected option
@@ -271,77 +258,7 @@ const Checkout = () => {
     setSkipShippingAddress(e.target.checked);
   };
 
-  // const createPayment = async () => {
-  //   setDisabled(true);
-  //   try {
-  //     let shippingAddressData = {};
-  //     let billingAddressData = {};
-
-  //     if (selectedBillingAddress && selectedShippingAddress) {
-  //       console.log(
-  //         "Skipping Axios POST requests for shipping and billing addresses"
-  //       );
-  //       setDisabled(false);
-  //     } else {
-  //       if (skipShippingAddress) {
-  //         shippingAddressData = fields;
-  //         billingAddressData = fields;
-  //       } else {
-  //         if (selectedOption === "same") {
-  //           shippingAddressData = fields;
-  //           billingAddressData = fields;
-  //         } else {
-  //           if (selectedOption === "new") {
-  //             shippingAddressData = newFields;
-  //           } else {
-  //             shippingAddressData = fields;
-  //           }
-  //           billingAddressData = fields;
-  //         }
-  //       }
-
-  //       // Send shipping address to backend if it's not null
-  //       if (shippingAddressData !== null && !selectedShippingAddress) {
-  //         const token = sessionStorage.getItem("user-token");
-  //         await axios.post(
-  //           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveShippingAddress`,
-  //           {
-  //             shippingAddress: shippingAddressData,
-  //             token: token,
-  //           }
-  //         );
-  //       }
-
-  //       if (
-  //         billingAddressData !== null &&
-  //         (!selectedBillingAddress || selectedOption === "new")
-  //       ) {
-  //         const token = sessionStorage.getItem("user-token");
-  //         await axios.post(
-  //           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/saveBillingAddress`,
-  //           {
-  //             billingAddress: billingAddressData,
-  //             token: token,
-  //           }
-  //         );
-  //       }
-  //     }
-
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
-  //       {
-  //         product: cartItems,
-  //         from: "finalcheckoutpage",
-  //       }
-  //     );
-  //     window.location.href = response.data.url;
-  //   } catch (error) {
-  //     console.error(
-  //       "Error creating payment:",
-  //       error.response ? error.response.data : error.message
-  //     );
-  //   }
-  // };
+  
   const createPayment = async () => {
     setDisabled(true);
     try {
@@ -782,7 +699,7 @@ const Checkout = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Adress2"
+                      placeholder="Adress2 (Optional)"
                       name="address2"
                       value={fields.address2}
                       onChange={handleInputChange}
@@ -818,7 +735,7 @@ const Checkout = () => {
                   onClick={handleContinue}
                 >
                   {" "}
-                  <i class="bi bi-arrow-right-square me-1 me-1"></i>
+                  <i className="bi bi-arrow-right-square me-1 me-1"></i>
                   Continue
                 </button>
               </>
@@ -964,7 +881,7 @@ const Checkout = () => {
                         <input
                           type="text"
                           className="form-control mb-2"
-                          placeholder="Address2"
+                          placeholder="Address2 (Optional)"
                           name="address2"
                           value={newFields.address2}
                           onChange={handleInputChange1}

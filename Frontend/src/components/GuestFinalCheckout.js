@@ -85,9 +85,7 @@ export default function GuestFinalCheckout() {
   };
 
   return (
-    // <div>
-    //   {notification ? <div>{notification.message}</div> : <div>Loading...</div>}
-    // </div>
+    
     <>
 <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '100vh' }}>
       {notification && (

@@ -158,60 +158,7 @@ export default function Menu() {
             </div>
           </div>
 
-          {/* <div className="accordion-item">
-            <h2 className="accordion-header" id="flush-headingFive">
-              <button
-                className="accordion-button collapsed p-2"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseFive"
-                aria-expanded="false"
-                aria-controls="flush-collapseFive"
-              >
-                <div>
-                  <span>
-                    {" "}
-                    <b>BOOKS</b>
-                  </span>
-                </div>
-              </button>
-            </h2>
-            <div
-              id="flush-collapseFive"
-              className="accordion-collapse collapse"
-              aria-labelledby="flush-headingFive"
-              data-bs-parent="#accordionFlushExample"
-            >
-              <div className="accordion-body p-0">
-                <ul className="list-group">
-                <Link
-                    to="/fiction"
-                    className="text-decoration-none text-dark"
-                  >
-                    <li className="list-group-item">Fiction</li>
-                  </Link>
-                  <Link
-                    to="/drama"
-                    className="text-decoration-none text-dark"
-                  >
-                    <li className="list-group-item">Drama</li>
-                  </Link>
-                  <Link
-                    to="/fantasy"
-                    className="text-decoration-none text-dark"
-                  >
-                    <li className="list-group-item">Fantasy</li>
-                  </Link>
-                  <Link
-                    to="/horror"
-                    className="text-decoration-none text-dark"
-                  >
-                    <li className="list-group-item">Horror</li>
-                  </Link>
-                </ul>
-              </div>
-            </div>
-          </div> */}
+         
         </div>
       </div>
     </>

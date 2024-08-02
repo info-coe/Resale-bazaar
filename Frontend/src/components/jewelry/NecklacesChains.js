@@ -87,7 +87,7 @@ const NecklacesChains = () => {
             <Filterdisplaynav
               pageSize={pageSize}
               setPageSize={() => {}}
-              productName="Bangles"
+              productName="Necklaces"
             />
 
             <InfiniteScroll

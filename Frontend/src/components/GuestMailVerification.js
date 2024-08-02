@@ -10,8 +10,8 @@ export default function GuestMailverification() {
   const [notification, setNotification] = useState(null);
   const location = useLocation();
   const data = location.state;
-  const [values, setValues] = useState(data.user);
-  const product = [data.product];
+  const [values, setValues] = useState(data?.user || null);
+  const product = [data?.product || null];
   const [errorMessage, setErrorMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   const [showVerification, setShowVerification] = useState(false);
@@ -31,7 +31,7 @@ export default function GuestMailverification() {
     const otp = document.querySelector(".otp_num").value;
     axios
       .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/verify`, {
-        email: values.email,
+        email: values?.email || "",
         otp: otp,
       })
       .then((res) => {
@@ -74,7 +74,7 @@ export default function GuestMailverification() {
       <div className="d-flex justify-content-center">
         <div className="container m-4">
           <div className="text-end">
-            <Link to="/register" className="text-decoration-none">
+            <Link to="/guestcheckout" className="text-decoration-none">
               Back
             </Link>
           </div>
@@ -85,14 +85,14 @@ export default function GuestMailverification() {
                 type="email"
                 name="email"
                 className="form-control"
-                value={values.email}
+                value={values?.email || ""}
                 onChange={handleChange}
                 style={{width:"280px"}}
                 disabled
               />
             </div>
             <div className="col-auto mt-2 mb-2">
-              <button className="btn btn-primary" onClick={sendOTP}  disabled={otpSent}>
+              <button className="btn btn-primary" onClick={sendOTP}  disabled={otpSent || values=== null}>
                 Send OTP
               </button>
             </div>

@@ -86,7 +86,7 @@ const Earrings = () => {
             <Filterdisplaynav
               pageSize={pageSize}
               setPageSize={() => {}}
-              productName="Bangles"
+              productName="Earrings"
             />
 
             <InfiniteScroll

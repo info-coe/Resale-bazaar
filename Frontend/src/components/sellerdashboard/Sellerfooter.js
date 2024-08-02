@@ -29,19 +29,15 @@ export default function Sellerfooter() {
   return (
     <div className="border">
       <footer>
-        <p className="d-md-flex justify-content-around text-center p-1">
+        <div className="d-md-flex justify-content-around text-center p-1">
           <p className="fs-6">
             Powered by{" "}
-            {/* <Link
-              to="https://infomericainc.com"
-              className="text-decoration-none"
-            > */}
+           
               TheResaleBazaar
-            {/* </Link> */}
           </p>
           <p>{formatDate(currentDateTime)}</p>
           <p>{formatTime(currentDateTime)}</p>
-        </p>
+        </div>
       </footer>
     </div>
   );

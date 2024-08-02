@@ -40,7 +40,6 @@ const MyNavbar = () => {
     guest_product,
     setGuest_product
   } = useCart();
-  console.log(wishItems)
   const handleMoveSelectedToCart = () => {
     moveFromWishlistToCart();
   };
@@ -155,29 +154,7 @@ const MyNavbar = () => {
       .catch((error) => {
         console.error("Error fetching wishlist items:", error);
       });
-    // axios
-    // .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`)
-    // .then((response) => {
-    //   if (response.data !== "Fail" && response.data !== "Error") {
-    //     if (sessionStorage.getItem("user-token") !== null) {
-    //       sessionStorage.getItem("token") === "user" &&
-    //         setCartItems(
-    //           response.data.filter(
-    //             (item) =>
-    //               item.userid.toString() ===
-    //                 sessionStorage.getItem("user-token")
-    //           )
-    //         );
-    //     } else {
-    //       setCartItems(response.data.filter((item) => item.userid === null));
-    //     }
-    //   } else {
-    //     console.log("No Items in the cart");
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.error("Error fetching cart items:", error);
-    // });
+   
 
     axios
       .get(
@@ -231,9 +208,6 @@ const MyNavbar = () => {
     }
   };
 
-  // const handleChange = (event) => {
-  //   setSearchTerm(event.target.value);
-  // };
 
   return (
     <>
@@ -453,7 +427,7 @@ const MyNavbar = () => {
                             to="/contactseller"
                             className="text-decoration-none text-dark ps-3"
                           >
-                            <i class="bi bi-person-rolodex"></i> Contact Sellers
+                            <i className="bi bi-person-rolodex"></i> Contact Sellers
                           </Link>
                         </li>
                       </>

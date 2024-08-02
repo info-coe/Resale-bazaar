@@ -207,7 +207,6 @@ export default function Acceptproduct() {
     axios
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/adminproducts`)
       .then((res) => {
-        console.log(res.data);
 
         if (res.data !== "Fail" && res.data !== "Error") {
           setProducts(res.data);

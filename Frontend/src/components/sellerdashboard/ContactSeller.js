@@ -7,7 +7,6 @@ import Scrolltotopbtn from "../Scrolltotopbutton";
 const ContactSeller = () => {
   const [contactData,SetContactData]=useState([])
   const SellerId = parseInt(sessionStorage.getItem("user-token"));
-  console.log(SellerId)
 
   useEffect(() => {
     // Fetch all products

@@ -29,7 +29,7 @@ export default function Adminfooter() {
   return (
     <div className="border">
       <footer className="">
-        <p className="d-md-flex justify-content-around text-center p-1">
+        <div className="d-md-flex justify-content-around text-center p-1">
           <p className="fs-6">
             Powered by{" "}
             {/* <Link
@@ -41,7 +41,7 @@ export default function Adminfooter() {
           </p>
           <p>{formatDate(currentDateTime)}</p>
           <p>{formatTime(currentDateTime)}</p>
-        </p>
+        </div>
       </footer>
     </div>
   );

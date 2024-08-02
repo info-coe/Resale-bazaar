@@ -12,7 +12,6 @@ function ReviewRatings() {
   const location = useLocation();
   const { filteredProducts } = location.state || {};
   const productData = filteredProducts || {}
-  console.log(productData)
   const sellerID = productData.seller_id
   const buyerID = productData.buyer_id
   const [activeRating, setActiveRating] = useState(0);
@@ -100,8 +99,9 @@ function ReviewRatings() {
         images: [] 
       });
       setNotification({ message: 'Review added successfully', type: 'success' });
-      setTimeout(() => setNotification(null), 3000);
-      window.location.reload(false)
+      setTimeout(() => {setNotification(null);
+      window.location.reload(false);
+    },5000);
       window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/`;
 
     } catch (error) {

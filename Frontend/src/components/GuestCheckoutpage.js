@@ -37,7 +37,7 @@ const GuestCheckoutpage = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           setProducts(res.data); // Assuming response.data contains the product array
-          console.log(products)
+          // console.log(products)
         }
       })
       .catch((error) => {
@@ -73,21 +73,7 @@ const GuestCheckoutpage = () => {
     }
   };
 
-  const handleQuantityChange = (product, newQuantity) => {
-    const availableProduct = products.find((p) => p.id === product.id);
-    if (newQuantity > availableProduct.quantity) {
-      setMessage(
-        `Cannot increase quantity beyond available stock: ${availableProduct.quantity}`
-      );
-    } else {
-      setMessage("");
-      setProduct((prevItems) => {
-        return prevItems.id === product.id
-          ? { ...prevItems, quantity: newQuantity }
-          : prevItems;
-      });
-    }
-  };
+  
   const productImage = product.image ? JSON.parse(product.image) : [];
 
   return (
@@ -95,55 +81,7 @@ const GuestCheckoutpage = () => {
       <MyNavbar />
       <main>
         <div className="">
-          {/* <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">
-            <div className="col-md-6">
-              <div className="card bg-white shadow mb-3">
-                <div className="card-body d-md-flex">
-                  <div className="d-flex justify-content-center">
-                    <img
-                      src={productImage[0]}
-                      alt="productIMG"
-                      width="250"
-                      height="250"
-                      // className='guestproductImg'
-                      style={{ objectFit: "contain" }}
-                    />
-                  </div>
-                  <div className="p-2" style={{ lineHeight: "35px" }}>
-                    <b>Name</b>: {product.name} <br />
-                    <b>Color</b>: {product.color} <br />
-                    <div className="d-flex align-items-center">
-                      <b>QTY </b> :&nbsp;
-                      <button
-                        className="btn btn-sm btn-outline-secondary me-2"
-                        onClick={() =>
-                          handleQuantityChange(product, product.quantity - 1)
-                        }
-                        disabled={product.quantity <= 1}
-                      >
-                        -
-                      </button>
-                      <span>{product.quantity}</span>
-                      <button
-                        className="btn btn-sm btn-outline-secondary ms-2"
-                        onClick={() =>
-                          handleQuantityChange(product, product.quantity + 1)
-                        }
-                      >
-                        +
-                      </button>
-                    </div>
-                    <b>Price</b>: &#36; {product.price * product.quantity} <br />
-                  </div>
-                </div>
-                {message && (
-                  <div className="container">
-                    <div className="alert alert-warning">{message}</div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div> */}
+         
           <div className="mb-4">
             <form method="post" onSubmit={handleSubmit}>
               <div className="">
@@ -162,8 +100,7 @@ const GuestCheckoutpage = () => {
                       name="firstname"
                       onChange={handleInput}
                       placeholder="Enter First Name"
-                      // pattern="[A-Z][a-z]*\s*\w*"
-                      // title="First letter should be uppercase, remaining letters are lowercase. No special characters"
+                    
                       required
                     />
                     <span className="text-danger fs-4"> &nbsp;*</span>
@@ -184,8 +121,7 @@ const GuestCheckoutpage = () => {
                       name="lastname"
                       onChange={handleInput}
                       placeholder="Enter Last Name"
-                      // pattern="[A-Z][a-z]*\s*\w*"
-                      // title="First letter should be uppercase, remaining letters are lowercase. No special characters"
+                     
                       required
                     />
                     <span className="text-danger fs-4"> &nbsp;*</span>

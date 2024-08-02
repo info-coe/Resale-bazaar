@@ -113,36 +113,36 @@ const GuestShippingdetails = () => {
   const [disabled, setDisabled] = useState(false);
   const location = useLocation();
   const data = location.state;
-  const user = data.user;
+  const user = data?.user || null;
   const product = JSON.parse(sessionStorage.getItem("guest_products")) || [];
   const totalPrice = product[0].price * product[0].quantity;
   sessionStorage.setItem("guest_user", JSON.stringify(user));
   const [errorMessage, setErrorMessage] = useState("");
 
   const [step, setStep] = useState(1);
-  const [fields, setFields] = useState({
-    firstname: user.firstname,
-    lastname: user.lastname,
-    email: user.email,
+  const [fields, setFields] = useState({ 
+    firstname: user?.firstname || "",
+    lastname: user?.lastname || "",
+    email: user?.email || "",
     country: "United States",
     state: "",
     city: "",
     address1: "",
     address2: "",
     pincode: "",
-    phone: user.phone,
+    phone: user?.phone || "",
   });
   const [newFields, setNewFields] = useState({
-    firstname: user.firstname,
-    lastname: user.lastname,
-    email: user.email,
+    firstname: user?.firstname || "",
+    lastname: user?.lastname || "",
+    email: user?.email || "",
     country: "United States",
     state: "",
     city: "",
     address1: "",
     address2: "",
     pincode: "",
-    phone: user.phone,
+    phone: user?.phone || "",
   });
   const stateOptions = USA_STATES.map(state => ({ value: state, label: state }));
 
@@ -210,6 +210,8 @@ const GuestShippingdetails = () => {
 
   const handleBack = () => {
     if (step === 4 && skipShippingAddress) {
+      setStep(3);
+    } else if (step === 3 && skipShippingAddress) {
       setStep(1);
     } else {
       setStep(step - 1);
@@ -432,7 +434,7 @@ const GuestShippingdetails = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Adress2"
+                      placeholder="Adress2 (Optional)"
                       name="address2"
                       value={fields.address2}
                       onChange={handleInputChange}
@@ -442,10 +444,12 @@ const GuestShippingdetails = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="ZIP code"
+                      placeholder="ZIP Code"
                       name="pincode"
                       value={fields.pincode}
                       pattern="[0-9]{5}"
+                      minLength={5}
+                      maxLength={5}
                       title="Please enter exactly 5 digits"
                       onChange={handleInputChange}
                       required
@@ -468,7 +472,7 @@ const GuestShippingdetails = () => {
                   onClick={handleContinue}
                 >
                   {" "}
-                  <i class="bi bi-arrow-right-square me-1 me-1"></i>
+                  <i className="bi bi-arrow-right-square me-1 me-1"></i>
                   Continue
                 </button>
               </>
@@ -626,7 +630,7 @@ const GuestShippingdetails = () => {
                         <input
                           type="text"
                           className="form-control mb-2"
-                          placeholder="Adress2"
+                          placeholder="Adress2 (Optional)"
                           name="address2"
                           value={newFields.address2}
                           onChange={handleInputChange1}
@@ -637,11 +641,13 @@ const GuestShippingdetails = () => {
                         <input
                           type="text"
                           className="form-control mb-2"
-                          placeholder="ZIP code"
+                          placeholder="ZIP Code"
                           name="pincode"
                           value={newFields.pincode}
                           onChange={handleInputChange1}
                           pattern="[0-9]{5}"
+                          minLength={5}
+                          maxLength={5}
                           title="Please enter exactly 5 digits"
                           required
                         />

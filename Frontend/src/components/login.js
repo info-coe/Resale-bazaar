@@ -10,17 +10,7 @@ import Scrolltotopbtn from "./Scrolltotopbutton";
 import Notification from "./Notification";
 
 const Login = () => {
-  // sessionStorage.clear();
-  // useEffect(()=>{
-  //   axios
-  //   .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/`)
-  //   .then(res=>{
-  //     // console.log(res)
-  //     sessionStorage.setItem("productAccessToken", res.data.accessToken);
-  //   }).catch((error) => {
-  //     console.log("Error fetching data:", error);
-  //   });
-  // },[]);
+ 
   const { setUserData, cartItems, guest_product, addToCart } = useData();
   // eslint-disable-next-line no-unused-vars
   const [values, setValues] = useState({
@@ -57,10 +47,8 @@ const Login = () => {
               { username: res.data.email }
             )
             .then((res) => {
-              // console.log(res)
               if (res.data !== "Error") {
-                // sessionStorage.setItem("accessToken", res.data.accessToken)
-                // setAuthToken(res.data.accessToken);
+               
                 if (res.data === "Fail") {
                   axios
                     .post(
@@ -119,10 +107,7 @@ const Login = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 //eslint-disable-next-line no-unused-vars
-  const logOut = () => {
-    googleLogout();
-    setProfile(null);
-  };
+ 
 
   const handleInput = (event) => {
     setValues((prev) => ({

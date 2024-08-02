@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-// import { FaCheck } from 'react-icons/fa';
 
 const OfferModal = () => {
   const [show, setShow] = useState(false);

@@ -20,7 +20,7 @@ const OrderPage = () => {
     ];
 
     setOrderStages(stages);
-  }, [productData]);
+  }, []);
   const styles = `
     .progress-dot-bar {
       display: flex;

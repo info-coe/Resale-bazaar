@@ -86,7 +86,7 @@ const Rings = () => {
             <Filterdisplaynav
               pageSize={pageSize}
               setPageSize={() => {}}
-              productName="Bangles"
+              productName="Rings"
             />
 
             <InfiniteScroll

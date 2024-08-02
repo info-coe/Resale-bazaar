@@ -30,7 +30,6 @@ const Jewelryallcollection = () => {
       const res = await axios.get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/jewelleryall?limit=${pageSize}&page=${pageNum}&category=jewellery`
       );
-console.log(res.data)
       if (res.data !== "Fail" && res.data !== "Error") {
         const filterProducts = res.data;
 
