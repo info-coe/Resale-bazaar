@@ -94,38 +94,6 @@ export default function Productdetails() {
     window.location.href = "/Resale-bazaar/acceptproduct";
   };
 
-  // const handleAddToCart = () => {
-  //   const isProductInCart = cartItems.some(
-  //     (item) => item.product_id === productdetails.id
-  //   );
-  //   if (isProductInCart) {
-  //     setNotification({ message: 'Product already exists in the cart', type: 'error' });
-  //     setTimeout(() => setNotification(null), 3000);
-  //   } else if (isLoggedIn) {
-  //     addToCart(productdetails, "main");
-  //   } else {
-  //     navigate("/login");
-  //   }
-  // };
-
-  // const handleAddToCart = () => {
-  //   if (cartItems.length > 0) {
-  //     var unique_item = true;
-  //     cartItems.map((item) => {
-  //       if (item.id === productdetails.id) {
-  //         alert("Product already exists in the cart");
-  //         unique_item = false;
-  //         //eslint-disable-next-line array-callback-return
-  //         return;
-  //       }
-  //       return null;
-  //     });
-  //     unique_item && sessionStorage.setItem("guest_product",JSON.stringify(productdetails));
-  //   } else {
-  //     sessionStorage.setItem("guest_product",JSON.stringify(productdetails));
-  //   }
-  // };
-
   const handleAddToCart = () => {
     if (isLoggedIn) {
       if (cartItems.length > 0) {
@@ -187,7 +155,6 @@ export default function Productdetails() {
   };
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  // const [currentProduct, setCurrentProduct] = useState(productdetails);
   const productDetailsImgRef = useRef(null);
   const activeSubimageRef = useRef(null);
   const carouselRef = useRef(null);
@@ -275,9 +242,6 @@ export default function Productdetails() {
     }
   };
 
-  // sessionStorage.getItem("user-token")===null ? alert('Please Login') : "#exampleModal";
-  //Offer
-
   const filte = offer.filter(
     (cur) =>
       cur.offered_buyer_id === parseInt(sessionStorage.getItem("user-token"))
@@ -289,7 +253,6 @@ export default function Productdetails() {
         parseInt(sessionStorage.getItem("user-token")) &&
       curr.product_id === productdetails.id &&
       curr.product_status === "Accepted"
-      // && curr.offered_buyer_id!==sessionStorage.getItem("user-token")
     );
   });
 
@@ -298,21 +261,16 @@ export default function Productdetails() {
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
-          // Filter user details where user_id === productdetails.seller_id
-          // const filteredUserDetails = res.data.filter(
           const filteredUserDetails = res.data.filter(
             (item) => item.user_id === productdetails.seller_id
           );
-          // Map filtered details to desired structure
           const userDetails = filteredUserDetails.map((item) => ({
             userId: item.user_id,
             email: item.email,
             phone: item.phone,
             name: item.firstname + " " + item.lastname,
             shopname: item.shopname,
-            //Add more fields as needed
           }));
-          // console.log(userDetails)
           setUserDetails(userDetails);
         }
       })
@@ -321,9 +279,7 @@ export default function Productdetails() {
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`
       )
-
       .then((e) => {
-        // console.log(e.data);
         if (e.data !== "Fail" && e.data !== "Error") {
           setOffer(e.data);
         }
@@ -333,36 +289,9 @@ export default function Productdetails() {
 
   const navigates = useNavigate();
   const handleViewProfile = (sellerId) => {
-    // Navigate to seller profile page with sellerId as a parameter
     navigates(`/sellerprofile/${sellerId}`, { state: { userDetails } });
   };
 
-  // const toggleLike = async (productId, sellerId) => {
-  //   if (!isLoggedIn) {
-  //     navigate('/login');
-  //     return;
-  //   }
-
-  //   if (liked) {
-  //     console.log('You have already liked this product.');
-  //     return;
-  //   }
-
-  //   const newLikeCount = likeCount + 1;
-
-  //   try {
-  //     await axios.put(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${productId}/allproducts`, {
-  //       likeCount: newLikeCount
-  //     });
-
-  //     setLiked(true);
-  //     setLikeCount(newLikeCount);
-  //   } catch (error) {
-  //     console.error('Error updating like count:', error);
-  //   }
-  // };
-  // console.error('Error updating like count:', error);
-  // console.log(userdetails);
   useEffect(() => {
     fetchLikeCount();
     checkIfLiked();
@@ -404,7 +333,6 @@ export default function Productdetails() {
       let action = "";
 
       if (liked) {
-        // Unlike the product
         newLikeCount -= 1;
         await axios.post(
           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}/likes`,
@@ -416,7 +344,6 @@ export default function Productdetails() {
         );
         action = "unliked";
       } else {
-        // Like the product
         newLikeCount += 1;
         await axios.post(
           `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/products/${productId}/likes`,
@@ -431,7 +358,6 @@ export default function Productdetails() {
 
       setLiked(!liked);
       setLikeCount(newLikeCount);
-      // console.log(`Product ${action} successfully.`);
     } catch (error) {
       console.error("Error toggling like:", error);
       setNotification({
@@ -481,7 +407,6 @@ export default function Productdetails() {
             >
               {/* Initial display of firstImage */}
               <img
-                // src={`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/images/${firstImage}`}
                 src={firstImage}
                 alt="product"
                 className="productdetailsimg"
@@ -752,12 +677,6 @@ export default function Productdetails() {
               admin !== "admin" ? (
                 <>
                   <div className="">
-                    {/* <div className="d-flex">
-                      <> QTY </>: &nbsp;
-                      <select className="form-select" style={{ width: "90px" }}>
-                        <option value={1}>1</option>
-                      </select>
-                    </div> */}
                     <div className="container">
                       {sessionStorage.getItem("token") === "admin" ? null : (
                         <div className="row ">
@@ -776,7 +695,6 @@ export default function Productdetails() {
                               className="btn btn-outline-secondary w-100"
                               onClick={handleAddToWishlist}
                             >
-                              {/* <i className="bi bi-heart-fill" />  */}
                               <b> ADD TO WISHLIST</b>
                             </button>
                           </div>
@@ -858,7 +776,7 @@ export default function Productdetails() {
                                         style={{
                                           maxWidth: "100%",
                                           maxHeight: "150px",
-                                        }} // Adjust the maxHeight as needed
+                                        }}
                                       />
                                       <span style={{ fontSize: "0.75rem" }}>
                                         {/* Enter Your Offer */}
@@ -887,12 +805,6 @@ export default function Productdetails() {
                                               }}
                                             />
                                           </div>
-
-                                          {/* <div className="col-auto">
-                                            <i style={{ fontSize: "0.75rem" }}>
-                                              &#36; 6.29 shipping
-                                            </i>
-                                          </div> */}
                                         </div>
                                       </div>
 
