@@ -13,17 +13,14 @@ const Myshop = () => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("all");
-  //   const [userId, setUserId] = useState(null);
-  const [shopname, setShopname] = useState(""); // State to store shop name
+  const [shopname, setShopname] = useState("");
   const pageSize = 8;
-  // Retrieve user details from session storage
   const storedObject = sessionStorage.getItem("user-token");
   const myRetrievedObject = JSON.parse(storedObject);
 
-  // Fetch shop details
   useEffect(() => {
     const fetchShopname = async () => {
-      if (!myRetrievedObject) return; // Ensure userId is available before fetching
+      if (!myRetrievedObject) return;
 
       try {
         const res = await axios.get(
@@ -31,7 +28,6 @@ const Myshop = () => {
         );
         if (res.data !== "Fail" && res.data !== "Error") {
           const filteredUserDetails = res.data.filter(
-            //   console.log(item)
             (item) => item.user_id === myRetrievedObject
           );
           if (filteredUserDetails.length > 0) {
@@ -60,10 +56,12 @@ const Myshop = () => {
     if (myRetrievedObject) {
       fetchProducts(page);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, myRetrievedObject]);
 
   useEffect(() => {
     applyFilter(filter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products, filter]);
 
   const fetchProducts = async (pageNum) => {

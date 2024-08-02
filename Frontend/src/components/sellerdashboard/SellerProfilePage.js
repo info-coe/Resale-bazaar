@@ -17,9 +17,6 @@ const SellerProfile = () => {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("all");
   const pageSize = 8;
-  // const { state } = useLocation();
-  // const userDetails = state.userDetails[0];
-  // console.log(sellerId);
   const [notification, setNotification] = useState(null);
   const [sellerDetails, setSellerDetails] = useState([]);
   const [formData, setFormData] = useState({
@@ -28,7 +25,6 @@ const SellerProfile = () => {
     phone: "",
     comment: "",
   });
-  // console.log(sellerDetails);
   const nameInputRef = useRef(null);
   const commentInputRef = useRef(null);
 
@@ -36,10 +32,12 @@ const SellerProfile = () => {
 
   useEffect(() => {
     fetchProducts(page);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   useEffect(() => {
     applyFilter(filter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products, filter]);
 
   useEffect(() => {
@@ -47,29 +45,21 @@ const SellerProfile = () => {
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
-          // Filter user details where user_id === productdetails.seller_id
-          // const filteredUserDetails = res.data.filter(
-          // console.log(res.data)
-          // console.log(sellerId)
           const filteredUserDetails = res.data.filter(
-            (item) => item.user_id == sellerId
+            (item) => item.user_id.toString() === sellerId.toString()
           );
-
-          // Map filtered details to desired structure
           const userDetails = filteredUserDetails.map((item) => ({
             userId: item.user_id,
             email: item.email,
             phone: item.phone,
             name: item.firstname + " " + item.lastname,
             shopname: item.shopname,
-            //Add more fields as needed
           }));
-
-          // console.log(userDetails[0].userId)
           setSellerDetails(userDetails);
         }
       })
       .catch((err) => console.log(err));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchProducts = async (pageNum) => {
@@ -183,6 +173,7 @@ const SellerProfile = () => {
       });
   };
 
+  // eslint-disable-next-line no-unused-vars
   const renderStarRatings = (rating) => {
     const stars = [];
     const filledStars = Math.floor(rating);

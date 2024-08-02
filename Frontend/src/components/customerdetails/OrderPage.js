@@ -11,15 +11,14 @@ const OrderPage = () => {
   const [orderStages, setOrderStages] = useState([]);
 
   useEffect(() => {
-    // Example logic to determine order stages based on order data
     const stages = [
       { title: 'Order Placed', isCompleted: productData.ordered_date !== null },
       { title: 'Shipped', isCompleted: productData.shipped_date !== null },
       { title: 'Arrived', isCompleted:  productData.delivered_date !== null  }, 
       { title: 'Delivered', isCompleted: productData.delivered_date !== null }
     ];
-
     setOrderStages(stages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const styles = `
     .progress-dot-bar {

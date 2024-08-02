@@ -119,36 +119,6 @@ const s3 = new S3Client({
   },
 });
 
-// Define storage for multer
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'public/images'); // Destination directory for uploaded files
-//   },
-//   // filename: (req, file, cb) => {
-//   //   const uniqueSuffix = Date.now(); // Generate a unique identifier
-//   //   const fileExtension = path.extname(file.originalname); // Get the file extension
-//   //   const filename = `file_${uniqueSuffix}${fileExtension}`; // Construct the filename with extension
-//   //   cb(null, filename); // Callback to set the filename
-//   // }
-//   filename: (req, file, cb) => {
-//     const fileExtension = path.extname(file.originalname); // Get the file extension
-//     const filename = `file_${uuidv4()}${fileExtension}`; // Generate a unique filename with UUID
-//     cb(null, filename); // Callback to set the filename
-//   }
-// });
-
-// Multer upload instance
-// const upload = multer({
-//   storage: storage,
-//   limits: {
-//     fileSize: 1024 * 1024 * 200 // Limit file size to 20MB (adjust as needed)
-//   },
-//   fileFilter: (req, file, cb) => {
-//     // Validate file type here if needed
-//     cb(null, true); // Accept the file
-//   }
-// });
-
 const upload = multer({
   storage: multerS3({
     s3: s3,
@@ -163,20 +133,7 @@ const upload = multer({
     },
   }),
 });
-// app.post('/upload', upload.array('images', 3), async (req, res) => {
-//   try {
-//     const imageUrls = req.files.map(file => {
-//       const s3Url = file.location.replace('s3.amazonaws.com', 's3.us-east-1.amazonaws.com');
-//       return s3Url;
-//     });
 
-//     // Save imageUrls in the database
-//     // Example: await Product.update({ images: JSON.stringify(imageUrls) }, { where: { id: productId } });
-//     res.status(200).send({ imageUrls });
-//   } catch (error) {
-//     res.status(500).send(error);
-//   }
-// });
 // CORS middleware
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -287,31 +244,6 @@ app.post("/verify", (req, res) => {
     res.status(500).send("Invalid OTP");
   }
 });
-// const sendPurchaseConfirmationEmail = (email, product_name) => {
-//   const mailOptions = {
-//     from: process.env.REACT_APP_FROMMAIL,
-//     to: email,
-//     subject: "Purchase Confirmation from The Resale Bazaar",
-//     generateTextFromHTML: true,
-//     html: `Thank you for your purchase! Your order is <b>${product_name}</b>.`,
-//   };
-
-//   return smtpTransport.sendMail(mailOptions);
-// };
-// const getUserByEmailToken = (token) => {
-//   return new Promise((resolve, reject) => {
-//     const query = "SELECT email FROM register WHERE user_id = ?";
-//     db.query(query, [token], (error, results) => {
-//       if (error) {
-//         return reject(error);
-//       }
-//       if (results.length === 0) {
-//         return reject(new Error('User not found'));
-//       }
-//       resolve(results[0]);
-//     });
-//   });
-// };
 
 const sendPurchaseConfirmationEmail = (email, subject, message) => {
   const mailOptions = {
@@ -339,9 +271,6 @@ const getUserById = (userId) => {
     });
   });
 };
-
-
-
 
 db.query(createDatabaseQuery, (err) => {
   if (err) throw err;
@@ -967,19 +896,6 @@ app.post("/updateproducts", (req, res) => {
   });
 });
 
-// app.post("/updateOrder",(req, res) => {
-//   const shipped_date = req.body.shipped_date;
-//   const shipment_id = req.body.shipment_id;
-//   const sql = "UPDATE orders SET shipped_date = ? WHERE shipment_id = ?";
-//   db.query(sql, [shipped_date, shipment_id], (err, result) => {
-//     if (err) {
-//       console.error("Error updating order:", err);
-//       res.status(500).json({ error: "Error updating order" });
-//       return;
-//     }
-//     return res.json(result);
-//   })
-// })
 app.post("/updateOrder", (req, res) => {
   const { shipment_id, shipped_date, delivered_date } = req.body;
 
@@ -1099,9 +1015,6 @@ app.put("/handleproducts/:id", upload.array("images", 6), (req, res) => {
     accepted_by_admin,
   } = req.body;
 
-  // const adminAcceptRequest= req.body.adminAccept;
-  // console.log(adminAcceptRequest)
-
   const deletedImages = JSON.parse(req.body.deletedImages || "[]");
 
   // Fetch existing images from the database
@@ -1196,45 +1109,6 @@ app.delete("/handleproducts/:id", (req, res) => {
   });
 });
 
-// app.post("/addcart", (req, res) => {
-//   // const productData = req.body;
-//   var productid;
-//   if (req.body.from === "wish") {
-//     productid = req.body.product.product_id;
-//   } else {
-//     productid = req.body.product.id;
-//   }
-
-//   const sql = addToCartQuery;
-//   const data = [
-//     productid,
-//     req.body.product.product_type,
-//     req.body.product.category,
-//     req.body.product.name,
-//     req.body.product.image,
-//     req.body.product.description,
-//     req.body.product.location,
-//     req.body.product.color,
-//     req.body.product.alteration,
-//     req.body.product.size,
-//     req.body.product.measurements,
-//     req.body.product.worn,
-//     req.body.product.quantity,
-//     req.body.product.price,
-//     req.body.product.accepted_by_admin,
-//     req.body.product.seller_id,
-//     req.body.product.userid,
-//   ];
-//   db.query(sql, [data], (err, result) => {
-//     console.log(err);
-//     if (err) {
-//       console.error("Error inserting data:", err);
-//       return res.status(500).send("Error adding product");
-//     }
-//     console.log("Product added successfully");
-//     res.send("Product added successfully");
-//   });
-// });
 app.post("/addcart", (req, res) => {
   var productid;
   if (req.body.from === "wish") {
@@ -1334,27 +1208,6 @@ app.delete("/products/:id", (req, res) => {
     res.status(200).send("Product deleted successfully");
   });
 });
-// app.delete("/updateorders/:id", (req, res) => {
-//   const productId = req.params.id;
-//   const orderId = req.body.orderid;
-
-//   // Construct the DELETE SQL query
-//   const query = deleteOrderItemsQuery;
-
-//   // Execute the query with the provided product ID
-//   db.query(query, [productId, orderId], (error, results) => {
-//     if (error) {
-//       console.error("Error deleting product: " + error.message);
-//       res.status(500).send("Error deleting product");
-//       return;
-//     }
-
-//     console.log("Product deleted successfully");
-//     res.status(200).send("Product deleted successfully");
-//   });
-// });
-
-
 
 app.put("/updateorders/:id", (req, res) => {
   const productId = req.params.id;
@@ -1721,56 +1574,6 @@ app.post("/guestShippingAddress", (req, res) => {
   });
 });
 
-// app.post("/guestupdatepayment", (req, res) => {
-//   const {
-//     product_id,
-//     payment_status,
-//     shipment_id,
-//     order_id,
-//     ordered_date,
-//     shipped_date,
-//     delivered_date,
-//     order_quantity,
-//     order_status,
-//     order_amount,
-//     customer_first_name,
-//     customer_last_name,
-//     customer_email,
-//     customer_phone,
-//   } = req.body;
-
-//   console.log(product_id, payment_status);
-
-//   // Insert into orders table
-//   const insertOrderSql = guestpaymentStatusQuery;
-//   db.query(
-//     insertOrderSql,
-//     [
-//       product_id,
-//       payment_status,
-//       shipment_id,
-//       order_id,
-//       ordered_date,
-//       shipped_date,
-//       delivered_date,
-//       order_quantity,
-//       order_status,
-//       order_amount,
-//       customer_first_name,
-//       customer_last_name,
-//       customer_email,
-//       customer_phone,
-//     ],
-//     (err, result) => {
-//       if (err) {
-//         console.error("Error inserting into orders table:", err);
-//         return res.status(500).json({ error: "Error updating payment status" });
-//       }
-//       console.log("Payment status updated successfully for product with ID:");
-//     }
-//   );
-// });
-
 app.post("/guestupdatepayment", (req, res) => {
   // Check if req.body is an array or object
   const paymentUpdates = Array.isArray(req.body) ? req.body : [req.body];
@@ -1821,9 +1624,6 @@ app.post("/guestupdatepayment", (req, res) => {
         }
         console.log("Payment status updated successfully for product with ID:", product_id);
         try {
-          // Fetch buyer's email from database based on token or user ID
-          // const user = await getUserById(token);
-          // Fetch seller's email based on seller ID
           const seller = await getUserById(seller_ID);
 
           const buyerEmail = customer_email;
@@ -1853,81 +1653,6 @@ app.post("/guestupdatepayment", (req, res) => {
 
   res.status(200).json({ message: 'Payment status updates processed successfully' });
 });
-
-// app.post("/updatepayment", (req, res) => {
-//   const payment_status = req.body.payment_status;
-//   const token = parseInt(req.body.token); // Ensure that token is parsed as an integer
-//   const {
-//     shipment_id,
-//     order_id,
-//     ordered_date,
-//     shipped_date,
-//     delivered_date,
-//     order_quantity,
-//     order_status,
-//     order_amount,
-//     product_id,
-//     product_name,
-//     seller_id
-//   } = req.body;
-
-//   // Insert into orders table
-//   const insertOrderSql = paymentStatusQuery;
-//   db.query(
-//     insertOrderSql,
-//     [
-//       product_id,
-//       payment_status,
-//       token,
-//       shipment_id,
-//       order_id,
-//       ordered_date,
-//       shipped_date,
-//       delivered_date,
-//       order_quantity,
-//       order_status,
-//       order_amount,
-//       product_name,
-//       seller_id
-//     ],
-//     async (err, result) => {
-//       if (err) {
-//         console.error("Error inserting into orders table:", err);
-//         return res.status(500).json({ error: "Error updating payment status" });
-//       }
-//       console.log("Payment status updated successfully for product with ID:", product_id);
-
-//       // Delete entries from cart table where userid matches buyer_id in orders table
-//       const deleteCartSql = deletecartitemQuery;
-//       db.query(deleteCartSql, [token, token], async (err, deleteResult) => {
-//         if (err) {
-//           console.error("Error deleting from cart table:", err);
-//           return res.status(500).json({ error: "Error deleting cart items" });
-//         }
-//         console.log("Cart items removed successfully");
-
-//         try {
-//           // Fetch buyer's email from database based on token or user ID
-//           const user = await getUserByEmailToken(token);
-//           const seller = await getUserByEmailToken(token);
-          
-//           const recipientEmail = user.email;
-
-//           // Send purchase confirmation email
-//           await sendPurchaseConfirmationEmail(recipientEmail, product_name);
-//           console.log("Purchase confirmation email sent successfully");
-//         } catch (error) {
-//           console.error("Error sending purchase confirmation email:", error);
-//         }
-
-//         return res.status(200).json({
-//           success: true,
-//           message: "Payment status updated, cart items deleted, and email sent successfully",
-//         });
-//       });
-//     }
-//   );
-// });
 
 app.post("/updatepayment", (req, res) => {
   const payment_status = req.body.payment_status;
@@ -2131,38 +1856,7 @@ app.get("/shipmentjoin", (req, res) => {
     }
   });
 });
-// app.post('/products/:productId/likes', (req, res) => {
-//   const { productId } = req.params;
-//   const { like_userID, likes, action } = req.body;
 
-//   if (action === 'liked') {
-//     // Add the like
-//     db.query(
-//       'INSERT INTO likes (like_product_id, like_user_id, likes) VALUES (?, ?, ?)',
-//       [productId, like_userID, likes],
-//       (insertErr, insertResults) => {
-//         if (insertErr) {
-//           console.error('Error adding like:', insertErr);
-//           return res.status(500).json({ error: 'Server error' });
-//         }
-//         res.json({ action: 'liked', likeCount: likes });
-//       }
-//     );
-//   } else if (action === 'unliked') {
-//     // Remove the like
-//     db.query(
-//       'DELETE FROM likes WHERE like_product_id = ? AND like_user_id = ?',
-//       [productId, like_userID],
-//       (delErr, delResults) => {
-//         if (delErr) {
-//           console.error('Error removing like:', delErr);
-//           return res.status(500).json({ error: 'Server error' });
-//         }
-//         res.json({ action: 'unliked', likeCount: likes });
-//       }
-//     );
-//   }
-// });
 app.post("/products/:productId/likes", (req, res) => {
   const { productId } = req.params;
   const { like_userID, likes, action } = req.body;

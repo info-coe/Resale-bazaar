@@ -5,13 +5,13 @@ import Footer from "./footer";
 import axios from "axios";
 import { useData } from "./CartContext";
 import CryptoJS from "crypto-js";
-import { googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import Scrolltotopbtn from "./Scrolltotopbutton";
 import Notification from "./Notification";
 
 const Login = () => {
  
-  const { setUserData, cartItems, guest_product, addToCart } = useData();
+  const { setUserData, guest_product, addToCart } = useData();
   // eslint-disable-next-line no-unused-vars
   const [values, setValues] = useState({
     username: "",
@@ -154,21 +154,21 @@ const Login = () => {
           }
           sessionStorage.removeItem("user-token");
           sessionStorage.setItem("user-token", token);
+          // eslint-disable-next-line array-callback-return
           guest_product.map((item)=>{
             item.userid=token;
             addToCart(item, "main")
           });
           sessionStorage.removeItem("guest_products")
           navigate("/");
-          // window.location.reload(false);
         } else {
           setNotification({ message: 'Invalid Username or Password', type: 'error' });
           setTimeout(() => setNotification(null), 3000);
-          // window.location.reload(false);
         }
       })
       .catch((err) => console.log(err));
   };
+  
   return (
     <div className="fullscreen">
       <MyNavbar />

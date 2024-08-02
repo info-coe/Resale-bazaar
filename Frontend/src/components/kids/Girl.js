@@ -7,7 +7,6 @@ import Filterdisplaynav from "../filterdisplaynav";
 import Product from "../Product";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
-// import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Boy = () => {
   const [products, setProducts] = useState([]);
@@ -18,6 +17,7 @@ const Boy = () => {
 
   useEffect(() => {
     fetchProducts(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const fetchProducts = async (pageNum) => {

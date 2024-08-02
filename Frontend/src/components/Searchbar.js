@@ -46,6 +46,7 @@ const SearchBar = ({ onSearch }) => {
     const currentPlaceholder = `"${placeholders[placeholderIndex]}"`;
     setTypingText('');
     printLetter(currentPlaceholder, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [placeholderIndex]);
 
   useEffect(() => {

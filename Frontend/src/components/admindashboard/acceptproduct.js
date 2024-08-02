@@ -36,9 +36,9 @@ export default function Acceptproduct() {
     style: "",
     season: "",
     fit: "",
-    length:"",
-    notes:"",
-    image: []
+    length: "",
+    notes: "",
+    image: [],
   });
   const [sizes, setSizes] = useState([]);
   const [deletedImages, setDeletedImages] = useState([]);
@@ -61,19 +61,19 @@ export default function Acceptproduct() {
       measurements: initialData.measurements,
       condition: initialData.condition,
       age: initialData.age,
-      quantity:initialData.quantity,
+      quantity: initialData.quantity,
       price: initialData.price,
       material: initialData.material,
       occasion: initialData.occasion,
-      type:initialData.type,
+      type: initialData.type,
       brand: initialData.brand,
       style: initialData.style,
       season: initialData.season,
       fit: initialData.fit,
-      length:initialData.length,
-      notes:initialData.notes,
+      length: initialData.length,
+      notes: initialData.notes,
       image: parsedImage,
-       accepted_by_admin: "false"
+      accepted_by_admin: "false",
     });
     setSizes(getSizesForProductType(initialData.product_type));
   };
@@ -116,7 +116,7 @@ export default function Acceptproduct() {
       }));
       return;
     }
-    setDisabled(true)
+    setDisabled(true);
 
     try {
       const formDataToSend = new FormData();
@@ -131,7 +131,7 @@ export default function Acceptproduct() {
 
       // Append non-file form data
       Object.keys(filteredFormData).forEach((key) => {
-        if (key !== 'image') {
+        if (key !== "image") {
           formDataToSend.append(key, filteredFormData[key]);
         }
       });
@@ -139,30 +139,31 @@ export default function Acceptproduct() {
       // Append image files
       filteredFormData.image.forEach((imageObj) => {
         if (imageObj.file) {
-          formDataToSend.append('images', imageObj.file);
+          formDataToSend.append("images", imageObj.file);
         }
       });
 
       // Append deleted images
-      formDataToSend.append('deletedImages', JSON.stringify(deletedImages));
+      formDataToSend.append("deletedImages", JSON.stringify(deletedImages));
 
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.put(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
         formDataToSend,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         }
       );
-
-      // alert('Product updated successfully');
-      setNotification({ message: 'Product updated successfully', type: 'success' });
+      setNotification({
+        message: "Product updated successfully",
+        type: "success",
+      });
       setTimeout(() => setNotification(null), 3000);
       setDeletedImages([]);
-      // window.location.reload(false); // Reload the page or update state as necessary
     } catch (error) {
-      console.error('Error updating product:', error);
+      console.error("Error updating product:", error);
       setDisabled(false);
     }
   };
@@ -171,14 +172,11 @@ export default function Acceptproduct() {
   const handleKeyup = (e) => {
     const { name, value } = e.target;
     const newErrors = { ...errors };
-
-    // Validate product name length onBlur
     if (name === "name" && value.length > 90) {
       newErrors.name = "Product name must be less than 90 characters";
     } else {
       delete newErrors.name;
     }
-
     setErrors(newErrors);
   };
 
@@ -205,42 +203,56 @@ export default function Acceptproduct() {
   const [viewRowIndex, setViewRowIndex] = useState(null);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/adminproducts`)
+      .get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/adminproducts`
+      )
       .then((res) => {
-
         if (res.data !== "Fail" && res.data !== "Error") {
           setProducts(res.data);
-          setFilteredProducts(res.data.filter((item)=>item.rejection_reason === null && item.accepted_by_admin === "false"));
+          setFilteredProducts(
+            res.data.filter(
+              (item) =>
+                item.rejection_reason === null &&
+                item.accepted_by_admin === "false"
+            )
+          );
         }
       })
       .catch((err) => console.log(err));
   }, []);
-
+  // eslint-disable-next-line no-unused-vars
   const [userDetails, setUserDetails] = useState([]);
   const navigates = useNavigate();
-const handleviewdata =(sellerID,id,item)=>{
-  axios
-  .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/users`,{sellerID:sellerID})
-  .then((res) => {
-    if (res.data !== "Fail" && res.data !== "Error") {
-      const userDetails = res.data.map((item) => ({
-        userId: item.user_id,
-        email: item.email,
-        phone: item.phone,
-        name: item.firstname + " " + item.lastname,
-        shopname: item.shopname,
-        // Add more fields as needed
-      }));
-      setUserDetails(userDetails);
-      navigates(`${/product/ + id}`,{state:{ productdetails: item, admin: "admin" ,userDetails: userDetails}});
-
-    }
-  })
-  .catch((error) => {
-    console.error("Error fetching seller details:", error);
-  });
-}
-   
+  const handleviewdata = (sellerID, id, item) => {
+    axios
+      .post(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/users`,
+        { sellerID: sellerID }
+      )
+      .then((res) => {
+        if (res.data !== "Fail" && res.data !== "Error") {
+          const userDetails = res.data.map((item) => ({
+            userId: item.user_id,
+            email: item.email,
+            phone: item.phone,
+            name: item.firstname + " " + item.lastname,
+            shopname: item.shopname,
+            // Add more fields as needed
+          }));
+          setUserDetails(userDetails);
+          navigates(`${/product/ + id}`, {
+            state: {
+              productdetails: item,
+              admin: "admin",
+              userDetails: userDetails,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching seller details:", error);
+      });
+  };
 
   useEffect(() => {
     setCurrentPage(1);
@@ -264,17 +276,23 @@ const handleviewdata =(sellerID,id,item)=>{
   };
 
   const getMediaType = (url) => {
-    const extension = url.split('.').pop().toLowerCase();
-    if (["mp4", "webm", "avi","mov", "quicktime"].includes(extension)) {
-      return 'video';
+    const extension = url.split(".").pop().toLowerCase();
+    if (["mp4", "webm", "avi", "mov", "quicktime"].includes(extension)) {
+      return "video";
     }
-    return 'image';
+    return "image";
   };
 
   return (
     <div className="fullscreen">
       <Adminnavbar />
-      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
 
       <div className="d-md-flex">
         <div className="col-md-2 selleraccordion">
@@ -360,14 +378,7 @@ const handleviewdata =(sellerID,id,item)=>{
                         >
                           Size
                         </th>
-                        {/* <th
-                          className="hidden-480 sorting p-3"
-                          rowSpan="1"
-                          colSpan="1"
-                          aria-label="Status"
-                        >
-                          Worn
-                        </th> */}
+
                         <th
                           className="hidden-480 sorting p-3"
                           rowSpan="1"
@@ -402,17 +413,24 @@ const handleviewdata =(sellerID,id,item)=>{
                             <td>{item.location}</td>
                             <td>
                               {" "}
-                              <Link           
-                                // to={"/product/" + item.id}
-                                // state={{ productdetails: item, admin: "admin" }}
-                                onClick={()=>handleviewdata(item.seller_id,item.id,item)}
+                              <Link
+                                onClick={() =>
+                                  handleviewdata(item.seller_id, item.id, item)
+                                }
                               >
-                                <div className="text-center" style={{width:"100px",height:"100px"}}>
-                                <img
-                                   src={`${JSON.parse(item.image)[0]}`}
-                                  alt="product"
-                                  style={{maxWidth:"100%",height:"100px",objectFit:"contain"}}
-                                />
+                                <div
+                                  className="text-center"
+                                  style={{ width: "100px", height: "100px" }}
+                                >
+                                  <img
+                                    src={`${JSON.parse(item.image)[0]}`}
+                                    alt="product"
+                                    style={{
+                                      maxWidth: "100%",
+                                      height: "100px",
+                                      objectFit: "contain",
+                                    }}
+                                  />
                                 </div>
                               </Link>
                             </td>
@@ -421,27 +439,29 @@ const handleviewdata =(sellerID,id,item)=>{
                             <td>{item.color}</td>
                             <td>{item.measurements}</td>
                             <td>{item.size}</td>
-                            {/* <td>{item.worn}</td> */}
+
                             <td>{item.alteration}</td>
                             <td>{item.description}</td>
                             <td>
-                            <button
-                                  className="btn btn-outline-primary"
-                                  type="button"
-                                  data-toggle="modal"
-                                  data-target="#exampleModalLong"
-                                  onClick={() => handleEdit(item.id, item)}
-                                >
-                                  Edit
-                                </button>{" "}
-                              <Link           
-                                // to={"/product/" + item.id}
-                                // state={{ productdetails: item, admin: "admin" ,userDetails: userDetails}}
-
+                              <button
+                                className="btn btn-outline-primary"
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#exampleModalLong"
+                                onClick={() => handleEdit(item.id, item)}
                               >
-                                <button className="btn btn-secondary m-1"
-                               onClick={()=>handleviewdata(item.seller_id,item.id,item)}
-
+                                Edit
+                              </button>{" "}
+                              <Link>
+                                <button
+                                  className="btn btn-secondary m-1"
+                                  onClick={() =>
+                                    handleviewdata(
+                                      item.seller_id,
+                                      item.id,
+                                      item
+                                    )
+                                  }
                                 >
                                   View
                                 </button>
@@ -474,15 +494,13 @@ const handleviewdata =(sellerID,id,item)=>{
           </div>
         </div>
       </div>
-       {/* Modal for editing product */}
-       {editingId !== null && (
+      {/* Modal for editing product */}
+      {editingId !== null && (
         <div
           className="modal fade show"
           tabIndex="-1"
           style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
-          // onClick={() => setEditingId(null)}  
-
-          >
+        >
           <div className="modal-dialog modal-dialog-scrollable">
             <div className="modal-content">
               <div className="modal-header">
@@ -495,249 +513,273 @@ const handleviewdata =(sellerID,id,item)=>{
               </div>
               <div className="modal-body">
                 <form onSubmit={handleSubmitEdit}>
-                {formData.image !== "NA" && formData.image !== null && (
-  <>
-      <div className="mb-3">
-        <label className="form-label fw-bolder">Current Files</label>
-        <div className="d-flex flex-wrap">
-          {formData.image && formData.image.length > 0 ? (
-            formData.image.map((mediaObj, index) => (
-              <div key={index} className="me-2 mb-2 position-relative">
-                {mediaObj.file ? (
-                  mediaObj.type === 'image' ? (
-                    <img
-                      src={mediaObj.preview}
-                      alt={`Product Image ${index + 1}`}
-                      className="img-thumbnail"
-                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center"  }}
-                    />
-                  ) : (
-                    <video
-                      src={mediaObj.preview}
-                      controls
-                      className="img-thumbnail"
-                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
-                    ></video>
-                  )
-                ) : (
-                  getMediaType(mediaObj) === 'image' ? (
-                    <img
-                      src={mediaObj}
-                      alt={`Product Image ${index + 1}`}
-                      className="img-thumbnail"
-                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
-                    />
-                  ) : (
-                    <video
-                      src={mediaObj}
-                      controls
-                      className="img-thumbnail"
-                      style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
-                    ></video>
-                  )
-                )}
-                <button
-                  type="button"
-                  className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
-                  style={{ padding: "5px", fontSize: "16px" }}
-                  aria-label="Close"
-                  onClick={() => handleDeleteImage(index)}
-                ></button>
-              </div>
-            ))
-          ) : (
-            <p>No media available</p>
-          )}
-        </div>
-        {errors.image && <p className="text-danger">{errors.image}</p>}
-      </div>
-      {/* <div className="mb-3">
-        <label htmlFor="productImages" className="form-label fw-bolder">
-          Add Photo / Video
-        </label>
-        <input
-          type="file"
-          className="form-control"
-          id="productImages"
-          name="images"
-          multiple
-          onChange={handleImageChange}
-          accept="image/*,video/*"
-        />
-        {errors.image && <p className="text-danger">{errors.image}</p>}
-      </div> */}
-  </>
-)}
-
+                  {formData.image !== "NA" && formData.image !== null && (
+                    <>
+                      <div className="mb-3">
+                        <label className="form-label fw-bolder">
+                          Current Files
+                        </label>
+                        <div className="d-flex flex-wrap">
+                          {formData.image && formData.image.length > 0 ? (
+                            formData.image.map((mediaObj, index) => (
+                              <div
+                                key={index}
+                                className="me-2 mb-2 position-relative"
+                              >
+                                {mediaObj.file ? (
+                                  mediaObj.type === "image" ? (
+                                    <img
+                                      src={mediaObj.preview}
+                                      alt={`Product ${index + 1}`}
+                                      className="img-thumbnail"
+                                      style={{
+                                        width: "100px",
+                                        height: "100px",
+                                        objectFit: "contain",
+                                        alignSelf: "center",
+                                      }}
+                                    />
+                                  ) : (
+                                    <video
+                                      src={mediaObj.preview}
+                                      controls
+                                      className="img-thumbnail"
+                                      style={{
+                                        width: "100px",
+                                        height: "100px",
+                                        objectFit: "contain",
+                                        alignSelf: "center",
+                                      }}
+                                    ></video>
+                                  )
+                                ) : getMediaType(mediaObj) === "image" ? (
+                                  <img
+                                    src={mediaObj}
+                                    alt={`Product ${index + 1}`}
+                                    className="img-thumbnail"
+                                    style={{
+                                      width: "100px",
+                                      height: "100px",
+                                      objectFit: "contain",
+                                      alignSelf: "center",
+                                    }}
+                                  />
+                                ) : (
+                                  <video
+                                    src={mediaObj}
+                                    controls
+                                    className="img-thumbnail"
+                                    style={{
+                                      width: "100px",
+                                      height: "100px",
+                                      objectFit: "contain",
+                                      alignSelf: "center",
+                                    }}
+                                  ></video>
+                                )}
+                                <button
+                                  type="button"
+                                  className="btn-close rounded-circle bg-white position-absolute top-0 end-0 m-2"
+                                  style={{ padding: "5px", fontSize: "16px" }}
+                                  aria-label="Close"
+                                  onClick={() => handleDeleteImage(index)}
+                                ></button>
+                              </div>
+                            ))
+                          ) : (
+                            <p>No media available</p>
+                          )}
+                        </div>
+                        {errors.image && (
+                          <p className="text-danger">{errors.image}</p>
+                        )}
+                      </div>
+                    </>
+                  )}
                   {formData.name !== "NA" && formData.name !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productName" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productName"
+                        className="form-label fw-bolder"
+                      >
                         Product Name
                       </label>
                       <div className="d-flex">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="productName"
-                        name="name"
-                        placeholder="Product Name"
-                        value={formData.name}
-                        onChange={(e) => {
-                          handleChange(e);
-                          handleKeyup(e);
-                        }}
-                        title="Enter product name less than 90 chars"
-                        required
-                      />
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                       {errors.name && (
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="productName"
+                          name="name"
+                          placeholder="Product Name"
+                          value={formData.name}
+                          onChange={(e) => {
+                            handleChange(e);
+                            handleKeyup(e);
+                          }}
+                          title="Enter product name less than 90 chars"
+                          required
+                        />
+                        <span className="text-danger fs-4"> &nbsp;*</span>
+                        {errors.name && (
                           <span className="text-danger fs-6">
                             {errors.name}
                           </span>
                         )}
-                    </div>
-                    </div>
-                  )}
-                  {formData.description !== "NA" && formData.description !== null && (
-                    <div className="mb-3">
-                      <label
-                        htmlFor="productDescription"
-                        className="form-label fw-bolder"
-                      >
-                        
-                        Description
-                      </label>
-                      <div className="d-flex">
-
-                      <textarea
-                        className="form-control"
-                        id="productDescription"
-                        name="description"
-                        placeholder="Product Description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        required
-                      />
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                    </div>
+                      </div>
                     </div>
                   )}
-                  
+                  {formData.description !== "NA" &&
+                    formData.description !== null && (
+                      <div className="mb-3">
+                        <label
+                          htmlFor="productDescription"
+                          className="form-label fw-bolder"
+                        >
+                          Description
+                        </label>
+                        <div className="d-flex">
+                          <textarea
+                            className="form-control"
+                            id="productDescription"
+                            name="description"
+                            placeholder="Product Description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            required
+                          />
+                          <span className="text-danger fs-4"> &nbsp;*</span>
+                        </div>
+                      </div>
+                    )}
                   {formData.color !== "NA" && formData.color !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productColor" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productColor"
+                        className="form-label fw-bolder"
+                      >
                         Color
                       </label>
                       <div className="d-flex">
-
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="productColor"
-                        name="color"
-                        placeholder="Color"
-                        value={formData.color}
-                        onChange={handleChange}
-                        required
-                      />
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                    </div>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="productColor"
+                          name="color"
+                          placeholder="Color"
+                          value={formData.color}
+                          onChange={handleChange}
+                          required
+                        />
+                        <span className="text-danger fs-4"> &nbsp;*</span>
+                      </div>
                     </div>
                   )}
-                  {formData.location !== "NA" && formData.location !== null  && (
+                  {formData.location !== "NA" && formData.location !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productLocation" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productLocation"
+                        className="form-label fw-bolder"
+                      >
                         Location
                       </label>
                       <div className="d-flex">
-
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="productLocation"
-                        name="location"
-                        placeholder="Location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        required
-                      />
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                    </div>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="productLocation"
+                          name="location"
+                          placeholder="Location"
+                          value={formData.location}
+                          onChange={handleChange}
+                          required
+                        />
+                        <span className="text-danger fs-4"> &nbsp;*</span>
+                      </div>
                     </div>
                   )}
                   {formData.alteration !== "NA" && (
                     <div className="mb-3">
-                      <label htmlFor="productAlteration" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productAlteration"
+                        className="form-label fw-bolder"
+                      >
                         Alteration
                       </label>
                       <div className="d-flex">
-                      <select
-                        id="productAlteration"
-                        name="alteration"
-                        value={formData.alteration}
-                        className="form-select"
-                        onChange={handleChange}
-                        required
-                      >
-                        <option value="">Select Alteration</option>
-                        <option value="NA">NA</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                      </select>
-                      <span className="text-danger fs-4"> &nbsp;*</span>
-                    </div>
+                        <select
+                          id="productAlteration"
+                          name="alteration"
+                          value={formData.alteration}
+                          className="form-select"
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select Alteration</option>
+                          <option value="NA">NA</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                        <span className="text-danger fs-4"> &nbsp;*</span>
+                      </div>
                     </div>
                   )}
                   {formData.size !== "NA" && (
                     <div className="mb-3">
-                      <label htmlFor="productSize" className="form-label fw-bolder fw-bolder">
+                      <label
+                        htmlFor="productSize"
+                        className="form-label fw-bolder fw-bolder"
+                      >
                         Size
                       </label>
                       <div className="d-flex">
-                      <select
-                        className="form-select"
-                        id="productSize"
-                        name="size"
-                        value={formData.size}
-                        onChange={handleChange}
-                        required
-                      >
-                        {sizes.map((size, index) => (
-                          <option key={index} value={size}>
-                            {size}
-                          </option>
-                        ))}
-                      </select>
-                      <span className="text-danger fs-4"> &nbsp;*</span>
-                    </div>
+                        <select
+                          className="form-select"
+                          id="productSize"
+                          name="size"
+                          value={formData.size}
+                          onChange={handleChange}
+                          required
+                        >
+                          {sizes.map((size, index) => (
+                            <option key={index} value={size}>
+                              {size}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="text-danger fs-4"> &nbsp;*</span>
+                      </div>
                     </div>
                   )}
-                  {formData.measurements !== "NA" && formData.measurements !== null && (
+                  {formData.measurements !== "NA" &&
+                    formData.measurements !== null && (
+                      <div className="mb-3">
+                        <label
+                          htmlFor="productMeasurements"
+                          className="form-label fw-bolder"
+                        >
+                          Measurements
+                        </label>
+                        <div className="d-flex">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="productMeasurements"
+                            name="measurements"
+                            placeholder="Measurements (eg. 12 to 16)"
+                            value={formData.measurements}
+                            onChange={handleChange}
+                            required
+                          />
+                          <span className="text-danger fs-4"> &nbsp;*</span>
+                        </div>
+                      </div>
+                    )}
+                  {formData.condition !== "NA" && (
                     <div className="mb-3">
                       <label
-                        htmlFor="productMeasurements"
+                        htmlFor="productCondition"
                         className="form-label fw-bolder"
                       >
-                        Measurements
-                      </label>
-                      <div className="d-flex">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="productMeasurements"
-                        name="measurements"
-                        placeholder="Measurements (eg. 12 to 16)"
-                        value={formData.measurements}
-                        onChange={handleChange}
-                        required
-                      />
-                      <span className="text-danger fs-4"> &nbsp;*</span>
-                    </div>
-                    </div>
-                  )}
-                  {formData.condition !== "NA"  && (
-                    <div className="mb-3">
-                      <label htmlFor="productCondition" className="form-label fw-bolder">
                         Condition
                       </label>
                       <div className="d-flex">
@@ -758,13 +800,15 @@ const handleviewdata =(sellerID,id,item)=>{
                           <option value="Fair">Used - Fair</option>
                         </select>
                         <span className="text-danger fs-4"> &nbsp;*</span>
-
                       </div>
                     </div>
                   )}
                   {formData.age !== "NA" && (
                     <div className="mb-3">
-                      <label htmlFor="productAge" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productAge"
+                        className="form-label fw-bolder"
+                      >
                         Age
                       </label>
                       <div className="d-flex">
@@ -793,34 +837,37 @@ const handleviewdata =(sellerID,id,item)=>{
                   )}
                   {formData.quantity !== "NA" && (
                     <div className="mb-3">
-                    <label
-                      htmlFor="ProductQuantity"
-                      className="form-label fw-bolder"
-                    >
-                      Quantity
-                    </label>
-                    <div className="d-flex">
-                      <select
-                        className="form-select"
-                        id="ProductQuantity"
-                        name="quantity"
-                        placeholder="Enter Quantity"
-                        value={formData.quantity}
-                        onChange={handleChange}
-                        required
+                      <label
+                        htmlFor="ProductQuantity"
+                        className="form-label fw-bolder"
                       >
-                        <option value="">Select Quantity</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                      </select>
-                      <span className="text-danger fs-4"> &nbsp;*</span>
+                        Quantity
+                      </label>
+                      <div className="d-flex">
+                        <select
+                          className="form-select"
+                          id="ProductQuantity"
+                          name="quantity"
+                          placeholder="Enter Quantity"
+                          value={formData.quantity}
+                          onChange={handleChange}
+                          required
+                        >
+                          <option value="">Select Quantity</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                        </select>
+                        <span className="text-danger fs-4"> &nbsp;*</span>
+                      </div>
                     </div>
-                  </div>
                   )}
                   {formData.price !== "NA" && formData.price !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productPrice" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productPrice"
+                        className="form-label fw-bolder"
+                      >
                         Price
                       </label>
                       <input
@@ -840,7 +887,10 @@ const handleviewdata =(sellerID,id,item)=>{
                   )}
                   {formData.material !== "NA" && (
                     <div className="mb-3">
-                      <label htmlFor="productMaterial" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productMaterial"
+                        className="form-label fw-bolder"
+                      >
                         Material
                       </label>
                       <div className="d-flex">
@@ -873,13 +923,15 @@ const handleviewdata =(sellerID,id,item)=>{
                           </option>
                         </select>
                         <span className="text-danger fs-4"> &nbsp;*</span>
-
                       </div>
                     </div>
                   )}
                   {formData.occasion !== "NA" && formData.occasion !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productOccasion" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productOccasion"
+                        className="form-label fw-bolder"
+                      >
                         Occasion
                       </label>
                       <input
@@ -896,7 +948,10 @@ const handleviewdata =(sellerID,id,item)=>{
                   )}
                   {formData.type !== "NA" && formData.type !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productType" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productType"
+                        className="form-label fw-bolder"
+                      >
                         Type
                       </label>
                       <input
@@ -911,9 +966,12 @@ const handleviewdata =(sellerID,id,item)=>{
                       />
                     </div>
                   )}
-                  {formData.brand !== "NA" && formData.brand !== null  && (
+                  {formData.brand !== "NA" && formData.brand !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productBrand" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productBrand"
+                        className="form-label fw-bolder"
+                      >
                         Brand
                       </label>
                       <input
@@ -930,7 +988,10 @@ const handleviewdata =(sellerID,id,item)=>{
                   )}
                   {formData.style !== "NA" && formData.style !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productStyle" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productStyle"
+                        className="form-label fw-bolder"
+                      >
                         Style
                       </label>
                       <input
@@ -947,7 +1008,10 @@ const handleviewdata =(sellerID,id,item)=>{
                   )}
                   {formData.season !== "NA" && formData.season !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productSeason" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productSeason"
+                        className="form-label fw-bolder"
+                      >
                         Season
                       </label>
                       <input
@@ -964,7 +1028,10 @@ const handleviewdata =(sellerID,id,item)=>{
                   )}
                   {formData.fit !== "NA" && formData.fit !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productFit" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productFit"
+                        className="form-label fw-bolder"
+                      >
                         Fit
                       </label>
                       <input
@@ -981,7 +1048,10 @@ const handleviewdata =(sellerID,id,item)=>{
                   )}
                   {formData.length !== "NA" && formData.length !== null && (
                     <div className="mb-3">
-                      <label htmlFor="productLength" className="form-label fw-bolder">
+                      <label
+                        htmlFor="productLength"
+                        className="form-label fw-bolder"
+                      >
                         Length
                       </label>
                       <input
@@ -996,26 +1066,32 @@ const handleviewdata =(sellerID,id,item)=>{
                       />
                     </div>
                   )}
-                  {formData.notes !== "" && formData.notes !==null &&  (
+                  {formData.notes !== "" && formData.notes !== null && (
                     <div className="mb-3">
-                    <label htmlFor="ProductNotes" className="form-label fw-bolder">
-                      Notes
-                    </label>
-                    <div className="d-flex">
-                      <textarea
-                        className="form-control"
-                        id="ProductNotes"
-                        name="notes"
-                        placeholder="Notes (Optional)"
-                        value={formData.notes}
-                        onChange={handleChange}
-                        // required
-                      ></textarea>
-                      {/* <span className="text-danger fs-4"> &nbsp;*</span> */}
+                      <label
+                        htmlFor="ProductNotes"
+                        className="form-label fw-bolder"
+                      >
+                        Notes
+                      </label>
+                      <div className="d-flex">
+                        <textarea
+                          className="form-control"
+                          id="ProductNotes"
+                          name="notes"
+                          placeholder="Notes (Optional)"
+                          value={formData.notes}
+                          onChange={handleChange}
+                          // required
+                        ></textarea>
+                      </div>
                     </div>
-                  </div>
                   )}
-                  <button type="submit" className="btn btn-primary"  disabled={disabled}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={disabled}
+                  >
                     Save Changes
                   </button>{" "}
                   <button

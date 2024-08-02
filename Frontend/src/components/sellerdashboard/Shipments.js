@@ -7,12 +7,13 @@ import axios from "axios";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 
 export default function Shipments() {
+  // eslint-disable-next-line no-unused-vars
   const [products, setProducts] = useState([]);
   const [pageSize, setPageSize] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [viewRowIndex, setViewRowIndex] = useState(null);
   const [shippingProducts, setShippingProducts] = useState([]);
-  const [orderStatus, setOrderStatus] = useState(""); // Tracks the currently selected shipment
   const [checkedShipments, setCheckedShipments] = useState([]); // List of checked shipments and their statuses
   const [canShip, setCanShip] = useState(false); // To enable the "shipped" button
   const [canDeliver, setCanDeliver] = useState(false); // To enable the "delivered" button

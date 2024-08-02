@@ -11,6 +11,7 @@ export default function GuestFinalCheckout() {
     if (guest_product) {
       updatePaymentStatus(guest_product);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updatePaymentStatus = async (purchasedItems) => {
@@ -72,9 +73,7 @@ export default function GuestFinalCheckout() {
             }
           );
         });
-
         await Promise.all(updateQuantityRequests);
-        console.log("Product quantities updated successfully");
         sessionStorage.removeItem("guest_products");
         sessionStorage.removeItem("guest_user");
         window.location.href = `${process.env.REACT_APP_HOST}${process.env.REACT_APP_FRONT_END_PORT}/`;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import MyNavbar from "../navbar";
 import Footer from "../footer";
 import "bootstrap/dist/css/bootstrap.min.css";

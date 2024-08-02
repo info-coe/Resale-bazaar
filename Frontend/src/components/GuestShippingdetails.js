@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MyNavbar from "./navbar";
 import axios from "axios";
@@ -115,7 +115,7 @@ const GuestShippingdetails = () => {
   const data = location.state;
   const user = data?.user || null;
   const product = JSON.parse(sessionStorage.getItem("guest_products")) || [];
-  const totalPrice = product[0].price * product[0].quantity;
+  const totalPrice = product[0]?.price * product[0]?.quantity || null;
   sessionStorage.setItem("guest_user", JSON.stringify(user));
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -164,18 +164,10 @@ const GuestShippingdetails = () => {
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
-    setSelectedOption(checked ? value : "same"); // Update the selected option
-  
-    // if (value === "same" && checked) {
-    //   // Set shipping address to match billing address if "same" is selected
-    //   if (selectedBillingAddress) {
-    //     setSelectedShippingAddress(selectedBillingAddress);
-    //   }
-    // } else if (value === "new" && checked) {
-    //   // Handle new address input if "new" is selected
-    //   setSelectedShippingAddress(null);
-    // }
+    setSelectedOption(checked ? value : "same"); 
   };
+
+  // eslint-disable-next-line no-unused-vars
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };

@@ -9,7 +9,6 @@ import axios from "axios";
 import Girlimg from "../../images/girl.webp";
 import Boyimg from "../../images/boy.webp";
 import InfiniteScroll from "react-infinite-scroll-component";
-// import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Kidsallproducts = () => {
   const [products, setProducts] = useState([]);
@@ -20,6 +19,7 @@ const Kidsallproducts = () => {
 
   useEffect(() => {
     fetchProducts(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const fetchProducts = async (pageNum) => {

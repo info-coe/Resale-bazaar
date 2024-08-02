@@ -66,6 +66,7 @@ export default function Productdetails() {
     if (sessionStorage.getItem("token") !== "admin") {
       sessionStorage.getItem("user-token") !== null && setIsLoggedIn(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const AmountChange = (e) => {
     setAdd(e);
@@ -220,6 +221,7 @@ export default function Productdetails() {
   };
   const datta = JSON.parse(productdetails.image);
   const firstImage = datta[0];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleOffer = () => {
     if (add === "0.00" || add.length === 0) {
       return null;
@@ -295,6 +297,7 @@ export default function Productdetails() {
   useEffect(() => {
     fetchLikeCount();
     checkIfLiked();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchLikeCount = async () => {
@@ -330,6 +333,7 @@ export default function Productdetails() {
 
     try {
       let newLikeCount = likeCount;
+      // eslint-disable-next-line no-unused-vars
       let action = "";
 
       if (liked) {
@@ -353,6 +357,7 @@ export default function Productdetails() {
             action: "liked",
           }
         );
+        // eslint-disable-next-line no-unused-vars
         action = "liked";
       }
 
@@ -715,7 +720,7 @@ export default function Productdetails() {
                                   <b>MAKE OFFER</b>
                                 </button>
                               </div>
-                            ) : productdetails.seller_id ==
+                            ) : productdetails.seller_id ===
                               sessionStorage.getItem("user-token") ? (
                               <button
                                 onClick={() =>
@@ -780,7 +785,7 @@ export default function Productdetails() {
                                       />
                                       <span style={{ fontSize: "0.75rem" }}>
                                         {/* Enter Your Offer */}
-                                        {add === "0.00" || add.length == 0 ? (
+                                        {add === "0.00" || add.length === 0 ? (
                                           <span style={{ color: "red" }}>
                                             Please Select Any One Off
                                           </span>
@@ -788,7 +793,7 @@ export default function Productdetails() {
                                           <span>Enter Your Offer</span>
                                         )}
                                       </span>
-                                      <div class="border p-2 position-relative mb-3">
+                                      <div className="border p-2 position-relative mb-3">
                                         <div className="row g-0 align-items-center">
                                           <div className="col-auto">
                                             <b className="p-2 fs-5">&#36;</b>

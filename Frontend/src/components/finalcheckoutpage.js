@@ -3,6 +3,7 @@ import axios from 'axios';
 import Notification from "./Notification";
 
 export default function Finalcheckoutpage() {
+  // eslint-disable-next-line no-unused-vars
   const [cartItems, setCartItems] = useState([]);
   const [notification, setNotification] = useState(null);
 
@@ -24,6 +25,7 @@ export default function Finalcheckoutpage() {
       .catch((error) => {
         console.error("Error fetching cart items:", error);
       });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updatePaymentStatus = (products, token) => {

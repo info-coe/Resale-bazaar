@@ -60,7 +60,7 @@ export default function Customerinfo() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (shopNameFilter.some((user) => user.shopname == values.shopname)) {
+    if (shopNameFilter.some((user) => user.shopname.toString() === values.shopname.toString())) {
       setError("This ShopName already exist");
     } else {
       axios

@@ -176,7 +176,7 @@ const Product = (props) => {
                     <img
                       src={item}
                       className="d-block w-100"
-                      alt={`product-image-${index}`}
+                      alt={`product-${index}`}
                       style={{ height: "220px", objectFit: "cover" }}
                     />
                   )}

@@ -7,7 +7,6 @@ import Filterdisplaynav from "../filterdisplaynav";
 import axios from "axios";
 import Product from "../Product";
 import InfiniteScroll from "react-infinite-scroll-component";
-// import Footer from "../footer";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Dresses = () => {
@@ -19,6 +18,7 @@ const Dresses = () => {
 
   useEffect(() => {
     fetchProducts(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const fetchProducts = async (pageNum) => {
@@ -28,10 +28,7 @@ const Dresses = () => {
       );
 
       if (res.data !== "Fail" && res.data !== "Error") {
-        // Filter the products by category "Dresses"
         const filterProducts = res.data;
-
-        // Get the IDs of the currently loaded products to avoid duplicates
         const existingProductIds = new Set(
           products.map((product) => product.id)
         );

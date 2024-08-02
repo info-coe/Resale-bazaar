@@ -300,7 +300,7 @@ export default function Sellerproducts() {
 
       // Append deleted images
       formDataToSend.append('deletedImages', JSON.stringify(deletedImages));
-
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.put(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
         formDataToSend,
@@ -492,7 +492,7 @@ export default function Sellerproducts() {
                   mediaObj.type === 'image' ? (
                     <img
                       src={mediaObj.preview}
-                      alt={`Product Image ${index + 1}`}
+                      alt={`Product ${index + 1}`}
                       className="img-thumbnail"
                       style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center"  }}
                     />
@@ -508,7 +508,7 @@ export default function Sellerproducts() {
                   getMediaType(mediaObj) === 'image' ? (
                     <img
                       src={mediaObj}
-                      alt={`Product Image ${index + 1}`}
+                      alt={`Product ${index + 1}`}
                       className="img-thumbnail"
                       style={{ width: '100px', height: '100px' ,  objectFit: 'contain' , alignSelf:"center" }}
                     />

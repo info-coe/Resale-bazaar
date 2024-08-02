@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import Product from "../Product";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
-// import Footer from "../footer";
 import Filter from "./filter";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 
@@ -20,6 +19,7 @@ const NecklacesChains = () => {
 
   useEffect(() => {
     fetchProducts(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const fetchProducts = async (pageNum) => {

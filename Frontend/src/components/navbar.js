@@ -64,6 +64,7 @@ const MyNavbar = () => {
     return () => {
       window.removeEventListener("storage", updateGuestProduct);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   const handlelogout = () => {
@@ -175,6 +176,7 @@ const MyNavbar = () => {
       .catch((err) => {
         console.log(err);
       });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

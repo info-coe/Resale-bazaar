@@ -64,25 +64,7 @@ export default function Addnewproduct() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if there are no errors
   };
-  // const handleAddMediaChange = (e, type) => {
-  //   const files = Array.from(e.target.files);
-  //   const newMedia = { ...media };
-
-  //   if (type === "images") {
-  //     files.forEach((file) => {
-  //       const nextAvailableIndex = newMedia.images.findIndex(
-  //         (image) => image === null
-  //       );
-  //       if (nextAvailableIndex !== -1) {
-  //         newMedia.images[nextAvailableIndex] = file;
-  //       }
-  //     });
-  //   } else if (type === "video" && files.length > 0) {
-  //     newMedia.video = files[0];
-  //   }
-
-  //   setMedia(newMedia);
-  // };
+  
   const handleAddMediaChange = (e, type) => {
     const files = Array.from(e.target.files);
     const newMedia = { ...media };
@@ -129,8 +111,6 @@ export default function Addnewproduct() {
   const handleKeyup = (e) => {
     const { name, value } = e.target;
     const newErrors = { ...errors };
-
-    // Validate product name length onBlur
     if (name === "productname" && value.length > 90) {
       newErrors.productname = "Product name must be less than 90 characters";
     } else {
@@ -155,15 +135,7 @@ export default function Addnewproduct() {
    const colorInputRef = useRef(null);
    const locationInputRef = useRef(null);
    const notesInputRef = useRef(null);
-
-   const OccasionInputRef = useRef(null);
-   const TypeInputRef = useRef(null);
-   const BrandInputRef = useRef(null);
-   const SeasonInputRef = useRef(null);
-   const LengthInputRef = useRef(null);
    
-
-   // Capitalization functions
    const capitalizeWords = (str) => {
     return str
       .split(" ")
@@ -171,54 +143,20 @@ export default function Addnewproduct() {
       .join(" ");
   };
 
-  // const capitalizeFirstLetter = (str) => {
-  //   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  // };
-
   const capitalizeFirstLetterOnly = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
    
-
-  // const handleInput = (event) => {
-  //   const { name, value } = event.target;
-
-  //   // Capitalize the first letter of each word in the input string
-  //   const capitalizeWords = (str) => {
-  //     return str
-  //       .split(" ")
-  //       .map((word) => {
-  //         return word.charAt(0).toUpperCase() + word.slice(1);
-  //       })
-  //       .join(" ");
-  //   };
-
-  //   const capitalizedValue = capitalizeWords(value);
-
-  //   setValues((prevValues) => ({
-  //     ...prevValues,
-  //     [name]: capitalizedValue,
-  //   }));
-
-  //   handleKeyup(event, capitalizedValue);
-  // };
   const handleInput = (event) => {
     const { name, value, selectionStart, selectionEnd } = event.target;
-
-    // Determine the capitalization rule based on the field name
     let processedValue;
     if (["productdescription", "notes"].includes(name)) {
-      // For productdescription and notes, capitalize only the first letter
       processedValue = capitalizeFirstLetterOnly(value);
     } else if (["productname", "color", "location"].includes(name)) {
-      // For productname, color, and location, capitalize the first letter of each word
       processedValue = capitalizeWords(value);
     } else {
-      // For other fields, just use the value as-is
       processedValue = value;
     }
-
-    // Update the state with the processed value
     setValues((prevValues) => ({
       ...prevValues,
       [name]: processedValue,

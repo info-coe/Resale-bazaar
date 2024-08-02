@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MyNavbar from "./navbar";
 import Footer from "./footer";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Scrolltotopbtn from "./Scrolltotopbutton";
 import axios from "axios";
 
@@ -10,9 +10,10 @@ const GuestCheckoutpage = () => {
   const locationState = location.state || {}; 
   const from = locationState.from !== null ? locationState.from : {}; 
   const initialProduct = { ...from, quantity: 1 }; 
+  // eslint-disable-next-line no-unused-vars
   const [product, setProduct] = useState(initialProduct);
+  // eslint-disable-next-line no-unused-vars
   const [products, setProducts] = useState([]); 
-  const [message, setMessage] = useState(""); 
 
   const [userdetails, setUserDetails] = useState([]);
 
@@ -52,6 +53,7 @@ const GuestCheckoutpage = () => {
     email: "",
     phone: "",
   });
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState("");
   const handleInput = (event) => {
     setValues((prev) => ({
@@ -72,8 +74,7 @@ const GuestCheckoutpage = () => {
       setError("Phone number already exists");
     }
   };
-
-  
+  // eslint-disable-next-line no-unused-vars
   const productImage = product.image ? JSON.parse(product.image) : [];
 
   return (
