@@ -1019,7 +1019,7 @@ export default function Productdetails() {
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
                       &nbsp;
-                      {user.shopname === "" || null || undefined
+                      {user.shopname === "" || user.shopname === null || user.shopname === undefined
                         ? user.name
                         : user.shopname}
                     </p>

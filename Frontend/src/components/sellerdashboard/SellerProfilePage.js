@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import MyNavbar from "../navbar";
 import Footer from "../footer";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -17,8 +17,15 @@ const SellerProfile = () => {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState("all");
   const pageSize = 8;
+  const location = useLocation();
+  const {userDetails} = location.state || [{
+    userId: "",
+    email: "",
+    phone: "",
+    name: "",
+    shopname: "",
+  }];
   const [notification, setNotification] = useState(null);
-  const [sellerDetails, setSellerDetails] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -40,27 +47,27 @@ const SellerProfile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products, filter]);
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
-      .then((res) => {
-        if (res.data !== "Fail" && res.data !== "Error") {
-          const filteredUserDetails = res.data.filter(
-            (item) => item.user_id.toString() === sellerId.toString()
-          );
-          const userDetails = filteredUserDetails.map((item) => ({
-            userId: item.user_id,
-            email: item.email,
-            phone: item.phone,
-            name: item.firstname + " " + item.lastname,
-            shopname: item.shopname,
-          }));
-          setSellerDetails(userDetails);
-        }
-      })
-      .catch((err) => console.log(err));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+  //     .then((res) => {
+  //       if (res.data !== "Fail" && res.data !== "Error") {
+  //         const filteredUserDetails = res.data.filter(
+  //           (item) => item.user_id.toString() === sellerId.toString()
+  //         );
+  //         const userDetails = filteredUserDetails.map((item) => ({
+  //           userId: item.user_id,
+  //           email: item.email,
+  //           phone: item.phone,
+  //           name: item.firstname + " " + item.lastname,
+  //           shopname: item.shopname,
+  //         }));
+  //         setSellerDetails(userDetails);
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  //     // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const fetchProducts = async (pageNum) => {
     try {
@@ -207,12 +214,12 @@ const SellerProfile = () => {
               <div className="m-5">
                 <h2 className="seller-name fs-1">
                   <i className="bi bi-person-circle fs-1"></i>&nbsp;
-                  {sellerDetails.length > 0 &&
-                    (sellerDetails[0].shopname === "" ||
-                    sellerDetails[0].shopname === null ||
-                    sellerDetails[0].shopname === undefined
-                      ? sellerDetails[0].name
-                      : sellerDetails[0].shopname)}
+                  {userDetails.length > 0 &&
+                    (userDetails[0].shopname === "" ||
+                    userDetails[0].shopname === null ||
+                    userDetails[0].shopname === undefined
+                      ? userDetails[0].name
+                      : userDetails[0].shopname)}
                 </h2>
                 <button
                   className="btn btn-primary ms-5"
@@ -232,12 +239,12 @@ const SellerProfile = () => {
             <h4 className="mb-4">
               <span style={{ fontSize: "22px" }}>Products by</span>{" "}
               <span className="text-secondary" style={{ fontStyle: "italic" }}>
-                {sellerDetails.length > 0 &&
-                  (sellerDetails[0].shopname === "" ||
-                  sellerDetails[0].shopname === null ||
-                  sellerDetails[0].shopname === undefined
-                    ? sellerDetails[0].name
-                    : sellerDetails[0].shopname)}
+                {userDetails.length > 0 &&
+                  (userDetails[0].shopname === "" ||
+                  userDetails[0].shopname === null ||
+                  userDetails[0].shopname === undefined
+                    ? userDetails[0].name
+                    : userDetails[0].shopname)}
               </span>
             </h4>
             <div className="filters mb-4">
