@@ -224,11 +224,27 @@ const Checkout = () => {
   const handleBack = () => {
     if (step === 4 && skipShippingAddress) {
       setStep(2);
-    } else {
+    } 
+    else if (step === 4 && selectedBillingAddress) {
+      setStep(step - 1);
+    }else if (step === 5 && selectedBillingAddress){
+      setStep(step -  1 )
+    }
+    else if (step === 3 && selectedBillingAddress && !selectedShippingAddress ) {
+      setStep(1);
+    }
+    else if (selectedBillingAddress && selectedShippingAddress) {
+      setStep(1);
+    }else if(step === 4 && selectedShippingAddress){
+       setStep(2)
+    }
+    else {
       setStep(step - 1);
     }
   };
+  
 
+  
   const validateBillingAddress = () => {
     const PINCODE_PATTERN = /^[0-9]{5}$/;
 
@@ -376,9 +392,9 @@ const Checkout = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const userid = sessionStorage.getItem("user-token");
-          setShippingAddress(
-            res.data.filter((item) => item.user_id === parseInt(userid))
-          );
+          const shippingAddress = res.data.filter((item) => item.user_id === parseInt(userid))
+          const reversedShippingAddress = shippingAddress.reverse()
+          setShippingAddress(reversedShippingAddress);
         }
       })
       .catch((error) => {
@@ -394,9 +410,9 @@ const Checkout = () => {
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const userid = sessionStorage.getItem("user-token");
-          setBillingAddress(
-            res.data.filter((item) => item.user_id === parseInt(userid))
-          );
+          const billingAddress = res.data.filter((item) => item.user_id === parseInt(userid))
+          const reversedBillingAddress = billingAddress.reverse()
+          setBillingAddress(reversedBillingAddress);
         }
       })
       .catch((error) => {
@@ -407,15 +423,10 @@ const Checkout = () => {
   const [selectedShippingAddress, setSelectedShippingAddress] = useState(null);
   const [selectedBillingAddress, setSelectedBillingAddress] = useState(null);
 
-  const handleSelectShippingAddress = (address) => {
-    setSelectedShippingAddress(address);
-  };
+  
 
-  const handleSelectBillingAddress = (address) => {
-    setSelectedBillingAddress(address);
-  };
-
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault()
     if (selectedShippingAddress && selectedBillingAddress) {
       setStep(5);
     } else if (selectedShippingAddress) {
@@ -431,11 +442,19 @@ const Checkout = () => {
     }
   };
 
-  const handleDivClick = (addressType, index) => {
-    if (addressType === "shipping") {
-      handleSelectShippingAddress(shippingaddress[index]);
-    } else {
-      handleSelectBillingAddress(billingaddress[index]);
+  const handleDivClick = (type, index) => {
+    if (type === 'shipping') {
+      if (selectedShippingAddress === shippingaddress[index]) {
+        setSelectedShippingAddress(null); // Deselect if already selected
+      } else {
+        setSelectedShippingAddress(shippingaddress[index]); // Select the address
+      }
+    } else if (type === 'billing') {
+      if (selectedBillingAddress === billingaddress[index]) {
+        setSelectedBillingAddress(null); // Deselect if already selected
+      } else {
+        setSelectedBillingAddress(billingaddress[index]); // Select the address
+      }
     }
   };
 
@@ -482,91 +501,71 @@ const Checkout = () => {
             {step === 1 && (
               <>
                 <div className="container">
-                  <div className="row">
-                    {/* Shipping Addresses */}
-                    <div className="col-md-6">
-                      <div className="d-md-flex flex-column">
-                        <h2 style={{ fontSize: "18px" }}>Shipping Addresses</h2>
-                        {shippingaddress.slice(0, 3).map((address, index) => (
-                          <div
-                            key={`shipping_${index}`}
-                            className={`shipping-address border rounded p-3 ${
-                              selectedShippingAddress === address
-                                ? "selected"
-                                : ""
-                            }`}
-                            style={{ maxHeight: "150px", overflowY: "auto" }}
-                            onClick={() => handleDivClick("shipping", index)}
-                          >
-                            <h6>
-                              <input
-                                type="radio"
-                                name="shippingAddress"
-                                className="me-2"
-                                checked={selectedShippingAddress === address}
-                                onChange={() => {}}
-                              />
-                              Shipping Address {index + 1}
-                            </h6>
-                            <p>
-                              {address.firstname} {address.lastname}
-                            </p>
-                            <p>Email: {address.email}</p>
-                            <p>Phone: {address.phone}</p>
-                            <p>
-                              {address.address1} {address.address2}
-                            </p>
-                            <p>
-                              {address.city}, {address.state}, {address.pincode}
-                            </p>
-                            <p>{address.country}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    {/* Billing Addresses */}
-                    <div className="col-md-6">
-                      <div className="d-flex flex-column">
-                        <h2 style={{ fontSize: "18px" }}>Billing Addresses</h2>
-                        {billingaddress.slice(0, 3).map((address, index) => (
-                          <div
-                            key={`billing_${index}`}
-                            className={`billing-address border rounded p-3 ${
-                              selectedBillingAddress === address
-                                ? "selected"
-                                : ""
-                            }`}
-                            style={{ maxHeight: "150px", overflowY: "auto" }}
-                            onClick={() => handleDivClick("billing", index)}
-                          >
-                            <h6>
-                              <input
-                                type="radio"
-                                name="billingAddress"
-                                className="me-2"
-                                checked={selectedBillingAddress === address}
-                                onChange={() => {}}
-                              />
-                              Billing Address {index + 1}
-                            </h6>
-                            {/* Display address details */}
-                            <p>
-                              {address.firstname} {address.lastname}
-                            </p>
-                            <p>Email: {address.email}</p>
-                            <p>Phone: {address.phone}</p>
-                            <p>
-                              {address.address1} {address.address2}
-                            </p>
-                            <p>
-                              {address.city}, {address.state}, {address.pincode}
-                            </p>
-                            <p>{address.country}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                <div className="row">
+      {/* Shipping Addresses */}
+      <div className="col-md-6">
+        <div className="d-md-flex flex-column">
+          <h2 style={{ fontSize: "18px" }}>Shipping Addresses</h2>
+          {shippingaddress.slice(0, 3).map((address, index) => (
+            <div
+              key={`shipping_${index}`}
+              className={`shipping-address border rounded p-3 ${selectedShippingAddress === address ? "selected" : ""}`}
+              style={{ maxHeight: "150px", overflowY: "auto" }}
+              onClick={() => handleDivClick("shipping", index)}
+            >
+              <h6>
+                <input
+                  type="radio"
+                  name="shippingAddress"
+                  className="me-2"
+                  checked={selectedShippingAddress === address}
+                  onChange={() => {}} // No-op to prevent React warning
+                />
+                Shipping Address {index + 1}
+              </h6>
+              <p>{address.firstname} {address.lastname}</p>
+              <p>Email: {address.email}</p>
+              <p>Phone: {address.phone}</p>
+              <p>{address.address1} {address.address2}</p>
+              <p>{address.city}, {address.state}, {address.pincode}</p>
+              <p>{address.country}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Billing Addresses */}
+      <div className="col-md-6">
+        <div className="d-flex flex-column">
+          <h2 style={{ fontSize: "18px" }}>Billing Addresses</h2>
+          {billingaddress.slice(0, 3).map((address, index) => (
+            <div
+              key={`billing_${index}`}
+              className={`billing-address border rounded p-3 ${selectedBillingAddress === address ? "selected" : ""}`}
+              style={{ maxHeight: "150px", overflowY: "auto" }}
+              onClick={() => handleDivClick("billing", index)}
+            >
+              <h6>
+                <input
+                  type="radio"
+                  name="billingAddress"
+                  className="me-2"
+                  checked={selectedBillingAddress === address}
+                  onChange={() => {}} // No-op to prevent React warning
+                />
+                Billing Address {index + 1}
+              </h6>
+              {/* Display address details */}
+              <p>{address.firstname} {address.lastname}</p>
+              <p>Email: {address.email}</p>
+              <p>Phone: {address.phone}</p>
+              <p>{address.address1} {address.address2}</p>
+              <p>{address.city}, {address.state}, {address.pincode}</p>
+              <p>{address.country}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
                 </div>
                 <div className="col-12 d-flex justify-content-between p-5">
                   <button
