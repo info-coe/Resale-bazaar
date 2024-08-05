@@ -162,18 +162,68 @@ const GuestShippingdetails = () => {
     setNewFields({ ...newFields, [name]: value });
   };
 
+  // const handleCheckboxChange = (e) => {
+  //   const { value, checked } = e.target;
+  //   setSelectedOption(checked ? value : "same"); 
+  // };
   const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setSelectedOption(checked ? value : "same"); 
+    const { value } = e.target;
+    setSelectedOption((prev) => (prev === value ? "" : value));
   };
-
   // eslint-disable-next-line no-unused-vars
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
+
+
+  const validateBillingAddress = () => {
+    const PINCODE_PATTERN = /^[0-9]{5}$/;
+
+    return (
+      fields.country.trim() !== "" &&
+      fields.state.trim() !== "" &&
+      fields.city.trim() !== "" &&
+      fields.address1.trim() !== "" &&
+      fields.pincode.trim() !== "" &&
+      PINCODE_PATTERN.test(fields.pincode.trim())
+    );
+  };
+  // const validateShippingAddress = () => {
+  //   // If the selected option is "new", validate the new fields
+  //   const PINCODE_PATTERN = /^[0-9]{5}$/;
+  //   if (selectedOption === "new") {
+  //     if (
+  //       !newFields.country ||
+  //       !newFields.state ||
+  //       !newFields.city ||
+  //       !newFields.address1 ||
+  //       // !newFields.address2 ||
+  //       !PINCODE_PATTERN.test(newFields.pincode.trim())
+  //     ) {
+  //       return false;
+  //     }
+  //   }
+
+  //   return true;
+  // };
+  const validateShippingAddress = () => {
+    const PINCODE_PATTERN = /^[0-9]{5}$/;
+    if (selectedOption === "new") {
+      return (
+        newFields.country.trim() !== "" &&
+        newFields.state.trim() !== "" &&
+        newFields.city.trim() !== "" &&
+        newFields.address1.trim() !== "" &&
+        PINCODE_PATTERN.test(newFields.pincode.trim())
+      );
+    }
+    return true; // For "same" or if no selection, return true
+  };
   const handleContinue = (e) => {
     e.preventDefault();
+    const form = e.target.closest('form');
+    if (form.checkValidity()) {
     if (step === 1 && skipShippingAddress) {
       if (validateBillingAddress()) {
         setStep(step + 2);
@@ -198,6 +248,9 @@ const GuestShippingdetails = () => {
         setStep(step + 1);
       }
     }
+  }else {
+    form.reportValidity();
+  }
   };
 
   const handleBack = () => {
@@ -208,37 +261,6 @@ const GuestShippingdetails = () => {
     } else {
       setStep(step - 1);
     }
-  };
-
-  const validateBillingAddress = () => {
-    const PINCODE_PATTERN = /^[0-9]{5}$/;
-
-    return (
-      fields.country.trim() !== "" &&
-      fields.state.trim() !== "" &&
-      fields.city.trim() !== "" &&
-      fields.address1.trim() !== "" &&
-      fields.pincode.trim() !== "" &&
-      PINCODE_PATTERN.test(fields.pincode.trim())
-    );
-  };
-  const validateShippingAddress = () => {
-    // If the selected option is "new", validate the new fields
-    const PINCODE_PATTERN = /^[0-9]{5}$/;
-    if (selectedOption === "new") {
-      if (
-        !newFields.country ||
-        !newFields.state ||
-        !newFields.city ||
-        !newFields.address1 ||
-        // !newFields.address2 ||
-        !PINCODE_PATTERN.test(newFields.pincode.trim())
-      ) {
-        return false;
-      }
-    }
-
-    return true;
   };
 
   const handleSkipShippingChange = (e) => {
@@ -398,6 +420,7 @@ const GuestShippingdetails = () => {
                       )}
                       onChange={handleChange}
                       placeholder="Select a state"
+                      required
                     />
                   </div>
                   <div className="col-md-6">
@@ -594,6 +617,7 @@ const GuestShippingdetails = () => {
                             })
                           }
                           placeholder="Select a state"
+                          required
                         />
                       </div>
                       <div className="col-md-6">

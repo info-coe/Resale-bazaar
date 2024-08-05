@@ -52,19 +52,19 @@ export default function Shipments() {
       console.log("No shipment selected.");
       return;
     }
-  
+
     const updateRequests = checkedShipments.map((shipmentId) => {
       let updateData = { shipment_id: shipmentId };
-  
+
       if (actionType === "delivered") {
         updateData.delivered_date = new Date().toLocaleDateString("fr-CA");
       } else if (actionType === "shipped") {
         updateData.shipped_date = new Date().toLocaleDateString("fr-CA");
       }
-  
+
       return axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updateOrder`, updateData);
     });
-  
+
     Promise.all(updateRequests)
       .then(() => {
         console.log("Orders updated successfully");
@@ -82,7 +82,7 @@ export default function Shipments() {
       })
       .catch((err) => console.log("Error updating orders:", err));
   };
-  
+
 
   const handleChecked = (e) => {
     const shipmentId = e.target.name;

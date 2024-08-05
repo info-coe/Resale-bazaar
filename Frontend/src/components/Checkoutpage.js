@@ -166,24 +166,26 @@ const Checkout = () => {
   };
 
 
+
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
-    setSelectedOption(checked ? value : "same"); // Update the selected option
+  
+    setSelectedOption((prev) => (prev === value ? "" : value));
   
     if (value === "same" && checked) {
-      // Set shipping address to match billing address if "same" is selected
       if (selectedBillingAddress) {
         setSelectedShippingAddress(selectedBillingAddress);
       }
     } else if (value === "new" && checked) {
-      // Handle new address input if "new" is selected
       setSelectedShippingAddress(null);
     }
   };
   
+  
   const handleContinue = (e) => {
     e.preventDefault();
-
+    const form = e.target.closest('form'); 
+    if (form.checkValidity()) {
     if (step === 2 && skipShippingAddress) {
       if (validateBillingAddress()) {
         setStep(step + 2);
@@ -214,6 +216,9 @@ const Checkout = () => {
         setStep(step + 1);
       }
     }
+  }else {
+    form.reportValidity();
+  }
   };
 
   const handleBack = () => {
@@ -671,6 +676,7 @@ const Checkout = () => {
                       )}
                       onChange={handleChange}
                       placeholder="Select a state"
+                      required
                     />
                   </div>
                   <div className="col-md-6">
@@ -853,6 +859,7 @@ const Checkout = () => {
                             })
                           }
                           placeholder="Select a state"
+                          required
                         />
                       </div>
                       <div className="col-md-6">
