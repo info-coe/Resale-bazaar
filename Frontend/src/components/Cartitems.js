@@ -314,7 +314,7 @@ export default function Cartitems() {
             <button
               type="button"
               className="btn btn-primary mb-5"
-              // disabled={cartItems.length === 0}
+              disabled={guest_product.length === 0}
               onClick={guestCheckout}
             >
               Guest Checkout
@@ -323,7 +323,7 @@ export default function Cartitems() {
             <button
               type="button"
               className="btn btn-primary mb-5"
-              // disabled={cartItems.length === 0}
+              disabled={(isLoggedIn && cartItems.length === 0) || (!isLoggedIn && guest_product.length === 0) }
               onClick={checkout}
             >
               Member Checkout
