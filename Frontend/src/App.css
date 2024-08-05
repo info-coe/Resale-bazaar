@@ -1063,3 +1063,30 @@ body {
 .filterdisplaynav{
   background-color: #e5e7e9;
 }
+
+/* Password eye icon start */
+.toggle11 {
+  background: none;
+  border: none;
+  /* color: #337ab7; */
+  font-weight: 600;
+  position: absolute;
+  right: 1em;
+  top: 1.8em;
+  z-index: 9;
+  font-size: 20px;
+}
+.toggle12 {
+  background: none;
+  border: none;
+  font-weight: 600;
+  position: absolute;
+  right: 1.3em;
+  top: .2em;
+  z-index: 9;
+  font-size: 20px;
+}
+.passwordgroup{
+  position: relative;
+}
+/* Password eye icon end */

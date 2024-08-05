@@ -21,7 +21,7 @@ const Login = () => {
   //eslint-disable-next-line no-unused-vars
   const [profile, setProfile] = useState(null);
   const [notification, setNotification] = useState(null);
-
+  const [showPassword, setShowPassword] = useState(false);
 
   const signin = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -168,6 +168,9 @@ const Login = () => {
       })
       .catch((err) => console.log(err));
   };
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
   
   return (
     <div className="fullscreen">
@@ -184,13 +187,13 @@ const Login = () => {
           </button>
         </div>
         <div className="d-md-flex justify-content-around m-lg-5 m-md-5 m-4">
-          <div className="col-md-4">
+          <div className="col-md-6 col-lg-4">
             <div className="card bg-white shadow mb-3">
               <div className="card-body">
                 <form action="" method="post" onSubmit={handleSubmit}>
                   <h3 className="text-center">Login</h3>
                   <div className="form-group p-2">
-                    <label htmlFor="username">Email</label>
+                    <label htmlFor="username" className="fw-bold">Email</label>
                     <input
                       type="text"
                       id="username"
@@ -201,10 +204,11 @@ const Login = () => {
                       required
                     />
                   </div>
-                  <div className="form-group p-2">
-                    <label htmlFor="password">Password</label>
+                  <div className="form-group passwordgroup p-2">
+                    <label htmlFor="password" className="fw-bold">Password</label>
                     <input
-                      type="password"
+                      // type="password"
+                      type={showPassword ? 'text' : 'password'}
                       id="password"
                       name="password"
                       placeholder="Password"
@@ -212,6 +216,14 @@ const Login = () => {
                       required
                       onChange={handleInput}
                     />
+                     <button
+                      type="button"
+                      id="btnToggle"
+                      className="toggle11"
+                      onClick={handleTogglePassword}
+                    >
+                      <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </button>
                   </div>
                   <div className="text-end p-1">
                     <Link to="/forgotpassword">Forgot Password?</Link>

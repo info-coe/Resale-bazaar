@@ -25,6 +25,10 @@ const Register = () => {
   const [userdetails, setUserDetails] = useState([]);
   const navigate = useNavigate();
   const [shopNameFilter, setShopNameFilter] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+
   const handleInput = (event) => {
     setValues((prev) => ({
       ...prev,
@@ -179,6 +183,13 @@ const Register = () => {
     setProfile(null);
   };
 
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const handleToggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <div className="fullscreen">
       <MyNavbar />
@@ -322,10 +333,11 @@ const Register = () => {
                   >
                     Password
                   </label>
-                  <div className="d-flex col-sm-6 col-md-4 col-xs-12">
+                  <div className="d-flex col-sm-6 col-md-4 col-xs-12 passwordgroup">
                     <input
                       className="form-control mb-2"
-                      type="password"
+                      // type="password"
+                      type={showPassword ? 'text' : 'password'}
                       id="password"
                       name="password"
                       onChange={handleInput}
@@ -334,6 +346,14 @@ const Register = () => {
                       pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$"
                       title="Password must contain at least 8 characters, including one number, one letter, and one special character."
                     />
+                     <button
+                      type="button"
+                      id="btnToggle"
+                      className="toggle12"
+                      onClick={handleTogglePassword}
+                    >
+                      <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </button>
                     <span className="text-danger fs-4"> &nbsp;*</span>
                   </div>
                 </div>
@@ -344,10 +364,10 @@ const Register = () => {
                   >
                     Confirm Password
                   </label>
-                  <div className="d-flex col-sm-6 col-md-4 col-xs-12">
+                  <div className="d-flex col-sm-6 col-md-4 col-xs-12 passwordgroup">
                     <input
                       className="form-control mb-2"
-                      type="password"
+                      type={showConfirmPassword ? 'text' : 'password'}
                       id="confirmpassword"
                       name="confirmpassword"
                       onChange={(e) =>
@@ -356,6 +376,14 @@ const Register = () => {
                       placeholder="Enter Confirm Password"
                       required
                     />
+                     <button
+                      type="button"
+                      id="btnToggle"
+                      className="toggle12"
+                      onClick={handleToggleConfirmPassword}
+                    >
+                      <i className={`bi ${showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                    </button>
                     <span className="text-danger fs-4"> &nbsp;*</span>
                   </div>
                 </div>
