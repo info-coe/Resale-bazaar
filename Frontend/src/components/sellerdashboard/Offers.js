@@ -67,9 +67,11 @@ const Offers = () => {
                     <tr>
                         <th>Product</th>
                         <th>Image</th>
-                        <th>Offer Amount</th>
+                        <th>Original Price</th>
+                        <th>Offer Price</th>
                         <th>Status</th>
-                        {isSellerOffers && offers.product_status === 'Pending' && (<th>Actions</th>)}
+                        <th>Actions</th>
+                        {isSellerOffers.product_status === 'Pending' && (<th>Actions</th>)}
                     </tr>
                 </thead>
                 <tbody>
@@ -85,6 +87,7 @@ const Offers = () => {
                                     />
                                 </div>
                             </td>
+                            <td>&#36; {offer.price}</td>
                             <td>&#36; {offer.offered_price}</td>
                             <td>{offer.product_status}</td>
                             {isSellerOffers && offer.product_status === 'Pending' && (
