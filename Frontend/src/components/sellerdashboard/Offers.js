@@ -60,18 +60,16 @@ const Offers = () => {
 
     
 
-    const renderOffersTable = (offers, isSellerOffers) => (
+    const renderSellerOffersTable = (offers) => (
         <div className="table-responsive mt-4">
             <table id="dynamic-table" className="table table-striped table-hover dataTable no-footer" role="grid" aria-describedby="dynamic-table_info">
                 <thead>
                     <tr>
                         <th>Product</th>
                         <th>Image</th>
-                        <th>Original Price</th>
-                        <th>Offer Price</th>
+                        <th>Offer Amount</th>
                         <th>Status</th>
                         <th>Actions</th>
-                        {isSellerOffers.product_status === 'Pending' && (<th>Actions</th>)}
                     </tr>
                 </thead>
                 <tbody>
@@ -87,15 +85,57 @@ const Offers = () => {
                                     />
                                 </div>
                             </td>
-                            <td>&#36; {offer.price}</td>
                             <td>&#36; {offer.offered_price}</td>
                             <td>{offer.product_status}</td>
-                            {isSellerOffers && offer.product_status === 'Pending' && (
-                                <td>
-                                    <button className="btn btn-success btn-sm me-2" onClick={() => handleAccept(offer.id)}>Accept</button>
-                                    <button className="btn btn-danger btn-sm" onClick={() => handleReject(offer.id)}>Reject</button>
-                                </td>
-                            )}
+                            <td>
+                                <button
+                                    className="btn btn-success btn-sm me-2"
+                                    onClick={() => handleAccept(offer.id)}
+                                    disabled={offer.product_status === 'Accepted' || offer.product_status === 'Rejected'}
+                                >
+                                    Accept
+                                </button>
+                                <button
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => handleReject(offer.id)}
+                                    disabled={offer.product_status === 'Accepted' || offer.product_status === 'Rejected'}
+                                >
+                                    Reject
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+
+    const renderCustomerOffersTable = (offers) => (
+        <div className="table-responsive mt-4">
+            <table id="dynamic-table" className="table table-striped table-hover dataTable no-footer" role="grid" aria-describedby="dynamic-table_info">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Image</th>
+                        <th>Offer Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {offers.map(offer => (
+                        <tr key={offer.id}>
+                            <td>{offer.name}</td>
+                            <td>
+                                <div style={{ width: "70px", height: "60px" }}>
+                                    <img
+                                        src={JSON.parse(offer.image)[0]}
+                                        alt={offer.name}
+                                        style={{ maxWidth: "100%", maxHeight: "100%", backgroundSize: "contain" }}
+                                    />
+                                </div>
+                            </td>
+                            <td>&#36; {offer.offered_price}</td>
+                            <td>{offer.product_status}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -155,10 +195,10 @@ const Offers = () => {
                             </ul>
                             <div className="tab-content" id="offersTabsContent">
                                 <div className="tab-pane fade show active" id="seller-offers" role="tabpanel" aria-labelledby="seller-offers-tab">
-                                    {renderOffersTable(sellerOffers, true)}
+                                    {renderSellerOffersTable(sellerOffers, true)}
                                 </div>
                                 <div className="tab-pane fade" id="customer-offers" role="tabpanel" aria-labelledby="customer-offers-tab">
-                                    {renderOffersTable(customerOffers, false)}
+                                    {renderCustomerOffersTable(customerOffers, false)}
                                 </div>
                                 <div className="tab-pane fade" id="approved-offers" role="tabpanel" aria-labelledby="approved-offers-tab">
                                     {renderApprovedOffersCards(approvedOffers)}
