@@ -29,7 +29,7 @@ export const CartProvider = ({ children }) => {
   }, [user]);
 
   
-  const addToCart = (product, from) => {
+  const addToCart = (product, from, quantity = 1) => {
     const isProductInCart = cartItems.some(item => item.product_id === product.product_id);
     const userProduct = product.seller_id.toString() === sessionStorage.getItem('user-token');
   
@@ -40,7 +40,7 @@ export const CartProvider = ({ children }) => {
       setNotification({ message:"You are the seller of this product" , type:"error"});
       setTimeout(() => setNotification(null), 3000);
     } else {
-      const productWithQuantity = { ...product, quantity: 1 };
+      const productWithQuantity = { ...product, quantity: quantity };
       axios
         .post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`, { product: productWithQuantity, from })
         .then((response) => {
@@ -79,12 +79,13 @@ export const CartProvider = ({ children }) => {
     }
   };
   const updateCartItemQuantity = (productId, newQuantity) => {
-    setCartItems(prevItems => {
-      return prevItems.map(item =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
-      );
-    });
-  };
+  setCartItems(prevItems => {
+    return prevItems.map(item =>
+      item.id === productId ? { ...item, quantity: newQuantity } : item
+    );
+  });
+};
+
   
   const incrementQuantity = (index) => {
     const updatedCartItems = [...cartItems];

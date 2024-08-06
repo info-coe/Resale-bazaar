@@ -157,7 +157,7 @@ const Login = () => {
           // eslint-disable-next-line array-callback-return
           guest_product.map((item)=>{
             item.userid=token;
-            addToCart(item, "main")
+            addToCart(item, "main",item.quantity)
           });
           sessionStorage.removeItem("guest_products")
           navigate("/");

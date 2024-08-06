@@ -55,80 +55,149 @@ export default function Cartitems() {
       });
   }, [setIsLoggedIn]);
 
+  // const checkout = () => {
+  //   if (sessionStorage.getItem("token") !== "admin" && isLoggedIn) {
+  //     const updateRequests = cartItems.map((product) => {
+  //       const quantity = product.quantity;
+  //       return axios.put(
+  //         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${product.id}/updateQuantityAndPrice`,
+  //         {
+  //           quantity: quantity,
+  //         }
+  //       );
+  //     });
+  //     Promise.all(updateRequests)
+  //       .then((responses) => {
+  //         responses.forEach((response) => {
+  //           console.log(response.data.message);
+  //         });
+  //         navigate("/checkoutpage");
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error updating quantities and prices:", error);
+  //       });
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // };
   const checkout = () => {
     if (sessionStorage.getItem("token") !== "admin" && isLoggedIn) {
-      const updateRequests = cartItems.map((product) => {
-        const quantity = product.quantity;
-        return axios.put(
-          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${product.id}/updateQuantityAndPrice`,
-          {
-            quantity: quantity,
-          }
-        );
-      });
-      Promise.all(updateRequests)
-        .then((responses) => {
-          responses.forEach((response) => {
-            console.log(response.data.message);
-          });
-          navigate("/checkoutpage");
-        })
-        .catch((error) => {
-          console.error("Error updating quantities and prices:", error);
-        });
+      navigate("/checkoutpage");
     } else {
       navigate("/login");
     }
   };
-
+  
   const guestCheckout = () => {
     navigate("/guestcheckout")
   }
 
+  // const handleQuantityChange = (product, newQuantity) => {
+  //   if (isLoggedIn) {
+  //     const availableProduct = products.find(
+  //       (p) => p.id === product.product_id
+  //     );
+  //     if (newQuantity > availableProduct.quantity) {
+  //       setMessage(
+  //         `Cannot increase quantity beyond available stock: ${availableProduct.quantity}`
+  //       );
+  //     } else {
+  //       setMessage("");
+  //       updateCartItemQuantity(product.id, newQuantity);
+  //     }
+  //   } else {
+  //     const availableProducts = products.find(
+  //       (p) => p.id === product.id
+  //     );
+  //     if (newQuantity > availableProducts.quantity) {
+  //       setMessage(
+  //         `Cannot increase quantity beyond available stock: ${availableProducts.quantity}`
+  //       );
+  //     } else {
+  //       setMessage("");
+  //       const productIndex = guest_product.findIndex(
+  //         (item) => item.id === product.id
+  //       );
+  //       if (productIndex !== -1) {
+  //         guest_product[productIndex] = {
+  //           ...guest_product[productIndex],
+  //           quantity: newQuantity,
+  //         };
+  //         sessionStorage.setItem(
+  //           "guest_products",
+  //           JSON.stringify(guest_product)
+  //         );
+  //         console.log("Product updated successfully");
+  //         window.location.reload(false);
+  //       } else {
+  //         console.log("Product not found in the cart");
+  //       }
+  //     }
+  //   }
+  // };
   const handleQuantityChange = (product, newQuantity) => {
     if (isLoggedIn) {
+      // Handle quantity change for logged-in users
       const availableProduct = products.find(
         (p) => p.id === product.product_id
       );
-      if (newQuantity > availableProduct.quantity) {
+  
+      if (newQuantity > (availableProduct?.quantity || 0)) {
         setMessage(
-          `Cannot increase quantity beyond available stock: ${availableProduct.quantity}`
+          `Cannot increase quantity beyond available stock: ${availableProduct?.quantity || 0}`
         );
-      } else {
-        setMessage("");
-        updateCartItemQuantity(product.id, newQuantity);
+        return;
       }
+  
+      setMessage("");
+      updateCartItemQuantity(product.id, newQuantity);
+  
+      // PUT request to update the quantity on the server
+      axios.put(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/${product.id}/updateQuantityAndPrice`,
+        { quantity: newQuantity }
+      )
+      .then((response) => {
+        // console.log("Server quantity updated successfully");
+      })
+      .catch((error) => {
+        console.error("Error updating product quantity on the server:", error);
+      });
+  
     } else {
+      // Handle quantity change for guest users
       const availableProducts = products.find(
         (p) => p.id === product.id
       );
-      if (newQuantity > availableProducts.quantity) {
+  
+      if (newQuantity > (availableProducts?.quantity || 0)) {
         setMessage(
-          `Cannot increase quantity beyond available stock: ${availableProducts.quantity}`
+          `Cannot increase quantity beyond available stock: ${availableProducts?.quantity || 0}`
         );
-      } else {
-        setMessage("");
-        const productIndex = guest_product.findIndex(
-          (item) => item.id === product.id
+        return;
+      }
+  
+      setMessage("");
+      const productIndex = guest_product.findIndex(
+        (item) => item.id === product.id
+      );
+  
+      if (productIndex !== -1) {
+        guest_product[productIndex] = {
+          ...guest_product[productIndex],
+          quantity: newQuantity,
+        };
+        sessionStorage.setItem(
+          "guest_products",
+          JSON.stringify(guest_product)
         );
-        if (productIndex !== -1) {
-          guest_product[productIndex] = {
-            ...guest_product[productIndex],
-            quantity: newQuantity,
-          };
-          sessionStorage.setItem(
-            "guest_products",
-            JSON.stringify(guest_product)
-          );
-          console.log("Product updated successfully");
-          window.location.reload(false);
-        } else {
-          console.log("Product not found in the cart");
-        }
+        console.log("Guest product updated successfully");
+        window.location.reload(false);
       }
     }
   };
-
+  
+  
   const totalPrice = calculateTotalPrice();
 
   return (
