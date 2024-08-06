@@ -229,19 +229,32 @@ app.post("/sendotp", (req, res) => {
       setTimeout(() => {
         delete savedOTPS.email;
       }, 60000);
-      return res.json(response);
+      // return res.json(response);
+      return res.status(200).json({ message: 'OTP sent' });
     }
-    smtpTransport.close();
+    // smtpTransport.close();
   });
 });
 
+// app.post("/verify", (req, res) => {
+//   let otprecived = req.body.otp;
+//   let email = req.body.email;
+//   if (savedOTPS[email] == otprecived) {
+//     res.send("Verfied");
+//   } else {
+//     res.status(500).send("Invalid OTP");
+//   }
+// });
+
+
 app.post("/verify", (req, res) => {
-  let otprecived = req.body.otp;
-  let email = req.body.email;
-  if (savedOTPS[email] == otprecived) {
-    res.send("Verfied");
+  const otpReceived = req.body.otp;
+  const email = req.body.email;
+
+  if (savedOTPS[email] === otpReceived) {
+    res.sendStatus(200); // OTP is valid
   } else {
-    res.status(500).send("Invalid OTP");
+    res.status(400).send("Invalid OTP"); // OTP is invalid
   }
 });
 
