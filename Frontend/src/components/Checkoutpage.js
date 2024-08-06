@@ -221,29 +221,47 @@ const Checkout = () => {
   }
   };
 
+  // const handleBack = () => {
+  //   if (step === 4 && skipShippingAddress) {
+  //     setStep(2);
+  //   } 
+  //   else if ((step === 4 || step === 5) && selectedBillingAddress) {
+  //     setStep(step - 1);
+  //   }
+  //   else if (step === 3 && selectedBillingAddress && !selectedShippingAddress ) {
+  //     setStep(1);
+  //   }
+  //   else if (selectedBillingAddress && selectedShippingAddress) {
+  //     setStep(1);
+  //   }else if(step === 4 && selectedShippingAddress){
+  //      setStep(2)
+  //   }
+  //   else {
+  //     setStep(step - 1);
+  //   }
+  // };
+  
   const handleBack = () => {
     if (step === 4 && skipShippingAddress) {
       setStep(2);
     } 
-    else if (step === 4 && selectedBillingAddress) {
+    else if ((step === 4 || step === 5) && selectedBillingAddress && selectedOption === 'same') {
       setStep(step - 1);
-    }else if (step === 5 && selectedBillingAddress){
-      setStep(step -  1 )
     }
-    else if (step === 3 && selectedBillingAddress && !selectedShippingAddress ) {
+    else if (step === 3 && selectedBillingAddress && !selectedShippingAddress) {
       setStep(1);
     }
     else if (selectedBillingAddress && selectedShippingAddress) {
       setStep(1);
-    }else if(step === 4 && selectedShippingAddress){
-       setStep(2)
+    }
+    else if (step === 4 && selectedShippingAddress) {
+      setStep(2);
     }
     else {
       setStep(step - 1);
     }
   };
   
-
   
   const validateBillingAddress = () => {
     const PINCODE_PATTERN = /^[0-9]{5}$/;

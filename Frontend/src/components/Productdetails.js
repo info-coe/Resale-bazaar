@@ -100,7 +100,7 @@ export default function Productdetails() {
       if (cartItems.length > 0) {
         var unique_item = true;
         cartItems.map((item) => {
-          if (item.id === productdetails.id) {
+          if (item.product_id === productdetails.id) {
             setNotification({
               message: "Product already exists in the cart",
               type: "error",
