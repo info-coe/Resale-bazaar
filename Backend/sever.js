@@ -2035,6 +2035,7 @@ app.post("/paymentStripe", async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
+      customer_email: req.body.user_mail,
       line_items: product.map(item => {
         return {
           price_data: {

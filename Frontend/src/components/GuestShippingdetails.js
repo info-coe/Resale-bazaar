@@ -313,6 +313,7 @@ const GuestShippingdetails = () => {
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
         {
           product: product,
+          user_mail: user?.email || "",
           from: "guestfinalcheckout",
         }
       );

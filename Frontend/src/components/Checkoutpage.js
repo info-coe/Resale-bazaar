@@ -388,6 +388,7 @@ const Checkout = () => {
             `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/paymentStripe`,
             {
                 product: cartItems,
+                user_mail: user.email,
                 from: "finalcheckoutpage",
             }
         );
