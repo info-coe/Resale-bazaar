@@ -2013,26 +2013,6 @@ app.post('/refund', async (req, res) => {
 
 
 
-// Endpoint to check the refund status
-app.get('/refund-status/:paymentIntentId', async (req, res) => {
-  const { paymentIntentId } = req.params;
-
-  try {
-    const refunds = await stripe.refunds.list({
-      payment_intent: paymentIntentId,
-    });
-
-    if (refunds.data.length > 0) {
-      const refundStatus = refunds.data[0].status;
-      res.json({ success: true, refundStatus });
-    } else {
-      res.json({ success: false, message: 'No refunds found' });
-    }
-  } catch (error) {
-    console.error('Error fetching refund status:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
-  }
-});
 
 
 // payment

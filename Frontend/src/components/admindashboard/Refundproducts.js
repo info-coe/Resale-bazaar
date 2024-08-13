@@ -38,21 +38,7 @@ const Refundproducts = () => {
   const endIndex = startIndex + pageSize;
   const tableData = refundproducts.slice(startIndex, endIndex);
 
-  const checkRefundStatus = async (paymentIntentId) => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/refund-status/${paymentIntentId}`);
-      if (response.data.success) {
-        return response.data.refundStatus;
-      } else {
-        console.error('Refund status check failed:', response.data.message);
-        return null;
-      }
-    } catch (error) {
-      console.error('Error checking refund status:', error);
-      return null;
-    }
-  };
-
+ 
   const handleRefund = async (productId, paymentIntentId) => {
    console.log(paymentIntentId)
     try {
@@ -65,15 +51,7 @@ const Refundproducts = () => {
         return;
       }
   
-      // Check the current refund status (assuming checkRefundStatus is defined elsewhere)
-      const currentStatus = await checkRefundStatus(paymentIntentId);
-      if (currentStatus === 'succeeded' || currentStatus === 'canceled') {
-        setNotification({
-          message: "Refund already processed or canceled.",
-          type: "error",
-        });
-        return;
-      }
+    
   
       const response = await axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/refund`, {
         productId: productId,
@@ -86,14 +64,7 @@ const Refundproducts = () => {
           message: "Refund processed successfully!",
           type: "success",
         });
-        // Update the product status in the UI
-        setRefundProducts((prevProducts) =>
-          prevProducts.map((product) =>
-            product.id === productId
-              ? { ...product, refundStatus: 'succeeded' }
-              : product
-          )
-        );
+       
       } else {
         alert('Refund failed: ' + response.data.message);
       }
