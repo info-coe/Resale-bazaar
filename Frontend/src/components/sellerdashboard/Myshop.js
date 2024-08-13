@@ -17,19 +17,27 @@ const Myshop = () => {
   const pageSize = 8;
   const storedObject = sessionStorage.getItem("user-token");
   const myRetrievedObject = JSON.parse(storedObject);
-
+ console.log(myRetrievedObject)
   useEffect(() => {
     const fetchShopname = async () => {
       if (!myRetrievedObject) return;
 
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`
+          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+              Accept: "application/json",
+            },
+          }
         );
         if (res.data !== "Fail" && res.data !== "Error") {
+          console.log(res.data)
           const filteredUserDetails = res.data.filter(
             (item) => item.user_id === myRetrievedObject
           );
+          console.log(filteredUserDetails)
           if (filteredUserDetails.length > 0) {
             const userDetail = filteredUserDetails[0];
             setShopname(
