@@ -171,9 +171,9 @@ const Refundproducts = () => {
                               <button
                                 className="btn btn-danger"
                                 onClick={() => handleRefund(item.id, item.payment_intent_id)}
-                                disabled={item.refundstatus === true}
+                                disabled={Boolean(item.refundstatus) === true}
                               >
-                                {item.refundstatus === true ? 'Refunded' : 'Refund'}
+                                {Boolean(item.refundstatus) === true ? 'Refunded' : 'Refund'}
                               </button>
                             </td>
                           </tr>
