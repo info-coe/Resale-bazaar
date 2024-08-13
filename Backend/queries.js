@@ -365,7 +365,7 @@ const updateProductQuery= `UPDATE products SET name = ?, price = ?, description 
 const googleLoginQuery ="SELECT * FROM register WHERE `email` = ?"
 const updateProductQtyQuery="UPDATE products SET quantity = ? WHERE id = ?"
 const ordersQuery = "Select * from orders"
-const addReviewsQuery='INSERT INTO review (rating, description, title, images ,seller_id,buyer_id,review_productID,created_at, updated_at) VALUES (?, ?, ?, ?,?,?,?,?,?)'
+const addReviewsQuery='INSERT INTO review (rating, description, title, images ,seller_id,buyer_id,created_at, updated_at) VALUES (?, ?, ?, ?,?,?,?,?)'
 const reviewsRetrivingJoinQuery=` SELECT review.*, register.firstname, register.lastname FROM review INNER JOIN register ON review.buyer_id = register.user_id;`
 const shipmentRetrivingJoinQuery=`SELECT * FROM products INNER JOIN  orders ON orders.product_id = products.id;`
 const offergetQuery = `SELECT * FROM products INNER JOIN  offered_products ON offered_products.product_id = products.id`
