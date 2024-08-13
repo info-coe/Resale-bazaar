@@ -18,13 +18,19 @@ export default function Sellerfooter() {
       year: "numeric",
       month: "long",
       day: "numeric",
+      timeZone: "America/New_York",
     };
-    return date.toLocaleDateString("en-US", options);
+    return new Intl.DateTimeFormat("en-US", options).format(date);
   };
 
   const formatTime = (date) => {
-    const options = { hour: "numeric", minute: "numeric", second: "numeric" };
-    return date.toLocaleTimeString("en-US", options);
+    const options = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZone: "America/New_York", // Example: Eastern Time Zone
+    };
+    return new Intl.DateTimeFormat("en-US", options).format(date);
   };
   return (
     <div className="border">
