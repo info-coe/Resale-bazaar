@@ -6,7 +6,9 @@ export default function Finalcheckoutpage() {
   // eslint-disable-next-line no-unused-vars
   const [cartItems, setCartItems] = useState([]);
   const [notification, setNotification] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [paymentIntent, setPaymentIntent] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(true);
 
  
@@ -68,7 +70,7 @@ export default function Finalcheckoutpage() {
         product_name: item.name,
         seller_id: item.seller_id,
         payment_intent_id:paymentIntentId,
-        refundstatus:'false'
+        refundstatus:false
       });
     });
 
