@@ -120,7 +120,12 @@ const MyNavbar = () => {
       });
 
     axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`)
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`,{
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+          Accept: "application/json",
+        },
+      })
       .then((response) => {
         if (response.data !== "Fail" && response.data !== "Error") {
           if (sessionStorage.getItem("user-token") !== null) {
