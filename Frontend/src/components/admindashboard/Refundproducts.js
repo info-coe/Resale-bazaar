@@ -48,6 +48,7 @@ const Refundproducts = () => {
           message: "Refund payment intent ID is missing.",
           type: "error",
         });
+
         return;
       }
   
@@ -64,13 +65,26 @@ const Refundproducts = () => {
           message: "Refund processed successfully!",
           type: "success",
         });
+        setTimeout(() => {
+          setNotification(null);
+          window.location.reload(false); 
+        }, 3000); 
        
       } else {
-        alert('Refund failed: ' + response.data.message);
+        setNotification({
+          message: "Refund failed:",
+          type: "error",
+        });
+        setTimeout(() => {
+          setNotification(null);
+        }, 3000);
       }
     } catch (error) {
       console.error('Error processing refund:', error);
-      alert('An error occurred while processing the refund. Please try again later.');
+      setNotification({
+        message: "An error occurred while processing the refund. Please try again later.",
+        type: "error",
+      });
     }
   };
   
