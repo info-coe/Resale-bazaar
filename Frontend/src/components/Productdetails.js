@@ -52,7 +52,7 @@ export default function Productdetails() {
     isLoggedIn,
     setIsLoggedIn,
   } = useCart();
-  const [userdetails, setUserDetails] = useState([]);
+  // const [userdetails, setUserDetails] = useState([]);
 
   // const [offerAlert,setOfferAlert]=useState(null)
 
@@ -259,24 +259,24 @@ export default function Productdetails() {
   });
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
-      .then((res) => {
-        if (res.data !== "Fail" && res.data !== "Error") {
-          const filteredUserDetails = res.data.filter(
-            (item) => item.user_id === productdetails.seller_id
-          );
-          const userDetails = filteredUserDetails.map((item) => ({
-            userId: item.user_id,
-            email: item.email,
-            phone: item.phone,
-            name: item.firstname + " " + item.lastname,
-            shopname: item.shopname,
-          }));
-          setUserDetails(userDetails);
-        }
-      })
-      .catch((err) => console.log(err));
+    // axios
+    //   .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+    //   .then((res) => {
+    //     if (res.data !== "Fail" && res.data !== "Error") {
+    //       const filteredUserDetails = res.data.filter(
+    //         (item) => item.user_id === productdetails.seller_id
+    //       );
+    //       const userDetails = filteredUserDetails.map((item) => ({
+    //         userId: item.user_id,
+    //         email: item.email,
+    //         phone: item.phone,
+    //         name: item.firstname + " " + item.lastname,
+    //         shopname: item.shopname,
+    //       }));
+    //       setUserDetails(userDetails);
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
     axios
       .get(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/offeredproducts`
@@ -1011,7 +1011,7 @@ export default function Productdetails() {
 
             <div className="col-12 col-md-7 mt-3">
               <div className="user-details border shadow-sm p-3 bg-body rounded">
-                {userdetails.map((user, index) => (
+                {userDetails.map((user, index) => (
                   <div
                     className="d-flex justify-content-between m-2"
                     key={index}
@@ -1037,7 +1037,7 @@ export default function Productdetails() {
                   <b>Notes:</b> {productdetails.notes}
                 </div>
               )}
-              <Reviews userDetails={userdetails} />
+              <Reviews userDetails={userDetails} />
             </div>
           </div>
         </div>
