@@ -29,7 +29,14 @@ export default function Changepassword() {
     
   useEffect(() => {
     // Fetch all products
-    axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+    axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+          Accept: "application/json",
+        },
+      }
+    )
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           const userid = sessionStorage.getItem("user-token");
@@ -43,7 +50,14 @@ export default function Changepassword() {
 
     useEffect(() => {
       // Fetch all products
-      axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/admin`)
+      axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/admin`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            Accept: "application/json",
+          },
+        }
+      )
         .then((res) => {
           if (res.data !== "Fail" && res.data !== "Error") {
             setAdminDetails(res.data)
