@@ -119,6 +119,8 @@ const ordersproducts = `
     refundable_amount INT NULL,
     cancel_reason MEDIUMTEXT NULL,
     cancel_comment LONGTEXT NULL,
+    payment_intent_id VARCHAR(255) NOT NULL,
+    refundstatus TINYINT(4) NULL,
     UNIQUE INDEX id_UNIQUE (id ASC));
 `
 
@@ -232,6 +234,7 @@ CREATE TABLE IF NOT EXISTS review (
   images JSON,
   seller_id INTEGER NOT NULL,
   buyer_id INTEGER NOT NULL,
+  review_productID INTEGER NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -339,7 +342,7 @@ const addBillingAddress = `INSERT INTO billing_address (firstname, lastname, ema
 const addShippingAddress = `INSERT INTO shipping_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 const updateShippingAddress = `UPDATE shipping_address SET firstname = ?, lastname = ?, email = ?, country = ?, state = ?, city = ?, address1 = ?, address2 = ?, pincode = ?, phone = ? WHERE id = ?`;
 const deleteShippingAddress = "DELETE FROM shipping_address WHERE id = ?"
-const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buyer_id, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity,order_status,order_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
+const paymentStatusQuery = "INSERT INTO orders (product_id, payment_status, buyer_id, shipment_id, order_id, ordered_date, shipped_date, delivered_date,order_quantity,order_status,order_amount,payment_intent_id, refundstatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)";
 const deleteProductsQuery = "DELETE FROM  products WHERE id=?";
 const deletecartitemQuery = "DELETE FROM cart WHERE userid = ? AND EXISTS (SELECT 1 FROM orders WHERE buyer_id = ?)"
 const cancelorderitemQuery = `UPDATE orders SET order_status = ?, refundable_amount = ?, cancel_reason = ?,cancel_comment = ? WHERE order_id = ?`;
@@ -362,7 +365,7 @@ const updateProductQuery= `UPDATE products SET name = ?, price = ?, description 
 const googleLoginQuery ="SELECT * FROM register WHERE `email` = ?"
 const updateProductQtyQuery="UPDATE products SET quantity = ? WHERE id = ?"
 const ordersQuery = "Select * from orders"
-const addReviewsQuery='INSERT INTO review (rating, description, title, images ,seller_id,buyer_id,created_at, updated_at) VALUES (?, ?, ?, ?,?,?,?,?)'
+const addReviewsQuery='INSERT INTO review (rating, description, title, images ,seller_id,buyer_id,review_productID,created_at, updated_at) VALUES (?, ?, ?, ?,?,?,?,?,?)'
 const reviewsRetrivingJoinQuery=` SELECT review.*, register.firstname, register.lastname FROM review INNER JOIN register ON review.buyer_id = register.user_id;`
 const shipmentRetrivingJoinQuery=`SELECT * FROM products INNER JOIN  orders ON orders.product_id = products.id;`
 const offergetQuery = `SELECT * FROM products INNER JOIN  offered_products ON offered_products.product_id = products.id`

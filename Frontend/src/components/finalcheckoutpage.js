@@ -6,29 +6,51 @@ export default function Finalcheckoutpage() {
   // eslint-disable-next-line no-unused-vars
   const [cartItems, setCartItems] = useState([]);
   const [notification, setNotification] = useState(null);
+  const [paymentIntent, setPaymentIntent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+ 
   useEffect(() => {
-    const token = sessionStorage.getItem("user-token");
-    if (!token) return;
+    const query = new URLSearchParams(window.location.search);
+    const sessionId = query.get('session_id');
 
-    // Fetch cart items for the logged-in user
-    axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`)
-      .then((response) => {
-        if (response.data !== "Fail" && response.data !== "Error") {
-          const filteredProducts = response.data.filter((item) => item.userid.toString() === token);
-          setCartItems(filteredProducts);
+    if (sessionId) {
+      // Fetch the session details from your backend
+      axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/api/get-session/${sessionId}`)
+        .then(response => {
+          const paymentIntentId = response.data.paymentIntentId;
+          setPaymentIntent(paymentIntentId);
+          setLoading(false);
+          const token = sessionStorage.getItem("user-token");
+   
+          if (!token) return;
+      
+          axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/addcart`)
+            .then((response) => {
+              if (response.data !== "Fail" && response.data !== "Error") {
+                const filteredProducts = response.data.filter((item) => item.userid.toString() === token);
+                setCartItems(filteredProducts);
+      
+                // Proceed to update payment status
+                updatePaymentStatus(filteredProducts, token,paymentIntentId);
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching cart items:", error);
+            });
+        })
+        .catch(error => {
+          console.error('Error fetching session:', error);
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
 
-          // Proceed to update payment status
-          updatePaymentStatus(filteredProducts, token);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching cart items:", error);
-      });
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const updatePaymentStatus = (products, token) => {
+  const updatePaymentStatus = (products, token,paymentIntentId) => {
     const paymentRequests = products.map((item) => {
       return axios.post(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updatepayment`, {
         payment_status: true,
@@ -44,7 +66,9 @@ export default function Finalcheckoutpage() {
         order_status: "purchased",
         order_amount: item.quantity * item.price,
         product_name: item.name,
-        seller_id: item.seller_id
+        seller_id: item.seller_id,
+        payment_intent_id:paymentIntentId,
+        refundstatus:'false'
       });
     });
 
