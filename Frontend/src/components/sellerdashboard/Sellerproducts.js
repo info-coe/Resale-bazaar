@@ -312,9 +312,11 @@ export default function Sellerproducts() {
       );
 
       setNotification({ message: 'Product updated successfully', type: 'success' });
-      setTimeout(() => setNotification(null), 3000);
-      setDeletedImages([]);
-      window.location.reload(false); // Reload the page or update state as necessary
+      setTimeout(() => {setNotification(null);
+        setDeletedImages([]);
+        window.location.reload(false); // Reload the page or update state as necessary
+       },1000);
+     
     } catch (error) {
       console.error('Error updating product:', error);
       setDisabled(false);
@@ -784,7 +786,7 @@ export default function Sellerproducts() {
                       Quantity
                     </label>
                     <div className="d-flex">
-                      <select
+                      {/* <select
                         className="form-select"
                         id="ProductQuantity"
                         name="quantity"
@@ -797,7 +799,19 @@ export default function Sellerproducts() {
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
-                      </select>
+                      </select> */}
+                      <input
+            type="number"
+            className="form-control"
+            id="ProductQuantity"
+            name="quantity"
+            placeholder="Enter Quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            min="1"
+            max="99"
+            required
+        />
                       <span className="text-danger fs-4"> &nbsp;*</span>
                     </div>
                   </div>

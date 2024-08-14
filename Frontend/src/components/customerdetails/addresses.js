@@ -40,7 +40,7 @@ export default function Addresses() {
     };
 
     fetchAddresses();
-  }, []);
+  }, [addresses]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -92,7 +92,7 @@ export default function Productdetails() {
       type: "success",
     });
     setTimeout(() => setNotification(null), 3000);
-    window.location.href = "/Resale-bazaar/acceptproduct";
+    window.location.href = "/acceptproduct";
   };
 
   const handleAddToCart = () => {
@@ -214,7 +214,7 @@ export default function Productdetails() {
         .catch((err) => {
           console.log(err);
         });
-      window.location.href = "/Resale-bazaar/acceptproduct";
+      window.location.href = "/acceptproduct";
     } else {
       console.log("User canceled the prompt.");
     }

@@ -98,9 +98,78 @@ export default function Acceptproduct() {
     return newSizes;
   };
 
+  // const handleSubmitEdit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (formData.image.length < 2) {
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       image: "You must have at least 2 images or videos.",
+  //     }));
+  //     return;
+  //   }
+
+  //   if (formData.image.length > 6) {
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       image: "You can only upload up to 6 images or videos.",
+  //     }));
+  //     return;
+  //   }
+  //   setDisabled(true);
+
+  //   try {
+  //     const formDataToSend = new FormData();
+
+  //     // Filter out empty or null fields from formData
+  //     const filteredFormData = {};
+  //     Object.keys(formData).forEach((key) => {
+  //       if (formData[key]) {
+  //         filteredFormData[key] = formData[key];
+  //       }
+  //     });
+
+  //     // Append non-file form data
+  //     Object.keys(filteredFormData).forEach((key) => {
+  //       if (key !== "image") {
+  //         formDataToSend.append(key, filteredFormData[key]);
+  //       }
+  //     });
+
+  //     // Append image files
+  //     filteredFormData.image.forEach((imageObj) => {
+  //       if (imageObj.file) {
+  //         formDataToSend.append("images", imageObj.file);
+  //       }
+  //     });
+
+  //     // Append deleted images
+  //     formDataToSend.append("deletedImages", JSON.stringify(deletedImages));
+
+  //     // eslint-disable-next-line no-unused-vars
+  //     const response = await axios.put(
+  //       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
+  //       formDataToSend,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  //     setNotification({
+  //       message: "Product updated successfully",
+  //       type: "success"
+  //     });
+  //     setTimeout(() => setNotification(null), 3000);
+  //     setDeletedImages([]);
+  //   } catch (error) {
+  //     console.error("Error updating product:", error);
+  //     setDisabled(false);
+  //   }
+  // };
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
-
+  
     if (formData.image.length < 2) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -108,7 +177,7 @@ export default function Acceptproduct() {
       }));
       return;
     }
-
+  
     if (formData.image.length > 6) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -116,11 +185,12 @@ export default function Acceptproduct() {
       }));
       return;
     }
+  
     setDisabled(true);
-
+  
     try {
       const formDataToSend = new FormData();
-
+  
       // Filter out empty or null fields from formData
       const filteredFormData = {};
       Object.keys(formData).forEach((key) => {
@@ -128,25 +198,24 @@ export default function Acceptproduct() {
           filteredFormData[key] = formData[key];
         }
       });
-
+  
       // Append non-file form data
       Object.keys(filteredFormData).forEach((key) => {
         if (key !== "image") {
           formDataToSend.append(key, filteredFormData[key]);
         }
       });
-
+  
       // Append image files
       filteredFormData.image.forEach((imageObj) => {
         if (imageObj.file) {
           formDataToSend.append("images", imageObj.file);
         }
       });
-
+  
       // Append deleted images
       formDataToSend.append("deletedImages", JSON.stringify(deletedImages));
-
-      // eslint-disable-next-line no-unused-vars
+  
       const response = await axios.put(
         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${formData.id}`,
         formDataToSend,
@@ -156,17 +225,36 @@ export default function Acceptproduct() {
           },
         }
       );
-      setNotification({
-        message: "Product updated successfully",
-        type: "success",
-      });
-      setTimeout(() => setNotification(null), 3000);
-      setDeletedImages([]);
+  
+      if (response.status === 200) { // Check if the request was successful
+        setNotification({
+          message: "Product updated successfully",
+          type: "success",
+        });
+  
+        // Ensure the notification is rendered before reloading
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Delay for 2 seconds
+  
+        setDeletedImages([]); // Clear deleted images
+        window.location.reload(false); // Reload page after notification is shown
+      } else {
+        throw new Error("Failed to update product");
+      }
     } catch (error) {
       console.error("Error updating product:", error);
       setDisabled(false);
+  
+      setNotification({
+        message: "Failed to update product",
+        type: "error",
+      });
+  
+      setTimeout(() => setNotification(null), 3000);
     }
   };
+  
+  
+  
   const [errors, setErrors] = useState({});
 
   const handleKeyup = (e) => {
@@ -844,7 +932,7 @@ export default function Acceptproduct() {
                         Quantity
                       </label>
                       <div className="d-flex">
-                        <select
+                        {/* <select
                           className="form-select"
                           id="ProductQuantity"
                           name="quantity"
@@ -857,7 +945,19 @@ export default function Acceptproduct() {
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
-                        </select>
+                        </select> */}
+                        <input
+            type="number"
+            className="form-control"
+            id="ProductQuantity"
+            name="quantity"
+            placeholder="Enter Quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            min="1"
+            max="99"
+            required
+        />
                         <span className="text-danger fs-4"> &nbsp;*</span>
                       </div>
                     </div>

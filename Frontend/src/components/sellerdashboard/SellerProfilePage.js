@@ -168,12 +168,10 @@ const SellerProfile = () => {
         }
       )
       .then((res) => {
-        setNotification({
-          message: "Data added successfully",
-          type: "success",
-        });
-        setTimeout(() => setNotification(null), 3000);
-        window.location.reload(false);
+        setNotification({ message: "Data added successfully", type: "success" });
+        setTimeout(() => {setNotification(null);
+          window.location.reload(false);
+         },3000);
       })
       .catch((err) => {
         console.error("Error posting data:", err);
