@@ -119,7 +119,7 @@ const ordersproducts = `
     refundable_amount INT NULL,
     cancel_reason MEDIUMTEXT NULL,
     cancel_comment LONGTEXT NULL,
-    payment_intent_id VARCHAR(255) NOT NULL,
+    payment_intent_id VARCHAR(455) NULL,
     refundstatus TINYINT(4) NULL,
     UNIQUE INDEX id_UNIQUE (id ASC));
 `
