@@ -253,8 +253,9 @@ export default function Productdetails() {
     return (
       curr.offered_buyer_id ===
         parseInt(sessionStorage.getItem("user-token")) &&
-      curr.product_id === productdetails.id &&
-      curr.product_status === "Accepted"
+      curr.product_id === productdetails.id 
+      // &&
+      // curr.product_status === "Accepted"
     );
   });
 
