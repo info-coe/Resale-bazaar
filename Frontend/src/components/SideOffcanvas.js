@@ -8,7 +8,7 @@ const SideOffcanvas = () => {
         <Link
           to={
             sessionStorage.getItem("token") !== null
-              ? "/selleraccount"
+              ? "/addnewproduct"
               : "/login"
           }
           className="text-decoration-none btn btn-secondary w-100 m-1"
