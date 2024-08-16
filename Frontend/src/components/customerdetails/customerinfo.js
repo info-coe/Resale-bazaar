@@ -59,7 +59,6 @@ export default function Customerinfo() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(shopNameFilter);
     if (
       shopNameFilter.some(
         (user) =>
