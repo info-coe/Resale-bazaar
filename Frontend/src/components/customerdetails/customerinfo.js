@@ -59,7 +59,14 @@ export default function Customerinfo() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (shopNameFilter.some((user) => user.shopname.toString() === values.shopname.toString())) {
+    console.log(shopNameFilter);
+    if (
+      shopNameFilter.some(
+        (user) =>
+          user.shopname !== null &&
+          user.shopname.toString() === values.shopname.toString()
+      )
+    ) {
       setError("This ShopName already exist");
     } else {
       axios
@@ -69,11 +76,17 @@ export default function Customerinfo() {
         )
         .then((res) => {
           if (res.data === "Error") {
-           
-            setNotification({ message: 'Error while updating profile. Please try again filling all the fields', type: 'error' });
+            setNotification({
+              message:
+                "Error while updating profile. Please try again filling all the fields",
+              type: "error",
+            });
             setTimeout(() => setNotification(null), 3000);
           } else {
-            setNotification({ message: 'Profile updated successfully', type: 'success' });
+            setNotification({
+              message: "Profile updated successfully",
+              type: "success",
+            });
             setTimeout(() => setNotification(null), 3000);
             window.location.reload(false);
           }
@@ -85,7 +98,13 @@ export default function Customerinfo() {
   return (
     <div className="fullscreen">
       <MyNavbar />
-      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
 
       <main>
         <Customerbanner />
@@ -208,7 +227,7 @@ export default function Customerinfo() {
         </div>
       </main>
       <Footer />
-      <Scrolltotopbtn/>
+      <Scrolltotopbtn />
     </div>
   );
 }

@@ -7,7 +7,10 @@ dbConnectionInfo = {
   user: process.env.REACT_APP_DB_USER,
   password: process.env.REACT_APP_DB_PASSWORD,
   connectionLimit: 5, 
-  database: process.env.REACT_APP_DB_DATABASE
+  database: process.env.REACT_APP_DB_DATABASE,
+  connectTimeout  : 60 * 60 * 1000,
+  acquireTimeout  : 60 * 60 * 1000,
+  timeout         : 60 * 60 * 1000
 };
 
 
