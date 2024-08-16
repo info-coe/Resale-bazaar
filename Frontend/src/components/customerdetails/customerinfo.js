@@ -50,7 +50,6 @@ export default function Customerinfo() {
   }, []);
   // console.log(shopNameFilter);
 
-  // console.log(values);
   const handleInput = (event) => {
     setValues((prev) => ({
       ...prev,
