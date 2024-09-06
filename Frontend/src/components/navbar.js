@@ -231,13 +231,14 @@ const MyNavbar = () => {
               <i className="bi bi-justify"></i>
             </span>
             <div className="ms-lg-5 ms-md-3 ms-2 bargainlogodiv">
-              <Link to="/">
+              <Link to="/" className=" text-decoration-none">
                 <img
                   src={RBLogo}
                   alt="logo"
                   className="RBlogo"
                   style={{ objectFit: "contain" }}
                 />
+                <p style={{ color:"#800080" , position:"relative" , right:"10px", bottom:"5px" , fontStyle:"italic"}} className="p-0 m-0 logocaption">Your Sustainability closet</p>
               </Link>
             </div>
           </div>

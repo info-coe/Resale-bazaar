@@ -60,7 +60,7 @@ export default function Contactus() {
           <h1 style={{fontSize:"26px"}}>Contact Us</h1>
           <section>
             <p>
-              Thank you for visiting Closet The Resale Bazaar. For any questions,
+              Thank you for visiting The Resale Bazaar. For any questions,
               feedback, and/or grievances please email us at &nbsp;
               <Link
                 to="mailto:resalebazaar@gmail.com"
@@ -68,7 +68,7 @@ export default function Contactus() {
               >
                 resalebazaar@gmail.com
               </Link>
-              with the necessary information.
+              &nbsp;with the necessary information.
             </p>
             <p>
               We aim to respond within 24 hours and get back to you with the

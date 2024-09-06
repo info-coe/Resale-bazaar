@@ -27,6 +27,7 @@ const Register = () => {
   const [shopNameFilter, setShopNameFilter] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
 
 
   const handleInput = (event) => {
@@ -72,11 +73,32 @@ const Register = () => {
         );
       } else {
         setError("");
-        values.password = CryptoJS.MD5(values.password).toString();
-        navigate("/emailverification", { state: { values } });
+        setShowModal(true); // Show the modal after validation passes
+        // values.password = CryptoJS.MD5(values.password).toString();
+        // navigate("/emailverification", { state: { values } });
       }
     }
   };
+
+  // Handle OK button in the modal
+const handleOk = () => {
+  // Hash the password and navigate to email verification
+  values.password = CryptoJS.MD5(values.password).toString();
+  setShowModal(false);
+  navigate("/emailverification", { state: { values } });
+};
+
+// Handle Cancel button in the modal
+const handleCancel = () => {
+  setShowModal(false);
+  navigate("/"); // Redirect to home page
+};
+
+// Handle top-right close button (just closes the modal)
+const handleCloseModal = () => {
+  setShowModal(false); // Only close the modal, no navigation
+};
+
   // console.log(values);
   const [user, setUser] = useState([]);
   //eslint-disable-next-line no-unused-vars
@@ -409,6 +431,43 @@ const Register = () => {
       </main>
       <Footer />
       <Scrolltotopbtn/>
+       {/* Modal */}
+    {showModal && (
+    <div className="modal" tabindex="-1" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+    <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h6 className="modal-title">Confirmation Message</h6>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={handleCloseModal}
+            aria-label="Close"
+          ></button>
+        </div>
+        <div className="modal-body">
+          <p> <b>Note:</b> You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin</p>
+        </div>
+        <div className="modal-footer">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleCancel}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleOk}
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+    )}
     </div>
   );
 };

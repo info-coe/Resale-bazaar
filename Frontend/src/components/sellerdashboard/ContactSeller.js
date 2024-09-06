@@ -4,6 +4,7 @@ import axios from "axios";
 import Footer from "../footer";
 import messageemptyimg from '../../images/messagesempty.png'
 import Scrolltotopbtn from "../Scrolltotopbutton";
+import { Link } from "react-router-dom";
 const ContactSeller = () => {
   const [contactData,SetContactData]=useState([])
   const SellerId = parseInt(sessionStorage.getItem("user-token"));
@@ -54,7 +55,7 @@ const ContactSeller = () => {
                                 {user.name}
                             </td>
                             <td>
-                                {user.email}
+                                <Link className="text-decoration-none" to={`mailto:${user.email}`}>{user.email}</Link>
                             </td>
                             <td>
                                 {user.phone}
