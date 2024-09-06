@@ -222,7 +222,7 @@ const MyNavbar = () => {
         <nav className="navbar navbar-expand-md navbar-light bg-white  d-md-flex  justify-content-around">
           <div className="d-flex">
             <span
-              className="toggle ms-1 me-1"
+              className="toggle ms-1 me-1 mt-2"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
@@ -238,7 +238,7 @@ const MyNavbar = () => {
                   className="RBlogo"
                   style={{ objectFit: "contain" }}
                 />
-                <p style={{ color:"#800080" , position:"relative" , right:"10px", bottom:"5px" , fontStyle:"italic"}} className="p-0 m-0 logocaption">Your Sustainability closet</p>
+                <p style={{ color:"#1d1160" , position:"relative" , right:"10px", bottom:"5px" , fontStyle:"italic"}} className="p-0 m-0 logocaption">Your Sustainability closet</p>
               </Link>
             </div>
           </div>
@@ -514,14 +514,16 @@ const MyNavbar = () => {
         >
           <div className="offcanvas-header d-flex justify-content-between">
             <div className="">
-              <Link to="/">
+              <Link to="/" className="text-decoration-none">
                 <img
                   src={RBLogo}
                   alt="logo"
                   width="100px"
                   style={{ objectFit: "contain" }}
                 />
+                 <p style={{fontSize:"11px", color:"#1d1160" , position:"relative" , right:"10px", bottom:"5px" , fontStyle:"italic"}} className="p-0 m-0">Your Sustainability closet</p>
               </Link>
+              
             </div>
             <i
               className={`bi bi-x-circle-fill fs-3 btnClose ${

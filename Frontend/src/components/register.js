@@ -39,7 +39,9 @@ const Register = () => {
   };
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/registedusers`
+        
+      )
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
           setShopNameFilter(res.data);
@@ -226,6 +228,65 @@ const handleCloseModal = () => {
             &nbsp;&nbsp;&nbsp;Continue With Google
           </button>
         </div>
+        <>
+          {/* Modal */}
+    {showModal && (
+    <div className="modal" tabIndex="-1" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+    <div className="modal-dialog modal-lg modal-dialog-centered">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h6 className="modal-title">Confirmation Message</h6>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={handleCloseModal}
+            aria-label="Close"
+          ></button>
+        </div>
+        <div className="modal-body">
+          <p> <b>Note:</b> You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin</p>
+          <p><b>Terms for sellers</b></p>
+          <ul>
+            <li>Sellers must provide accurate and complete product information.</li>
+            <li>Products must meet quality standards and match the described condition.</li>
+            <li>Listing illegal, counterfeit, or restricted items is prohibited.</li>
+            <li>Orders must be shipped within the specified timeframe.</li>
+            <li>Products must be securely packaged to prevent damage.</li>
+            <li>Valid tracking information must be provided for all shipped orders.</li>
+            <li>Sellers must respond to customer inquiries within 24 hours.</li>
+            <li>Sellers must adhere to the platform’s return and refund policies.</li>
+            <li>A commission of X% will be charged on each sale.</li>
+            <li>Payments will be processed on a bi-weekly basis.</li>
+            <li>Sellers are responsible for updating their account information.</li>
+            <li>Password security must be maintained by the seller.</li>
+            <li>Sellers must comply with all applicable laws and regulations.</li>
+            <li>Intellectual property rights must be respected, avoiding any infringement.</li>
+            <li>Accounts may be suspended or terminated for violations of terms.</li>
+            <li>Sellers can appeal account suspensions through the designated process.</li>
+            <li>By signing up as a seller on our platform, you agree to these terms and conditions.</li>
+          </ul>
+        </div>
+        <div className="modal-footer">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleCancel}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleOk}
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+    )}
+        </>
         <div className="p-2 ps-lg-5 pe-lg-5 mb-5">
           <div className="col-xs-12 col-md-12 col-lg-12">
             <form method="post" onSubmit={handleSubmit}>
@@ -431,43 +492,7 @@ const handleCloseModal = () => {
       </main>
       <Footer />
       <Scrolltotopbtn/>
-       {/* Modal */}
-    {showModal && (
-    <div className="modal" tabindex="-1" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-    <div className="modal-dialog modal-dialog-centered">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h6 className="modal-title">Confirmation Message</h6>
-          <button
-            type="button"
-            className="btn-close"
-            onClick={handleCloseModal}
-            aria-label="Close"
-          ></button>
-        </div>
-        <div className="modal-body">
-          <p> <b>Note:</b> You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin</p>
-        </div>
-        <div className="modal-footer">
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={handleCancel}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleOk}
-          >
-            OK
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-    )}
+     
     </div>
   );
 };
