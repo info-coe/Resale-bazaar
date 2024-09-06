@@ -44,6 +44,7 @@ const Register = () => {
       )
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
+
           setShopNameFilter(res.data);
           const userDetails = res.data.map((item) => ({
             email: item.email,
@@ -55,11 +56,11 @@ const Register = () => {
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
- 
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { email, phone, password } = values;
-    if (values.shopname && shopNameFilter.some((user) => user.shopname === values.shopname)) {
+    const { email, phone, password,shopname } = values;
+    if (shopNameFilter.some((user) => user.shopname === shopname)) {
       setError("This ShopName already exist");
     } else if (userdetails.some((user) => user.email === email)) {
       setError("This Email already Registered");
@@ -83,23 +84,23 @@ const Register = () => {
   };
 
   // Handle OK button in the modal
-const handleOk = () => {
-  // Hash the password and navigate to email verification
-  values.password = CryptoJS.MD5(values.password).toString();
-  setShowModal(false);
-  navigate("/emailverification", { state: { values } });
-};
+  const handleOk = () => {
+    // Hash the password and navigate to email verification
+    values.password = CryptoJS.MD5(values.password).toString();
+    setShowModal(false);
+    navigate("/emailverification", { state: { values } });
+  };
 
-// Handle Cancel button in the modal
-const handleCancel = () => {
-  setShowModal(false);
-  navigate("/"); // Redirect to home page
-};
+  // Handle Cancel button in the modal
+  const handleCancel = () => {
+    setShowModal(false);
+    navigate("/"); // Redirect to home page
+  };
 
-// Handle top-right close button (just closes the modal)
-const handleCloseModal = () => {
-  setShowModal(false); // Only close the modal, no navigation
-};
+  // Handle top-right close button (just closes the modal)
+  const handleCloseModal = () => {
+    setShowModal(false); // Only close the modal, no navigation
+  };
 
   // console.log(values);
   const [user, setUser] = useState([]);
@@ -152,7 +153,7 @@ const handleCloseModal = () => {
                         var token = data.user_id;
                         sessionStorage.setItem("token", "user");
                         if (!token) {
-                          setNotification({ message:"Unable to login. Please try after some time.", type:'error'});
+                          setNotification({ message: "Unable to login. Please try after some time.", type: 'error' });
                           setTimeout(() => setNotification(null), 3000);
                           return;
                         }
@@ -168,7 +169,7 @@ const handleCloseModal = () => {
                   var token = data.user_id;
                   sessionStorage.setItem("token", "user");
                   if (!token) {
-                    setNotification({ message:"Unable to login. Please try after some time." , type:"error"});
+                    setNotification({ message: "Unable to login. Please try after some time.", type: "error" });
                     setTimeout(() => setNotification(null), 3000);
                     return;
                   }
@@ -178,7 +179,7 @@ const handleCloseModal = () => {
                   // window.location.reload(false);
                 }
               } else {
-                setNotification({ message:"Invalid Username or Password" , type:"error"});
+                setNotification({ message: "Invalid Username or Password", type: "error" });
                 setTimeout(() => setNotification(null), 3000);
                 window.location.reload(false);
               }
@@ -192,15 +193,16 @@ const handleCloseModal = () => {
     axios
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
       .then((res) => {
+        console.log(res)
         if (res.data !== "Fail" && res.data !== "Error") {
           console.log(res);
         }
       })
 
       .catch((err) => console.log(err));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-  
+
   //eslint-disable-next-line no-unused-vars
   const logOut = () => {
     googleLogout();
@@ -429,7 +431,7 @@ const handleCloseModal = () => {
                       pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$"
                       title="Password must contain at least 8 characters, including one number, one letter, and one special character."
                     />
-                     <button
+                    <button
                       type="button"
                       id="btnToggle"
                       className="toggle12"
@@ -459,7 +461,7 @@ const handleCloseModal = () => {
                       placeholder="Enter Confirm Password"
                       required
                     />
-                     <button
+                    <button
                       type="button"
                       id="btnToggle"
                       className="toggle12"
@@ -492,7 +494,43 @@ const handleCloseModal = () => {
       </main>
       <Footer />
       <Scrolltotopbtn/>
-     
+       {/* Modal */}
+    {showModal && (
+    <div className="modal" tabindex="-1" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+    <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h6 className="modal-title">Confirmation Message</h6>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={handleCloseModal}
+            aria-label="Close"
+          ></button>
+        </div>
+        <div className="modal-body">
+          <p> <b>Note:</b> You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin</p>
+        </div>
+        <div className="modal-footer">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleCancel}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleOk}
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+    )}
     </div>
   );
 };
