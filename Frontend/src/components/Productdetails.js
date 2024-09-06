@@ -41,6 +41,16 @@ export default function Productdetails() {
   const { id } = useParams();
   const location = useLocation();
   const { productdetails, admin, userDetails } = location.state || {};
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    comment: "",
+  });
+  const nameInputRef = useRef(null);
+  const commentInputRef = useRef(null);
+
+  const { name, email, phone, comment } = formData;
 
   const {
     addToCart,
@@ -373,7 +383,63 @@ export default function Productdetails() {
       setTimeout(() => setNotification(null), 3000);
     }
   };
+  const handleInputChange = (e) => {
+    const { id, value, selectionStart } = e.target;
+    let updatedValue = value;
 
+    if (id === "name") {
+      updatedValue = capitalizeFirstLetterOfEveryWord(value);
+    } else if (id === "comment") {
+      updatedValue = capitalizeFirstLetter(value);
+    }
+
+    setFormData((prevFormData) => ({ ...prevFormData, [id]: updatedValue }));
+
+    // Restore cursor position
+    if (id === "name") {
+      requestAnimationFrame(() => {
+        nameInputRef.current.setSelectionRange(selectionStart, selectionStart);
+      });
+    } else if (id === "comment") {
+      requestAnimationFrame(() => {
+        commentInputRef.current.setSelectionRange(
+          selectionStart,
+          selectionStart
+        );
+      });
+    }
+  };
+const capitalizeFirstLetterOfEveryWord = (str) => {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios
+      .post(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/contactseller`,
+        {
+          name,
+          email,
+          phone,
+          comment,
+          user_id: productdetails.seller_id,
+        }
+      )
+      .then((res) => {
+        setNotification({ message: "Data added successfully", type: "success" });
+        setTimeout(() => {setNotification(null);
+          window.location.reload(false);
+         },3000);
+      })
+      .catch((err) => {
+        console.error("Error posting data:", err);
+      });
+  };
   return (
     <div className="fullscreen">
       <MyNavbar />
@@ -1010,13 +1076,14 @@ export default function Productdetails() {
               </>
             )}
 
-            <div className="col-12 col-md-7 mt-3">
+            <div className="col-12 col-md-8 mt-3">
               <div className="user-details border shadow-sm p-3 bg-body rounded">
                 {userDetails.map((user, index) => (
                   <div
-                    className="d-flex justify-content-between m-2"
+                    className="d-md-flex flex-wrap justify-content-between m-2"
                     key={index}
                   >
+                    <div>
                     <p>
                       <i className="bi bi-person-circle fs-5"></i>
                       &nbsp;
@@ -1024,12 +1091,22 @@ export default function Productdetails() {
                         ? user.name
                         : user.shopname}
                     </p>
+                    </div>
+                    <div>
                     <button
-                      className="btn btn-outline-primary"
+                      className="btn btn-sm btn-outline-primary"
                       onClick={() => handleViewProfile(user.userId)}
                     >
                       Visit Shop
                     </button>
+                    <button
+                  className="btn btn-sm btn-primary ms-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal2"
+                >
+                  Contact to Seller
+                </button>
+                </div>
                   </div>
                 ))}
               </div>
@@ -1041,7 +1118,109 @@ export default function Productdetails() {
               <Reviews userDetails={userDetails} />
             </div>
           </div>
+        
         </div>
+        <div
+        className="modal fade"
+        id="exampleModal2"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Contact to Seller
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label fw-bold">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    value={name}
+                    onChange={handleInputChange}
+                    placeholder="Enter Your Name"
+                    ref={nameInputRef}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label fw-bold">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    value={email}
+                    onChange={handleInputChange}
+                    placeholder="Enter Your Email"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="phone" className="form-label fw-bold">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    className="form-control"
+                    id="phone"
+                    name="phone"
+                    value={phone}
+                    onChange={handleInputChange}
+                    placeholder="Enter Your Phone Number"
+                    pattern="[0-9]{10}"
+                    title="10 digit numeric value only"
+                    minLength={10}
+                    maxLength={10}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="comment" className="form-label fw-bold">
+                    Comment
+                  </label>
+                  <textarea
+                    type="text"
+                    className="form-control"
+                    id="comment"
+                    value={comment}
+                    onChange={handleInputChange}
+                    placeholder="Enter Comment"
+                    ref={commentInputRef}
+                  />
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
       </main>
       <Footer />
       <Scrolltotopbtn />
