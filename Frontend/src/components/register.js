@@ -28,7 +28,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
-
+  const [modal, setModal] = useState(false);
 
   const handleInput = (event) => {
     setValues((prev) => ({
@@ -37,14 +37,14 @@ const Register = () => {
     }));
     // console.log(CryptoJS.MD5(event.target.value).toString())
   };
+  console.log(shopNameFilter);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/registedusers`
-        
+      .get(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/registedusers`
       )
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
-
           setShopNameFilter(res.data);
           const userDetails = res.data.map((item) => ({
             email: item.email,
@@ -59,8 +59,12 @@ const Register = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { email, phone, password,shopname } = values;
-    if (shopNameFilter.some((user) => user.shopname === shopname)) {
+    const { email, phone, password, shopname } = values;
+
+    if (
+      shopname !== "" &&
+      shopNameFilter.some((user) => user.shopname === shopname)
+    ) {
       setError("This ShopName already exist");
     } else if (userdetails.some((user) => user.email === email)) {
       setError("This Email already Registered");
@@ -76,7 +80,14 @@ const Register = () => {
         );
       } else {
         setError("");
-        setShowModal(true); // Show the modal after validation passes
+        setShowModal(true);
+        // // Show the modal after validation passes
+        if (shopname === "") {
+          values.password = CryptoJS.MD5(values.password).toString();
+          navigate("/emailverification", { state: { values } });
+        } else {
+          setModal(true);
+        }
         // values.password = CryptoJS.MD5(values.password).toString();
         // navigate("/emailverification", { state: { values } });
       }
@@ -153,7 +164,11 @@ const Register = () => {
                         var token = data.user_id;
                         sessionStorage.setItem("token", "user");
                         if (!token) {
-                          setNotification({ message: "Unable to login. Please try after some time.", type: 'error' });
+                          setNotification({
+                            message:
+                              "Unable to login. Please try after some time.",
+                            type: "error",
+                          });
                           setTimeout(() => setNotification(null), 3000);
                           return;
                         }
@@ -169,7 +184,10 @@ const Register = () => {
                   var token = data.user_id;
                   sessionStorage.setItem("token", "user");
                   if (!token) {
-                    setNotification({ message: "Unable to login. Please try after some time.", type: "error" });
+                    setNotification({
+                      message: "Unable to login. Please try after some time.",
+                      type: "error",
+                    });
                     setTimeout(() => setNotification(null), 3000);
                     return;
                   }
@@ -179,7 +197,10 @@ const Register = () => {
                   // window.location.reload(false);
                 }
               } else {
-                setNotification({ message: "Invalid Username or Password", type: "error" });
+                setNotification({
+                  message: "Invalid Username or Password",
+                  type: "error",
+                });
                 setTimeout(() => setNotification(null), 3000);
                 window.location.reload(false);
               }
@@ -193,7 +214,7 @@ const Register = () => {
     axios
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
       .then((res) => {
-        console.log(res)
+        console.log(res);
         if (res.data !== "Fail" && res.data !== "Error") {
           console.log(res);
         }
@@ -219,7 +240,13 @@ const Register = () => {
   return (
     <div className="fullscreen">
       <MyNavbar />
-      {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
 
       <main>
         <div className="text-center mt-4 mb-4">
@@ -232,62 +259,230 @@ const Register = () => {
         </div>
         <>
           {/* Modal */}
-    {showModal && (
-    <div className="modal" tabIndex="-1" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-    <div className="modal-dialog modal-lg modal-dialog-centered">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h6 className="modal-title">Confirmation Message</h6>
-          <button
-            type="button"
-            className="btn-close"
-            onClick={handleCloseModal}
-            aria-label="Close"
-          ></button>
-        </div>
-        <div className="modal-body">
-          <p> <b>Note:</b> You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin</p>
-          <p><b>Terms for sellers</b></p>
-          <ul>
-            <li>Sellers must provide accurate and complete product information.</li>
-            <li>Products must meet quality standards and match the described condition.</li>
-            <li>Listing illegal, counterfeit, or restricted items is prohibited.</li>
-            <li>Orders must be shipped within the specified timeframe.</li>
-            <li>Products must be securely packaged to prevent damage.</li>
-            <li>Valid tracking information must be provided for all shipped orders.</li>
-            <li>Sellers must respond to customer inquiries within 24 hours.</li>
-            <li>Sellers must adhere to the platform’s return and refund policies.</li>
-            <li>A commission of X% will be charged on each sale.</li>
-            <li>Payments will be processed on a bi-weekly basis.</li>
-            <li>Sellers are responsible for updating their account information.</li>
-            <li>Password security must be maintained by the seller.</li>
-            <li>Sellers must comply with all applicable laws and regulations.</li>
-            <li>Intellectual property rights must be respected, avoiding any infringement.</li>
-            <li>Accounts may be suspended or terminated for violations of terms.</li>
-            <li>Sellers can appeal account suspensions through the designated process.</li>
-            <li>By signing up as a seller on our platform, you agree to these terms and conditions.</li>
-          </ul>
-        </div>
-        <div className="modal-footer">
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={handleCancel}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleOk}
-          >
-            OK
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-    )}
+          {modal && values.shopname && (
+            <div
+              className="modal"
+              tabIndex="-1"
+              style={{
+                display: "block",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              <div className="modal-dialog modal-lg modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h6 className="modal-title">Confirmation Message</h6>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      onClick={handleCloseModal}
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>
+                      <b>Note:</b> You are able to sign up now to show interest
+                      and admin will be in contact when approvals for new stores
+                      begin.
+                    </p>
+                    <p>
+                      <b>Terms for sellers</b>
+                    </p>
+                    <ul>
+                      <li>
+                        Sellers must provide accurate and complete product
+                        information.
+                      </li>
+                      <li>
+                        Products must meet quality standards and match the
+                        described condition.
+                      </li>
+                      <li>
+                        Listing illegal, counterfeit, or restricted items is
+                        prohibited.
+                      </li>
+                      <li>
+                        Orders must be shipped within the specified timeframe.
+                      </li>
+                      <li>
+                        Products must be securely packaged to prevent damage.
+                      </li>
+                      <li>
+                        Valid tracking information must be provided for all
+                        shipped orders.
+                      </li>
+                      <li>
+                        Sellers must respond to customer inquiries within 24
+                        hours.
+                      </li>
+                      <li>
+                        Sellers must adhere to the platform’s return and refund
+                        policies.
+                      </li>
+                      <li>A commission of X% will be charged on each sale.</li>
+                      <li>Payments will be processed on a bi-weekly basis.</li>
+                      <li>
+                        Sellers are responsible for updating their account
+                        information.
+                      </li>
+                      <li>
+                        Password security must be maintained by the seller.
+                      </li>
+                      <li>
+                        Sellers must comply with all applicable laws and
+                        regulations.
+                      </li>
+                      <li>
+                        Intellectual property rights must be respected, avoiding
+                        any infringement.
+                      </li>
+                      <li>
+                        Accounts may be suspended or terminated for violations
+                        of terms.
+                      </li>
+                      <li>
+                        Sellers can appeal account suspensions through the
+                        designated process.
+                      </li>
+                      <li>
+                        By signing up as a seller on our platform, you agree to
+                        these terms and conditions.
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={handleOk}
+                    >
+                      OK
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* {showModal && (
+            <div
+              className="modal"
+              tabIndex="-1"
+              style={{
+                display: "block",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              <div className="modal-dialog modal-lg modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h6 className="modal-title">Confirmation Message</h6>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      onClick={handleCloseModal}
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>
+                      {" "}
+                      <b>Note:</b> You are able to sign up now to show interest
+                      and admin will be in contact when approvals for new stores
+                      begin
+                    </p>
+                    <p>
+                      <b>Terms for sellers</b>
+                    </p>
+                    <ul>
+                      <li>
+                        Sellers must provide accurate and complete product
+                        information.
+                      </li>
+                      <li>
+                        Products must meet quality standards and match the
+                        described condition.
+                      </li>
+                      <li>
+                        Listing illegal, counterfeit, or restricted items is
+                        prohibited.
+                      </li>
+                      <li>
+                        Orders must be shipped within the specified timeframe.
+                      </li>
+                      <li>
+                        Products must be securely packaged to prevent damage.
+                      </li>
+                      <li>
+                        Valid tracking information must be provided for all
+                        shipped orders.
+                      </li>
+                      <li>
+                        Sellers must respond to customer inquiries within 24
+                        hours.
+                      </li>
+                      <li>
+                        Sellers must adhere to the platform’s return and refund
+                        policies.
+                      </li>
+                      <li>A commission of X% will be charged on each sale.</li>
+                      <li>Payments will be processed on a bi-weekly basis.</li>
+                      <li>
+                        Sellers are responsible for updating their account
+                        information.
+                      </li>
+                      <li>
+                        Password security must be maintained by the seller.
+                      </li>
+                      <li>
+                        Sellers must comply with all applicable laws and
+                        regulations.
+                      </li>
+                      <li>
+                        Intellectual property rights must be respected, avoiding
+                        any infringement.
+                      </li>
+                      <li>
+                        Accounts may be suspended or terminated for violations
+                        of terms.
+                      </li>
+                      <li>
+                        Sellers can appeal account suspensions through the
+                        designated process.
+                      </li>
+                      <li>
+                        By signing up as a seller on our platform, you agree to
+                        these terms and conditions.
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={handleOk}
+                    >
+                      OK
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )} */}
         </>
         <div className="p-2 ps-lg-5 pe-lg-5 mb-5">
           <div className="col-xs-12 col-md-12 col-lg-12">
@@ -422,7 +617,7 @@ const Register = () => {
                     <input
                       className="form-control mb-2"
                       // type="password"
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       id="password"
                       name="password"
                       onChange={handleInput}
@@ -437,7 +632,11 @@ const Register = () => {
                       className="toggle12"
                       onClick={handleTogglePassword}
                     >
-                      <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                      <i
+                        className={`bi ${
+                          showPassword ? "bi-eye-slash" : "bi-eye"
+                        }`}
+                      ></i>
                     </button>
                     <span className="text-danger fs-4"> &nbsp;*</span>
                   </div>
@@ -452,7 +651,7 @@ const Register = () => {
                   <div className="d-flex col-sm-6 col-md-4 col-xs-12 passwordgroup">
                     <input
                       className="form-control mb-2"
-                      type={showConfirmPassword ? 'text' : 'password'}
+                      type={showConfirmPassword ? "text" : "password"}
                       id="confirmpassword"
                       name="confirmpassword"
                       onChange={(e) =>
@@ -467,7 +666,11 @@ const Register = () => {
                       className="toggle12"
                       onClick={handleToggleConfirmPassword}
                     >
-                      <i className={`bi ${showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                      <i
+                        className={`bi ${
+                          showConfirmPassword ? "bi-eye-slash" : "bi-eye"
+                        }`}
+                      ></i>
                     </button>
                     <span className="text-danger fs-4"> &nbsp;*</span>
                   </div>
@@ -493,8 +696,7 @@ const Register = () => {
         </div>
       </main>
       <Footer />
-      <Scrolltotopbtn/>
-      
+      <Scrolltotopbtn />
     </div>
   );
 };
