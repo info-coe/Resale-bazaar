@@ -10,6 +10,7 @@ import CryptoJS from "crypto-js";
 
 export default function Forgotpassword() {
   const [values, setValues] = useState({
+    
     email: "",
     password: ""
   });
