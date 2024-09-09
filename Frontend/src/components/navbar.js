@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart, useData } from "./CartContext";
 import axios from "axios";
 import Wishlistemptyimg from "../images/wishlistemptyimg.png";
-import RBLogo from "../images/THE_RESALE_BAZAAR_LOGO.png";
+import RBLogo from "../images/Logo.png";
 import SearchBar from "./Searchbar";
 import SideOffcanvas from "./SideOffcanvas";
 // import { useAuth } from "../AuthContext";
