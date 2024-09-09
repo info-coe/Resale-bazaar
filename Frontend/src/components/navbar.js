@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart, useData } from "./CartContext";
 import axios from "axios";
 import Wishlistemptyimg from "../images/wishlistemptyimg.png";
-import RBLogo from "../images/RB-logo5.png";
+import RBLogo from "../images/THE_RESALE_BAZAAR_LOGO.png";
 import SearchBar from "./Searchbar";
 import SideOffcanvas from "./SideOffcanvas";
 // import { useAuth } from "../AuthContext";
@@ -238,7 +238,7 @@ const MyNavbar = () => {
                   className="RBlogo"
                   style={{ objectFit: "contain" }}
                 />
-                <p style={{ color:"#1d1160" , position:"relative" , right:"10px", bottom:"5px" , fontStyle:"italic"}} className="p-0 m-0 logocaption">Your Sustainability closet</p>
+                {/* <p style={{ color:"#1d1160" , position:"relative" , right:"10px", bottom:"5px" , fontStyle:"italic"}} className="p-0 m-0 logocaption">Your Sustainability closet</p> */}
               </Link>
             </div>
           </div>
