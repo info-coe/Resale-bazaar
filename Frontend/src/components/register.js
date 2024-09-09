@@ -105,12 +105,13 @@ const Register = () => {
   // Handle Cancel button in the modal
   const handleCancel = () => {
     setShowModal(false);
-    navigate("/"); // Redirect to home page
+    // navigate("/"); // Redirect to home page
+    setModal(false);
   };
 
   // Handle top-right close button (just closes the modal)
   const handleCloseModal = () => {
-    setShowModal(false); // Only close the modal, no navigation
+    setModal(false); // Only close the modal, no navigation
   };
 
   // console.log(values);
