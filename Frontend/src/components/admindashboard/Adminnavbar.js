@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import RBLogo from '../../images/RB-logo5.png'
+import RBLogo from '../../images/ResaleLogo.png'
 // import {  useData } from "../CartContext";
 
 export default function Adminnavbar() {
