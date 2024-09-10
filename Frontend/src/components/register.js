@@ -27,6 +27,7 @@ const Register = () => {
   const [shopNameFilter, setShopNameFilter] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    //eslint-disable-next-line no-unused-vars
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const [modal, setModal] = useState(false);
 
@@ -37,7 +38,7 @@ const Register = () => {
     }));
     // console.log(CryptoJS.MD5(event.target.value).toString())
   };
-  console.log(shopNameFilter);
+  // console.log(shopNameFilter);
   useEffect(() => {
     axios
       .get(

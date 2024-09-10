@@ -32,7 +32,6 @@ export default function Customerinfo() {
         // console.log(res.data);
         res.data.map((item) => {
           if (parseInt(sessionStorage.getItem("user-token")) === item.user_id) {
-            setShopNameFilter(res.data);
             setValues((prev) => ({
               ...prev,
               firstname: item.firstname === null ? "" : item.firstname,
@@ -44,6 +43,8 @@ export default function Customerinfo() {
           }
           return null;
         });
+        setShopNameFilter(res.data.filter((item)=>(item.user_id !== parseInt(sessionStorage.getItem("user-token")))));
+
       })
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
