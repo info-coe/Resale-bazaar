@@ -15,7 +15,7 @@ const Register = () => {
   const [values, setValues] = useState({
     firstname: "",
     lastname: "",
-    shopname: "",
+    shopname: null,
     email: "",
     phone: "",
     password: "",
@@ -63,7 +63,7 @@ const Register = () => {
     const { email, phone, password, shopname } = values;
 
     if (
-      shopname !== "" &&
+      shopname !== null &&
       shopNameFilter.some((user) => user.shopname === shopname)
     ) {
       setError("This ShopName already exist");
@@ -83,7 +83,7 @@ const Register = () => {
         setError("");
         setShowModal(true);
         // // Show the modal after validation passes
-        if (shopname === "") {
+        if (shopname === null) {
           values.password = CryptoJS.MD5(values.password).toString();
           navigate("/emailverification", { state: { values } });
         } else {
