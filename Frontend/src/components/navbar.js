@@ -521,7 +521,7 @@ const MyNavbar = () => {
                   width="100px"
                   style={{ objectFit: "contain" }}
                 />
-                 <p style={{fontSize:"11px", color:"#1d1160" , position:"relative" , right:"10px", bottom:"5px" , fontStyle:"italic"}} className="p-0 m-0">Your Sustainability closet</p>
+                 {/* <p style={{fontSize:"11px", color:"#1d1160" , position:"relative" , right:"10px", bottom:"5px" , fontStyle:"italic"}} className="p-0 m-0">Your Sustainability closet</p> */}
               </Link>
               
             </div>
