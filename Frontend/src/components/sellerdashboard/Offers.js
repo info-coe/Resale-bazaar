@@ -5,12 +5,15 @@ import Footer from '../footer';
 import Scrolltotopbtn from '../Scrolltotopbutton';
 // import InfiniteScroll from "react-infinite-scroll-component";
 import OfferedProduct from './offeredproduct';
+import Notification from "../Notification";
 
 
 const Offers = () => {
     const [offers, setOffers] = useState([]);
     const [approvedOffers, setApprovedOffers] = useState([]);
     const userToken = sessionStorage.getItem("user-token");
+    const [notification, setNotification] = useState(null);
+
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/sellerproductsoffers`)
         .then((response) => {
@@ -36,6 +39,12 @@ const Offers = () => {
             if (updatedOffer && updatedOffer.offered_buyer_id && updatedOffer.offered_buyer_id.toString() === userToken) {
                 setApprovedOffers([...approvedOffers, updatedOffer]);
             }
+            setNotification({
+                message: "Offer Accepted",
+                type: "success",
+              });
+              setTimeout(() => 
+                setNotification(null), 3000);
             window.location.reload(false);
         })
         .catch((error) => {
@@ -48,6 +57,11 @@ const Offers = () => {
         .then((response) => {
             const updatedOffer = response.data;
             setOffers(offers.map(offer => (offer.id === updatedOffer.id ? { ...offer, product_status: 'Rejected' } : offer)));
+            setNotification({
+                message: "Offer Rejected",
+                type: "error",
+              });
+              setTimeout(() => setNotification(null), 3000);
             window.location.reload(false);
         })
         .catch((error) => {
@@ -176,6 +190,13 @@ const Offers = () => {
     return (
         <div className='fullscreen'>
             <MyNavbar />
+            {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
             <main>
                 <div className="container mt-4">
                     <h1 className="mb-4 text-center">Offers</h1>
