@@ -96,22 +96,22 @@ const Dresses = () => {
               next={() => setPage((prevPage) => prevPage + 1)}
               hasMore={hasMore}
               loader={<div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>}
-              endMessage={<div className="centered-message"><p>No more products to display</p></div>}
+              endMessage={<div className="centered-message"></div>}
             >
-              <div className="product-grid container">
-                {filteredProducts.length > 0 ? (
-                  filteredProducts.map((product, index) => (
-                    <Product
-                      product={product}
-                      key={index}
-                      rendercomp="dresses"
-                      type="women"
-                    />
-                  ))
-                ) : (
-                  <h1 style={{ fontSize: "18px" }}>No products to display</h1>
-                )}
-              </div>
+                <div className="product-grid container">
+                  {filteredProducts.length > 0 ? (
+                    filteredProducts.map((product, index) => (
+                      <Product
+                        product={product}
+                        key={index}
+                        rendercomp="dresses"
+                        type="women"
+                      />
+                    ))
+                  ) : (
+                    <h1 style={{ fontSize: "18px" }}><i className="bi bi-clock-history"></i> <i>Coming Soon</i></h1>
+                  )}
+                </div>
             </InfiniteScroll>
           </div>
         </div>

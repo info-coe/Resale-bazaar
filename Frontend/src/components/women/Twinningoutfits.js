@@ -101,7 +101,7 @@ const Twinningoutfits = () => {
               }
               endMessage={
                 <div className="centered-message">
-                  <p>No more products to display</p>
+               
                 </div>
               }
             >
@@ -111,7 +111,7 @@ const Twinningoutfits = () => {
                     <Product product={product} key={index} type="women" />
                   ))
                 ) : (
-                  <h1 style={{ fontSize: "18px" }}>No products to display</h1>
+                  <h1 style={{ fontSize: "18px" }}><i className="bi bi-clock-history"></i> <i>Coming Soon</i></h1>
                 )}
               </div>
             </InfiniteScroll>

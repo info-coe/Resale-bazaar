@@ -27,9 +27,10 @@ const Register = () => {
   const [shopNameFilter, setShopNameFilter] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    //eslint-disable-next-line no-unused-vars
+  //eslint-disable-next-line no-unused-vars
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const [modal, setModal] = useState(false);
+  const [trail, setTrail] = useState(false)
 
   const handleInput = (event) => {
     setValues((prev) => ({
@@ -57,11 +58,13 @@ const Register = () => {
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log(values)
 
   const handleSubmit = (event) => {
+    console.log(values)
     event.preventDefault();
     const { email, phone, password, shopname } = values;
-
+    console.log(values)
     if (
       shopname !== null &&
       shopNameFilter.some((user) => user.shopname === shopname)
@@ -87,13 +90,18 @@ const Register = () => {
           values.password = CryptoJS.MD5(values.password).toString();
           navigate("/emailverification", { state: { values } });
         } else {
-          setModal(true);
+          setTrail(true);
         }
         // values.password = CryptoJS.MD5(values.password).toString();
         // navigate("/emailverification", { state: { values } });
       }
     }
   };
+  //TrailPhase
+  const TrailPhase = () => {
+    setModal(true)
+    setTrail(false)
+  }
 
   // Handle OK button in the modal
   const handleOk = () => {
@@ -108,11 +116,13 @@ const Register = () => {
     setShowModal(false);
     // navigate("/"); // Redirect to home page
     setModal(false);
+    setTrail(false)
   };
 
   // Handle top-right close button (just closes the modal)
   const handleCloseModal = () => {
     setModal(false); // Only close the modal, no navigation
+    setTrail(false)
   };
 
   // console.log(values);
@@ -261,6 +271,59 @@ const Register = () => {
         </div>
         <>
           {/* Modal */}
+          {trail && values.shopname && (
+            <div
+              className="modal"
+              tabIndex="-1"
+              style={{
+                display: "block",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              <div className="modal-dialog modal-lg modal-dialog-centered">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h6 className="modal-title">Confirmation Message</h6>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      onClick={handleCloseModal}
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    {/* <p>
+                      <b>Note:</b> You are able to sign up now to show interest
+                      and admin will be in contact when approvals for new stores
+                      begin.
+                    </p> */}
+                    <p>
+                      <b>Terms for sellers</b>
+                    </p>
+                    <ul>
+                      <li> we are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin</li>
+                    </ul>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={TrailPhase}
+                    >
+                      OK
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           {modal && values.shopname && (
             <div
               className="modal"
@@ -635,9 +698,8 @@ const Register = () => {
                       onClick={handleTogglePassword}
                     >
                       <i
-                        className={`bi ${
-                          showPassword ? "bi-eye-slash" : "bi-eye"
-                        }`}
+                        className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"
+                          }`}
                       ></i>
                     </button>
                     <span className="text-danger fs-4"> &nbsp;*</span>
@@ -669,9 +731,8 @@ const Register = () => {
                       onClick={handleToggleConfirmPassword}
                     >
                       <i
-                        className={`bi ${
-                          showConfirmPassword ? "bi-eye-slash" : "bi-eye"
-                        }`}
+                        className={`bi ${showConfirmPassword ? "bi-eye-slash" : "bi-eye"
+                          }`}
                       ></i>
                     </button>
                     <span className="text-danger fs-4"> &nbsp;*</span>
