@@ -65,10 +65,14 @@ const Register = () => {
     event.preventDefault();
     const { email, phone, password, shopname } = values;
     console.log(values)
-    if (
-      shopname !== null &&
-      shopNameFilter.some((user) => user.shopname === shopname)
-    ) {
+    // if (
+    //   shopname !== null &&
+    //   shopNameFilter.some((user) => user.shopname === shopname)
+    // ) {
+      if (
+        shopname && // This will check that shopname is not null or an empty string
+        shopNameFilter.some((user) => user.shopname === shopname.trim()) // Ensure to trim any extra spaces
+      ) {
       setError("This ShopName already exist");
     } else if (userdetails.some((user) => user.email === email)) {
       setError("This Email already Registered");
@@ -86,10 +90,15 @@ const Register = () => {
         setError("");
         setShowModal(true);
         // // Show the modal after validation passes
-        if (shopname === null) {
+        // if (shopname === null) {
+        //   values.password = CryptoJS.MD5(values.password).toString();
+        //   navigate("/emailverification", { state: { values } });
+        // }
+        if (!shopname || shopname.trim() === "") {
           values.password = CryptoJS.MD5(values.password).toString();
           navigate("/emailverification", { state: { values } });
-        } else {
+        }
+        else {
           setTrail(true);
         }
         // values.password = CryptoJS.MD5(values.password).toString();
