@@ -493,7 +493,7 @@ const Register = () => {
               <div>
                 <div>
                   <h1 className="text-center fs-3">Create Account</h1>
-                  <p style={{fontSize:"17px"}}>
+                  <p style={{fontSize:"17px"}} className="text-center">
                        <span className="text-primary ms-md-5 me-md-5 ms-2 me-2">We are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin...</span>
                   </p>
                 </div>
