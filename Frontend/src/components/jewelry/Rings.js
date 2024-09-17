@@ -8,6 +8,7 @@ import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Filter from "./filter";
 import Scrolltotopbtn from "../Scrolltotopbutton";
+import Comingsoon from "../comingsoon";
 
 const Rings = () => {
   const [products, setProducts] = useState([]);
@@ -96,7 +97,7 @@ const Rings = () => {
               loader={<div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>}
               endMessage={<div className="centered-message"></div>}
             >
-              <div className="product-grid container">
+              <div className={filteredProducts.length > 0 ? "product-grid container" : "full-page-center"}>
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
                     <Product
@@ -107,7 +108,7 @@ const Rings = () => {
                     />
                   ))
                 ) : (
-                  <h1 style={{ fontSize: "18px" }}><i className="bi bi-clock-history"></i> <i>Coming Soon</i></h1>
+                  <Comingsoon/>
                 )}
               </div>
             </InfiniteScroll>

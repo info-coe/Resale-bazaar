@@ -7,6 +7,7 @@ import Filterdisplaynav from "../filterdisplaynav";
 import Product from "../Product";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Comingsoon from "../comingsoon";
 // import Scrolltotopbtn from "../Scrolltotopbutton";
 
 const Boy = () => {
@@ -111,7 +112,7 @@ const Boy = () => {
                 </div>
               }
             >
-              <div className="product-grid container">
+              <div className={filteredProducts.length > 0 ? "product-grid container" : "full-page-center"}>
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
                     <Product
@@ -122,7 +123,7 @@ const Boy = () => {
                     />
                   ))
                 ) : (
-                  <h1 style={{ fontSize: "18px" }}><i className="bi bi-clock-history"></i> <i>Coming Soon</i></h1>
+                  <Comingsoon/>
                 )}
               </div>
             </InfiniteScroll>

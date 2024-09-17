@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 import Product from "../Product";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Comingsoon from "../comingsoon";
 
 const Myshop = () => {
   const [products, setProducts] = useState([]);
@@ -192,17 +193,17 @@ const Myshop = () => {
               }
               endMessage={
                 <div className="centered-message">
-                  <p>No more products to display</p>
+                  
                 </div>
               }
             >
-              <div className="product-grid container">
+              <div className={filteredProducts.length > 0 ? "product-grid container" : "full-page-center"}>
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
                     <Product product={product} key={index} admin="women" />
                   ))
                 ) : (
-                  <h2 style={{ fontSize: "18px" }}>No products to display</h2>
+                  <Comingsoon/>
                 )}
               </div>
             </InfiniteScroll>

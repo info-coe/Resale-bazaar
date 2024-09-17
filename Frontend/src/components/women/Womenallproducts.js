@@ -14,6 +14,7 @@ import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 // import Footer from "../footer";
 import Scrolltotopbtn from "../Scrolltotopbutton";
+import Comingsoon from "../comingsoon";
 
 const Womenallproducts = () => {
   const [products, setProducts] = useState([]);
@@ -170,13 +171,13 @@ const Womenallproducts = () => {
                 </div>
               }
             >
-              <div className="product-grid container">
+              <div className={filteredProducts.length > 0 ? "product-grid container" : "full-page-center"}>
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
                     <Product product={product} key={index} admin="women" />
                   ))
                 ) : (
-                  <h1 style={{ fontSize: "18px" }}><i className="bi bi-clock-history"></i> <i>Coming Soon</i></h1>
+                  <Comingsoon/>
                 )}
               </div>
             </InfiniteScroll>
