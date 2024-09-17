@@ -300,9 +300,9 @@ const Register = () => {
                     <p>
                       <b>Terms for sellers</b>
                     </p>
-                    <ul>
+                    {/* <ul>
                       <li> we are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin</li>
-                    </ul>
+                    </ul> */}
                   </div>
                   <div className="modal-footer">
                     <button
@@ -345,11 +345,11 @@ const Register = () => {
                     ></button>
                   </div>
                   <div className="modal-body">
-                    <p>
+                    {/* <p>
                       <b>Note:</b> You are able to sign up now to show interest
                       and admin will be in contact when approvals for new stores
                       begin.
-                    </p>
+                    </p> */}
                     <p>
                       <b>Terms for sellers</b>
                     </p>
@@ -555,6 +555,7 @@ const Register = () => {
               <div>
                 <div>
                   <h1 className="text-center fs-3">Create Account</h1>
+                  <p className="container text-center me-5 ms-5 text-primary"> We are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin...</p>
                 </div>
                 <hr />
                 <div className="form-group d-md-flex justify-content-center mt-4 mb-2">
