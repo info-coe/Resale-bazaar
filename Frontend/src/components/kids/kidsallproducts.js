@@ -9,6 +9,7 @@ import axios from "axios";
 import Girlimg from "../../images/girl.webp";
 import Boyimg from "../../images/boy.webp";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Comingsoon from "../comingsoon";
 
 const Kidsallproducts = () => {
   const [products, setProducts] = useState([]);
@@ -132,9 +133,9 @@ const Kidsallproducts = () => {
               next={() => setPage((prevPage) => prevPage + 1)}
               hasMore={hasMore}
               loader={<div className="centered-message"><i className="bi bi-arrow-clockwise spin-icon"></i></div>}
-              endMessage={<div className="centered-message"><p>No more products to display</p></div>}
+              endMessage={<div className="centered-message"></div>}
             >
-              <div className="product-grid container">
+              <div className={filteredProducts.length > 0 ? "product-grid container" : "full-page-center"}>
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
                     <Product
@@ -145,7 +146,7 @@ const Kidsallproducts = () => {
                     />
                   ))
                 ) : (
-                  <h1 style={{ fontSize: "18px" }}>No products to display</h1>
+                  <Comingsoon/>
                 )}
               </div>
             </InfiniteScroll>

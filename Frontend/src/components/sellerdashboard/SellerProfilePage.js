@@ -8,6 +8,7 @@ import Scrolltotopbtn from "../Scrolltotopbutton";
 import Product from "../Product";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Notification from "../Notification";
+import Comingsoon from "../comingsoon";
 
 const SellerProfile = () => {
   const { sellerId } = useParams();
@@ -283,17 +284,17 @@ const SellerProfile = () => {
               }
               endMessage={
                 <div className="centered-message">
-                  <p>No more products to display</p>
+                  
                 </div>
               }
             >
-              <div className="product-grid container">
+              <div className={filteredProducts.length > 0 ? "product-grid container" : "full-page-center"}>
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product, index) => (
                     <Product product={product} key={index} admin="women" />
                   ))
                 ) : (
-                  <h2 style={{ fontSize: "18px" }}>No products to display</h2>
+                  <Comingsoon/>
                 )}
               </div>
             </InfiniteScroll>

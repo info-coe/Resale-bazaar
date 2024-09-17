@@ -750,6 +750,25 @@ body.offcanvas-open {
   gap: 16px;
 }
 
+.full-page-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15vh; 
+  width: 100%; 
+  text-align: center; 
+}
+.bi-clock-history{
+  position: relative;
+  margin-right: -30px;
+}
+
+.comingsoon {
+  font-size: 18px;
+  text-align: center;
+}
+
+
 @media (max-width: 575.98px) {
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -790,6 +809,7 @@ body.offcanvas-open {
   .product-grid {
     grid-template-columns: repeat(4, 1fr);
   }
+
 }
 
 /* Product card styling */
