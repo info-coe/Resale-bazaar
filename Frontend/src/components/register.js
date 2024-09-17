@@ -354,11 +354,11 @@ const Register = () => {
                     ></button>
                   </div>
                   <div className="modal-body">
-                    <p>
+                    {/* <p>
                       <b>Note:</b> You are able to sign up now to show interest
                       and admin will be in contact when approvals for new stores
                       begin.
-                    </p>
+                    </p> */}
                     <p>
                       <b>Terms for sellers</b>
                     </p>
