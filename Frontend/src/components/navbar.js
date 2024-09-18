@@ -367,8 +367,8 @@ const MyNavbar = () => {
                           className="text-decoration-none text-dark ps-3"
                         >
                           <i className="bi bi-file-earmark-person-fill fs-6 position-relative">
-                            {" "}
-                            Accept Product
+                            {" "}</i>
+                            Administration
                             {products.length > 0 && (
                               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
                                 {products.length}
@@ -377,7 +377,7 @@ const MyNavbar = () => {
                                 </span>
                               </span>
                             )}
-                          </i>{" "}
+                          {" "}
                         </Link>
                       </li>
                     ) : null}

@@ -37,7 +37,15 @@ export default function Adminmenu() {
                 className="text-decoration-none text-dark"
               >
                 <li className="list-group-item">
-                  <i className="bi bi-record-circle"></i> Products
+                  <i className="bi bi-record-circle"></i> Approval Products
+                </li>
+              </Link>
+              <Link
+                to="/productmanagement"
+                className="text-decoration-none text-dark"
+              >
+                <li className="list-group-item">
+                  <i className="bi bi-record-circle"></i> Products Management
                 </li>
               </Link>
             </ul>
