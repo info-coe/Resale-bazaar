@@ -72,7 +72,7 @@ export default function Notification({ message, type, onClose }) {
                 className='close-btn' 
                 onClick={onClose}
             >
-                X
+                
             </button>
         </div>
         </>

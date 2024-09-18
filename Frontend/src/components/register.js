@@ -126,13 +126,13 @@ const Register = () => {
     setShowModal(false);
     // navigate("/"); // Redirect to home page
     setModal(false);
-
+    setIsChecked(false);
   };
 
   // Handle top-right close button (just closes the modal)
   const handleCloseModal = () => {
     setModal(false); // Only close the modal, no navigation
-    setIsChecked(!isChecked);
+    setIsChecked(false);
   };
 
   // console.log(values);
@@ -295,7 +295,7 @@ const Register = () => {
               <div className="modal-dialog modal-lg modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title">Terms for sellers</h5>
+                    <h5 className="modal-title">Seller Account Terms and Conditions</h5>
                     <button
                       type="button"
                       className="btn-close"
@@ -307,9 +307,7 @@ const Register = () => {
                     {/* <p style={{fontSize:"17px"}}>
                       <b>Note:</b> <span style={{backgroundColor:"yellow"}}>we are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin.</span>
                     </p> */}
-                    <p>
-                      <b>Seller Account Terms and Conditions</b>
-                    </p>
+                   
                     <ul style={{fontSize:"14px"}}>
                       <li>
                         Sellers must be at least 18 years old and comply with all legal and regulatory requirements.
@@ -332,16 +330,17 @@ const Register = () => {
                       </li>
 
                     </ul>
+                    <br/>
                     <div className="form-check">
                       <input
                         type="checkbox"
-                        className="form-check-input"
+                        className="form-check-input border-dark"
                         id="agreeTerms"
                         checked={isChecked}
                         onChange={handleCheck} // Toggle checkbox state on change
                       />
                       <label className="form-check-label" htmlFor="agreeTerms">
-                        I agree to the Terms and Conditions
+                      By clicking "Agree," sellers acknowledge their acceptance of these terms and conditions, including any future amendments.
                       </label>
                     </div>
                     {/* <div className="">
@@ -491,13 +490,24 @@ const Register = () => {
           <div className="col-xs-12 col-md-12 col-lg-12">
             <form method="post" onSubmit={handleSubmit}>
               <div>
-                <div>
+                {/* <div className="">
                   <h1 className="text-center fs-3">Create Account</h1>
                   <p style={{fontSize:"17px"}} className="text-center">
-                       <span className="text-primary ms-md-5 me-md-5 ms-2 me-2">We are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin...</span>
+                       <span className="text-primary ms-md-5 me-md-5 ms-2 me-2">We are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin.</span>
                   </p>
-                </div>
-                <hr />
+                </div> */}
+                <div className="row justify-content-center">
+  <div className="col-12 col-md-8 col-lg-7 ps-3 pe-3">
+    <h1 className="text-center fs-3">Create Account</h1>
+    <p style={{ fontSize: "19px" }} className="text-center">
+      <span className="text-primary">
+        We are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin.
+      </span>
+    </p>
+  </div>
+</div>
+
+                {/* <hr /> */}
                 <div className="form-group d-md-flex justify-content-center mt-4 mb-2">
                   <label
                     className="control-label col-sm-2 col-md-2 fw-bold"

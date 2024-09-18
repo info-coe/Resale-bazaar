@@ -754,8 +754,8 @@ body.offcanvas-open {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 15vh; 
-  width: 100%; 
+  /* height: 15vh; 
+  width: 100%;  */
   text-align: center; 
 }
 .bi-clock-history{
@@ -1125,3 +1125,71 @@ body {
   position: relative;
 }
 /* Password eye icon end */
+
+
+.confirm {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(117, 116, 116, 0.1);  /* Light gray transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;  /* Ensure modal is above other elements */
+}
+
+.confirm__window {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(136, 135, 135, 0.3);  /* Slight shadow for depth */
+}
+
+.confirm__titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.confirm__title {
+  font-weight: bold;
+}
+
+.confirm__close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.confirm__content {
+  margin: 1rem 0;
+}
+
+.confirm__buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.confirm__button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #1959d9;
+  background: white;
+  color: #1959d9;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.confirm__button--fill {
+  background: #1959d9;
+  color: white;
+}
+
+.confirm__button:hover {
+  opacity: 0.9;
+}

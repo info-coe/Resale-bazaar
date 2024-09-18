@@ -5,6 +5,7 @@ import Sellermenu from "./Sellermenu";
 import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
 import Notification from "../Notification";
+import Confirm from "../confirmalertbox";
 
 export default function Sellerproducts() {
   const [pageSize, setPageSize] = useState(25);
@@ -41,7 +42,8 @@ export default function Sellerproducts() {
   const [deletedImages, setDeletedImages] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [notification, setNotification] = useState(null);
-
+  const [showConfirm, setShowConfirm] = useState(false);  // To control modal visibility
+  const [idToDelete, setIdToDelete] = useState(null);  // Store the product ID to delete
 
   const userid = sessionStorage.getItem("user-token");
 
@@ -94,20 +96,40 @@ export default function Sellerproducts() {
   const endIndex = startIndex + pageSize;
   const tableData = filteredProducts.slice(startIndex, endIndex);
 
+  // const handleDelete = (id) => {
+  //   if (window.confirm("Do you want to delete this product?")) {
+  //     axios
+  //       .delete(
+  //         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${id}`
+  //       )
+  //       .then((response) => {
+  //         window.location.reload(false);
+  //         console.log(response);
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }
+  // };
   const handleDelete = (id) => {
-    if (window.confirm("Do you want to delete this product?")) {
-      axios
-        .delete(
-          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${id}`
-        )
-        .then((response) => {
-          window.location.reload(false);
-          console.log(response);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    setIdToDelete(id);
+    setShowConfirm(true);  // Show the confirmation modal
+  };
+  const handleConfirmDelete = () => {
+    axios
+      .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${idToDelete}`)
+      .then((response) => {
+        window.location.reload(false);  // Reload the page after deletion
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    setShowConfirm(false);  // Close the modal
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirm(false);  // Hide the modal if user cancels
   };
 
   const handleEdit = (id, initialData) => {
@@ -431,6 +453,14 @@ export default function Sellerproducts() {
                                 >
                                   Delete
                                 </button>
+                                {showConfirm && (
+        <Confirm
+          title="Delete Product"
+          message="Are you sure you want to delete this product?"
+          onConfirm={handleConfirmDelete}  // Confirm action handler
+          onCancel={handleCancelDelete}    // Cancel action handler
+        />
+      )}
                               </td>
                             </tr>
                           );

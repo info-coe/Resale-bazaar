@@ -8,7 +8,7 @@ import Scrolltotopbtn from "../Scrolltotopbutton";
 import Product from "../Product";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Notification from "../Notification";
-import Comingsoon from "../comingsoon";
+// import Comingsoon from "../comingsoon";
 
 const SellerProfile = () => {
   const { sellerId } = useParams();
@@ -294,7 +294,8 @@ const SellerProfile = () => {
                     <Product product={product} key={index} admin="women" />
                   ))
                 ) : (
-                  <Comingsoon/>
+                  // <Comingsoon/>
+                  <h6 className="mt-3">Sold products will appear here after seller make a sale.</h6>
                 )}
               </div>
             </InfiniteScroll>

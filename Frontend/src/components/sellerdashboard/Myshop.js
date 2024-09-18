@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 import Product from "../Product";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Comingsoon from "../comingsoon";
+// import Comingsoon from "../comingsoon";
 
 const Myshop = () => {
   const [products, setProducts] = useState([]);
@@ -203,7 +203,8 @@ const Myshop = () => {
                     <Product product={product} key={index} admin="women" />
                   ))
                 ) : (
-                  <Comingsoon/>
+                  // <Comingsoon/>
+                  <h6 className="mt-3">Your sold products will appear here once you make a sale.</h6>
                 )}
               </div>
             </InfiniteScroll>
