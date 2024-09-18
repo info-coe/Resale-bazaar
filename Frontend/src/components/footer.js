@@ -20,9 +20,9 @@ const Footer = () => {
                 <span>
                   <Link
                     to={
-                      sessionStorage.getItem("token") !== null
+                      sessionStorage.getItem("token") !== "admin" && (sessionStorage.getItem("token") !== null
                         ? "/customerinfo"
-                        : "/login"
+                        : "/login")
                     }
                     className="text-decoration-none"
                   >
@@ -33,9 +33,9 @@ const Footer = () => {
                 <span>
                   <Link
                     to={
-                      sessionStorage.getItem("token") !== null
+                      sessionStorage.getItem("token") !== "admin" && (sessionStorage.getItem("token") !== null
                         ? "/orders"
-                        : "/login"
+                        : "/login")
                     }
                     className="text-decoration-none"
                   >
@@ -52,12 +52,12 @@ const Footer = () => {
               <div className="me-3">
                 <span>
                   <Link
-                  to="/addnewproduct"
-                    // to={
-                    //   sessionStorage.getItem("token") !== null
-                    //     ? "/selleraccount"
-                    //     : "/login"
-                    // }
+                  // to="/addnewproduct"
+                    to={
+                      sessionStorage.getItem("token") !== "admin" &&  (sessionStorage.getItem("token") !== null
+                        ? "/addnewproduct"
+                        : "/login")
+                    }
                     className="text-decoration-none"
                   >
                     <i className="bi bi-chevron-double-right"></i> Sell on The Resale Bazaar
