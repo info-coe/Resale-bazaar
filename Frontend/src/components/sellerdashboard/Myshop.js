@@ -16,10 +16,10 @@ const Myshop = () => {
   const [filter, setFilter] = useState("all");
   const [shopname, setShopname] = useState("");
   const pageSize = 8;
-  const [orders,setOrders]=useState([])
+  const [orders, setOrders] = useState([])
   const storedObject = sessionStorage.getItem("user-token");
   const myRetrievedObject = JSON.parse(storedObject);
- console.log(myRetrievedObject)
+  console.log(myRetrievedObject)
   useEffect(() => {
     const fetchShopname = async () => {
       if (!myRetrievedObject) return;
@@ -44,8 +44,8 @@ const Myshop = () => {
             const userDetail = filteredUserDetails[0];
             setShopname(
               userDetail.shopname ||
-                userDetail.firstname + " " + userDetail.lastname ||
-                "Default Shop Name"
+              userDetail.firstname + " " + userDetail.lastname ||
+              "Default Shop Name"
             );
           } else {
             setShopname("Default Shop Name"); // Handle case when no user details are found
@@ -58,7 +58,7 @@ const Myshop = () => {
         setShopname("Default Shop Name"); // Handle network or unexpected errors
       }
     };
-    
+
     axios
       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updatepayment`)
       .then((res) => {
@@ -185,25 +185,22 @@ const Myshop = () => {
             </h4>
             <div className="filters mb-4">
               <button
-                className={`btn btn-outline-primary me-2 ${
-                  filter === "all" ? "active" : ""
-                }`}
+                className={`btn btn-outline-primary me-2 ${filter === "all" ? "active" : ""
+                  }`}
                 onClick={() => handleFilterChange("all")}
               >
                 Show All
               </button>
               <button
-                className={`btn btn-outline-primary me-2 ${
-                  filter === "available" ? "active" : ""
-                }`}
+                className={`btn btn-outline-primary me-2 ${filter === "available" ? "active" : ""
+                  }`}
                 onClick={() => handleFilterChange("available")}
               >
                 Available Products
               </button>
               <button
-                className={`btn btn-outline-primary ${
-                  filter === "sold" ? "active" : ""
-                }`}
+                className={`btn btn-outline-primary ${filter === "sold" ? "active" : ""
+                  }`}
                 onClick={() => handleFilterChange("sold")}
               >
                 Sold Products
@@ -221,7 +218,7 @@ const Myshop = () => {
               }
               endMessage={
                 <div className="centered-message">
-                  
+
                 </div>
               }
             >
