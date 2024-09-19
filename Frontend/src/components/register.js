@@ -11,6 +11,7 @@ import { useData } from "./CartContext";
 import Scrolltotopbtn from "./Scrolltotopbutton";
 import Notification from "./Notification";
 import googleicon from "../images/googleicon.png"
+import bell from "../images/bellfinal.gif"
 
 const Register = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
@@ -364,12 +365,12 @@ const Register = () => {
               </div>
             )}
           </>
-          <div className="mt-5 mb-4 p-2  col-lg-8 col-xs-12 col-md-8">
-
-            <p style={{ fontSize: "17px" }} className="NoteDiv d-flex gap-2">
+          <div className="mt-5 mb-4 p-2  col-lg-6 col-xs-12 col-md-8 d-flex ">
+<img src={bell} alt="Notification" className="rounded" width="60" height="60" style={{objectFit:"contain"}}/>
+            <p style={{ fontSize: "17px" }} className="NoteDiv d-flex gap-2 text-center">
 
               <span className="">
-                We are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin.
+              Seller sign-ups are limited during our trial phase. Register now to show interest, and admin will reach out when approvals begin...
               </span>
             </p>
           </div>
@@ -380,8 +381,8 @@ const Register = () => {
 
 
 
-                <div className="mb-4">
-                  <h1 className="text-center fs-3">Create Account</h1>
+                <div className="mb-5">
+                  <h1 className="text-center fs-3 ">Create Account</h1>
 
                 </div>
 
