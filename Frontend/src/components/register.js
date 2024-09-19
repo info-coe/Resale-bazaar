@@ -10,6 +10,7 @@ import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { useData } from "./CartContext";
 import Scrolltotopbtn from "./Scrolltotopbutton";
 import Notification from "./Notification";
+import googleicon from "../images/googleicon.png"
 
 const Register = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
@@ -270,443 +271,285 @@ const Register = () => {
         />
       )}
 
-      <main>
-        <div className="text-center mt-4 mb-4">
-          <button onClick={signin} className="btn border">
-            <span className="fs-5">
-              <i className="bi bi-google"></i>
-            </span>
-            &nbsp;&nbsp;&nbsp;Continue With Google
-          </button>
-        </div>
-        <>
-          {/* Modal */}
-
-
-          {modal && values.shopname && (
-            <div
-              className="modal"
-              tabIndex="-1"
-              style={{
-                display: "block",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-              }}
-            >
-              <div className="modal-dialog modal-lg modal-dialog-centered">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title">Seller Account Terms and Conditions</h5>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      onClick={handleCloseModal}
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div className="modal-body">
-                    {/* <p style={{fontSize:"17px"}}>
+      <main >
+        <div className="registerMaindiv">
+          <>
+            {modal && values.shopname && (
+              <div
+                className="modal"
+                tabIndex="-1"
+                style={{
+                  display: "block",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                <div className="modal-dialog modal-lg modal-dialog-centered">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">Seller Account Terms and Conditions</h5>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        onClick={handleCloseModal}
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className="modal-body">
+                      {/* <p style={{fontSize:"17px"}}>
                       <b>Note:</b> <span style={{backgroundColor:"yellow"}}>we are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin.</span>
                     </p> */}
-                   
-                    <ul style={{fontSize:"14px"}}>
-                      <li>
-                        Sellers must be at least 18 years old and comply with all legal and regulatory requirements.
 
-                      </li>
-                      <li>
-                        All registration information must be accurate, complete, and regularly updated.
-                      </li>
-                      <li>
-                        Sellers are responsible for safeguarding their account credentials and activities.
-                      </li>
-                      <li>
-                        Sellers must adhere to all platform policies, including product listing standards and legal obligations.
-                      </li>
-                      <li>
-                        Sellers agree to the platform’s fee structure, payment terms, and applicable transaction charges.
-                      </li>
-                      <li>
-                        The platform reserves the right to suspend or terminate accounts for policy violations or misuse.
-                      </li>
+                      <ul style={{ fontSize: "14px" }}>
+                        <li>
+                          Sellers must be at least 18 years old and comply with all legal and regulatory requirements.
 
-                    </ul>
-                    <br/>
-                    <div className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input border-dark"
-                        id="agreeTerms"
-                        checked={isChecked}
-                        onChange={handleCheck} // Toggle checkbox state on change
-                      />
-                      <label className="form-check-label" htmlFor="agreeTerms">
-                      By clicking "Agree," sellers acknowledge their acceptance of these terms and conditions, including any future amendments.
-                      </label>
-                    </div>
-                    {/* <div className="">
+                        </li>
+                        <li>
+                          All registration information must be accurate, complete, and regularly updated.
+                        </li>
+                        <li>
+                          Sellers are responsible for safeguarding their account credentials and activities.
+                        </li>
+                        <li>
+                          Sellers must adhere to all platform policies, including product listing standards and legal obligations.
+                        </li>
+                        <li>
+                          Sellers agree to the platform’s fee structure, payment terms, and applicable transaction charges.
+                        </li>
+                        <li>
+                          The platform reserves the right to suspend or terminate accounts for policy violations or misuse.
+                        </li>
+
+                      </ul>
+                      <br />
+                      <div className="form-check">
+                        <input
+                          type="checkbox"
+                          className="form-check-input border-dark"
+                          id="agreeTerms"
+                          checked={isChecked}
+                          onChange={handleCheck} // Toggle checkbox state on change
+                        />
+                        <label className="form-check-label" htmlFor="agreeTerms">
+                          By clicking "Agree," sellers acknowledge their acceptance of these terms and conditions, including any future amendments.
+                        </label>
+                      </div>
+                      {/* <div className="">
                      {isChecked?null:'Please Check the Condition'}
                     </div> */}
-                  </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      // disabled={(!isChecked)}
-                      onClick={handleCancel}
-                    >
-                      Cancel
-                    </button>
-                    {/* {isChecked && ( // Show OK button only if checkbox is checked
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        // disabled={(!isChecked)}
+                        onClick={handleCancel}
+                      >
+                        Cancel
+                      </button>
+                      {/* {isChecked && ( // Show OK button only if checkbox is checked
                       
                     )} */}
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      disabled={(!isChecked)}
-                      onClick={isChecked ? handleOk : null}
-                    >
-                      OK
-                    </button>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        disabled={(!isChecked)}
+                        onClick={isChecked ? handleOk : null}
+                      >
+                        OK
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </>
+          <div className="mt-5 mb-4 p-2  col-lg-8 col-xs-12 col-md-8">
 
-          {/* {showModal && (
-            <div
-              className="modal"
-              tabIndex="-1"
-              style={{
-                display: "block",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-              }}
-            >
-              <div className="modal-dialog modal-lg modal-dialog-centered">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h6 className="modal-title">Confirmation Message</h6>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      onClick={handleCloseModal}
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div className="modal-body">
-                    <p>
-                      {" "}
-                      <b>Note:</b> You are able to sign up now to show interest
-                      and admin will be in contact when approvals for new stores
-                      begin
-                    </p>
-                    <p>
-                      <b>Terms for sellers</b>
-                    </p>
-                    <ul>
-                      <li>
-                        Sellers must provide accurate and complete product
-                        information.
-                      </li>
-                      <li>
-                        Products must meet quality standards and match the
-                        described condition.
-                      </li>
-                      <li>
-                        Listing illegal, counterfeit, or restricted items is
-                        prohibited.
-                      </li>
-                      <li>
-                        Orders must be shipped within the specified timeframe.
-                      </li>
-                      <li>
-                        Products must be securely packaged to prevent damage.
-                      </li>
-                      <li>
-                        Valid tracking information must be provided for all
-                        shipped orders.
-                      </li>
-                      <li>
-                        Sellers must respond to customer inquiries within 24
-                        hours.
-                      </li>
-                      <li>
-                        Sellers must adhere to the platform’s return and refund
-                        policies.
-                      </li>
-                      <li>A commission of X% will be charged on each sale.</li>
-                      <li>Payments will be processed on a bi-weekly basis.</li>
-                      <li>
-                        Sellers are responsible for updating their account
-                        information.
-                      </li>
-                      <li>
-                        Password security must be maintained by the seller.
-                      </li>
-                      <li>
-                        Sellers must comply with all applicable laws and
-                        regulations.
-                      </li>
-                      <li>
-                        Intellectual property rights must be respected, avoiding
-                        any infringement.
-                      </li>
-                      <li>
-                        Accounts may be suspended or terminated for violations
-                        of terms.
-                      </li>
-                      <li>
-                        Sellers can appeal account suspensions through the
-                        designated process.
-                      </li>
-                      <li>
-                        By signing up as a seller on our platform, you agree to
-                        these terms and conditions.
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={handleCancel}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={handleOk}
-                    >
-                      OK
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )} */}
-        </>
-        <div className="p-2 ps-lg-5 pe-lg-5 mb-5">
-          <div className="col-xs-12 col-md-12 col-lg-12">
-            <form method="post" onSubmit={handleSubmit}>
-              <div>
-                {/* <div className="">
+            <p style={{ fontSize: "17px" }} className="NoteDiv d-flex gap-2">
+
+              <span className="">
+                We are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin.
+              </span>
+            </p>
+          </div>
+          <div className=" col-lg-4 col-xs-12 col-md-8">
+
+            <div className="mb-3 p-4 rounded shadow">
+              <form method="post" onSubmit={handleSubmit} >
+
+
+
+                <div className="mb-4">
                   <h1 className="text-center fs-3">Create Account</h1>
-                  <p style={{fontSize:"17px"}} className="text-center">
-                       <span className="text-primary ms-md-5 me-md-5 ms-2 me-2">We are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin.</span>
-                  </p>
-                </div> */}
-                <div className="row justify-content-center">
-  <div className="col-12 col-md-8 col-lg-7 ps-3 pe-3">
-    <h1 className="text-center fs-3">Create Account</h1>
-    <p style={{ fontSize: "19px" }} className="text-center">
-      <span className="text-primary">
-        We are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin.
-      </span>
-    </p>
-  </div>
-</div>
 
-                {/* <hr /> */}
-                <div className="form-group d-md-flex justify-content-center mt-4 mb-2">
-                  <label
-                    className="control-label col-sm-2 col-md-2 fw-bold"
-                    htmlFor="firstname"
-                  >
-                    First Name
-                  </label>
-                  <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-                    <input
-                      className="form-control mb-2"
-                      type="text"
-                      id="firstname"
-                      name="firstname"
-                      onChange={handleInput}
-                      placeholder="Enter First Name"
-                      pattern="[A-Z][a-z]*\s*\w*"
-                      title="First letter should be uppercase, remaining letters are lowercase. No special characters"
-                      required
-                    />
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                  </div>
                 </div>
-                <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-                  <label
-                    className="control-label col-sm-2 col-md-2 fw-bold"
-                    htmlFor="lastname"
-                  >
-                    Last Name
-                  </label>
-                  <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-                    <input
-                      className="form-control mb-2"
-                      type="text"
-                      id="lastname"
-                      name="lastname"
-                      onChange={handleInput}
-                      placeholder="Enter Last Name"
-                      pattern="[A-Z][a-z]*\s*\w*"
-                      title="First letter should be uppercase, remaining letters are lowercase. No special characters"
-                      required
-                    />
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                  </div>
+
+
+                <div className="input-field ">
+                  <label htmlFor="firstname" className="fixed-label fw-bold">First Name *</label>
+                  <input
+                    // type="email"
+                    // id="email"
+                    // name="email"
+                    // autoComplete="off"
+                    // required
+                    // onChange={handleInput}
+                    // className=" mb-2"
+                    type="text"
+                    id="firstname"
+                    name="firstname"
+                    onChange={handleInput}
+                    // placeholder="Enter First Name"
+                    pattern="[A-Z][a-z]*\s*\w*"
+                    title="First letter should be uppercase, remaining letters are lowercase. No special characters"
+                    required
+                  />
+
                 </div>
-                <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-                  <label
-                    className="control-label col-sm-2 col-md-2 fw-bold"
-                    htmlFor="shopname"
-                  >
-                    Shop Name
-                  </label>
-                  <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-                    <input
-                      className="form-control mb-2"
-                      type="text"
-                      id="shopname"
-                      name="shopname"
-                      onChange={handleInput}
-                      placeholder="Enter Shop Name (Optional)"
-                      // pattern="[A-Z][a-z]*\s*\w*"
-                      pattern="^[A-Z][a-z]*[\s\w!@#\$%\^&\*\(\)\-\+=\[\]\{\};:',.<>/?]*$"
-                      title="First letter should be uppercase, remaining letters are lowercase. No special characters"
-                    />
-                    {/* <span className="text-danger fs-4"> &nbsp;*</span> */}
-                  </div>
+                <div className="input-field ">
+                  <label htmlFor="lastname" className="fixed-label fw-bold">Last Name *</label>
+                  <input
+                    // type="email"
+                    // id="email"
+                    // name="email"
+                    // autoComplete="off"
+                    // required
+                    // onChange={handleInput}
+                    type="text"
+                    id="lastname"
+                    name="lastname"
+                    onChange={handleInput}
+                    // placeholder="Enter Last Name"
+                    pattern="[A-Z][a-z]*\s*\w*"
+                    title="First letter should be uppercase, remaining letters are lowercase. No special characters"
+                    required
+                  />
                 </div>
-                <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-                  <label
-                    className="control-label col-sm-2 col-md-2 fw-bold"
-                    htmlFor="email"
-                  >
-                    Email
-                  </label>
-                  <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-                    <input
-                      className="form-control mb-2"
-                      type="email"
-                      id="email"
-                      name="email"
-                      onChange={handleInput}
-                      placeholder="Enter Email"
-                      required
-                    />
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                  </div>
+                <div className="input-field ">
+                  <label htmlFor="shopname" className="fixed-label fw-bold">Shop Name (Optional)</label>
+                  <input
+                    type="text"
+                    id="shopname"
+                    name="shopname"
+                    onChange={handleInput}
+                    // placeholder="Enter Shop Name (Optional)"
+                    pattern="^[A-Z][a-z]*[\s\w!@#\$%\^&\*\(\)\-\+=\[\]\{\};:',.<>/?]*$"
+                    title="First letter should be uppercase, remaining letters are lowercase. No special characters"
+
+                  />
                 </div>
-              </div>
-              <div>
-                <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-                  <label
-                    className="control-label col-sm-2 col-md-2 fw-bold"
-                    htmlFor="phone"
-                  >
-                    Phone
-                  </label>
-                  <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-                    <input
-                      className="form-control mb-2"
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      onChange={handleInput}
-                      placeholder="Enter Phone Number"
-                      pattern="[0-9]{10}"
-                      title="10 digit numeric value only"
-                      minLength={10}
-                      maxLength={10}
-                      required
-                    />
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                  </div>
+                <div className="input-field ">
+                  <label htmlFor="email" className="fixed-label fw-bold">Email *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    onChange={handleInput}
+                    // placeholder="Enter Email"
+                    required
+                  />
                 </div>
-              </div>
-              <div>
-                <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-                  <label
-                    className="control-label col-sm-2 col-md-2 fw-bold"
-                    htmlFor="password"
-                  >
-                    Password
-                  </label>
-                  <div className="d-flex col-sm-6 col-md-4 col-xs-12 passwordgroup">
-                    <input
-                      className="form-control mb-2"
-                      // type="password"
-                      type={showPassword ? "text" : "password"}
-                      id="password"
-                      name="password"
-                      onChange={handleInput}
-                      placeholder="Enter Password"
-                      required
-                      pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$"
-                      title="Password must contain at least 8 characters, including one number, one letter, and one special character."
-                    />
-                    <button
-                      type="button"
-                      id="btnToggle"
-                      className="toggle12"
-                      onClick={handleTogglePassword}
-                    >
-                      <i
-                        className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"
-                          }`}
-                      ></i>
-                    </button>
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                  </div>
+                <div className="input-field ">
+                  <label htmlFor="phone" className="fixed-label fw-bold">Phone Number *</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    onChange={handleInput}
+                    // placeholder="Enter Phone Number"
+                    pattern="[0-9]{10}"
+                    title="10 digit numeric value only"
+                    minLength={10}
+                    maxLength={10}
+                    required
+                  />
                 </div>
-                <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-                  <label
-                    className="control-label col-sm-2 col-md-2 fw-bold"
-                    htmlFor="confirmpassword"
-                  >
-                    Confirm Password
-                  </label>
-                  <div className="d-flex col-sm-6 col-md-4 col-xs-12 passwordgroup">
-                    <input
-                      className="form-control mb-2"
-                      type={showConfirmPassword ? "text" : "password"}
-                      id="confirmpassword"
-                      name="confirmpassword"
-                      onChange={(e) =>
-                        setConfirmpassword(e.currentTarget.value)
-                      }
-                      placeholder="Enter Confirm Password"
-                      required
-                    />
-                    <button
-                      type="button"
-                      id="btnToggle"
-                      className="toggle12"
-                      onClick={handleToggleConfirmPassword}
-                    >
-                      <i
-                        className={`bi ${showConfirmPassword ? "bi-eye-slash" : "bi-eye"
-                          }`}
-                      ></i>
-                    </button>
-                    <span className="text-danger fs-4"> &nbsp;*</span>
-                  </div>
-                </div>
-              </div>
-              {/* Error message */}
-              {error && (
-                <div className="text-danger text-center mb-3">{error}</div>
-              )}
-              <div className="form-group  d-md-flex justify-content-center">
-                <div className="col-sm-2 col-md-2"></div>
-                <div className="col-sm-6 col-md-4 col-xs-12 text-center">
+                <div className="input-field  passwordgroup">
+                  <label htmlFor="password" className="fixed-label fw-bold">Password *</label>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    onChange={handleInput}
+                    // placeholder="Enter Password"
+                    required
+                    pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$"
+                    title="Password must contain at least 8 characters, including one number, one letter, and one special character."
+                  />
                   <button
-                    type="submit"
-                    className="btn btn-primary register-next-step-button w-50 mt-3"
+                    type="button"
+                    id="btnToggle"
+                    className="toggle12"
+                    onClick={handleTogglePassword}
                   >
-                    Register
+                    <i
+                      className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"
+                        }`}
+                    ></i>
                   </button>
                 </div>
-              </div>
-            </form>
+                <div className="input-field  passwordgroup">
+                  <label htmlFor="phone" className="fixed-label fw-bold">Confirm Password *</label>
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    id="confirmpassword"
+                    name="confirmpassword"
+                    onChange={(e) =>
+                      setConfirmpassword(e.currentTarget.value)
+                    }
+                    // placeholder="Enter Confirm Password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    id="btnToggle"
+                    className="toggle12"
+                    onClick={handleToggleConfirmPassword}
+                  >
+                    <i
+                      className={`bi ${showConfirmPassword ? "bi-eye-slash" : "bi-eye"
+                        }`}
+                    ></i>
+                  </button>
+                </div>
+
+                {error && (
+                  <div className="text-danger text-center mb-2">{error}</div>
+                )}
+                <p style={{ fontSize: "14px" }}>By Registering, I agree to the <span className="text-primary fw-bold">Terms of Use</span> & <span className="text-primary fw-bold">Privacy Policy</span>.</p>
+                <div className="">
+                  <div className="  mb-4">
+                    <button
+                      type="submit"
+                      className="btn btn-primary register-next-step-button mt-3 w-100"
+                    >
+                      Register
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div className="d-flex justify-content-around p-2">
+              <div
+                style={{ borderBottom: "1px solid gray", width: "45%" }}
+              ></div>
+              <p className="text-center" style={{ marginBottom: '-10px' }}>or</p>
+              <div
+                style={{ borderBottom: "1px solid gray", width: "45%" }}
+              ></div>
+            </div>
+            <div className="mt-3  mb-5 p-2 ">
+              <button onClick={signin} className="btn shadow w-100 p-2" >
+                {/* <span className="fs-5">
+                  <i className="bi bi-google"></i>
+                </span> */}
+                <img src={googleicon} alt="Google icon" width="30" />
+                &nbsp;&nbsp;&nbsp;Continue With Google
+              </button>
+            </div>
           </div>
+
         </div>
       </main>
       <Footer />
@@ -716,782 +559,3 @@ const Register = () => {
 };
 
 export default Register;
-
-
-
-// import React, { useState, useEffect } from "react";
-// import MyNavbar from "./navbar";
-// import { useNavigate } from "react-router-dom";
-// import Footer from "./footer";
-// import axios from "axios";
-// import CryptoJS from "crypto-js";
-// import { googleLogout, useGoogleLogin } from "@react-oauth/google";
-// import { useData } from "./CartContext";
-// import Scrolltotopbtn from "./Scrolltotopbutton";
-// import Notification from "./Notification";
-
-// const Register = () => {
-//   const [confirmpassword, setConfirmpassword] = useState("");
-//   const [notification, setNotification] = useState(null);
-//   const [values, setValues] = useState({
-//     firstname: "",
-//     lastname: "",
-//     shopname: null,
-//     email: "",
-//     phone: "",
-//     password: "",
-//   });
-//   const { setUserData } = useData();
-//   const [error, setError] = useState("");
-//   const [userdetails, setUserDetails] = useState([]);
-//   const navigate = useNavigate();
-//   const [shopNameFilter, setShopNameFilter] = useState([]);
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-//   //eslint-disable-next-line no-unused-vars
-//   const [showModal, setShowModal] = useState(false); // Modal visibility state
-//   const [modal, setModal] = useState(false);
-//   const [trail, setTrail] = useState(false)
-
-//   const handleInput = (event) => {
-//     setValues((prev) => ({
-//       ...prev,
-//       [event.target.name]: event.target.value,
-//     }));
-//     // console.log(CryptoJS.MD5(event.target.value).toString())
-//   };
-//   // console.log(shopNameFilter);
-//   useEffect(() => {
-//     axios
-//       .get(
-//         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/registedusers`
-//       )
-//       .then((res) => {
-//         if (res.data !== "Fail" && res.data !== "Error") {
-//           setShopNameFilter(res.data);
-//           const userDetails = res.data.map((item) => ({
-//             email: item.email,
-//             phone: item.phone,
-//           }));
-//           setUserDetails(userDetails);
-//         }
-//       })
-//       .catch((err) => console.log(err));
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, []);
-//   console.log(values)
-
-//   const handleSubmit = (event) => {
-//     console.log(values)
-//     event.preventDefault();
-//     const { email, phone, password, shopname } = values;
-//     console.log(values)
-//     // if (
-//     //   shopname !== null &&
-//     //   shopNameFilter.some((user) => user.shopname === shopname)
-//     // ) {
-//       if (
-//         shopname && // This will check that shopname is not null or an empty string
-//         shopNameFilter.some((user) => user.shopname === shopname.trim()) // Ensure to trim any extra spaces
-//       ) {
-//       setError("This ShopName already exist");
-//     } else if (userdetails.some((user) => user.email === email)) {
-//       setError("This Email already Registered");
-//     } else if (userdetails.some((user) => user.phone.toString() === phone)) {
-//       setError("Phone number already exists");
-//     } else if (password !== confirmpassword) {
-//       setError("Passwords do not match");
-//     } else {
-//       const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/;
-//       if (!passwordRegex.test(password)) {
-//         setError(
-//           "Password must contain at least 8 characters, including one number, one letter, and one special character."
-//         );
-//       } else {
-//         setError("");
-//         setShowModal(true);
-//         // // Show the modal after validation passes
-//         // if (shopname === null) {
-//         //   values.password = CryptoJS.MD5(values.password).toString();
-//         //   navigate("/emailverification", { state: { values } });
-//         // }
-//         if (!shopname || shopname.trim() === "") {
-//           values.password = CryptoJS.MD5(values.password).toString();
-//           navigate("/emailverification", { state: { values } });
-//         }
-//         else {
-//           setTrail(true);
-//         }
-//         // values.password = CryptoJS.MD5(values.password).toString();
-//         // navigate("/emailverification", { state: { values } });
-//       }
-//     }
-//   };
-//   //TrailPhase
-//   const TrailPhase = () => {
-//     setModal(true)
-//     setTrail(false)
-//   }
-
-//   // Handle OK button in the modal
-//   const handleOk = () => {
-//     // Hash the password and navigate to email verification
-//     values.password = CryptoJS.MD5(values.password).toString();
-//     setShowModal(false);
-//     navigate("/emailverification", { state: { values } });
-//   };
-
-//   // Handle Cancel button in the modal
-//   const handleCancel = () => {
-//     setShowModal(false);
-//     // navigate("/"); // Redirect to home page
-//     setModal(false);
-//     setTrail(false)
-//   };
-
-//   // Handle top-right close button (just closes the modal)
-//   const handleCloseModal = () => {
-//     setModal(false); // Only close the modal, no navigation
-//     setTrail(false)
-//   };
-
-//   // console.log(values);
-//   const [user, setUser] = useState([]);
-//   //eslint-disable-next-line no-unused-vars
-//   const [profile, setProfile] = useState(null);
-
-//   const signin = useGoogleLogin({
-//     onSuccess: (codeResponse) => setUser(codeResponse),
-//     onError: (error) => console.log("Login Failed:", error),
-//   });
-//   useEffect(() => {
-//     if (user) {
-//       axios
-//         .get(
-//           `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
-//           {
-//             headers: {
-//               Authorization: `Bearer ${user.access_token}`,
-//               Accept: "application/json",
-//             },
-//           }
-//         )
-//         .then((res) => {
-//           setProfile(res.data);
-//           axios
-//             .post(
-//               `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/googleLogin`,
-//               { username: res.data.email }
-//             )
-//             .then((res) => {
-//               // console.log(res)
-//               if (res.data !== "Error") {
-//                 if (res.data === "Fail") {
-//                   axios
-//                     .post(
-//                       `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/register`,
-//                       {
-//                         firstname: res.data.name,
-//                         lastname: "",
-//                         shopname: "",
-//                         email: res.data.email,
-//                         phone: 0,
-//                         password: "",
-//                       }
-//                     )
-//                     .then((result) => {
-//                       if (result.data !== "Error") {
-//                         const data = result.data[0];
-//                         setUserData(data);
-//                         var token = data.user_id;
-//                         sessionStorage.setItem("token", "user");
-//                         if (!token) {
-//                           setNotification({
-//                             message:
-//                               "Unable to login. Please try after some time.",
-//                             type: "error",
-//                           });
-//                           setTimeout(() => setNotification(null), 3000);
-//                           return;
-//                         }
-//                         sessionStorage.removeItem("user-token");
-//                         sessionStorage.setItem("user-token", token);
-//                         navigate("/");
-//                       }
-//                     })
-//                     .catch((err) => console.log(err));
-//                 } else {
-//                   const data = res.data[0];
-//                   setUserData(data);
-//                   var token = data.user_id;
-//                   sessionStorage.setItem("token", "user");
-//                   if (!token) {
-//                     setNotification({
-//                       message: "Unable to login. Please try after some time.",
-//                       type: "error",
-//                     });
-//                     setTimeout(() => setNotification(null), 3000);
-//                     return;
-//                   }
-//                   sessionStorage.removeItem("user-token");
-//                   sessionStorage.setItem("user-token", token);
-//                   navigate("/");
-//                   // window.location.reload(false);
-//                 }
-//               } else {
-//                 setNotification({
-//                   message: "Invalid Username or Password",
-//                   type: "error",
-//                 });
-//                 setTimeout(() => setNotification(null), 3000);
-//                 window.location.reload(false);
-//               }
-//             })
-//             .catch((err) => console.log(err));
-//         })
-//         .catch((err) => console.log(err));
-//     }
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-
-//     axios
-//       .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/user`)
-//       .then((res) => {
-//         console.log(res);
-//         if (res.data !== "Fail" && res.data !== "Error") {
-//           console.log(res);
-//         }
-//       })
-
-//       .catch((err) => console.log(err));
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [user]);
-
-//   //eslint-disable-next-line no-unused-vars
-//   const logOut = () => {
-//     googleLogout();
-//     setProfile(null);
-//   };
-
-//   const handleTogglePassword = () => {
-//     setShowPassword(!showPassword);
-//   };
-//   const handleToggleConfirmPassword = () => {
-//     setShowConfirmPassword(!showConfirmPassword);
-//   };
-
-//   return (
-//     <div className="fullscreen">
-//       <MyNavbar />
-//       {notification && (
-//         <Notification
-//           message={notification.message}
-//           type={notification.type}
-//           onClose={() => setNotification(null)}
-//         />
-//       )}
-
-//       <main>
-//         <div className="text-center mt-4 mb-4">
-//           <button onClick={signin} className="btn border">
-//             <span className="fs-5">
-//               <i className="bi bi-google"></i>
-//             </span>
-//             &nbsp;&nbsp;&nbsp;Continue With Google
-//           </button>
-//         </div>
-//         <>
-//           {/* Modal */}
-//           {trail && values.shopname && (
-//             <div
-//               className="modal"
-//               tabIndex="-1"
-//               style={{
-//                 display: "block",
-//                 backgroundColor: "rgba(0, 0, 0, 0.5)",
-//               }}
-//             >
-//               <div className="modal-dialog modal-lg modal-dialog-centered">
-//                 <div className="modal-content">
-//                   <div className="modal-header">
-//                     <h6 className="modal-title">Confirmation Message</h6>
-//                     <button
-//                       type="button"
-//                       className="btn-close"
-//                       onClick={handleCloseModal}
-//                       aria-label="Close"
-//                     ></button>
-//                   </div>
-//                   <div className="modal-body">
-//                     {/* <p>
-//                       <b>Note:</b> You are able to sign up now to show interest
-//                       and admin will be in contact when approvals for new stores
-//                       begin.
-//                     </p> */}
-//                     <p>
-//                       <b>Terms for sellers</b>
-//                     </p>
-//                     <ul>
-//                       <li> we are currently limiting sellers on the site during this trial phase. You are able to sign up now to show interest and admin will be in contact when approvals for new stores begin</li>
-//                     </ul>
-//                   </div>
-//                   <div className="modal-footer">
-//                     <button
-//                       type="button"
-//                       className="btn btn-secondary"
-//                       onClick={handleCancel}
-//                     >
-//                       Cancel
-//                     </button>
-//                     <button
-//                       type="button"
-//                       className="btn btn-primary"
-//                       onClick={TrailPhase}
-//                     >
-//                       OK
-//                     </button>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           )}
-//           {modal && values.shopname && (
-//             <div
-//               className="modal"
-//               tabIndex="-1"
-//               style={{
-//                 display: "block",
-//                 backgroundColor: "rgba(0, 0, 0, 0.5)",
-//               }}
-//             >
-//               <div className="modal-dialog modal-lg modal-dialog-centered">
-//                 <div className="modal-content">
-//                   <div className="modal-header">
-//                     <h6 className="modal-title">Confirmation Message</h6>
-//                     <button
-//                       type="button"
-//                       className="btn-close"
-//                       onClick={handleCloseModal}
-//                       aria-label="Close"
-//                     ></button>
-//                   </div>
-//                   <div className="modal-body">
-//                     <p>
-//                       <b>Note:</b> You are able to sign up now to show interest
-//                       and admin will be in contact when approvals for new stores
-//                       begin.
-//                     </p>
-//                     <p>
-//                       <b>Terms for sellers</b>
-//                     </p>
-//                     <ul>
-//                       <li>
-//                         Sellers must provide accurate and complete product
-//                         information.
-//                       </li>
-//                       <li>
-//                         Products must meet quality standards and match the
-//                         described condition.
-//                       </li>
-//                       <li>
-//                         Listing illegal, counterfeit, or restricted items is
-//                         prohibited.
-//                       </li>
-//                       <li>
-//                         Orders must be shipped within the specified timeframe.
-//                       </li>
-//                       <li>
-//                         Products must be securely packaged to prevent damage.
-//                       </li>
-//                       <li>
-//                         Valid tracking information must be provided for all
-//                         shipped orders.
-//                       </li>
-//                       <li>
-//                         Sellers must respond to customer inquiries within 24
-//                         hours.
-//                       </li>
-//                       <li>
-//                         Sellers must adhere to the platform’s return and refund
-//                         policies.
-//                       </li>
-//                       <li>A commission of X% will be charged on each sale.</li>
-//                       <li>Payments will be processed on a bi-weekly basis.</li>
-//                       <li>
-//                         Sellers are responsible for updating their account
-//                         information.
-//                       </li>
-//                       <li>
-//                         Password security must be maintained by the seller.
-//                       </li>
-//                       <li>
-//                         Sellers must comply with all applicable laws and
-//                         regulations.
-//                       </li>
-//                       <li>
-//                         Intellectual property rights must be respected, avoiding
-//                         any infringement.
-//                       </li>
-//                       <li>
-//                         Accounts may be suspended or terminated for violations
-//                         of terms.
-//                       </li>
-//                       <li>
-//                         Sellers can appeal account suspensions through the
-//                         designated process.
-//                       </li>
-//                       <li>
-//                         By signing up as a seller on our platform, you agree to
-//                         these terms and conditions.
-//                       </li>
-//                     </ul>
-//                   </div>
-//                   <div className="modal-footer">
-//                     <button
-//                       type="button"
-//                       className="btn btn-secondary"
-//                       onClick={handleCancel}
-//                     >
-//                       Cancel
-//                     </button>
-//                     <button
-//                       type="button"
-//                       className="btn btn-primary"
-//                       onClick={handleOk}
-//                     >
-//                       OK
-//                     </button>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           )}
-
-//           {/* {showModal && (
-//             <div
-//               className="modal"
-//               tabIndex="-1"
-//               style={{
-//                 display: "block",
-//                 backgroundColor: "rgba(0, 0, 0, 0.5)",
-//               }}
-//             >
-//               <div className="modal-dialog modal-lg modal-dialog-centered">
-//                 <div className="modal-content">
-//                   <div className="modal-header">
-//                     <h6 className="modal-title">Confirmation Message</h6>
-//                     <button
-//                       type="button"
-//                       className="btn-close"
-//                       onClick={handleCloseModal}
-//                       aria-label="Close"
-//                     ></button>
-//                   </div>
-//                   <div className="modal-body">
-//                     <p>
-//                       {" "}
-//                       <b>Note:</b> You are able to sign up now to show interest
-//                       and admin will be in contact when approvals for new stores
-//                       begin
-//                     </p>
-//                     <p>
-//                       <b>Terms for sellers</b>
-//                     </p>
-//                     <ul>
-//                       <li>
-//                         Sellers must provide accurate and complete product
-//                         information.
-//                       </li>
-//                       <li>
-//                         Products must meet quality standards and match the
-//                         described condition.
-//                       </li>
-//                       <li>
-//                         Listing illegal, counterfeit, or restricted items is
-//                         prohibited.
-//                       </li>
-//                       <li>
-//                         Orders must be shipped within the specified timeframe.
-//                       </li>
-//                       <li>
-//                         Products must be securely packaged to prevent damage.
-//                       </li>
-//                       <li>
-//                         Valid tracking information must be provided for all
-//                         shipped orders.
-//                       </li>
-//                       <li>
-//                         Sellers must respond to customer inquiries within 24
-//                         hours.
-//                       </li>
-//                       <li>
-//                         Sellers must adhere to the platform’s return and refund
-//                         policies.
-//                       </li>
-//                       <li>A commission of X% will be charged on each sale.</li>
-//                       <li>Payments will be processed on a bi-weekly basis.</li>
-//                       <li>
-//                         Sellers are responsible for updating their account
-//                         information.
-//                       </li>
-//                       <li>
-//                         Password security must be maintained by the seller.
-//                       </li>
-//                       <li>
-//                         Sellers must comply with all applicable laws and
-//                         regulations.
-//                       </li>
-//                       <li>
-//                         Intellectual property rights must be respected, avoiding
-//                         any infringement.
-//                       </li>
-//                       <li>
-//                         Accounts may be suspended or terminated for violations
-//                         of terms.
-//                       </li>
-//                       <li>
-//                         Sellers can appeal account suspensions through the
-//                         designated process.
-//                       </li>
-//                       <li>
-//                         By signing up as a seller on our platform, you agree to
-//                         these terms and conditions.
-//                       </li>
-//                     </ul>
-//                   </div>
-//                   <div className="modal-footer">
-//                     <button
-//                       type="button"
-//                       className="btn btn-secondary"
-//                       onClick={handleCancel}
-//                     >
-//                       Cancel
-//                     </button>
-//                     <button
-//                       type="button"
-//                       className="btn btn-primary"
-//                       onClick={handleOk}
-//                     >
-//                       OK
-//                     </button>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           )} */}
-//         </>
-//         <div className="p-2 ps-lg-5 pe-lg-5 mb-5">
-//           <div className="col-xs-12 col-md-12 col-lg-12">
-//             <form method="post" onSubmit={handleSubmit}>
-//               <div>
-//                 <div>
-//                   <h1 className="text-center fs-3">Create Account</h1>
-//                 </div>
-//                 <hr />
-//                 <div className="form-group d-md-flex justify-content-center mt-4 mb-2">
-//                   <label
-//                     className="control-label col-sm-2 col-md-2 fw-bold"
-//                     htmlFor="firstname"
-//                   >
-//                     First Name
-//                   </label>
-//                   <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-//                     <input
-//                       className="form-control mb-2"
-//                       type="text"
-//                       id="firstname"
-//                       name="firstname"
-//                       onChange={handleInput}
-//                       placeholder="Enter First Name"
-//                       pattern="[A-Z][a-z]*\s*\w*"
-//                       title="First letter should be uppercase, remaining letters are lowercase. No special characters"
-//                       required
-//                     />
-//                     <span className="text-danger fs-4"> &nbsp;*</span>
-//                   </div>
-//                 </div>
-//                 <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-//                   <label
-//                     className="control-label col-sm-2 col-md-2 fw-bold"
-//                     htmlFor="lastname"
-//                   >
-//                     Last Name
-//                   </label>
-//                   <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-//                     <input
-//                       className="form-control mb-2"
-//                       type="text"
-//                       id="lastname"
-//                       name="lastname"
-//                       onChange={handleInput}
-//                       placeholder="Enter Last Name"
-//                       pattern="[A-Z][a-z]*\s*\w*"
-//                       title="First letter should be uppercase, remaining letters are lowercase. No special characters"
-//                       required
-//                     />
-//                     <span className="text-danger fs-4"> &nbsp;*</span>
-//                   </div>
-//                 </div>
-//                 <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-//                   <label
-//                     className="control-label col-sm-2 col-md-2 fw-bold"
-//                     htmlFor="shopname"
-//                   >
-//                     Shop Name
-//                   </label>
-//                   <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-//                     <input
-//                       className="form-control mb-2"
-//                       type="text"
-//                       id="shopname"
-//                       name="shopname"
-//                       onChange={handleInput}
-//                       placeholder="Enter Shop Name (Optional)"
-//                       // pattern="[A-Z][a-z]*\s*\w*"
-//                       pattern="^[A-Z][a-z]*[\s\w!@#\$%\^&\*\(\)\-\+=\[\]\{\};:',.<>/?]*$"
-//                       title="First letter should be uppercase, remaining letters are lowercase. No special characters"
-//                     />
-//                     {/* <span className="text-danger fs-4"> &nbsp;*</span> */}
-//                   </div>
-//                 </div>
-//                 <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-//                   <label
-//                     className="control-label col-sm-2 col-md-2 fw-bold"
-//                     htmlFor="email"
-//                   >
-//                     Email
-//                   </label>
-//                   <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-//                     <input
-//                       className="form-control mb-2"
-//                       type="email"
-//                       id="email"
-//                       name="email"
-//                       onChange={handleInput}
-//                       placeholder="Enter Email"
-//                       required
-//                     />
-//                     <span className="text-danger fs-4"> &nbsp;*</span>
-//                   </div>
-//                 </div>
-//               </div>
-//               <div>
-//                 <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-//                   <label
-//                     className="control-label col-sm-2 col-md-2 fw-bold"
-//                     htmlFor="phone"
-//                   >
-//                     Phone
-//                   </label>
-//                   <div className="d-flex col-sm-6 col-md-4 col-xs-12">
-//                     <input
-//                       className="form-control mb-2"
-//                       type="tel"
-//                       id="phone"
-//                       name="phone"
-//                       onChange={handleInput}
-//                       placeholder="Enter Phone Number"
-//                       pattern="[0-9]{10}"
-//                       title="10 digit numeric value only"
-//                       minLength={10}
-//                       maxLength={10}
-//                       required
-//                     />
-//                     <span className="text-danger fs-4"> &nbsp;*</span>
-//                   </div>
-//                 </div>
-//               </div>
-//               <div>
-//                 <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-//                   <label
-//                     className="control-label col-sm-2 col-md-2 fw-bold"
-//                     htmlFor="password"
-//                   >
-//                     Password
-//                   </label>
-//                   <div className="d-flex col-sm-6 col-md-4 col-xs-12 passwordgroup">
-//                     <input
-//                       className="form-control mb-2"
-//                       // type="password"
-//                       type={showPassword ? "text" : "password"}
-//                       id="password"
-//                       name="password"
-//                       onChange={handleInput}
-//                       placeholder="Enter Password"
-//                       required
-//                       pattern="^(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$"
-//                       title="Password must contain at least 8 characters, including one number, one letter, and one special character."
-//                     />
-//                     <button
-//                       type="button"
-//                       id="btnToggle"
-//                       className="toggle12"
-//                       onClick={handleTogglePassword}
-//                     >
-//                       <i
-//                         className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"
-//                           }`}
-//                       ></i>
-//                     </button>
-//                     <span className="text-danger fs-4"> &nbsp;*</span>
-//                   </div>
-//                 </div>
-//                 <div className="form-group  d-md-flex justify-content-center mt-2 mb-2">
-//                   <label
-//                     className="control-label col-sm-2 col-md-2 fw-bold"
-//                     htmlFor="confirmpassword"
-//                   >
-//                     Confirm Password
-//                   </label>
-//                   <div className="d-flex col-sm-6 col-md-4 col-xs-12 passwordgroup">
-//                     <input
-//                       className="form-control mb-2"
-//                       type={showConfirmPassword ? "text" : "password"}
-//                       id="confirmpassword"
-//                       name="confirmpassword"
-//                       onChange={(e) =>
-//                         setConfirmpassword(e.currentTarget.value)
-//                       }
-//                       placeholder="Enter Confirm Password"
-//                       required
-//                     />
-//                     <button
-//                       type="button"
-//                       id="btnToggle"
-//                       className="toggle12"
-//                       onClick={handleToggleConfirmPassword}
-//                     >
-//                       <i
-//                         className={`bi ${showConfirmPassword ? "bi-eye-slash" : "bi-eye"
-//                           }`}
-//                       ></i>
-//                     </button>
-//                     <span className="text-danger fs-4"> &nbsp;*</span>
-//                   </div>
-//                 </div>
-//               </div>
-//               {/* Error message */}
-//               {error && (
-//                 <div className="text-danger text-center mb-3">{error}</div>
-//               )}
-//               <div className="form-group  d-md-flex justify-content-center">
-//                 <div className="col-sm-2 col-md-2"></div>
-//                 <div className="col-sm-6 col-md-4 col-xs-12 text-center">
-//                   <button
-//                     type="submit"
-//                     className="btn btn-primary register-next-step-button w-50 mt-3"
-//                   >
-//                     Register
-//                   </button>
-//                 </div>
-//               </div>
-//             </form>
-//           </div>
-//         </div>
-//       </main>
-//       <Footer />
-//       <Scrolltotopbtn />
-//     </div>
-//   );
-// };
-
-// export default Register;

@@ -1116,10 +1116,10 @@ body {
   border: none;
   font-weight: 600;
   position: absolute;
-  right: 1.3em;
-  top: .2em;
+  right: .7em;
+  top: .3em;
   z-index: 9;
-  font-size: 20px;
+  font-size: 18px;
 }
 .passwordgroup{
   position: relative;
@@ -1194,3 +1194,55 @@ body {
   opacity: 0.9;
 }
 /* Confirm alert end */
+
+
+.input-field {
+  position: relative;
+  margin-bottom: 20px;
+  /* border-radius: 80px; */
+}
+
+.input-field input {
+  width: calc(100%);
+  padding: 9px 0px 8px 20px;
+  border: none;
+  outline: none;
+  border: 1px solid grey;
+  background: none;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.input-field input::placeholder {
+  color: #999;
+  opacity: 1; 
+  font-size: 12px;
+}
+
+.fixed-label {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-size: 13px;
+  color: #333;
+  /* background: #FEF7FF; */
+  background: white;
+  padding: 0 5px;
+  pointer-events: none;
+}
+
+.input-field input:focus {
+  border-color: black;
+}
+.registerMaindiv {
+  display: flex; 
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+  min-height: 100vh; 
+}
+.NoteDiv{
+ 
+      padding-left: 10px;
+			 border-left: 10px solid blueviolet;
+}
