@@ -248,7 +248,7 @@ const SellerProfile = () => {
             </h4>
             <div className="filters mb-4">
               <button
-                className={`btn btn-outline-primary me-2 ${
+                className={`btn btn-outline-primary me-2 m-1 ${
                   filter === "all" ? "active" : ""
                 }`}
                 onClick={() => handleFilterChange("all")}
@@ -256,7 +256,7 @@ const SellerProfile = () => {
                 Show All
               </button>
               <button
-                className={`btn btn-outline-primary me-2 ${
+                className={`btn btn-outline-primary me-2 m-1 ${
                   filter === "available" ? "active" : ""
                 }`}
                 onClick={() => handleFilterChange("available")}
@@ -264,7 +264,7 @@ const SellerProfile = () => {
                 Available Products
               </button>
               <button
-                className={`btn btn-outline-primary ${
+                className={`btn btn-outline-primary m-1 ${
                   filter === "sold" ? "active" : ""
                 }`}
                 onClick={() => handleFilterChange("sold")}

@@ -439,7 +439,7 @@ export default function Sellerproducts() {
                               </td>
                               <td>
                                 <button
-                                  className="btn btn-outline-primary"
+                                  className="btn btn-outline-primary m-1"
                                   type="button"
                                   data-toggle="modal"
                                   data-target="#exampleModalLong"
@@ -448,7 +448,7 @@ export default function Sellerproducts() {
                                   Edit
                                 </button>{" "}
                                 <button
-                                  className="btn btn-outline-danger"
+                                  className="btn btn-outline-danger m-1"
                                   onClick={() => handleDelete(item.id)}
                                 >
                                   Delete
