@@ -16,6 +16,7 @@ const Myshop = () => {
   const [filter, setFilter] = useState("all");
   const [shopname, setShopname] = useState("");
   const pageSize = 8;
+  const [orders,setOrders]=useState([])
   const storedObject = sessionStorage.getItem("user-token");
   const myRetrievedObject = JSON.parse(storedObject);
  console.log(myRetrievedObject)
@@ -57,6 +58,17 @@ const Myshop = () => {
         setShopname("Default Shop Name"); // Handle network or unexpected errors
       }
     };
+    
+    axios
+      .get(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/updatepayment`)
+      .then((res) => {
+        if (res.data !== "Fail" && res.data !== "Error") {
+          setOrders(res.data);
+        }
+      })
+      .catch((error) => {
+        console.log("Error fetching orders:", error);
+      })
 
     fetchShopname();
   }, [myRetrievedObject]); // Add userId as a dependency to re-fetch if it changes
@@ -108,16 +120,32 @@ const Myshop = () => {
     }
   };
 
+  // const applyFilter = (filter) => {
+  //   let updatedProducts = [...products];
+  //   if (filter === "sold") {
+  //     updatedProducts = products.filter((product) => product.quantity === 0);
+  //   } else if (filter === "available") {
+  //     updatedProducts = products.filter((product) => product.quantity > 0);
+  //   }
+  //   setFilteredProducts(updatedProducts);
+  // };
   const applyFilter = (filter) => {
     let updatedProducts = [...products];
+
     if (filter === "sold") {
-      updatedProducts = products.filter((product) => product.quantity === 0);
+      // Filter products that are sold (present in orders) and have quantity === 0
+      updatedProducts = products.filter(
+        (product) =>
+          orders.some((order) => order.product_id === product.id) ||
+          product.quantity === 0
+      );
     } else if (filter === "available") {
+      // Filter products that have quantity > 0 (available)
       updatedProducts = products.filter((product) => product.quantity > 0);
     }
+
     setFilteredProducts(updatedProducts);
   };
-
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
   };
