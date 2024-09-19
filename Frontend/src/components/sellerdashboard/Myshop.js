@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Scrolltotopbtn from "../Scrolltotopbutton";
 import Product from "../Product";
 import InfiniteScroll from "react-infinite-scroll-component";
+import unavailableImage from "../../images/unavailableImage.webp";
 // import Comingsoon from "../comingsoon";
 
 const Myshop = () => {
@@ -229,7 +230,11 @@ const Myshop = () => {
                   ))
                 ) : (
                   // <Comingsoon/>
-                  <h6 className="mt-3">Your sold products will appear here once you make a sale.</h6>
+                  // <h6 className="mt-3">Your sold products will appear here once you make a sale.</h6>
+                  <div>
+                  <img src={unavailableImage} alt="unavailable" width="60%"/>
+                  <h5>Nothing here..!</h5>
+                </div>
                 )}
               </div>
             </InfiniteScroll>
