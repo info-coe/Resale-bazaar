@@ -136,7 +136,7 @@ const Myshop = () => {
       // Filter products that are sold (present in orders) and have quantity === 0
       updatedProducts = products.filter(
         (product) =>
-          orders.some((order) => order.product_id === product.id) ||
+          orders.some((order) => order.product_id === product.id && order.order_status === "purchased") ||
           product.quantity === 0
       );
     } else if (filter === "available") {
