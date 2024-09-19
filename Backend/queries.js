@@ -375,7 +375,7 @@ const addLikeQuery = 'INSERT INTO likes (like_product_id, like_user_id, likes) V
 const removeLikeQuery = 'DELETE FROM likes WHERE like_product_id = ? AND like_user_id = ?';
 const LikecountQuery = 'SELECT COUNT(*) AS likeCount FROM likes WHERE like_product_id = ?';
 const checkLikeQuery = 'SELECT * FROM likes WHERE like_product_id = ? AND like_user_id = ?';
-
+const userManagementQuery =  `SELECT r.*, p.* FROM register r INNER JOIN products p ON r.user_id = p.seller_id `;
 const RefundDetailsQuery ="SELECT products.*, orders.*, register.* FROM products INNER JOIN orders ON products.id = orders.product_id INNER JOIN register ON orders.buyer_id = register.user_id WHERE orders.order_status = 'cancelled'"
 const guestShippingAddress = `INSERT INTO guest_shipping_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 const guestBillingAddress = `INSERT INTO guest_billing_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -471,5 +471,6 @@ module.exports = {
   RefundDetailsQuery,
   guestShippingAddress,
   guestBillingAddress,
-  guestpaymentStatusQuery
+  guestpaymentStatusQuery,
+  userManagementQuery
 };

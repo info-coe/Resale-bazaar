@@ -48,6 +48,14 @@ export default function Adminmenu() {
                   <i className="bi bi-record-circle"></i> Products Management
                 </li>
               </Link>
+              <Link
+                to="/usersmanagement"
+                className="text-decoration-none text-dark"
+              >
+                <li className="list-group-item">
+                  <i className="bi bi-record-circle"></i> User Management
+                </li>
+              </Link>
             </ul>
           </div>
         </div>

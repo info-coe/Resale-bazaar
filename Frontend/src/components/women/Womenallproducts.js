@@ -75,7 +75,7 @@ const Womenallproducts = () => {
       <main>
         <h1
           className="ps-lg-5 ps-2 text-center mt-2"
-          style={{ textShadow: "2px 3px 2px gray", fontSize: "28px" }}
+          style={{ textShadow: "2px 3px 2px lightgray", fontSize: "28px" }}
         >
           Womens Fashion
         </h1>

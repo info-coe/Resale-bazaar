@@ -95,7 +95,8 @@ const {
   RefundDetailsQuery,
   guestShippingAddress,
   guestBillingAddress,
-  guestpaymentStatusQuery
+  guestpaymentStatusQuery,
+  userManagementQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require("multer");
@@ -909,7 +910,7 @@ app.post("/updateproducts", (req, res) => {
   db.query(sql, [quantity, product_id], (err, result) => {
     if (err) {
       console.log("Error updating product quantity:", err);
-      return res
+      return resupdateproducts
         .status(500)
         .json({ success: false, error: "Failed to update product quantity" });
     }
@@ -2022,6 +2023,20 @@ app.post('/refund', async (req, res) => {
     }
     return res.status(500).json({ success: false, message: 'Internal server error. Please try again later.' });
   }
+});
+
+app.get('/usermanagement', (req, res) => {
+  const query =userManagementQuery;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Database query error:', err);
+      return res.status(500).json({ error: 'Database query error' });
+    }
+
+    // Directly return the raw results without restructuring
+    res.json(results);
+  });
 });
 
 

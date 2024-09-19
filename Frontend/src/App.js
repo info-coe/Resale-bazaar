@@ -66,6 +66,7 @@ import GuestShippingdetails from "./components/GuestShippingdetails";
 import GuestFinalCheckout from "./components/GuestFinalCheckout";
 import GuestMailverification from "./components/GuestMailVerification";
 import Productmanagement from "./components/admindashboard/Productmanagement";
+import Usersmanagement from "./components/admindashboard/Usersmanagement";
 
 
 function App() {
@@ -115,6 +116,7 @@ function App() {
 
             <Route path="acceptproduct" element={<Acceptproduct />}></Route>
             <Route path="productmanagement" element={<Productmanagement />}></Route>
+            <Route path="usersmanagement" element={<Usersmanagement />}></Route>
             <Route path="checkoutpage" element={<Checkout />}></Route>
 
             <Route
