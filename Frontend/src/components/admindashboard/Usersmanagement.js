@@ -1,21 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Adminnavbar from "./Adminnavbar";
-import Adminmenu from "./Adminmenu";
 import axios from "axios";
 import Product from "../Product";
-import Adminfooter from "./Adminfooter";
+import Footer from "../footer";
 
 export default function Usersmanagement() {
   const [data, setData] = useState([]);
   const [expandedSellerId, setExpandedSellerId] = useState(null);
   const [sellerproducts, setSellerproducts] = useState([]);
-  const [reason,setReason]=useState('')
+  const [searchTerm, setSearchTerm] = useState(""); // Search term for filtering shops
+  const [notificationMessage, setNotificationMessage] = useState("");
 
+  const [statusDetails, setStatusDetails] = useState({
+    reason: "",
+    shopstatus: "",
+    sellerId: null,
+    email: "",
+    displayName:""
+  });
 
-
- const handleInputChange =(e)=>{
-    setReason(e.target.value)
- }
+  const handleInputChange = (e) => {
+    setStatusDetails((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   useEffect(() => {
     axios
@@ -29,42 +38,80 @@ export default function Usersmanagement() {
       });
   }, []);
 
-  const sellers = Array.from(new Set(data.map((item) => item.seller_id))).map(
-    (sellerId) => {
-      const sellerData = data.find((item) => item.seller_id === sellerId);
-      const shopname = sellerData?.shopname;
-      const displayName =
-        shopname || `${sellerData?.firstname} ${sellerData?.lastname}`;
-
-      return {
-        seller_id: sellerId,
-        displayName: displayName || "unnamed Seller",
-      };
-    }
-  );
+  const sellers = useMemo(() => {
+    return Array.from(new Set(data.map((item) => item.seller_id))).map(
+      (sellerId) => {
+        const sellerData = data.find((item) => item.seller_id === sellerId);
+        return {
+          seller_id: sellerId,
+          displayName: sellerData?.shopname || `${sellerData?.firstname} ${sellerData?.lastname}` || "unnamed Seller",
+          currentStatus: sellerData?.product_status,
+          email: sellerData?.email,
+        };
+      }
+    );
+  }, [data]);
+  
 
   const handleAccordionToggle = (sellerId) => {
     setExpandedSellerId(expandedSellerId === sellerId ? null : sellerId);
     setSellerproducts(data.filter((item) => item.seller_id === sellerId));
   };
+  const filteredShops = useMemo(() => {
+    return sellers.filter((item) =>
+      item.displayName?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [sellers, searchTerm]);
+  
+
+  const handlesubmit = (e) => {
+    e.preventDefault(); // Prevent default form submission
+    axios
+      .post(
+        `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/shopstatus`,
+        statusDetails
+      )
+      .then((res) => {
+        setNotificationMessage("Store status updated successfully!");
+        setTimeout(() => {
+          window.location.reload(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        console.error("Error posting data:", err);
+      });
+  };
 
   return (
     <div>
       <Adminnavbar />
-      <div className="d-md-flex">
-        <div className="col-md-2 selleraccordion">
+      <div>
+        {/* <div className="col-md-2 selleraccordion">
           <Adminmenu />
-        </div>
-        <div className="col-md-10">
+        </div> */}
+        <div className="container">
           <div className="fullscreen2">
-            <main className="container mt-4">
-              <h1 className="text-center mb-4" style={{ fontSize: "28px" }}>
-                STORES
-              </h1>
+          <div className="text-center p-3">
+              <h6> <i><span className="" style={{ color: "blue", fontSize: "25px" }}>Admin</span></i> Dashboard</h6>
+            </div>
+            <div className="m-2 ps-md-4">
+              <h1 style={{ fontSize: "28px" }}>STORES</h1>
+            </div>
+            <main className="mt-4">
+              <div className="d-flex justify-content-end">
+                <input
+                  type="text"
+                  className="form-control mb-3 rounded-pill"
+                  style={{ height: "50px", width: "25%" }}
+                  placeholder="Search shops..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
               <div className="menumain">
                 <div className="accordion" id="shopAccordion">
-                  {sellers.length > 0 ? (
-                    sellers.map((seller) => (
+                  {filteredShops.length > 0 ? (
+                    filteredShops.map((seller) => (
                       <div
                         className="accordion-item"
                         key={seller.seller_id}
@@ -91,7 +138,7 @@ export default function Usersmanagement() {
                               border: "1px solid #dee2e6",
                             }} // Custom styling for accordion button
                           >
-                            {seller.displayName}
+                            {seller.displayName} - {seller.email}
                           </button>
                         </h2>
                         <div
@@ -108,11 +155,20 @@ export default function Usersmanagement() {
                                 className="btn btn-primary"
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"
+                                onClick={() => {
+                                  setStatusDetails((prev) => ({
+                                    ...prev,
+                                    sellerId: seller.seller_id,
+                                    shopstatus: seller.currentStatus,
+                                    email: seller.email,
+                                    displayName: seller.displayName,
+                                  }));
+                                }}
                               >
                                 Manage Store
                               </button>
                             </div>
-                            <div className="product-grid container">
+                            <div className="product-grid">
                               {sellerproducts.map((sellers, index) => (
                                 <Product key={index} product={sellers} />
                               ))}
@@ -129,57 +185,93 @@ export default function Usersmanagement() {
                 </div>
               </div>
             </main>
-            <Adminfooter />
+            {/* <Adminfooter /> */}
           </div>
         </div>
       </div>
-
+     <Footer/>
       <div
-        class="modal fade"
+        className="modal fade"
         id="exampleModal"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">
                 Manage Store
               </h1>
               <button
                 type="button"
-                class="btn-close"
+                className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
-            <div className="mb-3">
+            <form onSubmit={handlesubmit}>
+
+            <div className="modal-body">
+            {notificationMessage && <div className="alert alert-info">{notificationMessage}</div>}
+
+                <div className="mb-3">
                   <label htmlFor="reason" className="form-label fw-bold">
                     Reason
                   </label>
                   <input
                     type="text"
                     className="form-control"
+                    name="reason"
                     id="reason"
-                    value={reason}
+                    value={statusDetails.reason}
                     onChange={handleInputChange}
                     placeholder="Enter Your Reason"
                     required
                   />
                 </div>
+                <div className="mb-3">
+                  <label htmlFor="producttype" className="form-label fw-bolder">
+                    Shop Status
+                  </label>
+                  <div className="d-flex">
+                    <select
+                      id="shopstatus"
+                      name="shopstatus"
+                      className="form-select"
+                      // onChange={handleProducttype}
+                      value={statusDetails.shopstatus}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value="">Select Shop Status</option>
+                      <option value="enabled">Enabled</option>
+                      <option value="disabled">Disabled</option>
+                    </select>
+                  </div>
+                </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary">
-                Disabled
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                close
               </button>
-              <button type="button" class="btn btn-primary">
-                Enabled
+              <button
+                type="submit"
+                className="btn btn-primary"
+               
+              >
+                submit
               </button>
             </div>
+             </form>
           </div>
-        </div>
+          </div>
+
       </div>
     </div>
   );

@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS products (
     rejection_reason TINYTEXT NULL,
     seller_id INT NOT NULL,
     likes BIGINT(10) NULL,
+    shop_status VARCHAR(60) NULL DEFAULT 'enabled',
     UNIQUE INDEX id_UNIQUE (id ASC),
     FOREIGN KEY (seller_id) REFERENCES register(user_id),
     PRIMARY KEY (id)
@@ -310,19 +311,19 @@ const addingSellerAccountQuery = "INSERT INTO selleraccount SET ?";
 const adminAcceptedProductsQuery = "select * from products WHERE `accepted_by_admin` = (?)";
 const adminApprovalQuery = "UPDATE products SET accepted_by_admin = ? WHERE id = ?";
 const adminRejectionQuery = "UPDATE products SET rejection_reason = ? WHERE id = ?";
-const retrievingAllProductsQueryAll = "select * from products WHERE `accepted_by_admin` = (?) and `seller_id`=(?) ORDER BY id LIMIT ? OFFSET ?";
-const retrievingAllProductsQuery = "select * from products WHERE `accepted_by_admin` = (?)";
+const retrievingAllProductsQueryAll = "select * from products WHERE `accepted_by_admin` = (?) and `shop_status` = (?) and `seller_id`=(?) ORDER BY id LIMIT ? OFFSET ?";
+const retrievingAllProductsQuery = "select * from products WHERE `accepted_by_admin` = (?) and `shop_status` = (?)";
 
-const retrievingWomenProductsQuery = "SELECT * FROM products WHERE `category` =(?)AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
-const retrievingWomenProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
+const retrievingWomenProductsQuery = "SELECT * FROM products WHERE `category` =(?)AND `accepted_by_admin` = (?) and `shop_status` = (?) ORDER BY id LIMIT ? OFFSET ?";
+const retrievingWomenProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) and `shop_status` = (?) ORDER BY id LIMIT ? OFFSET ?";
 // const retrievingKidsProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
-const retrievingKidsProductsQuery = "SELECT * FROM products WHERE `category` =(?)AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
-const retrievingKidsProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
+const retrievingKidsProductsQuery = "SELECT * FROM products WHERE `category` =(?) AND `accepted_by_admin` = (?) and `shop_status` = (?)  ORDER BY id LIMIT ? OFFSET ?";
+const retrievingKidsProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) and `shop_status` = (?) ORDER BY id LIMIT ? OFFSET ?";
 // const retrievingKidsProductsQueryAll = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 // const retrievingKidsProductsQuery = "SELECT * FROM products WHERE `product_type` =(?)AND `accepted_by_admin` = (?)";
 
-const retrievingJewelleryProductsQuery = "SELECT * FROM products WHERE `category` =(?)AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
-const retrievingJewelleryProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) ORDER BY id LIMIT ? OFFSET ?";
+const retrievingJewelleryProductsQuery = "SELECT * FROM products WHERE `category` =(?)AND `accepted_by_admin` = (?) and `shop_status` = (?) ORDER BY id LIMIT ? OFFSET ?";
+const retrievingJewelleryProductsQueryAll = "SELECT * FROM products WHERE `product_type` =(?) AND `accepted_by_admin` = (?) and `shop_status` = (?) ORDER BY id LIMIT ? OFFSET ?";
 
 const retrievingBooksProductsQuery = "select * from products WHERE `product_type` = (?) AND `accepted_by_admin` = (?)";
 const addProductsQuery = `INSERT INTO products (product_type, category, name, description, image, location, color, alteration, size, measurements, \`condition\`, source, age, quantity, price, notes, material, occasion, type, brand, style, season, fit, length, accepted_by_admin, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -376,6 +377,7 @@ const removeLikeQuery = 'DELETE FROM likes WHERE like_product_id = ? AND like_us
 const LikecountQuery = 'SELECT COUNT(*) AS likeCount FROM likes WHERE like_product_id = ?';
 const checkLikeQuery = 'SELECT * FROM likes WHERE like_product_id = ? AND like_user_id = ?';
 const userManagementQuery =  `SELECT r.*, p.* FROM register r INNER JOIN products p ON r.user_id = p.seller_id `;
+const UpdateShopStatusQuery =`UPDATE products SET product_status = ? WHERE seller_id = ?`
 const RefundDetailsQuery ="SELECT products.*, orders.*, register.* FROM products INNER JOIN orders ON products.id = orders.product_id INNER JOIN register ON orders.buyer_id = register.user_id WHERE orders.order_status = 'cancelled'"
 const guestShippingAddress = `INSERT INTO guest_shipping_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 const guestBillingAddress = `INSERT INTO guest_billing_address (firstname, lastname, email, country, state, city, address1, address2, pincode, phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
@@ -472,5 +474,6 @@ module.exports = {
   guestShippingAddress,
   guestBillingAddress,
   guestpaymentStatusQuery,
-  userManagementQuery
+  userManagementQuery,
+  UpdateShopStatusQuery
 };

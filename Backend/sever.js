@@ -96,7 +96,8 @@ const {
   guestShippingAddress,
   guestBillingAddress,
   guestpaymentStatusQuery,
-  userManagementQuery
+  userManagementQuery,
+  UpdateShopStatusQuery
 } = require("./queries");
 const cors = require("cors");
 const multer = require("multer");
@@ -270,7 +271,17 @@ const sendPurchaseConfirmationEmail = (email, subject, message) => {
 
   return smtpTransport.sendMail(mailOptions);
 };
+const sendStatusUpdateEmail  = (email, subject, message) => {
+  const mailOptions = {
+    from: process.env.REACT_APP_FROMMAIL,
+    to: email,
+    subject: subject,
+    generateTextFromHTML: true,
+    html: message,
+  };
 
+  return smtpTransport.sendMail(mailOptions);
+};
 const getUserById = (userId) => {
   return new Promise((resolve, reject) => {
     const query = "SELECT email FROM register WHERE user_id = ?";
@@ -681,11 +692,12 @@ app.get("/allproductsall", (req, res) => {
   const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
+  const storestatus = "enabled"
   const sql = retrievingAllProductsQueryAll;
 
 
 
-  db.query(sql, [accepted,type,limit,offset], (err, data) => {
+  db.query(sql, [accepted,storestatus,type,limit,offset], (err, data) => {
     if (err) {
       return res.json("Error");
     }
@@ -700,11 +712,13 @@ app.get("/allproductsall", (req, res) => {
 app.get("/allproducts", (req, res) => {
   
   const accepted = "true";
+  const storestatus = "enabled"
+
   const sql = retrievingAllProductsQuery;
 
 
 
-  db.query(sql, [accepted], (err, data) => {
+  db.query(sql, [accepted,storestatus], (err, data) => {
     if (err) {
       return res.json("Error");
     }
@@ -752,11 +766,13 @@ app.get("/women", (req, res) => {
   const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
+  const storestatus = "enabled"
+
 
   const sql = retrievingWomenProductsQuery;
 
 
-  db.query(sql, [type, accepted, limit, offset], (err, data) => {
+  db.query(sql, [type, accepted,storestatus, limit, offset], (err, data) => {
     if (err) {
       return res.json("Error");
     }
@@ -775,10 +791,11 @@ app.get("/womenall", (req, res) => {
   const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
-  const sql = retrievingKidsProductsQueryAll;
+  const storestatus = "enabled"
+  const sql = retrievingWomenProductsQueryAll;
 
 
-  db.query(sql, [type, accepted, limit, offset], (err, data) => {
+  db.query(sql, [type, accepted,storestatus, limit, offset], (err, data) => {
     // console.log(res.json(data))
     if (err) {
       return res.json("Error");
@@ -799,10 +816,11 @@ app.get("/kids", (req, res) => {
   const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
+  const storestatus = "enabled"
 
   const sql = retrievingKidsProductsQuery;
 
-  db.query(sql, [type, accepted, limit, offset], (err, data) => {
+  db.query(sql, [type, accepted,storestatus, limit, offset], (err, data) => {
     // console.log(res.json(data))
     if (err) {
       return res.json("Error");
@@ -823,9 +841,10 @@ app.get("/kidsall", (req, res) => {
   const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
+  const storestatus = "enabled"
   const sql = retrievingKidsProductsQueryAll;
 
-  db.query(sql, [type, accepted, limit, offset], (err, data) => {
+  db.query(sql, [type, accepted,storestatus, limit, offset], (err, data) => {
     // console.log(res.json(data))
     if (err) {
       return res.json("Error");
@@ -845,10 +864,11 @@ app.get("/jewellery", (req, res) => {
   const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
+  const storestatus = "enabled"
 
   const sql = retrievingJewelleryProductsQuery;
 
-  db.query(sql, [type, accepted, limit, offset], (err, data) => {
+  db.query(sql, [type, accepted,storestatus, limit, offset], (err, data) => {
     if (err) {
       return res.json("Error");
     }
@@ -867,10 +887,11 @@ app.get("/jewelleryall", (req, res) => {
   const offset = (page - 1) * limit;
   const type = req.query.category;
   const accepted = "true";
+  const storestatus = "enabled"
   const sql = retrievingJewelleryProductsQueryAll;
 
 
-  db.query(sql, [type, accepted, limit, offset], (err, data) => {
+  db.query(sql, [type, accepted,storestatus, limit, offset], (err, data) => {
     // console.log(res.json(data))
     if (err) {
       return res.json("Error");
@@ -2039,12 +2060,68 @@ app.get('/usermanagement', (req, res) => {
   });
 });
 
+// app.post('/shopstatus', (req, res) => {
+//   const { sellerId, shopstatus ,reason,email,displayName} = req.body;
 
+//   // SQL query to update product status based on the sellerId
+//   const query = `
+//     UPDATE products
+//     SET product_status = ?
+//     WHERE seller_id = ?
+//   `;
+
+
+//   db.query(query, [shopstatus, sellerId], (err, results) => {
+//     if (err) {
+//       console.error('Error updating product status:', err);
+//       return res.status(500).json({ message: 'Internal Server Error' });
+//     }
+//     res.status(200).json({ message: 'Product status updated successfully' });
+//   });
+// });
 
 
 
 // payment
 // Replace these with your PayPal Sandbox API credentials
+
+app.post('/shopstatus', (req, res) => {
+  const { sellerId, shopstatus, reason, email, displayName } = req.body;
+
+  // SQL query to update product status based on the sellerId
+  const query = UpdateShopStatusQuery;
+
+  db.query(query, [shopstatus, sellerId], async (err, results) => {
+    if (err) {
+      console.error('Error updating product status:', err);
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
+
+    // Determine email subject and message content
+    const subject = shopstatus === 'enabled' ? 'Your Shop is Now Live!' : 'Your Shop Has Been Disabled';
+    const message = `
+      <h2>Dear ${displayName},</h2>
+      <p>Your shop status has been updated to <strong>${shopstatus}</strong>.</p>
+      <p>Reason: ${reason}</p>
+      <p>Thank you for your cooperation.</p>
+      <p>Best regards,<br>The Marketplace Team</p>
+    `;
+
+    // Send the status update email
+    try {
+      await sendStatusUpdateEmail(email, subject, message);
+      console.log("Status update email sent to seller successfully");
+    } catch (emailError) {
+      console.error("Error sending status update email:", emailError);
+      // Optionally handle email sending error
+    }
+
+    res.status(200).json({ message: 'Product status updated successfully' });
+  });
+});
+
+
+
 paypal.configure({
   mode: "sandbox",
   client_id: process.env.REACT_APP_PAYPAL_CLIENTID,
