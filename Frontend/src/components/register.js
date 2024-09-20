@@ -551,7 +551,7 @@ const Register = () => {
                   >
                     Terms of Use
                   </Link>{" "}
-                  & <span className="text-primary fw-bold">Privacy Policy</span>
+                  & <Link to="/privacypolicy" className="text-decoration-none fw-bold">Privacy Policy</Link>
                   .
                 </p>
                 <div className="">

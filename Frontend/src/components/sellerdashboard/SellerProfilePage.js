@@ -328,7 +328,7 @@ const SellerProfile = () => {
                   // <h6 className="mt-3">Sold products will appear here after seller make a sale.</h6>
                   <div>
                   <img src={unavailableImage} alt="unavailable" width="60%"/>
-                  <h5>Nothing here..!</h5>
+                  {/* <h5>Nothing here..!</h5> */}
                 </div>
                 )}
               </div>

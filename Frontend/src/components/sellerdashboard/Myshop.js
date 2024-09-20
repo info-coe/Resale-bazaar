@@ -233,7 +233,7 @@ const Myshop = () => {
                   // <h6 className="mt-3">Your sold products will appear here once you make a sale.</h6>
                   <div>
                   <img src={unavailableImage} alt="unavailable" width="60%"/>
-                  <h5>Nothing here..!</h5>
+                  {/* <h5>Nothing here..!</h5> */}
                 </div>
                 )}
               </div>

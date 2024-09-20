@@ -370,7 +370,7 @@ export default function Sellerproducts() {
           <div className="fullscreen2">
             <main>
               <div className="text-center p-3">
-              <h6> <i><span className="" style={{color:"blue" , fontSize:"25px"}}>{user.shopname.length>0 ? (user.shopname) : (user.firstname +" "+ user.lastname)}</span></i> Store</h6>
+              <h6> <i><span className="" style={{color:"blue" , fontSize:"25px"}}>{user.shopname.length>0 ? (user.shopname) : (user.firstname +" "+ user.lastname)}</span></i> Warehouse</h6>
               </div>
               <div className="m-2 ps-md-4">
                 <h1 style={{ fontSize: "28px" }}>Products</h1>
