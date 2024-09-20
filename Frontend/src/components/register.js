@@ -1,8 +1,6 @@
-
-
 import React, { useState, useEffect } from "react";
 import MyNavbar from "./navbar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "./footer";
 import axios from "axios";
 import CryptoJS from "crypto-js";
@@ -10,8 +8,8 @@ import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import { useData } from "./CartContext";
 import Scrolltotopbtn from "./Scrolltotopbutton";
 import Notification from "./Notification";
-import googleicon from "../images/googleicon.png"
-import bell from "../images/bellfinal.gif"
+import googleicon from "../images/googleicon.png";
+import bell from "../images/bellfinal.gif";
 
 const Register = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
@@ -35,7 +33,6 @@ const Register = () => {
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const [modal, setModal] = useState(false);
   const [isChecked, setIsChecked] = useState(false); // State for checkbox
-
 
   const handleInput = (event) => {
     setValues((prev) => ({
@@ -63,13 +60,13 @@ const Register = () => {
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(values)
+  console.log(values);
 
   const handleSubmit = (event) => {
-    console.log(values)
+    console.log(values);
     event.preventDefault();
     const { email, phone, password, shopname } = values;
-    console.log(values)
+    console.log(values);
     // if (
     //   shopname !== null &&
     //   shopNameFilter.some((user) => user.shopname === shopname)
@@ -102,8 +99,7 @@ const Register = () => {
         if (!shopname || shopname.trim() === "") {
           values.password = CryptoJS.MD5(values.password).toString();
           navigate("/emailverification", { state: { values } });
-        }
-        else {
+        } else {
           setModal(true);
         }
         // values.password = CryptoJS.MD5(values.password).toString();
@@ -272,7 +268,7 @@ const Register = () => {
         />
       )}
 
-      <main >
+      <main>
         <div className="registerMaindiv">
           <>
             {modal && values.shopname && (
@@ -287,7 +283,9 @@ const Register = () => {
                 <div className="modal-dialog modal-lg modal-dialog-centered">
                   <div className="modal-content">
                     <div className="modal-header">
-                      <h5 className="modal-title">Seller Account Terms and Conditions</h5>
+                      <h5 className="modal-title">
+                        Seller Account Terms and Conditions
+                      </h5>
                       <button
                         type="button"
                         className="btn-close"
@@ -302,25 +300,30 @@ const Register = () => {
 
                       <ul style={{ fontSize: "14px" }}>
                         <li>
-                          Sellers must be at least 18 years old and comply with all legal and regulatory requirements.
-
+                          Sellers must be at least 18 years old and comply with
+                          all legal and regulatory requirements.
                         </li>
                         <li>
-                          All registration information must be accurate, complete, and regularly updated.
+                          All registration information must be accurate,
+                          complete, and regularly updated.
                         </li>
                         <li>
-                          Sellers are responsible for safeguarding their account credentials and activities.
+                          Sellers are responsible for safeguarding their account
+                          credentials and activities.
                         </li>
                         <li>
-                          Sellers must adhere to all platform policies, including product listing standards and legal obligations.
+                          Sellers must adhere to all platform policies,
+                          including product listing standards and legal
+                          obligations.
                         </li>
                         <li>
-                          Sellers agree to the platform’s fee structure, payment terms, and applicable transaction charges.
+                          Sellers agree to the platform’s fee structure, payment
+                          terms, and applicable transaction charges.
                         </li>
                         <li>
-                          The platform reserves the right to suspend or terminate accounts for policy violations or misuse.
+                          The platform reserves the right to suspend or
+                          terminate accounts for policy violations or misuse.
                         </li>
-
                       </ul>
                       <br />
                       <div className="form-check">
@@ -331,8 +334,13 @@ const Register = () => {
                           checked={isChecked}
                           onChange={handleCheck} // Toggle checkbox state on change
                         />
-                        <label className="form-check-label" htmlFor="agreeTerms">
-                          By clicking "Agree," sellers acknowledge their acceptance of these terms and conditions, including any future amendments.
+                        <label
+                          className="form-check-label"
+                          htmlFor="agreeTerms"
+                        >
+                          By clicking "Agree," sellers acknowledge their
+                          acceptance of these terms and conditions, including
+                          any future amendments.
                         </label>
                       </div>
                       {/* <div className="">
@@ -354,7 +362,7 @@ const Register = () => {
                       <button
                         type="button"
                         className="btn btn-primary"
-                        disabled={(!isChecked)}
+                        disabled={!isChecked}
                         onClick={isChecked ? handleOk : null}
                       >
                         OK
@@ -366,29 +374,36 @@ const Register = () => {
             )}
           </>
           <div className="mt-5 mb-4 p-2  col-lg-6 col-xs-12 col-md-8 d-flex ">
-<img src={bell} alt="Notification" className="rounded" width="60" height="60" style={{objectFit:"contain"}}/>
-            <p style={{ fontSize: "17px" }} className="NoteDiv d-flex gap-2 text-center">
-
+            <img
+              src={bell}
+              alt="Notification"
+              className="rounded"
+              width="60"
+              height="60"
+              style={{ objectFit: "contain" }}
+            />
+            <p
+              style={{ fontSize: "17px" }}
+              className="NoteDiv d-flex gap-2 text-center"
+            >
               <span className="">
-              Seller sign-ups are limited during our trial phase. Register now to show interest, and admin will reach out when approvals begin...
+                Seller sign-ups are limited during our trial phase. Register now
+                to show interest, and admin will reach out when approvals
+                begin...
               </span>
             </p>
           </div>
           <div className=" col-lg-4 col-xs-12 col-md-8">
-
             <div className="mb-3 p-4 rounded shadow">
-              <form method="post" onSubmit={handleSubmit} >
-
-
-
+              <form method="post" onSubmit={handleSubmit}>
                 <div className="mb-5">
                   <h1 className="text-center fs-3 ">Create Account</h1>
-
                 </div>
 
-
                 <div className="input-field ">
-                  <label htmlFor="firstname" className="fixed-label fw-bold">First Name *</label>
+                  <label htmlFor="firstname" className="fixed-label fw-bold">
+                    First Name *
+                  </label>
                   <input
                     // type="email"
                     // id="email"
@@ -406,10 +421,11 @@ const Register = () => {
                     title="First letter should be uppercase, remaining letters are lowercase. No special characters"
                     required
                   />
-
                 </div>
                 <div className="input-field ">
-                  <label htmlFor="lastname" className="fixed-label fw-bold">Last Name *</label>
+                  <label htmlFor="lastname" className="fixed-label fw-bold">
+                    Last Name *
+                  </label>
                   <input
                     // type="email"
                     // id="email"
@@ -428,7 +444,9 @@ const Register = () => {
                   />
                 </div>
                 <div className="input-field ">
-                  <label htmlFor="shopname" className="fixed-label fw-bold">Shop Name (Optional)</label>
+                  <label htmlFor="shopname" className="fixed-label fw-bold">
+                    Shop Name (Optional)
+                  </label>
                   <input
                     type="text"
                     id="shopname"
@@ -437,11 +455,12 @@ const Register = () => {
                     // placeholder="Enter Shop Name (Optional)"
                     pattern="^[A-Z][a-z]*[\s\w!@#\$%\^&\*\(\)\-\+=\[\]\{\};:',.<>/?]*$"
                     title="First letter should be uppercase, remaining letters are lowercase. No special characters"
-
                   />
                 </div>
                 <div className="input-field ">
-                  <label htmlFor="email" className="fixed-label fw-bold">Email *</label>
+                  <label htmlFor="email" className="fixed-label fw-bold">
+                    Email *
+                  </label>
                   <input
                     type="email"
                     id="email"
@@ -452,7 +471,9 @@ const Register = () => {
                   />
                 </div>
                 <div className="input-field ">
-                  <label htmlFor="phone" className="fixed-label fw-bold">Phone Number *</label>
+                  <label htmlFor="phone" className="fixed-label fw-bold">
+                    Phone Number *
+                  </label>
                   <input
                     type="tel"
                     id="phone"
@@ -467,7 +488,9 @@ const Register = () => {
                   />
                 </div>
                 <div className="input-field  passwordgroup">
-                  <label htmlFor="password" className="fixed-label fw-bold">Password *</label>
+                  <label htmlFor="password" className="fixed-label fw-bold">
+                    Password *
+                  </label>
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
@@ -485,20 +508,21 @@ const Register = () => {
                     onClick={handleTogglePassword}
                   >
                     <i
-                      className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"
-                        }`}
+                      className={`bi ${
+                        showPassword ? "bi-eye-slash" : "bi-eye"
+                      }`}
                     ></i>
                   </button>
                 </div>
                 <div className="input-field  passwordgroup">
-                  <label htmlFor="phone" className="fixed-label fw-bold">Confirm Password *</label>
+                  <label htmlFor="phone" className="fixed-label fw-bold">
+                    Confirm Password *
+                  </label>
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     id="confirmpassword"
                     name="confirmpassword"
-                    onChange={(e) =>
-                      setConfirmpassword(e.currentTarget.value)
-                    }
+                    onChange={(e) => setConfirmpassword(e.currentTarget.value)}
                     // placeholder="Enter Confirm Password"
                     required
                   />
@@ -509,8 +533,9 @@ const Register = () => {
                     onClick={handleToggleConfirmPassword}
                   >
                     <i
-                      className={`bi ${showConfirmPassword ? "bi-eye-slash" : "bi-eye"
-                        }`}
+                      className={`bi ${
+                        showConfirmPassword ? "bi-eye-slash" : "bi-eye"
+                      }`}
                     ></i>
                   </button>
                 </div>
@@ -518,7 +543,17 @@ const Register = () => {
                 {error && (
                   <div className="text-danger text-center mb-2">{error}</div>
                 )}
-                <p style={{ fontSize: "14px" }}>By Registering, I agree to the <span className="text-primary fw-bold">Terms of Use</span> & <span className="text-primary fw-bold">Privacy Policy</span>.</p>
+                <p style={{ fontSize: "14px" }}>
+                  By Registering, I agree to the{" "}
+                  <Link
+                    to="/termsofuse"
+                    className="text-decoration-none fw-bold"
+                  >
+                    Terms of Use
+                  </Link>{" "}
+                  & <span className="text-primary fw-bold">Privacy Policy</span>
+                  .
+                </p>
                 <div className="">
                   <div className="  mb-4">
                     <button
@@ -535,13 +570,15 @@ const Register = () => {
               <div
                 style={{ borderBottom: "1px solid gray", width: "45%" }}
               ></div>
-              <p className="text-center" style={{ marginBottom: '-10px' }}>or</p>
+              <p className="text-center" style={{ marginBottom: "-10px" }}>
+                or
+              </p>
               <div
                 style={{ borderBottom: "1px solid gray", width: "45%" }}
               ></div>
             </div>
             <div className="mt-3  mb-5 p-2 ">
-              <button onClick={signin} className="btn shadow w-100 p-2" >
+              <button onClick={signin} className="btn shadow w-100 p-2">
                 {/* <span className="fs-5">
                   <i className="bi bi-google"></i>
                 </span> */}
@@ -550,7 +587,6 @@ const Register = () => {
               </button>
             </div>
           </div>
-
         </div>
       </main>
       <Footer />
