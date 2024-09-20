@@ -218,7 +218,7 @@ const Login = () => {
                     id="password"
                     name="password"
                     // placeholder="Password"
-                    className="form-control"
+                    // className="form-control"
                     required
                     onChange={handleInput}
                     // type={showPassword ? "text" : "password"}

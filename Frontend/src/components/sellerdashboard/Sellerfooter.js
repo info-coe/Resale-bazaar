@@ -33,7 +33,7 @@ export default function Sellerfooter() {
     return new Intl.DateTimeFormat("en-US", options).format(date);
   };
   return (
-    <div className="border">
+    <div className="border mt-4">
       <footer>
         <div className="d-md-flex justify-content-around text-center p-1">
           <p className="fs-6">

@@ -1,32 +1,32 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import {  useData } from "../CartContext";
+// import {  useData } from "../CartContext";
 import RBLogo from '../../images/ResaleLogo.png'
 
 export default function Sellernavbar() {
-  const { user } = useData();
+  // const { user } = useData();
 
-  const handlelogout = () => {
-    sessionStorage.removeItem("user-token");
-    sessionStorage.removeItem("token");
-  };
+  // const handlelogout = () => {
+  //   sessionStorage.removeItem("user-token");
+  //   sessionStorage.removeItem("token");
+  // };
 
   return (
     <div>
-      <nav className="navbar navbar-expand-md bg-dark sticky-top d-md-flex justify-content-between">
-      <div className="ms-lg-5 ms-md-3 ms-2 bargainlogodiv bg-light">
+      <nav className="navbar navbar-expand-md  sticky-top d-md-flex justify-content-between ps-md-5 pe-md-5" style={{borderBottom:" 2px solid #ddd" ,boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)"}}>
+      <div className="ms-lg-5 ms-md-3 ms-2 bargainlogodiv">
               <Link to="/">
                 <img
                   src={RBLogo}
                   alt="logo"
                   // width="112px"
                   className="RBlogo"
-                  style={{ objectFit: "contain" }}
+                  style={{ objectFit: "contain"  }}
                 />
               </Link>
             </div>
         <button
-          className="navbar-toggler bg-light"
+          className="navbar-toggler bg-light m-1"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarTogglerDemo03"
@@ -36,24 +36,33 @@ export default function Sellernavbar() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse d-md-flex ps-2 pe-2 mt-2 text-white" id="navbarTogglerDemo03">
-                <ul className="list-unstyled d-flex  gap-5">
-                  <li className=''>
+        <div className="collapse d-md-flex ps-4 ps-md-2 pe-2 mt-2" id="navbarTogglerDemo03">
+                <ul className="list-unstyled d-flex gap-5">
+                  {/* <li className=''>
                       {user.firstname} {user.lastname}
+                  </li> */}
+                  <li className=''>
+                    <Link
+                      to="/sellerproducts"
+                      className="text-decoration-none text-dark"
+                      // onClick={handlelogout}
+                    >
+                      Products
+                    </Link>
                   </li>
                   <li className=''>
                     <Link
-                      to="/login"
-                      className="text-decoration-none text-white"
-                      onClick={handlelogout}
+                      to="/shipments"
+                      className="text-decoration-none text-dark"
+                      // onClick={handlelogout}
                     >
-                      Log Out
+                      Shipments
                     </Link>
                   </li>
                   <li className=''>
                     <Link
                       to="/"
-                      className="text-decoration-none text-white"
+                      className="text-decoration-none text-dark"
                     >
                       Public Store
                     </Link>

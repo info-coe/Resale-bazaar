@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Notification from "../Notification";
 import Adminnavbar from "./Adminnavbar";
-import Adminmenu from "./Adminmenu";
-import Adminfooter from "./Adminfooter";
 import Adminpagination from "./Adminpagination";
+import Footer from "../footer";
+import Confirm from "../confirmalertbox";
 
 export default function Productmanagement() {
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -41,6 +41,8 @@ export default function Productmanagement() {
   const [deletedImages, setDeletedImages] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);  // To control modal visibility
+  const [idToDelete, setIdToDelete] = useState(null);  // Store the product ID to delete
 
 
   const userid = sessionStorage.getItem("user-token");
@@ -72,20 +74,40 @@ export default function Productmanagement() {
   const endIndex = startIndex + pageSize;
   const tableData = filteredProducts.slice(startIndex, endIndex);
 
+  // const handleDelete = (id) => {
+  //   if (window.confirm("Do you want to delete this product?")) {
+  //     axios
+  //       .delete(
+  //         `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${id}`
+  //       )
+  //       .then((response) => {
+  //         window.location.reload(false);
+  //       //   console.log(response);
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }
+  // };
   const handleDelete = (id) => {
-    if (window.confirm("Do you want to delete this product?")) {
-      axios
-        .delete(
-          `${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${id}`
-        )
-        .then((response) => {
-          window.location.reload(false);
-        //   console.log(response);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    setIdToDelete(id);
+    setShowConfirm(true);  // Show the confirmation modal
+  };
+  const handleConfirmDelete = () => {
+    axios
+      .delete(`${process.env.REACT_APP_HOST}${process.env.REACT_APP_PORT}/handleproducts/${idToDelete}`)
+      .then((response) => {
+        window.location.reload(false);  // Reload the page after deletion
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    setShowConfirm(false);  // Close the modal
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirm(false);  // Hide the modal if user cancels
   };
 
   const handleEdit = (id, initialData) => {
@@ -303,19 +325,22 @@ export default function Productmanagement() {
       <Adminnavbar />
       {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
 
-      <div className="d-md-flex">
-        <div className="col-md-2 selleraccordion">
+      <div className="">
+        {/* <div className="col-md-2 selleraccordion">
           <Adminmenu />
-        </div>
-        <div className="col-md-10 ">
+        </div> */}
+        <div className="container">
           <div className="fullscreen2">
             <main>
-              <div className="m-2">
-                <h1 style={{ fontSize: "28px" }}>Products</h1>
+            <div className="text-center p-3">
+              <h6> <i><span className="" style={{color:"blue" , fontSize:"25px"}}>Admin</span></i> Dashboard</h6>
+              </div>
+              <div className="m-2 ps-md-4">
+                <h1 style={{ fontSize: "28px" }}>Product Management</h1>
               </div>
 
-              <div className="border m-3 rounded">
-                <div className="table-responsive p-3">
+              <div className=" m-md-3 rounded">
+                <div className="table-responsive p-md-3">
                   <table
                     id="dynamic-table"
                     className="table table-striped table-bordered table-hover dataTable no-footer"
@@ -383,7 +408,7 @@ export default function Productmanagement() {
                               </td>
                               <td>
                                 <button
-                                  className="btn btn-outline-primary"
+                                  className="btn btn-outline-primary m-1"
                                   type="button"
                                   data-toggle="modal"
                                   data-target="#exampleModalLong"
@@ -392,11 +417,19 @@ export default function Productmanagement() {
                                   Edit
                                 </button>{" "}
                                 <button
-                                  className="btn btn-outline-danger"
+                                  className="btn btn-outline-danger m-1"
                                   onClick={() => handleDelete(item.id)}
                                 >
                                   Delete
                                 </button>
+                                {showConfirm && (
+        <Confirm
+          title="Delete Product"
+          message="Do you want to delete this product?"
+          onConfirm={handleConfirmDelete}  // Confirm action handler
+          onCancel={handleCancelDelete}    // Cancel action handler
+        />
+      )}
                               </td>
                             </tr>
                           );
@@ -422,11 +455,12 @@ export default function Productmanagement() {
                 />
               </div>
             </main>
-            <Adminfooter />
+            {/* <Adminfooter /> */}
           </div>
         </div>
+        
       </div>
-
+      <Footer/>
       {/* Modal for editing product */}
       {editingId !== null && (
         <div

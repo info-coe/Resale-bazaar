@@ -100,7 +100,7 @@ const Product = (props) => {
 
   const getMaxLength = () => {
     if (window.innerWidth <= 575.98) {
-      return 19;
+      return 17;
     }
     return 25;
   };

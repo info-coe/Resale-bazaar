@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Sellernavbar from "./Sellernavbar";
-import Sellermenu from "./Sellermenu";
-import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
 import axios from "axios";
 import Scrolltotopbtn from "../Scrolltotopbutton";
+import Footer from "../footer";
+import {  useData } from "../CartContext";
+
 
 export default function Shipments() {
   // eslint-disable-next-line no-unused-vars
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [viewRowIndex, setViewRowIndex] = useState(null);
@@ -17,6 +18,8 @@ export default function Shipments() {
   const [checkedShipments, setCheckedShipments] = useState([]); // List of checked shipments and their statuses
   const [canShip, setCanShip] = useState(false); // To enable the "shipped" button
   const [canDeliver, setCanDeliver] = useState(false); // To enable the "delivered" button
+  const { user } = useData();
+
 
   useEffect(() => {
     setCurrentPage(1);
@@ -103,14 +106,19 @@ export default function Shipments() {
     <div className="">
       <Sellernavbar />
       <div className="d-md-flex">
-        <div className="col-md-2 selleraccordion">
+        {/* <div className="col-md-2 selleraccordion">
           <Sellermenu />
-        </div>
-        <div className="col-md-10">
+        </div> */}
+        <div className="container">
           <div className="fullscreen2">
             <main>
-              <div className="d-flex justify-content-between m-2">
-                <h1 style={{ fontSize: "28px" }}>Shipments</h1>
+            <div className="text-center p-3">
+              <h6> <i><span className="" style={{color:"blue" , fontSize:"25px"}}>{user.shopname.length>0 ? (user.shopname) : (user.firstname +" "+ user.lastname)}</span></i> Store</h6>
+              </div>
+              <div className="d-md-flex justify-content-between mt-3">
+               <div className=" ps-md-4">
+               <h1 style={{ fontSize: "28px" }}>Shipments</h1>
+               </div>
                 <div className="d-flex gap-2">
                   <button
                     className="btn btn-info"
@@ -129,8 +137,8 @@ export default function Shipments() {
                 </div>
               </div>
 
-              <div className="border m-3 rounded">
-                <div className="table-responsive p-3">
+              <div className=" m-md-3 rounded">
+                <div className="table-responsive p-md-3 mt-4">
                   <table
                     id="dynamic-table"
                     className="table table-striped table-bordered table-hover dataTable no-footer"
@@ -198,7 +206,7 @@ export default function Shipments() {
                 </div>
 
                 <Sellerpagination
-                  stateData={products}
+                  stateData={shippingProducts}
                   pageSize={pageSize}
                   setPageSize={setPageSize}
                   setViewRowIndex={setViewRowIndex}
@@ -207,11 +215,14 @@ export default function Shipments() {
                 />
               </div>
             </main>
-            <Sellerfooter />
+            {/* <Sellerfooter /> */}
+           
             <Scrolltotopbtn />
           </div>
         </div>
+        
       </div>
+      <Footer/>
     </div>
   );
 }

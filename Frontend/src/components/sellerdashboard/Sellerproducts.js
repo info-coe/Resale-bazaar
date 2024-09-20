@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Sellernavbar from "./Sellernavbar";
-import Sellermenu from "./Sellermenu";
-import Sellerfooter from "./Sellerfooter";
+// import Sellermenu from "./Sellermenu";
+// import Sellerfooter from "./Sellerfooter";
 import Sellerpagination from "./sellerpagination";
 import Notification from "../Notification";
 import Confirm from "../confirmalertbox";
+import Footer from "../footer";
+import {  useData } from "../CartContext";
 
 export default function Sellerproducts() {
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -44,9 +46,10 @@ export default function Sellerproducts() {
   const [notification, setNotification] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);  // To control modal visibility
   const [idToDelete, setIdToDelete] = useState(null);  // Store the product ID to delete
-
+  const { user } = useData();
   const userid = sessionStorage.getItem("user-token");
 
+  // console.log(user.shopname.length)
   useEffect(() => {
     setCurrentPage(1);
     setViewRowIndex(null);
@@ -359,19 +362,22 @@ export default function Sellerproducts() {
       <Sellernavbar />
       {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
 
-      <div className="d-md-flex">
-        <div className="col-md-2 selleraccordion">
+      <div className="">
+        {/* <div className="col-md-2 selleraccordion">
           <Sellermenu />
-        </div>
-        <div className="col-md-10 ">
+        </div> */}
+        <div className="container ">
           <div className="fullscreen2">
             <main>
-              <div className="m-2">
+              <div className="text-center p-3">
+              <h6> <i><span className="" style={{color:"blue" , fontSize:"25px"}}>{user.shopname.length>0 ? (user.shopname) : (user.firstname +" "+ user.lastname)}</span></i> Store</h6>
+              </div>
+              <div className="m-2 ps-md-4">
                 <h1 style={{ fontSize: "28px" }}>Products</h1>
               </div>
 
-              <div className="border m-3 rounded">
-                <div className="table-responsive p-3">
+              <div className="m-1 m-md-3 rounded">
+                <div className="table-responsive p-1 p-md-3">
                   <table
                     id="dynamic-table"
                     className="table table-striped table-bordered table-hover dataTable no-footer"
@@ -486,9 +492,12 @@ export default function Sellerproducts() {
                 />
               </div>
             </main>
-            <Sellerfooter />
+            {/* <Sellerfooter /> */}
+            
           </div>
+
         </div>
+        <Footer/>
       </div>
 
       {/* Modal for editing product */}

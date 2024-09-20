@@ -5,6 +5,7 @@ const Adminpagination = (props) => {
     stateData,
     setViewRowIndex,
     pageSize,
+  // eslint-disable-next-line no-unused-vars
     setPageSize,
     currentPage,
     setCurrentPage,
@@ -12,10 +13,10 @@ const Adminpagination = (props) => {
   const totalPages = Math.ceil(stateData.length / pageSize);
   const pagesToShow = 3;
 
-  const handleRowsChange = (e) => {
-    const rows = parseInt(e.target.value);
-    setPageSize(rows);
-  };
+  // const handleRowsChange = (e) => {
+  //   const rows = parseInt(e.target.value);
+  //   setPageSize(rows);
+  // };
 
   const handleFirstClick = () => {
     setCurrentPage(1);
@@ -111,7 +112,7 @@ const Adminpagination = (props) => {
           </li>
         </ul>
 
-        <div>
+        {/* <div>
           <div className="d-flex  text-center">
             <label className="fs-5 pe-2">Show</label>
 
@@ -131,7 +132,7 @@ const Adminpagination = (props) => {
             </select>
             <label className="fs-5 ps-2">items</label>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -141,7 +142,7 @@ const Adminpagination = (props) => {
   const endIndex = Math.min(currentPage * pageSize, stateData.length);
 
   return (
-    <div className="d-md-flex text-center justify-content-center w-100 bg-secondary text-white mt-3 p-1">
+    <div className="d-md-flex text-center justify-content-center w-100 bg-light text-dark mt-3 p-1">
       <nav className="mt-2">{generatePageNumbers()}</nav>
     </div>
   );

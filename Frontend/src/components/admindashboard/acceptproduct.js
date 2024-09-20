@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Adminpagination from "./Adminpagination";
-import Adminfooter from "./Adminfooter";
 import Adminnavbar from "./Adminnavbar";
-import Adminmenu from "./Adminmenu";
 import { Link, useNavigate } from "react-router-dom";
 import Notification from "../Notification";
+import Footer from "../footer";
 
 export default function Acceptproduct() {
   // eslint-disable-next-line no-unused-vars
   const [products, setProducts] = useState([]);
-  const [pageSize, setPageSize] = useState(25);
+  const [pageSize, setPageSize] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -382,15 +381,21 @@ export default function Acceptproduct() {
         />
       )}
 
-      <div className="d-md-flex">
-        <div className="col-md-2 selleraccordion">
+      <div className="">
+        {/* <div className="col-md-2 selleraccordion">
           <Adminmenu />
-        </div>
-        <div className="col-md-10 ">
+        </div> */}
+        <div className="container">
           <div className="fullscreen2">
             <main>
-              <div className="border m-3 rounded">
-                <div className="table-responsive p-3">
+              <div className="text-center p-3">
+              <h6> <i><span className="" style={{color:"blue" , fontSize:"25px"}}>Admin</span></i> Dashboard</h6>
+              </div>
+              <div className="m-2 ps-md-4">
+                <h1 style={{ fontSize: "28px" }}>Approval Products</h1>
+              </div>
+              <div className=" m-md-3 rounded">
+                <div className="table-responsive p-md-3">
                   <table
                     id="dynamic-table"
                     className="table table-striped table-bordered table-hover dataTable no-footer"
@@ -522,7 +527,7 @@ export default function Acceptproduct() {
                                 </div>
                               </Link>
                             </td>
-                            <td>{item.name}</td>
+                            <td style={{minWidth:'200px'}}>{item.name}</td>
                             <td>{item.price}</td>
                             <td>{item.color}</td>
                             <td>{item.measurements}</td>
@@ -530,9 +535,10 @@ export default function Acceptproduct() {
 
                             <td>{item.alteration}</td>
                             <td>{item.description}</td>
-                            <td>
+                            <td >
+                              <div className="d-flex">
                               <button
-                                className="btn btn-outline-primary"
+                                className="btn btn-outline-primary m-1"
                                 type="button"
                                 data-toggle="modal"
                                 data-target="#exampleModalLong"
@@ -554,6 +560,7 @@ export default function Acceptproduct() {
                                   View
                                 </button>
                               </Link>
+                              </div>
                             </td>
                           </tr>
                         ))
@@ -578,10 +585,12 @@ export default function Acceptproduct() {
                 />
               </div>
             </main>
-            <Adminfooter />
+            {/* <Adminfooter /> */}
           </div>
         </div>
+       
       </div>
+      <Footer/>
       {/* Modal for editing product */}
       {editingId !== null && (
         <div

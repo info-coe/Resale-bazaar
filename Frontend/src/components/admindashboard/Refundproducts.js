@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Adminfooter from './Adminfooter';
-import Adminmenu from './Adminmenu';
 import Adminnavbar from './Adminnavbar';
 import axios from 'axios';
 import Adminpagination from './Adminpagination';
 import Notification from "../Notification"
+import Footer from '../footer';
 
 
 const Refundproducts = () => {
@@ -100,15 +99,21 @@ const Refundproducts = () => {
           onClose={() => setNotification(null)}
         />
       )}
-      <div className="d-md-flex">
-        <div className="col-md-2 selleraccordion">
+      <div className="">
+        {/* <div className="col-md-2 selleraccordion">
           <Adminmenu />
-        </div>
-        <div className="col-md-10">
+        </div> */}
+        <div className="container">
           <div className="fullscreen2">
+          <div className="text-center p-3">
+              <h6> <i><span className="" style={{color:"blue" , fontSize:"25px"}}>Admin</span></i> Dashboard</h6>
+              </div>
+              <div className="m-2 ps-md-4">
+                <h1 style={{ fontSize: "28px" }}>Refund</h1>
+              </div>
             <main>
-              <div className="border m-3 rounded">
-                <div className="table-responsive p-3">
+              <div className=" m-md-3 rounded">
+                <div className="table-responsive p-md-3">
                   <table
                     id="dynamic-table"
                     className="table table-striped table-bordered table-hover dataTable no-footer"
@@ -184,10 +189,12 @@ const Refundproducts = () => {
                 />
               </div>
             </main>
-            <Adminfooter />
+            {/* <Adminfooter /> */}
           </div>
         </div>
+       
       </div>
+      <Footer/>
     </div>
   );
 };
