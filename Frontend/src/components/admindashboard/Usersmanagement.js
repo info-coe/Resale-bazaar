@@ -45,7 +45,7 @@ export default function Usersmanagement() {
         return {
           seller_id: sellerId,
           displayName: sellerData?.shopname || `${sellerData?.firstname} ${sellerData?.lastname}` || "unnamed Seller",
-          currentStatus: sellerData?.product_status,
+          currentStatus: sellerData?.shop_status,
           email: sellerData?.email,
         };
       }
