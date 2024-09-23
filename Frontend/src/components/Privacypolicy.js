@@ -1,171 +1,132 @@
-import React from 'react'
-import MyNavbar from './navbar'
-import Footer from './footer'
-import Scrolltotopbtn from './Scrolltotopbutton'
+import React from "react";
+import MyNavbar from "./navbar";
+import Footer from "./footer";
+import Scrolltotopbtn from "./Scrolltotopbutton";
 
 export default function Privacypolicy() {
-    const privacypolicy = [
+  const privacypolicy = [
+    {
+      heading: "Introduction",
+      description: [
+        "At Resale Bazaar, we are committed to safeguarding your privacy. This Privacy Policy explains how we collect, use, share, and protect your personal information when you visit our website. By using the Site, you agree to the collection and use of your information in accordance with this policy.",
+      ],
+    },
+    {
+      heading: "Information We Collect",
+      description: [
         {
-          heading: "Introduction",
-          description: [
-            "Welcome to TheResaleBazaar. These Terms of Use constitute a legally binding agreement between you (the user), and Resale Bazaar. By accessing, browsing, or using our website, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree to these Terms, please refrain from using the Site.",
-            "Resale Bazaar is an online platform that facilitates the purchase and sale of second-hand clothing. These Terms govern your access to and use of the Site, including any services, features, content, and transactions made through the Site.",
-          ],
+          subheading: "Personal Information",
+          content:
+            "When you create an account, make a purchase, or contact customer service, we collect personal information such as your name, email address, shipping address, payment details, and telephone number.",
         },
         {
-          heading: "Eligibility",
-          description: [
-            "The Site is intended solely for users who are at least 18 years old. By accessing or using Resale Bazaar, you represent and warrant that you are of legal age to form a binding contract and meet all the eligibility requirements. If you do not meet these requirements, you must not use the Site.",
+          subheading: "Non-Personal Information",
+          content:
+            "We automatically collect non-personal data about your interactions with the Site, such as your IP address, browser type, operating system, and browsing activity, using cookies and other tracking technologies.",
+        },
+      ],
+    },
+    {
+      heading: "How We Use Your Information",
+      description: [
+        {
+          subheading: "We use the information we collect to:",
+          content: [
+            "Process your transactions and fulfill your orders.",
+            "Communicate with you regarding your orders, account, or customer service inquiries.",
+            "Personalize your experience on the Site by displaying content and products relevant to you.",
+            "Send you promotional offers and updates (with your consent).",
+            "Improve the functionality and performance of the Site.",
           ],
+        },
+      ],
+    },
+    {
+      heading: "Sharing Your Information",
+      description: [
+        {
+          subheading: "Service Providers",
+          content:
+            "We may share your personal information with third-party service providers who assist us with payment processing, order fulfillment, marketing, and website operations. These providers are only authorized to use your information as necessary to perform their services.",
         },
         {
-          heading: "Account Registration and Responsibilities",
-          description: [
-            {
-              subheading: "Account Creation",
-              content:
-                "To make purchases or sell items through Resale Bazaar, you must create an account. When registering, you agree to provide accurate, current, and complete information.",
-            },
-            {
-              subheading: "Account Security",
-              content:
-                "You are responsible for safeguarding the confidentiality of your login information and for any activity that occurs under your account. You must notify us immediately of any unauthorized use of your account or any other breach of security.",
-            },
-            {
-              subheading: "Account Termination",
-              content:
-                "We reserve the right to suspend or terminate your account at any time if you violate these Terms, engage in fraudulent activities, or misuse the Site in any way.",
-            },
-          ],
+          subheading: "Legal Obligations",
+          content:
+            "We may disclose your personal information if required to do so by law or in response to valid legal requests, such as subpoenas or court orders.",
+        },
+      ],
+    },
+    {
+      heading: "Cookies and Tracking Technologies",
+      description: [
+        "Resale Bazaar uses cookies to enhance your browsing experience. Cookies allow us to recognize you when you return to the Site, personalize your experience, and analyse site usage. You can adjust your browser settings to refuse cookies, but doing so may limit your ability to use certain features of the Site.",
+      ],
+    },
+    {
+      heading: "Data Security",
+      description: [
+        "We implement a variety of security measures, including encryption and secure server technologies, to protect your personal information. However, no method of transmission over the internet or electronic storage is completely secure, and we cannot guarantee absolute security.",
+      ],
+    },
+    {
+      heading: "Your Data Rights",
+      description: [
+        {
+          subheading: "Access and Correction",
+          content:
+            "You can access and update your personal information through your account settings at any time",
         },
         {
-          heading: "Product Listings and Descriptions",
-          description: [
-            {
-              subheading: "Accuracy of Listings",
-              content:
-                "While we strive to ensure that product listings are as accurate as possible, Resale Bazaar makes no representations regarding the completeness, accuracy, reliability, or timeliness of any product descriptions or images. All items sold on the Site are second-hand and may show signs of previous use.",
-            },
-            {
-              subheading: "Condition of Products",
-              content:
-                "Buyers acknowledge that they are purchasing used clothing and that the condition of items will vary. We do our best to provide detailed descriptions, but minor imperfections may not always be noted.",
-            },
-          ],
+          subheading: "Data Deletion",
+          content:
+            "You may request that we delete your personal information by contacting us at theresalebazaar@gmail.com . We will comply with your request unless we are legally obligated to retain certain information.",
         },
         {
-          heading: "Pricing and Payments",
-          description: [
-            {
-              subheading: "Pricing",
-              content:
-                "All prices listed on the Site are in dollars and are subject to change at any time without notice. We reserve the right to correct any pricing errors or inaccuracies.",
-            },
-            {
-              subheading: "Payment Methods",
-              content:
-                "We accept payments through authorized payment processors, including credit cards, PayPal, and other methods indicated on the Site. By providing your payment information, you authorize us to charge the applicable fees.",
-            },
-            {
-              subheading: "Taxes and Fees",
-              content:
-                "Any applicable taxes, duties, or shipping fees will be calculated and displayed at checkout. You are responsible for paying all such amounts in connection with your order.",
-            },
-          ],
+          subheading: "Opt-Out",
+          content:
+            "You may opt out of receiving promotional emails by following the unsubscribe instructions in those emails.",
         },
-        {
-          heading: "Shipping, Delivery, and Risk of Loss",
-          description: [
-            {
-              subheading: "Shipping Policy",
-              content:
-                "We ship items only to addresses within the designated shipping regions listed on our Site. Shipping charges and delivery times will be provided at checkout.",
-            },
-            {
-              subheading: "Risk of Loss",
-              content:
-                "Title and risk of loss for items purchased pass to the buyer upon delivery to the carrier. We are not responsible for delays or damages caused by shipping carriers.",
-            },
-            {
-              subheading: "Tracking Information",
-              content:
-                "Once your item has been shipped, we will provide you with tracking information so you can monitor the progress of your order.",
-            },
-          ],
-        },
-        {
-          heading: "Returns, Refunds, and Cancellations",
-          description: [
-            {
-              subheading: "Return Policy",
-              content:
-                "We accept returns within 7 days of receipt if the item is not as described or is defective. To initiate a return, please contact our customer service team at theresalebazaar@gmail.com . The item must be in the same condition in which it was received, along with any original packaging and documentation.",
-            },
-            {
-              subheading: "Refund Process",
-              content:
-                "Refunds will be processed within 5 days after receiving and inspecting the returned item. The original payment method will be credited.",
-            },
-            {
-              subheading: "Return Shipping Costs",
-              content:
-                "Return shipping costs are the responsibility of the buyer unless the item was misrepresented on the Site or arrives damaged.",
-            },
-            {
-              subheading: "Cancellations",
-              content:
-                "Once an order has been placed, it cannot be canceled unless the item has not yet been shipped. Please contact customer service to inquire about cancellations.",
-            },
-          ],
-        },
-        {
-          heading: "User Conduct",
-          description: [
-            "You agree not to use the Site for any unlawful purpose or in any manner that could damage, disable, or impair the Site. Prohibited conduct includes, but is not limited to, engaging in fraud, harassment, or posting offensive, misleading, or false information. Resale Bazaar reserves the right to investigate and take appropriate legal action against any user who violates these Terms.",
-          ],
-        },
-        {
-          heading: "Intellectual Property",
-          description: [
-            {
-              subheading: "Ownership of Content",
-              content:
-                "All content on the Site, including text, images, graphics, logos, and software, is the property of Resale Bazaar or our licensors and is protected by copyright, trademark, and other intellectual property laws. Unauthorized use of this content is strictly prohibited.",
-            },
-            {
-              subheading: "Limited License",
-              content:
-                "We grant you a limited, non-exclusive, non-transferable, and revocable license to use the Site for personal and non-commercial purposes in accordance with these Terms.",
-            },
-          ],
-        },
-        {
-          heading: "Limitation of Liability",
-          description: [
-            "To the maximum extent permitted by law, Resale Bazaar shall not be liable for any indirect, incidental, consequential, or punitive damages arising out of your use or inability to use the Site or its content. This includes, but is not limited to, damages for lost profits, lost data, or business interruption.",
-          ],
-        },
-        {
-          heading: "Governing Law and Dispute Resolution",
-          description: [
-            "These Terms are governed by and construed in accordance with the laws of United States, without regard to its conflict of law provisions. Any disputes arising out of or related to these Terms shall be resolved exclusively in the courts of United States.",
-          ],
-        },
-        {
-          heading: "Amendments to the Terms",
-          description: [
-            "We may modify or update these Terms at any time. Any changes will be effective upon posting on the Site, and your continued use of the Site after such changes constitutes your acceptance of the updated Terms. We encourage you to review these Terms periodically.",
-          ],
-        },
-      ];
+      ],
+    },
+    {
+      heading: "Data Retention",
+      description: [
+        "We retain personal data for as long as necessary to fulfill the purposes for which it was collected or as required by law. This includes keeping records of purchases and communications for legal or compliance purposes.",
+      ],
+    },
+    {
+      heading: "Children’s Privacy",
+      description: [
+        "Resale Bazaar does not knowingly collect personal information from individuals under the age of 13. If we become aware that we have inadvertently collected such information, we will take steps to delete it promptly.",
+      ],
+    },
+    {
+      heading: "Third-Party Links",
+      description: [
+        "Our Site may contain links to third-party websites. Resale Bazaar is not responsible for the privacy practices or content of those external sites. We encourage you to review their privacy policies before providing any personal information.",
+      ],
+    },
+    {
+      heading: "Changes to the Privacy Policy",
+      description: [
+        "We may update this Privacy Policy from time to time to reflect changes in our practices or for legal reasons. We will notify you of any significant changes by posting an updated version on the Site.",
+      ],
+    },
+    {
+      heading: "Contact Information",
+      description: [
+        "If you have any questions about this Privacy Policy, please contact us at theresalebazaar@gmail.com.",
+      ],
+    },
+  ];
   return (
     <div className="fullscreen">
-      <MyNavbar/>
-      <main >
-      <div className="container pt-5 pb-5">
+      <MyNavbar />
+      <main>
+        <div className="container pt-5 pb-5">
           <h1>Privacy Policy</h1>
           <div className="pt-3">
-            {/* {privacypolicy.map((item, index) => (
+            {privacypolicy.map((item, index) => (
               <div key={index}>
                 <h5>{item.heading}</h5>
                 {item.description.map((subItem, subindex) => (
@@ -173,19 +134,33 @@ export default function Privacypolicy() {
                     {typeof subItem === "string" ? (
                       <p className="">{subItem}</p>
                     ) : (
-                        <ul>
-                            <li>{subItem.subheading} : {subItem.content}</li>
-                        </ul>
+                      <ul>
+                        <li>
+                          {subItem.subheading} :{" "}
+                          {typeof subItem.content === "string" ? (
+                            <>{subItem.content}</>
+                          ) : (
+                            <>
+                              {Array.isArray(subItem.content) &&
+                                subItem.content.map((childItem, childIndex) => (
+                                  <ul>
+                                    <li>{childItem}</li>
+                                  </ul>
+                                ))}
+                            </>
+                          )}
+                        </li>
+                      </ul>
                     )}
                   </div>
                 ))}
               </div>
-            ))} */}
+            ))}
           </div>
         </div>
       </main>
       <Footer />
       <Scrolltotopbtn />
     </div>
-  )
+  );
 }
