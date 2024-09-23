@@ -166,7 +166,7 @@ export default function Termsofuse() {
           <h1>Terms of Use</h1>
           <div className="pt-3">
             {Terms.map((item, index) => (
-              <div key={index}>
+              <div key={index}  style={{lineHeight:'30px' , marginTop:"40px"}}>
                 <h5>{item.heading}</h5>
                 {item.description.map((subItem, subindex) => (
                   <div key={subindex}>

@@ -328,7 +328,10 @@ const SellerProfile = () => {
                   // <h6 className="mt-3">Sold products will appear here after seller make a sale.</h6>
                   <div>
                   <img src={unavailableImage} alt="unavailable" width="60%"/>
-                  {/* <h5>Nothing here..!</h5> */}
+                  {filter === "sold" && <h6 className="mt-3">Sold products will appear here after seller make a sale.</h6>}
+                  {filter === "available" && <h6 className="mt-3">Seller inventory is in great shape! All products are sold out...</h6>}
+                  {filter === "all" && <h6 className="mt-3">All products in seller inventory are displayed here.</h6>}
+                 
                 </div>
                 )}
               </div>

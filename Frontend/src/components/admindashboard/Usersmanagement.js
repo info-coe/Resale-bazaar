@@ -110,11 +110,12 @@ export default function Usersmanagement() {
               <h1 style={{ fontSize: "28px" }}>STORES</h1>
             </div>
             <main className="mt-4">
-              <div className="d-flex justify-content-end">
+              <div className="d-flex justify-content-end ">
                 <input
                   type="text"
-                  className="form-control mb-3 rounded-pill"
-                  style={{ height: "50px", width: "25%" }}
+                  className="form-control mb-3 rounded-pill "
+                  id="Shopnamesearch"
+                  style={{ height: "50px" }}
                   placeholder="Search shops..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}

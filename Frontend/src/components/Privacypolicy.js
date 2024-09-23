@@ -30,7 +30,7 @@ export default function Privacypolicy() {
       heading: "How We Use Your Information",
       description: [
         {
-          subheading: "We use the information we collect to:",
+          subheading: "We use the information we collect to",
           content: [
             "Process your transactions and fulfill your orders.",
             "Communicate with you regarding your orders, account, or customer service inquiries.",
@@ -115,7 +115,7 @@ export default function Privacypolicy() {
     {
       heading: "Contact Information",
       description: [
-        "If you have any questions about this Privacy Policy, please contact us at theresalebazaar@gmail.com.",
+        "If you have any questions about this Privacy Policy, please contact us at <a  href='mailto:theresalebazaar@gmail.com' class='text-decoration-none text-dark fw-bold'>theresalebazaar@gmail.com.</a>",
       ],
     },
   ];
@@ -127,12 +127,12 @@ export default function Privacypolicy() {
           <h1>Privacy Policy</h1>
           <div className="pt-3">
             {privacypolicy.map((item, index) => (
-              <div key={index}>
-                <h5>{item.heading}</h5>
+              <div key={index} style={{lineHeight:'30px' , marginTop:"40px"}}>
+                <h5 >{item.heading}</h5>
                 {item.description.map((subItem, subindex) => (
-                  <div key={subindex}>
+                  <div key={subindex} >
                     {typeof subItem === "string" ? (
-                      <p className="">{subItem}</p>
+                      <p className="" dangerouslySetInnerHTML={{ __html: subItem }} />
                     ) : (
                       <ul>
                         <li>

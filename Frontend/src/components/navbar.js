@@ -258,8 +258,7 @@ const MyNavbar = () => {
           <div className="d-flex me-lg-2 pe-lg-2 authdiv">
             <div className="d-md-flex ">
               <div className="">
-                {isLoggedIn && user.email === "admin@admin" ? null : (
-                  <>
+              
                     <div className="d-flex">
                       <div
                         className="searchIcon"
@@ -272,6 +271,9 @@ const MyNavbar = () => {
                           aria-controls="offcanvasTop"
                         ></i>
                       </div>
+                      {isLoggedIn && user.email === "admin@admin" ? null : (
+                  <>
+
                       <div className="sellnowdiv" style={{ marginTop: "12px" }}>
                         <Link
                           to="/addnewproduct"
@@ -336,9 +338,11 @@ const MyNavbar = () => {
                           </i>
                         </button>
                       )}
+                        </>
+                    )}
                     </div>
-                  </>
-                )}
+                
+              
               </div>
             </div>
             <div className="d-md-flex ps-2 pe-2 mt-2">

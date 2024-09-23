@@ -233,6 +233,9 @@ const Myshop = () => {
                   // <h6 className="mt-3">Your sold products will appear here once you make a sale.</h6>
                   <div>
                   <img src={unavailableImage} alt="unavailable" width="60%"/>
+                  {filter === "sold" && <h6 className="mt-3">Your sold products will appear here once you make a sale.</h6>}
+                  {filter === "available" && <h6 className="mt-3">Your inventory is in great shape! All products are sold out...</h6>}
+                  {filter === "all" && <h6 className="mt-3">All products in your inventory are displayed here.</h6>}
                   {/* <h5>Nothing here..!</h5> */}
                 </div>
                 )}
