@@ -221,6 +221,7 @@ const MyNavbar = () => {
       <div className="gradientnav sticky-top">
         <nav className="navbar navbar-expand-md navbar-light bg-white  d-md-flex  justify-content-around">
           <div className="d-flex">
+          {user.email === "admin@admin" ? null :(
             <span
               className="toggle ms-1 me-1 mt-2"
               type="button"
@@ -230,6 +231,7 @@ const MyNavbar = () => {
             >
               <i className="bi bi-justify"></i>
             </span>
+            )}
             <div className="ms-lg-5 ms-md-3 ms-2 bargainlogodiv">
               <Link to="/" className=" text-decoration-none">
                 <img
@@ -538,7 +540,7 @@ const MyNavbar = () => {
           </div>
           <hr />
           <div className="offcanvas-body">
-            <SideOffcanvas />
+            <SideOffcanvas isLoggedIn={isLoggedIn} />
           </div>
         </div>
         {/* Offcanvas end */}

@@ -16,7 +16,7 @@ export default function Usersmanagement() {
     shopstatus: "",
     sellerId: null,
     email: "",
-    displayName:""
+    displayName: "",
   });
 
   const handleInputChange = (e) => {
@@ -44,14 +44,16 @@ export default function Usersmanagement() {
         const sellerData = data.find((item) => item.seller_id === sellerId);
         return {
           seller_id: sellerId,
-          displayName: sellerData?.shopname || `${sellerData?.firstname} ${sellerData?.lastname}` || "unnamed Seller",
+          displayName:
+            sellerData?.shopname ||
+            `${sellerData?.firstname} ${sellerData?.lastname}` ||
+            "unnamed Seller",
           currentStatus: sellerData?.shop_status,
           email: sellerData?.email,
         };
       }
     );
   }, [data]);
-  
 
   const handleAccordionToggle = (sellerId) => {
     setExpandedSellerId(expandedSellerId === sellerId ? null : sellerId);
@@ -62,7 +64,6 @@ export default function Usersmanagement() {
       item.displayName?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [sellers, searchTerm]);
-  
 
   const handlesubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
@@ -91,8 +92,19 @@ export default function Usersmanagement() {
         </div> */}
         <div className="container">
           <div className="fullscreen2">
-          <div className="text-center p-3">
-              <h6> <i><span className="" style={{ color: "blue", fontSize: "25px" }}>Admin</span></i> Dashboard</h6>
+            <div className="text-center p-3">
+              <h6>
+                {" "}
+                <i>
+                  <span
+                    className=""
+                    style={{ color: "blue", fontSize: "25px" }}
+                  >
+                    Admin
+                  </span>
+                </i>{" "}
+                Dashboard
+              </h6>
             </div>
             <div className="m-2 ps-md-4">
               <h1 style={{ fontSize: "28px" }}>STORES</h1>
@@ -136,10 +148,55 @@ export default function Usersmanagement() {
                             style={{
                               backgroundColor: "#f8f9fa",
                               border: "1px solid #dee2e6",
+                            }}
+                          >
+                            <div className="d-flex justify-content-between w-100">
+                              <div>
+                                <span className="fw-bold">
+                                  {seller.displayName}
+                                </span>{" "}
+                                - <small>{seller.email}</small>
+                              </div>
+
+                              <div>
+                                <span
+                                  className="badge"
+                                  style={{
+                                    backgroundColor:
+                                      seller.currentStatus === "enabled"
+                                        ? "#e0e0e0"
+                                        : "#F67A7B",
+                                    color:
+                                      seller.currentStatus === "enabled"
+                                        ? "#000"
+                                        : "#FFF",
+                                    marginRight: "10px",
+                                  }}
+                                >
+                                  {seller.currentStatus}
+                                </span>
+                              </div>
+                            </div>
+                          </button>
+                          {/* <button
+                            className="accordion-button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target={`#collapse-${seller.seller_id}`}
+                            aria-expanded={
+                              expandedSellerId === seller.seller_id
+                            }
+                            aria-controls={`collapse-${seller.seller_id}`}
+                            onClick={() =>
+                              handleAccordionToggle(seller.seller_id)
+                            }
+                            style={{
+                              backgroundColor: "#f8f9fa",
+                              border: "1px solid #dee2e6",
                             }} // Custom styling for accordion button
                           >
                             {seller.displayName} - {seller.email}
-                          </button>
+                          </button> */}
                         </h2>
                         <div
                           id={`collapse-${seller.seller_id}`}
@@ -189,7 +246,7 @@ export default function Usersmanagement() {
           </div>
         </div>
       </div>
-     <Footer/>
+      <Footer />
       <div
         className="modal fade"
         id="exampleModal"
@@ -211,9 +268,10 @@ export default function Usersmanagement() {
               ></button>
             </div>
             <form onSubmit={handlesubmit}>
-
-            <div className="modal-body">
-            {notificationMessage && <div className="alert alert-info">{notificationMessage}</div>}
+              <div className="modal-body">
+                {notificationMessage && (
+                  <div className="alert alert-info">{notificationMessage}</div>
+                )}
 
                 <div className="mb-3">
                   <label htmlFor="reason" className="form-label fw-bold">
@@ -250,28 +308,23 @@ export default function Usersmanagement() {
                     </select>
                   </div>
                 </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >
-                close
-              </button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-               
-              >
-                submit
-              </button>
-            </div>
-             </form>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  close
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  submit
+                </button>
+              </div>
+            </form>
           </div>
-          </div>
-
+        </div>
       </div>
     </div>
   );
