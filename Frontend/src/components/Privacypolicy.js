@@ -143,7 +143,7 @@ export default function Privacypolicy() {
                             <>
                               {Array.isArray(subItem.content) &&
                                 subItem.content.map((childItem, childIndex) => (
-                                  <ul>
+                                  <ul key={childIndex}>
                                     <li>{childItem}</li>
                                   </ul>
                                 ))}

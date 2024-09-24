@@ -263,7 +263,7 @@ export default function Productdetails() {
     return (
       curr.offered_buyer_id ===
         parseInt(sessionStorage.getItem("user-token")) &&
-      curr.product_id === productdetails.id 
+      curr.product_id === productdetails.id
       // &&
       // curr.product_status === "Accepted"
     );
@@ -409,7 +409,7 @@ export default function Productdetails() {
       });
     }
   };
-const capitalizeFirstLetterOfEveryWord = (str) => {
+  const capitalizeFirstLetterOfEveryWord = (str) => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
@@ -431,10 +431,14 @@ const capitalizeFirstLetterOfEveryWord = (str) => {
         }
       )
       .then((res) => {
-        setNotification({ message: "Data added successfully", type: "success" });
-        setTimeout(() => {setNotification(null);
+        setNotification({
+          message: "Data added successfully",
+          type: "success",
+        });
+        setTimeout(() => {
+          setNotification(null);
           window.location.reload(false);
-         },3000);
+        }, 3000);
       })
       .catch((err) => {
         console.error("Error posting data:", err);
@@ -460,7 +464,7 @@ const capitalizeFirstLetterOfEveryWord = (str) => {
             to={"/" + productdetails.product_type}
             className="text-decoration-none text-dark"
           >
-            {productdetails.product_type}
+            {productdetails.product_type}{" "}
           </Link>
           /{" "}
           <Link
@@ -575,174 +579,10 @@ const capitalizeFirstLetterOfEveryWord = (str) => {
             </div>
           </div>
           <div className="ps-md-3 p-2 col-lg-7 detailsdiv">
-            <h1 className="text-secondary fs-2">{productdetails.name}</h1>
+            <h3 className="">{productdetails.name}</h3>
             <p>{productdetails.description}</p>
-            <br />
-            {productdetails.location !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Location</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">
-                  : {productdetails.location}
-                </p>
-              </div>
-            )}
-            {productdetails.color !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Color</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.color}</p>
-              </div>
-            )}
-            {productdetails.alteration !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Can it be altered</b>
-                </p>
-                <p className=" col-md-8 col-lg-7">
-                  : {productdetails.alteration}
-                </p>
-              </div>
-            )}
-            {productdetails.size !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Size</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.size}</p>
-              </div>
-            )}
-            {productdetails.measurements !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Measurements (Inches)</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">
-                  : {productdetails.measurements}
-                </p>
-              </div>
-            )}
-            {productdetails.material !== null &&
-              productdetails.material !== "NA" && (
-                <div className="d-flex col-md-9">
-                  <p className=" col-md-4 col-lg-5">
-                    <b>Material</b>
-                  </p>
-                  <p className=" col-md-8 col-lg-10">
-                    : {productdetails.material}
-                  </p>
-                </div>
-              )}
-            {productdetails.occasion !== null &&
-              productdetails.occasion !== "NA" && (
-                <div className="d-flex col-md-9">
-                  <p className=" col-md-4 col-lg-5">
-                    <b>Occasion</b>
-                  </p>
-                  <p className=" col-md-8 col-lg-10">
-                    : {productdetails.occasion}
-                  </p>
-                </div>
-              )}
-            {productdetails.type !== null && productdetails.type !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>type</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.type}</p>
-              </div>
-            )}
-            {productdetails.brand !== null && productdetails.brand !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Brand</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.brand}</p>
-              </div>
-            )}
-            {productdetails.style !== null && productdetails.style !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Style</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.style}</p>
-              </div>
-            )}
-            {productdetails.season !== null &&
-              productdetails.season !== "NA" && (
-                <div className="d-flex col-md-9">
-                  <p className=" col-md-4 col-lg-5">
-                    <b>Season</b>
-                  </p>
-                  <p className=" col-md-8 col-lg-10">
-                    : {productdetails.season}
-                  </p>
-                </div>
-              )}
-            {productdetails.fit !== null && productdetails.fit !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Fit</b>
-                </p>
-                <p className=" col-md-8 col-lg-10">: {productdetails.fit}</p>
-              </div>
-            )}
-            {productdetails.length !== null &&
-              productdetails.length !== "NA" && (
-                <div className="d-flex col-md-9">
-                  <p className=" col-md-4 col-lg-5">
-                    <b>Length (Meters)</b>
-                  </p>
-                  <p className=" col-md-8 col-lg-10">
-                    : {productdetails.length}
-                  </p>
-                </div>
-              )}
-            {productdetails.condition !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Condition</b>
-                </p>
-                <p className=" col-md-8  col-lg-10">
-                  : {productdetails.condition}
-                </p>
-              </div>
-            )}
-            {productdetails.source !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Source</b>
-                </p>
-                <p className=" col-md-8  col-lg-10">
-                  : {productdetails.source}
-                </p>
-              </div>
-            )}
-            {productdetails.age !== "NA" && (
-              <div className="d-flex col-md-9">
-                <p className=" col-md-4 col-lg-5">
-                  <b>Style</b>
-                </p>
-                <p className=" col-md-8  col-lg-10">: {productdetails.age}</p>
-              </div>
-            )}
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>Product ID</b>
-              </p>
-              <p className=" col-md-8 col-lg-10">: {id}</p>
-            </div>
-            <div className="d-flex col-md-9">
-              <p className=" col-md-4 col-lg-5">
-                <b>QTY</b>
-              </p>
-              <p className=" col-md-8 col-lg-10">: {productdetails.quantity}</p>
-            </div>
-
-            <p className="text-success fs-4">
-              <b>&#36;{productdetails.price}.00</b>
+            <p className="fs-4">
+              <b>&#36; {productdetails.price}</b>
             </p>
 
             {productdetails.quantity > 0 ? (
@@ -1076,6 +916,222 @@ const capitalizeFirstLetterOfEveryWord = (str) => {
               </>
             )}
 
+            <br />
+            <div>
+              <h4>Product Details</h4>
+            </div>
+            <div className="">
+              <div>
+                {productdetails.location !== "NA" && (
+                  <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                    <span className="">
+                      Product located in{"  "}
+                    </span>
+                    <span className="">
+                      {productdetails.location}
+                    </span>
+                  </div>
+                )}
+                {productdetails.color !== "NA" && (
+                  <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                    <span className="">
+                      {productdetails.color}
+                    </span>
+                    <span className="">
+                      {"  "}color
+                    </span>
+                  </div>
+                )}
+                {productdetails.alteration !== "NA" && (
+                  <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                    <span className="">
+                      Can it be altered? {"  "}
+                    </span>
+                    <span className="">
+                      {productdetails.alteration}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div>
+                {productdetails.size !== "NA" && (
+                  <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                    <span className="">
+                      Size{"  "}
+                    </span>
+                    <span className="">
+                      {productdetails.size}
+                    </span>
+                  </div>
+                )}
+                {productdetails.measurements !== "NA" && (
+                  <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                    <span className="">
+                      Measurement (In Inches){"  "}
+                    </span>
+                    <span className="">
+                      {productdetails.measurements}
+                    </span>
+                  </div>
+                )}
+                {productdetails.material !== null &&
+                  productdetails.material !== "NA" && (
+                    <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                      <span className="">
+                        Material{"  "}
+                      </span>
+                      <span className="">
+                        {productdetails.material}
+                      </span>
+                    </div>
+                  )}
+              </div>
+              <div>
+                {productdetails.occasion !== null &&
+                  productdetails.occasion !== "NA" && (
+                    <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                      <span className="">
+                        Occasion{"  "}
+                      </span>
+                      <span className="">
+                        {productdetails.occasion}
+                      </span>
+                    </div>
+                  )}
+                {productdetails.type !== null &&
+                  productdetails.type !== "NA" && (
+                    <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                      <span className="">
+                        {productdetails.type}{"  "}
+                      </span>
+                      <span className="">
+                        type{"  "}
+                      </span>
+                    </div>
+                  )}
+                {productdetails.brand !== null &&
+                  productdetails.brand !== "NA" && (
+                    <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                      <span className="">
+                        <b>Brand</b>
+                      </span>
+                      <span className="">
+                        {productdetails.brand}
+                      </span>
+                    </div>
+                  )}
+              </div>
+              <div>
+                {productdetails.style !== null &&
+                  productdetails.style !== "NA" && (
+                    <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                      <span className="">
+                        Product is {productdetails.style}{"  "}
+                      </span>
+                      <span className="">
+                        style
+                      </span>
+                    </div>
+                  )}
+                {productdetails.season !== null &&
+                  productdetails.season !== "NA" && (
+                    <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                      <span className="">
+                        Product is suitable for {productdetails.season}{"  "}
+                      </span>
+                      <span className="">
+                        season
+                      </span>
+                    </div>
+                  )}
+                {/* {productdetails.fit !== null && productdetails.fit !== "NA" && (
+                  <div className="">
+                    <span className="">
+                      <b>Fit</b>
+                    </span>
+                    <span className="">
+                      {productdetails.fit}
+                    </span>
+                  </div>
+                )} */}
+              </div>
+              <div>
+                {productdetails.length !== null &&
+                  productdetails.length !== "NA" && (
+                    <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                      <span className="">
+                        Length (In Meters){"  "}
+                      </span>
+                      <span className="">
+                        {productdetails.length}
+                      </span>
+                    </div>
+                  )}
+                {productdetails.condition !== "NA" && (
+                  <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                    <span className="">
+                      Product is in {productdetails.condition}{"  "}
+                    </span>
+                    <span className="">
+                      condition
+                    </span>
+                  </div>
+                )}
+                {productdetails.source !== "NA" && (
+                  <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                    <span className="">
+                      Source{"  "}
+                    </span>
+                    <span className="">
+                      {productdetails.source}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div>
+                {productdetails.age !== "NA" && (
+                  <div className="">
+                    <i className="bi bi-feather"></i>{"  "}
+                    <span className="">
+                      Aged{"  "}
+                    </span>
+                    <span className="">
+                      {productdetails.age}
+                    </span>
+                  </div>
+                )}
+                <div className="">
+                <i className="bi bi-feather"></i>{"  "}
+                  <span className="">
+                    Product ID{"  "}
+                  </span>
+                  <span className="">{id}</span>
+                </div>
+                <div className="">
+                <i className="bi bi-feather"></i>{"  "}
+                  <span className="">
+                    Available quantity{"  "}
+                  </span>
+                  <span className="">
+                    {productdetails.quantity}
+                  </span>
+                </div>
+              </div>
+            </div>
             <div className="col-12 col-md-8 mt-3">
               <div className="user-details border shadow-sm p-3 bg-body rounded">
                 {userDetails.map((user, index) => (
@@ -1084,29 +1140,31 @@ const capitalizeFirstLetterOfEveryWord = (str) => {
                     key={index}
                   >
                     <div>
-                    <p>
-                      <i className="bi bi-person-circle fs-5"></i>
-                      &nbsp;
-                      {user.shopname === "" || user.shopname === null || user.shopname === undefined
-                        ? user.name
-                        : user.shopname}
-                    </p>
+                      <p>
+                        <i className="bi bi-person-circle fs-5"></i>
+                        &nbsp;
+                        {user.shopname === "" ||
+                        user.shopname === null ||
+                        user.shopname === undefined
+                          ? user.name
+                          : user.shopname}
+                      </p>
                     </div>
                     <div>
-                    <button
-                      className="btn btn-sm btn-outline-primary"
-                      onClick={() => handleViewProfile(user.userId)}
-                    >
-                      Visit Shop
-                    </button>
-                    <button
-                  className="btn btn-sm btn-primary ms-2"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal2"
-                >
-                  Contact to Seller
-                </button>
-                </div>
+                      <button
+                        className="btn btn-sm btn-outline-primary"
+                        onClick={() => handleViewProfile(user.userId)}
+                      >
+                        Visit Shop
+                      </button>
+                      <button
+                        className="btn btn-sm btn-primary ms-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal2"
+                      >
+                        Contact to Seller
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -1118,109 +1176,108 @@ const capitalizeFirstLetterOfEveryWord = (str) => {
               <Reviews userDetails={userDetails} />
             </div>
           </div>
-        
         </div>
         <div
-        className="modal fade"
-        id="exampleModal2"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Contact to Seller
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label fw-bold">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="name"
-                    value={name}
-                    onChange={handleInputChange}
-                    placeholder="Enter Your Name"
-                    ref={nameInputRef}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label fw-bold">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    value={email}
-                    onChange={handleInputChange}
-                    placeholder="Enter Your Email"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="phone" className="form-label fw-bold">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    className="form-control"
-                    id="phone"
-                    name="phone"
-                    value={phone}
-                    onChange={handleInputChange}
-                    placeholder="Enter Your Phone Number"
-                    pattern="[0-9]{10}"
-                    title="10 digit numeric value only"
-                    minLength={10}
-                    maxLength={10}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="comment" className="form-label fw-bold">
-                    Comment
-                  </label>
-                  <textarea
-                    type="text"
-                    className="form-control"
-                    id="comment"
-                    value={comment}
-                    onChange={handleInputChange}
-                    placeholder="Enter Comment"
-                    ref={commentInputRef}
-                  />
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-primary">
-                    Save
-                  </button>
-                </div>
-              </form>
+          className="modal fade"
+          id="exampleModal2"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
+                  Contact to Seller
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label htmlFor="name" className="form-label fw-bold">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="name"
+                      value={name}
+                      onChange={handleInputChange}
+                      placeholder="Enter Your Name"
+                      ref={nameInputRef}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label fw-bold">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="email"
+                      name="email"
+                      value={email}
+                      onChange={handleInputChange}
+                      placeholder="Enter Your Email"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="phone" className="form-label fw-bold">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      className="form-control"
+                      id="phone"
+                      name="phone"
+                      value={phone}
+                      onChange={handleInputChange}
+                      placeholder="Enter Your Phone Number"
+                      pattern="[0-9]{10}"
+                      title="10 digit numeric value only"
+                      minLength={10}
+                      maxLength={10}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="comment" className="form-label fw-bold">
+                      Comment
+                    </label>
+                    <textarea
+                      type="text"
+                      className="form-control"
+                      id="comment"
+                      value={comment}
+                      onChange={handleInputChange}
+                      placeholder="Enter Comment"
+                      ref={commentInputRef}
+                    />
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </main>
       <Footer />
       <Scrolltotopbtn />
