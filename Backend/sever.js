@@ -747,8 +747,9 @@ app.get("/sellerproducts", (req, res) => {
 
 app.get("/sellerproductsoffers", (req, res) => {
   const sql = offergetQuery;
+  const storestatus = "enabled"
 
-  db.query(sql, (err, data) => {
+  db.query(sql,[storestatus] ,(err, data) => {
     if (err) {
       return res.json("Error");
     }

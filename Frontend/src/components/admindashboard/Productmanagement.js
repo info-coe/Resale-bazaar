@@ -59,7 +59,12 @@ export default function Productmanagement() {
       )
       .then((res) => {
         if (res.data !== "Fail" && res.data !== "Error") {
-          setFilteredProducts(res.data);
+          setFilteredProducts(
+            res.data.filter(
+              (item) =>
+                item.shop_status === "enabled"
+            )
+          );
         }
       })
       .catch((err) => console.log(err));

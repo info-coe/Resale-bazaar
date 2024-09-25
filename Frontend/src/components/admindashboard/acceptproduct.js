@@ -300,7 +300,8 @@ export default function Acceptproduct() {
             res.data.filter(
               (item) =>
                 item.rejection_reason === null &&
-                item.accepted_by_admin === "false"
+                item.accepted_by_admin === "false"&&
+                item.shop_status === "enabled"
             )
           );
         }
