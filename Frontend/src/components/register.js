@@ -373,7 +373,11 @@ const Register = () => {
               </div>
             )}
           </>
-          <div className="mt-5 mb-4 p-2  col-lg-6 col-xs-12 col-md-8 d-flex ">
+         
+          <div className='registermmm'>
+          <div className="registerleft-side"></div>
+          <div className="registerright-side">
+          <div className=" p-2   d-flex ">
             <img
               src={bell}
               alt="Notification"
@@ -393,8 +397,8 @@ const Register = () => {
               </span>
             </p>
           </div>
-          <div className=" col-lg-4 col-xs-12 col-md-8">
-            <div className="mb-3 p-4 rounded shadow">
+          <div className="">
+            <div className=" p-4">
               <form method="post" onSubmit={handleSubmit}>
                 <div className="mb-5">
                   <h1 className="text-center fs-3 ">Create Account</h1>
@@ -565,7 +569,9 @@ const Register = () => {
                   </div>
                 </div>
               </form>
+              <h6 className="text-end">Already a member? <Link className="text-decoration-none " to="/login">Login </Link></h6>
             </div>
+           
             <div className="d-flex justify-content-around p-2">
               <div
                 style={{ borderBottom: "1px solid gray", width: "45%" }}
@@ -586,6 +592,8 @@ const Register = () => {
                 &nbsp;&nbsp;&nbsp;Continue With Google
               </button>
             </div>
+          </div>
+          </div>
           </div>
         </div>
       </main>

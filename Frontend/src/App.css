@@ -1231,6 +1231,7 @@ body {
   background: none;
   font-size: 16px;
   border-radius: 5px;
+  /* min-width: 300px; */
 }
 
 .input-field input::placeholder {
@@ -1251,6 +1252,7 @@ body {
   pointer-events: none;
 }
 
+
 .input-field input:focus {
   border-color: black;
 }
@@ -1266,3 +1268,158 @@ body {
       padding-left: 3px;
 			
 }
+
+
+
+
+/* Card Register code with left image right form card format start */
+
+.bbb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 88vh;
+}
+
+.mmm {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  /* place-items: center; */
+  width: min(900px, 95%);
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 10px;
+
+  /* gap: 30px;  */
+  margin: 20px;
+}
+
+.left-side {
+  height: 100%;
+  width: 100%;
+  background-image: url('./images/loginperson22.png');
+  /* background-image: url('./images/loginperson1.jpg'); xx*/  
+  /* background-image: url('./images/loginperson3.jpg');xx */
+  /* background-image: url('./images/loginperson3.jpg'); xx*/
+  /* background-image: url('./images/loginperson4.jpg'); xx*/
+  /* background-image: url('./images/loginperson5.jpg'); */
+  /* background-image: url('./images/loginperson6.jpg'); xx*/
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  pointer-events: none;
+  border-radius: 20px 0 0 20px;
+  background-color: #85c1e9;
+ 
+}
+
+.right-side {
+  height: 100%;
+  width: 100%;
+  padding: 20px 30px;
+  /* padding: 50px; */
+ 
+}
+
+.registermmm {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  /* place-items: center; */
+  width: min(1100px, 95%);
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 10px;
+  /* padding: 30px; */
+  /* gap: 30px;  */
+  margin: 20px;
+}
+/* .registermain{
+  box-shadow: rgba(0, 0, 0, 0.20) 0px 5px 10px;
+} */
+.registerleft-side {
+  height: 100%;
+  width: 100%;
+  background-image: url('./images/registerperson.png');
+  /* background-image: url('./images/loginperson1.jpg'); xx*/  
+  /* background-image: url('./images/loginperson3.jpg');xx */
+  /* background-image: url('./images/loginperson3.jpg'); xx*/
+  /* background-image: url('./images/loginperson4.jpg'); xx*/
+  /* background-image: url('./images/loginperson5.jpg'); */
+  /* background-image: url('./images/loginperson6.jpg'); xx*/
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  pointer-events: none;
+  border-radius: 20px 0 0 20px;
+  background-color: #7fb3d5;
+ 
+}
+
+.registerright-side {
+  height: 100%;
+  width: 100%;
+  padding: 20px 30px;
+ 
+}
+
+
+@media (max-width: 575.98px) {
+  .mmm , .registermmm {
+    grid-template-columns: 100%; 
+    grid-template-rows: auto auto; 
+    width: 100%;
+    /* padding: 10px; */
+    gap: 10px; 
+  }
+
+ 
+  .left-side, .right-side , .registerleft-side , .registerright-side {
+    width: 100%;
+    /* border-radius: 20px;  */
+  border-radius:  20px 20px 0 0;
+
+  }
+
+  .left-side , .registerleft-side {
+    grid-row: 1; 
+    grid-column: 1; 
+    min-height: 250px; 
+    background-size: contain;
+  }
+
+  .right-side , .registerright-side {
+    grid-row: 2; 
+    grid-column: 1; 
+    padding: 10px;
+  }
+}
+
+
+/* @media (min-width: 576px) and (max-width: 767.98px) {
+  .mmm {
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto;
+    width: 100%;
+    padding: 20px;
+    gap: 20px;
+  }
+
+ 
+  .left-side, .right-side {
+    width: 100%;
+    border-radius: 20px; 
+  }
+
+  .left-side {
+    grid-row: 1; 
+    grid-column: 1; 
+    min-height: 300px; 
+  }
+
+  .right-side {
+    grid-row: 2; 
+    grid-column: 1; 
+  }
+} */
+
+/* Card Register code with left image right form card format end */
+
