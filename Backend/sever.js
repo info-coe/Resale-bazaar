@@ -2105,7 +2105,7 @@ app.post('/shopstatus', (req, res) => {
       <p>Your shop status has been updated to <strong>${shopstatus}</strong>.</p>
       <p>Reason: ${reason}</p>
       <p>Thank you for your cooperation.</p>
-      <p>Best regards,<br>The Marketplace Team</p>
+      <p>Best regards,<br> The Resale Bazaar Team</p>
     `;
 
     // Send the status update email

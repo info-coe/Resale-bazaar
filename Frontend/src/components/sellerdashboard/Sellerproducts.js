@@ -483,7 +483,7 @@ export default function Sellerproducts() {
                                     </button>
                                   </>
                                 ) : (
-                                  <p>
+                                  <p className="p-2">
                                     <span
                                       style={{
                                         backgroundColor: "#F67A7B",
