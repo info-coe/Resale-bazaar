@@ -348,7 +348,7 @@ const Product = (props) => {
           className="card-text"
           style={{ lineHeight: "15px", marginTop: "-8px" }}
         >
-          <b>&#36; {props.product.price}.00</b>
+          <b>&#36; {props.product.price}</b>
         </p>
       </div>
     </div>
