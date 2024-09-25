@@ -1022,7 +1022,7 @@ export default function Productdetails() {
                     <div className="">
                     <i className="bi bi-feather"></i>{"  "}
                       <span className="">
-                        <b>Brand</b>
+                        Brand{"  "}
                       </span>
                       <span className="">
                         {productdetails.brand}
