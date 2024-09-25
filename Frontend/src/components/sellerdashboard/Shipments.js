@@ -113,7 +113,7 @@ export default function Shipments() {
           <div className="fullscreen2">
             <main>
             <div className="text-center p-3">
-              <h6> <i><span className="" style={{color:"blue" , fontSize:"25px"}}>{user.shopname.length>0 ? (user.shopname) : (user.firstname +" "+ user.lastname)}</span></i> Store</h6>
+              <h6> <i><span className="" style={{color:"blue" , fontSize:"25px"}}>{user.shopname && user.shopname.length>0 ? (user.shopname) : (user.firstname +" "+ user.lastname)}</span></i> Store</h6>
               </div>
               <div className="d-md-flex justify-content-between mt-3">
                <div className=" ps-md-4">
