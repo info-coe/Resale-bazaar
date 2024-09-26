@@ -10,6 +10,7 @@ import Scrolltotopbtn from "./Scrolltotopbutton";
 import Notification from "./Notification";
 import googleicon from "../images/googleicon.png";
 import bell from "../images/bellfinal.gif";
+import registernowimg from "../images/registernow1.jpeg"
 
 const Register = () => {
   const [confirmpassword, setConfirmpassword] = useState("");
@@ -269,7 +270,7 @@ const Register = () => {
       )}
 
       <main>
-        <div className="registerMaindiv">
+        <div className="registerMaindiv ">
           <>
             {modal && values.shopname && (
               <div
@@ -373,35 +374,33 @@ const Register = () => {
               </div>
             )}
           </>
-         
-          <div className='registermmm'>
-          <div className="registerleft-side"></div>
-          <div className="registerright-side">
-          <div className=" p-2   d-flex ">
+          <div className="registersubdiv ">
+          <div className="mt-4 p-2 d-flex ">
             <img
               src={bell}
               alt="Notification"
               className="rounded"
               width="60"
               height="60"
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: "contain" , mixBlendMode:"multiply" , zIndex:'0'}}
             />
             <p
               style={{ fontSize: "17px" }}
               className="NoteDiv d-flex gap-2 text-center"
             >
-              <span className="">
+              <span className="fw-bold ">
                 Seller sign-ups are limited during our trial phase. Register now
                 to show interest, and admin will reach out when approvals
                 begin...
               </span>
             </p>
           </div>
-          <div className="">
-            <div className=" p-4">
+          <div className=" bg-white col-xs-12 col-lg-9 col-md-12" style={{borderRadius:"10px"}}>
+            <div className="" style={{padding:'0px 30px'}} >
               <form method="post" onSubmit={handleSubmit}>
-                <div className="mb-5">
-                  <h1 className="text-center fs-3 ">Create Account</h1>
+                <div className="mb-2 text-center">
+                  {/* <h1 className="text-center fs-3 ">Create Account</h1> */}
+                  <img src={registernowimg} alt="registernowimage" className="registernowimage" width="200" height="200" style={{objectFit:"contain"}}/>
                 </div>
 
                 <div className="input-field ">
@@ -569,10 +568,9 @@ const Register = () => {
                   </div>
                 </div>
               </form>
-              <h6 className="text-end">Already a member? <Link className="text-decoration-none " to="/login">Login </Link></h6>
+              <h6 className="text-end" style={{fontSize:"14px"}}>Already a member? <Link className="text-decoration-none " to="/login">Login </Link></h6>
             </div>
-           
-            <div className="d-flex justify-content-around p-2">
+            <div className="d-flex justify-content-around ps-5 pe-5" >
               <div
                 style={{ borderBottom: "1px solid gray", width: "45%" }}
               ></div>
@@ -583,7 +581,7 @@ const Register = () => {
                 style={{ borderBottom: "1px solid gray", width: "45%" }}
               ></div>
             </div>
-            <div className="mt-3  mb-5 p-2 ">
+            <div className=" p-5 ">
               <button onClick={signin} className="btn shadow w-100 p-2">
                 {/* <span className="fs-5">
                   <i className="bi bi-google"></i>
@@ -592,7 +590,6 @@ const Register = () => {
                 &nbsp;&nbsp;&nbsp;Continue With Google
               </button>
             </div>
-          </div>
           </div>
           </div>
         </div>
