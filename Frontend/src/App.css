@@ -751,12 +751,10 @@ body.offcanvas-open {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* min-height: 100vh;  */
-  /* background-color: #c6deff; */
-  /* background-image: linear-gradient(to right, #74ebd5 0%, #9face6 100%); */
+ 
   background-image: linear-gradient(to top, #fddb92 0%, #d1fdff 100%);
-  /* background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%); */
-  /* background-image: url('../../Frontend/src/images/registerback3.jpg'); */
+  /* background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); */
+
   box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 10px;
   width: 50%;
   padding: 20px;

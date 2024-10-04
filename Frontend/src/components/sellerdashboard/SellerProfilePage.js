@@ -9,6 +9,7 @@ import Product from "../Product";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Notification from "../Notification";
 import unavailableImage from "../../images/unavailableImage.webp";
+import myshopimg from "../../images/myshopimg.jpg"
 // import Comingsoon from "../comingsoon";
 
 const SellerProfile = () => {
@@ -239,8 +240,12 @@ const SellerProfile = () => {
       <div className="container mt-3">
         <div className="row">
           <div className="col-lg-12">
-            <div className="seller-profile-header border">
-              <div className="m-5">
+            <div className="seller-profile-header shadow p-md-5 p-3 rounded">
+              <div className=" d-md-flex justify-content-between gap-5">
+              <div>
+<img src={myshopimg} alt="myshop" width="280" height="250"/>
+                </div>
+                <div>
                 <h2 className="seller-name fs-1">
                   <i className="bi bi-person-circle fs-1"></i>&nbsp;
                   {userDetails.length > 0 &&
@@ -250,13 +255,17 @@ const SellerProfile = () => {
                       ? userDetails[0].name
                       : userDetails[0].shopname)}
                 </h2>
+                <p className="mt-4 mb-4">MyShop is your ultimate destination for exquisite clothing and dazzling jewelry, Elevate your style with our curated collections that blend fashion-forward trends and timeless elegance</p>
                 <button
-                  className="btn btn-primary ms-5"
+                  className="btn btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                 >
                   Contact to Seller
                 </button>
+                </div>
+                
+                
               </div>
             </div>
           </div>
