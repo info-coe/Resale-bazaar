@@ -918,220 +918,130 @@ export default function Productdetails() {
 
             <br />
             <div>
-              <h4>Product Details</h4>
+              <h4>About this item </h4>
             </div>
             <div className="">
-              <div>
-                {productdetails.location !== "NA" && (
-                  <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                    <span className="">
-                      Product located in{"  "}
-                    </span>
-                    <span className="">
-                      {productdetails.location}
-                    </span>
-                  </div>
-                )}
-                {productdetails.color !== "NA" && (
-                  <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                    <span className="">
-                      {productdetails.color}
-                    </span>
-                    <span className="">
-                      {"  "}color
-                    </span>
-                  </div>
-                )}
-                {productdetails.alteration !== "NA" && (
-                  <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                    <span className="">
-                      Can it be altered? {"  "}
-                    </span>
-                    <span className="">
-                      {productdetails.alteration}
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div>
-                {productdetails.size !== "NA" && (
-                  <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                    <span className="">
-                      Size{"  "}
-                    </span>
-                    <span className="">
-                      {productdetails.size}
-                    </span>
-                  </div>
-                )}
-                {productdetails.measurements !== "NA" && (
-                  <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                    <span className="">
-                      Measurement (In Inches){"  "}
-                    </span>
-                    <span className="">
-                      {productdetails.measurements}
-                    </span>
-                  </div>
-                )}
-                {productdetails.material !== null &&
-                  productdetails.material !== "NA" && (
-                    <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                      <span className="">
-                        Material{"  "}
-                      </span>
-                      <span className="">
-                        {productdetails.material}
-                      </span>
-                    </div>
-                  )}
-              </div>
-              <div>
-                {productdetails.occasion !== null &&
-                  productdetails.occasion !== "NA" && (
-                    <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                      <span className="">
-                        Occasion{"  "}
-                      </span>
-                      <span className="">
-                        {productdetails.occasion}
-                      </span>
-                    </div>
-                  )}
-                {productdetails.type !== null &&
-                  productdetails.type !== "NA" && (
-                    <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                      <span className="">
-                        {productdetails.type}{"  "}
-                      </span>
-                      <span className="">
-                        type{"  "}
-                      </span>
-                    </div>
-                  )}
-                {productdetails.brand !== null &&
-                  productdetails.brand !== "NA" && (
-                    <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                      <span className="">
-                        Brand{"  "}
-                      </span>
-                      <span className="">
-                        {productdetails.brand}
-                      </span>
-                    </div>
-                  )}
-              </div>
-              <div>
-                {productdetails.style !== null &&
-                  productdetails.style !== "NA" && (
-                    <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                      <span className="">
-                        Product is {productdetails.style}{"  "}
-                      </span>
-                      <span className="">
-                        style
-                      </span>
-                    </div>
-                  )}
-                {productdetails.season !== null &&
-                  productdetails.season !== "NA" && (
-                    <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                      <span className="">
-                        Product is suitable for {productdetails.season}{"  "}
-                      </span>
-                      <span className="">
-                        season
-                      </span>
-                    </div>
-                  )}
-                {/* {productdetails.fit !== null && productdetails.fit !== "NA" && (
-                  <div className="">
-                    <span className="">
-                      <b>Fit</b>
-                    </span>
-                    <span className="">
-                      {productdetails.fit}
-                    </span>
-                  </div>
-                )} */}
-              </div>
-              <div>
-                {productdetails.length !== null &&
-                  productdetails.length !== "NA" && (
-                    <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                      <span className="">
-                        Length (In Meters){"  "}
-                      </span>
-                      <span className="">
-                        {productdetails.length}
-                      </span>
-                    </div>
-                  )}
-                {productdetails.condition !== "NA" && (
-                  <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                    <span className="">
-                      Product is in {productdetails.condition}{"  "}
-                    </span>
-                    <span className="">
-                      condition
-                    </span>
-                  </div>
-                )}
-                {productdetails.source !== "NA" && (
-                  <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                    <span className="">
-                      Source{"  "}
-                    </span>
-                    <span className="">
-                      {productdetails.source}
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div>
-                {productdetails.age !== "NA" && (
-                  <div className="">
-                    <i className="bi bi-feather"></i>{"  "}
-                    <span className="">
-                      Aged{"  "}
-                    </span>
-                    <span className="">
-                      {productdetails.age}
-                    </span>
-                  </div>
-                )}
-                <div className="">
-                <i className="bi bi-feather"></i>{"  "}
-                  <span className="">
-                    Product ID{"  "}
-                  </span>
-                  <span className="">{id}</span>
-                </div>
-                <div className="">
-                <i className="bi bi-feather"></i>{"  "}
-                  <span className="">
-                    Available quantity{"  "}
-                  </span>
-                  <span className="">
-                    {productdetails.quantity}
-                  </span>
-                </div>
-              </div>
-            </div>
+  <ul>
+    {productdetails.location !== "NA" && (
+      <li>
+        <span>Product located in{"  "}</span>
+        <span>{productdetails.location}</span>
+      </li>
+    )}
+    {productdetails.color !== "NA" && (
+      <li>
+        <span>{productdetails.color}</span>
+        <span>{"  "}color</span>
+      </li>
+    )}
+    {productdetails.alteration !== "NA" && (
+      <li>
+        <span>Can it be altered? {"  "}</span>
+        <span>{productdetails.alteration}</span>
+      </li>
+    )}
+
+    {productdetails.size !== "NA" && (
+      <li>
+        
+        <span>Size{"  "}</span>
+        <span>{productdetails.size}</span>
+      </li>
+    )}
+    {productdetails.measurements !== "NA" && (
+      <li>
+        
+        <span>Measurement (In Inches){"  "}</span>
+        <span>{productdetails.measurements}</span>
+      </li>
+    )}
+    {productdetails.material !== "NA" && (
+      <li>
+        
+        <span>Material{"  "}</span>
+        <span>{productdetails.material}</span>
+      </li>
+    )}
+
+    {productdetails.occasion !== "NA" && (
+      <li>
+        
+        <span>Occasion{"  "}</span>
+        <span>{productdetails.occasion}</span>
+      </li>
+    )}
+    {productdetails.type !== "NA" && (
+      <li>
+        
+        <span>{productdetails.type}{"  "}</span>
+        <span>type</span>
+      </li>
+    )}
+    {productdetails.brand !== "NA" && (
+      <li>
+        
+        <span>Brand{"  "}</span>
+        <span>{productdetails.brand}</span>
+      </li>
+    )}
+
+    {productdetails.style !== "NA" && (
+      <li>
+        
+        <span>Product is {productdetails.style}{"  "}</span>
+        <span>style</span>
+      </li>
+    )}
+    {productdetails.season !== "NA" && (
+      <li>
+        
+        <span>Product is suitable for {productdetails.season}{"  "}</span>
+        <span>season</span>
+      </li>
+    )}
+
+    {productdetails.length !== "NA" && (
+      <li>
+        
+        <span>Length (In Meters){"  "}</span>
+        <span>{productdetails.length}</span>
+      </li>
+    )}
+    {productdetails.condition !== "NA" && (
+      <li>
+        
+        <span>Product is in {productdetails.condition}{"  "}</span>
+        <span>condition</span>
+      </li>
+    )}
+    {productdetails.source !== "NA" && (
+      <li>
+        
+        <span>Source{"  "}</span>
+        <span>{productdetails.source}</span>
+      </li>
+    )}
+
+    {productdetails.age !== "NA" && (
+      <li>
+        
+        <span>Aged{"  "}</span>
+        <span>{productdetails.age}</span>
+      </li>
+    )}
+    <li>
+      
+      <span>Product ID :{"  "}</span>
+      <span>{id}</span>
+    </li>
+    <li>
+      
+      <span>Available quantity{"  "}</span>
+      <span>{productdetails.quantity}</span>
+    </li>
+  </ul>
+</div>
+
             <div className="col-12 col-md-8 mt-3">
               <div className="user-details border shadow-sm p-3 bg-body rounded">
                 {userDetails.map((user, index) => (
