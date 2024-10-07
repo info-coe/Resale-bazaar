@@ -39,14 +39,18 @@ const Refundproducts = () => {
 
  
   const handleRefund = async (productId, paymentIntentId) => {
-   console.log(paymentIntentId)
+  //  console.log(paymentIntentId)
     try {
   
       if (!paymentIntentId) {
         setNotification({
           message: "Refund payment intent ID is missing.",
           type: "error",
+          
         });
+        setTimeout(() => {
+          setNotification(null);
+        }, 3000);
 
         return;
       }

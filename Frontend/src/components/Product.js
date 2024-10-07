@@ -331,8 +331,12 @@ const Product = (props) => {
               color: "rgb(86, 101, 115 )",
             }}
           >
-            {userDetails[0].shopname}
-          </p>
+              {userDetails[0].shopname === "" ||
+                        userDetails[0].shopname === null ||
+                        userDetails[0].shopname === undefined
+                          ? userDetails[0].name
+                          : userDetails[0].shopname}          
+               </p>
         )}
         <p
           style={{
